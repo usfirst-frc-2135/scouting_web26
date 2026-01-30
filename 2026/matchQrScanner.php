@@ -49,7 +49,7 @@ require 'inc/header.php';
 <!-- Javascript page handlers -->
 
 <script>
-  const qrValidLength = 42; // This is determined by game requirements and adjusted each year
+  const qrValidLength = 26; // This is determined by game requirements and adjusted each year
   const qrPadLength = 1; // TODO: no explanation why this is padded--did we delete something? Remove for 2026
 
   //
@@ -92,66 +92,44 @@ require 'inc/header.php';
   function qrListToMatchData(qrList) {
     let matchData = {};
     // Perennial fields that always occur
-    matchData["eventcode"] = qrList[37]; // Make this [0] in 2026
-    matchData["matchnumber"] = qrList[36]; // Make this [1] in 2026
-    matchData["teamnumber"] = qrList[0]; // Make this [2] in 2026
-    matchData["teamalias"] = qrList[40]; // Make this [3] in 2026
-    matchData["scoutname"] = qrList[38]; // Make this [4] in 2026
+    matchData["eventcode"] = qrList[0]; // Make this [0] in 2026
+    matchData["matchnumber"] = qrList[1]; // Make this [1] in 2026
+    matchData["teamnumber"] = qrList[2]; // Make this [2] in 2026
+    matchData["teamalias"] = qrList[3]; // Make this [3] in 2026
+    matchData["scoutname"] = qrList[4]; // Make this [4] in 2026
     // matchData["version"] = qrList[];       // Make this [5] in 2026 - this will be a NEW field from the Android app
 
     // Recurring (and overall) data
-    matchData["died"] = qrList[35]; // Make this [6] in 2026
+    matchData["died"] = qrList[5]; // Make this [6] in 2026
 
     // Match or year-specific fields below here!
 
     // Autonomous
-    matchData["autonStartPos"] = qrList[1]; // UNUSED
-    matchData["autonLeave"] = qrList[2];
-    // matchData["reefzoneAB"] = qrList[3];      // UNUSED
-    // matchData["reefzoneCD"] = qrList[4];      // UNUSED
-    // matchData["reefzoneEF"] = qrList[5];      // UNUSED
-    // matchData["reefzoneGH"] = qrList[6];      // UNUSED
-    // matchData["reefzoneIJ"] = qrList[7];      // UNUSED
-    // matchData["reefzoneKL"] = qrList[8];      // UNUSED
-    matchData["autonCoralL1"] = qrList[9];
-    matchData["autonCoralL2"] = qrList[10];
-    matchData["autonCoralL3"] = qrList[11];
-    matchData["autonCoralL4"] = qrList[12];
-    matchData["autonAlgaeNet"] = qrList[13];
-    matchData["autonAlgaeProc"] = qrList[14];
-    // matchData["autonCoralFloor"] = qrList[15];    // UNUSED
-    // matchData["autonCoralStation"] = qrList[16];  // UNUSED
-    // matchData["autonAlgaeFloor"] = qrList[17];    // UNUSED
-    // matchData["autonAlgaeReef"] = qrList[18];     // UNUSED
+    matchData["autonShootPreload"] = qrList[6];
+    matchData["autonPreloadAccuracy"] = qrList[7];
+    matchData["autonHoppersShot"] = qrList[8];
+    matchData["autonHopperAccuracy"] = qrList[9];
+    matchData["autonAllianceZone"] = qrList[10];
+    matchData["autonDepot"] = qrList[11];
+    matchData["autonOutpost"] = qrList[12];
+    matchData["autonNeutralZone"] = qrList[13];
+    matchData["autonClimb"] = qrList[14];
 
     // Teleop
-    matchData["teleopCoralAcquired"] = qrList[19];
-    matchData["teleopAlgaeAcquired"] = qrList[20];
-    // matchData["teleopAlgaeFloorPickup"] = qrList[21]; // UNUSED
-    // matchData["teleopCoralFloorPickup"] = qrList[22]; // UNUSED
-    // matchData["teleopKnockOffAlgae"] = qrList[23];    // UNUSED
-    // matchData["teleopAlgaeFromReef"] = qrList[24];    // UNUSED
-    // matchData["teleopHoldBoth"] = qrList[25];         // UNUSED
-    matchData["teleopCoralL1"] = qrList[26];
-    matchData["teleopCoralL2"] = qrList[27];
-    matchData["teleopCoralL3"] = qrList[28];
-    matchData["teleopCoralL4"] = qrList[29];
-    matchData["teleopAlgaeNet"] = qrList[30];
-    matchData["teleopAlgaeProc"] = qrList[31];
-
-    // Defense notes
-    matchData["defenseLevel"] = qrList[32];
+    matchData["teleopHoppersUsed"] = qrList[15];
+    matchData["teleopHopperAccuracy"] = qrList[16];
+    matchData["teleopIntakeAndShoot"] = qrList[17];
+    matchData["teleopNeutralToAlliance"] = qrList[18];
+    matchData["teleopAllianceToAlliance"] = qrList[19];
+    matchData["teleopPassingRate"] = qrList[20];
+    matchData["teleopDefenseLevel"] = qrList[21];
 
     // Endgame
-    matchData["endgameCageClimb"] = qrList[33];
-    matchData["endgameStartClimb"] = qrList[34];
+    matchData["endgameCageClimb"] = qrList[22];
+    matchData["endgameStartClimb"] = qrList[23];
 
     // Overall
-    // qrList[35] see above
-    // qrList[36] see above
-    // qrList[37] see above
-    // qrList[38] see above
-    matchData["comment"] = qrList[39];
+    matchData["comment"] = qrList[24];
     return matchData;
   }
 

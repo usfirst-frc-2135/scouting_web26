@@ -21,7 +21,8 @@
 function insertMatchDataHeader(tableId, aliasList) {
   console.log("==> insertMatchDataHeader: tableId " + tableId + " aliases " + aliasList.length);
 
-  let theadRef = document.getElementById(tableId).querySelector('thead');;
+  let theadRef = document.getElementById(tableId).querySelector('thead');
+
   theadRef.innerHTML = ""; // Clear Table
 
   let rowString = '';
@@ -33,28 +34,30 @@ function insertMatchDataHeader(tableId, aliasList) {
   rowString += '<th scope="col" class="bg-body sorttable_numeric">Match</th>';
   rowString += '<th scope="col" class="bg-body sorttable_numeric">Team</th>';
   // Insert column if the aliasList is not empty
+
   if (aliasList.length > 0) {
     rowString += thMatch + 'Alias</th>';
   }
+
   rowString += thMatch + 'Died</th>';
-  rowString += thAuto + 'Auton Leave</th>';
-  rowString += thAuto + 'Auton Coral L1</th>';
-  rowString += thAuto + 'Auton Coral L2</th>';
-  rowString += thAuto + 'Auton Coral L3</th>';
-  rowString += thAuto + 'Auton Coral L4</th>';
-  rowString += thAuto + 'Auton Algae Net</th>';
-  rowString += thAuto + 'Auton Algae Proc</th>';
-  rowString += thTeleop + 'Teleop Coral L1</th>';
-  rowString += thTeleop + 'Teleop Coral L2</th>';
-  rowString += thTeleop + 'Teleop Coral L3</th>';
-  rowString += thTeleop + 'Teleop Coral L4</th>';
-  rowString += thTeleop + 'Teleop Algae Net</th>';
-  rowString += thTeleop + 'Teleop Algae Proc</th>';
-  rowString += thTeleop + 'Teleop Acqd Coral</th>';
-  rowString += thTeleop + 'Teleop Acqd Algae</th>';
+  rowString += thAuto + 'Auton Preload</th>';
+  rowString += thAuto + 'Auton Preload Acc</th>';
+  rowString += thAuto + 'Auton Hopper</th>';
+  rowString += thAuto + 'Auton Hopper Acc</th>';
+  rowString += thAuto + 'Auton Alliance Zone</th>';
+  rowString += thAuto + 'Auton Depot</th>';
+  rowString += thAuto + 'Auton Outpost</th>';
+  rowString += thAuto + 'Auton Neutral Zone</th>';
+  rowString += thAuto + 'Auton Climb</th>';
+  rowString += thTeleop + 'Teleop Hopper</th>';
+  rowString += thTeleop + 'Teleop Hopper Acc</th>';
+  rowString += thTeleop + 'Teleop Intake_Shoot</th>';
+  rowString += thTeleop + 'Teleop Neutral to Al</th>';
+  rowString += thTeleop + 'Teleop Al to Al</th>';
+  rowString += thTeleop + 'Teleop Passing Eff Rate</th>';
+  rowString += thTeleop + 'Teleop Defense Lvl</th>';
   rowString += thEndgame + 'Cage Climb</th>';
   rowString += thEndgame + 'Start Climb</th>';
-  rowString += thTeleop + 'Defense</th>';
   rowString += thMatch + 'Comment</th>';
   rowString += thMatch + 'Scout Name</th>';
 
@@ -105,25 +108,26 @@ function insertMatchDataBody(tableId, matchData, aliasList, teamFilter) {
     if (aliasList.length > 0) {
       rowString += tdBody + getAliasFromTeamNum(teamNum, aliasList) + "</td>";
     }
+
     rowString += tdBlue + matchItem["died"] + "</td>";
-    rowString += tdBody + matchItem["autonLeave"] + "</td>";
-    rowString += tdBlue + matchItem["autonCoralL1"] + "</td>";
-    rowString += tdBody + matchItem["autonCoralL2"] + "</td>";
-    rowString += tdBlue + matchItem["autonCoralL3"] + "</td>";
-    rowString += tdBody + matchItem["autonCoralL4"] + "</td>";
-    rowString += tdBlue + matchItem["autonAlgaeNet"] + "</td>";
-    rowString += tdBody + matchItem["autonAlgaeProc"] + "</td>";
-    rowString += tdBlue + matchItem["teleopCoralL1"] + "</td>";
-    rowString += tdBody + matchItem["teleopCoralL2"] + "</td>";
-    rowString += tdBlue + matchItem["teleopCoralL3"] + "</td>";
-    rowString += tdBody + matchItem["teleopCoralL4"] + "</td>";
-    rowString += tdBlue + matchItem["teleopAlgaeNet"] + "</td>";
-    rowString += tdBody + matchItem["teleopAlgaeProc"] + "</td>";
-    rowString += tdBody + matchItem["teleopCoralAcquired"] + "</td>";
-    rowString += tdBlue + matchItem["teleopAlgaeAcquired"] + "</td>";
-    rowString += tdBlue + toClimbLevel(matchItem["endgameCageClimb"]) + "</td>";
-    rowString += tdBody + matchItem["endgameStartClimb"] + "</td>";
-    rowString += tdBlue + matchItem["defenseLevel"] + "</td>";
+    rowString += tdBody + matchItem["autonShootPreload"] + "</td>";
+    rowString += tdBlue + matchItem["autonPreloadAccuracy"] + "</td>";
+    rowString += tdBody + matchItem["autonHoppersShot"] + "</td>";
+    rowString += tdBlue + matchItem["autonHopperAccuracy"] + "</td>";
+    rowString += tdBody + matchItem["autonAllianceZone"] + "</td>";
+    rowString += tdBlue + matchItem["autonDepot"] + "</td>";
+    rowString += tdBody + matchItem["autonOutpost"] + "</td>";
+    rowString += tdBlue + matchItem["autonNeutralZone"] + "</td>";
+    rowString += tdBody + matchItem["autonClimb"] + "</td>";
+    rowString += tdBlue + matchItem["teleopHoppersUsed"] + "</td>";
+    rowString += tdBody + matchItem["teleopHopperAccuracy"] + "</td>";
+    rowString += tdBlue + matchItem["teleopIntakeAndShoot"] + "</td>";
+    rowString += tdBody + matchItem["teleopNeutralToAlliance"] + "</td>";
+    rowString += tdBody + matchItem["teleopAllianceToAlliance"] + "</td>";
+    rowString += tdBlue + matchItem["teleopPassingRate"] + "</td>";
+    rowString += tdBlue + matchItem["teleopDefenseLevel"] + "</td>";
+    rowString += tdBody + toClimbLevel(matchItem["endgameCageClimb"]) + "</td>";
+    rowString += tdBlue + matchItem["endgameStartClimb"] + "</td>";
     rowString += tdBlue + matchItem["comment"] + "</td>";
     rowString += tdBody + matchItem["scoutname"] + "</td>";
 

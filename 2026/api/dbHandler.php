@@ -89,26 +89,25 @@ class dbHandler
         teamnumber,
         teamalias,
         scoutname,
-        autonStartPos,
-        autonLeave,
-        autonCoralL1,
-        autonCoralL2,
-        autonCoralL3,
-        autonCoralL4,
-        autonAlgaeNet,
-        autonAlgaeProc,
-        teleopCoralAcquired,
-        teleopAlgaeAcquired,
-        teleopCoralL1,
-        teleopCoralL2,
-        teleopCoralL3,
-        teleopCoralL4,
-        teleopAlgaeNet,
-        teleopAlgaeProc,
-        defenseLevel,
+        died,
+        autonShootPreload,
+        autonPreloadAccuracy,
+        autonHoppersShot,
+        autonHopperAccuracy,
+        autonAllianceZone,
+        autonDepot,
+        autonOutpost,
+        autonNeutralZone,
+        autonClimb,
+        teleopHoppersUsed,
+        teleopHopperAccuracy,
+        teleopIntakeAndShoot,
+        teleopNeutralToAlliance,
+        teleopAllianceToAlliance,
+        teleopPassingRate,
+        teleopDefenseLevel,
         endgameCageClimb,
         endgameStartClimb,
-        died,
         comment
       )
       VALUES
@@ -119,26 +118,25 @@ class dbHandler
         :teamnumber,
         :teamalias,
         :scoutname,
-        :autonStartPos,
-        :autonLeave,
-        :autonCoralL1,
-        :autonCoralL2,
-        :autonCoralL3,
-        :autonCoralL4,
-        :autonAlgaeNet,
-        :autonAlgaeProc,
-        :teleopCoralAcquired,
-        :teleopAlgaeAcquired,
-        :teleopCoralL1,
-        :teleopCoralL2,
-        :teleopCoralL3,
-        :teleopCoralL4,
-        :teleopAlgaeNet,
-        :teleopAlgaeProc,
-        :defenseLevel,
+        :died,
+        :autonShootPreload,
+        :autonPreloadAccuracy,
+        :autonHoppersShot,
+        :autonHopperAccuracy,
+        :autonAllianceZone,
+        :autonDepot,
+        :autonOutpost,
+        :autonNeutralZone,
+        :autonClimb,
+        :teleopHoppersUsed,
+        :teleopHopperAccuracy,
+        :teleopIntakeAndShoot,
+        :teleopNeutralToAlliance,
+        :teleopAllianceToAlliance,
+        :teleopPassingRate,
+        :teleopDefenseLevel,
         :endgameCageClimb,
         :endgameStartClimb,
-        :died,
         :comment
       )";
     $prepared_statement = $this->conn->prepare($sql);
@@ -159,20 +157,21 @@ class dbHandler
     {
       foreach ($row as $key => $value)
       {
-        if (
-          $key === "autonStartPos" || $key === "autonLeave" ||
-          $key === "autonCoralL1" || $key === "autonCoralL2" || $key === "autonCoralL3" || $key === "autonCoralL4" ||
-          $key === "autonAlgaeNet" || $key === "autonAlgaeProc" ||
-          $key === "teleopCoralAcquired" || $key === "teleopAlgaeAcquired" ||
-          $key === "teleopCoralL1" || $key === "teleopCoralL2" || $key === "teleopCoralL3" || $key === "teleopCoralL4" ||
-          $key === "teleopAlgaeNet" || $key === "teleopAlgaeProc" || $key === "defenseLevel" ||
-          $key === "endgameCageClimb" || $key === "endgameStartClimb" || $key === "died" || $key === "teamalias"
+        if ($key === "autonShootPreload" || $key === "autonPreloadAccuracy" ||
+            $key === "autonHoppersShot" || $key === "autonHopperAccuracy" || $key === "autonAllianceZone" || $key === "autonDepot" ||
+            $key === "autonOutpost" || $key === "autonNeutralZone" ||
+            $key === "autonClimb" || $key === "teleopHoppersUsed" ||
+            $key === "teleopHopperAccuracy" || $key === "teleopIntakeAndShoot" || $key === "teleopNeutralToAlliance" || $key === "teleopAllianceToAlliance" ||
+            $key === "teleopPassingRate" || $key === "teleopDefenseLevel" ||
+            $key === "endgameCageClimb" || $key === "endgameStartClimb" || $key === "died" || $key === "teamalias"
         )
         {
+          // verifying and enforcing all keys above to be an integer
           $row[$key] = $this->enforceInt($value);
         }
         else
         {
+          // all other keys use the current value
           $row[$key] = $value;
         }
       }
@@ -186,32 +185,32 @@ class dbHandler
   {
     $dbConfig = $this->readDbConfig();
     $sql = "SELECT 
+        entrykey,
         eventcode,
         matchnumber,
         teamnumber,
         teamalias,
         scoutname,
-        autonStartPos,
-        autonLeave,
-        autonCoralL1,
-        autonCoralL2,
-        autonCoralL3,
-        autonCoralL4,
-        autonAlgaeNet,
-        autonAlgaeProc,
-        teleopCoralAcquired,
-        teleopAlgaeAcquired,
-        teleopCoralL1,
-        teleopCoralL2,
-        teleopCoralL3,
-        teleopCoralL4,
-        teleopAlgaeNet,
-        teleopAlgaeProc,
-        defenseLevel,
+        died,
+        autonShootPreload,
+        autonPreloadAccuracy,
+        autonHoppersShot,
+        autonHopperAccuracy,
+        autonAllianceZone,
+        autonDepot,
+        autonOutpost,
+        autonNeutralZone,
+        autonClimb,
+        teleopHoppersUsed,
+        teleopHopperAccuracy,
+        teleopIntakeAndShoot,
+        teleopNeutralToAlliance,
+        teleopAllianceToAlliance,
+        teleopPassingRate,
+        teleopDefenseLevel,
         endgameCageClimb,
         endgameStartClimb,
-        died,
-        comment 
+        comment
         FROM " . $dbConfig["datatable"] .
       " WHERE eventcode='" . $eventCode . "'";
     $prepared_statement = $this->conn->prepare($sql);
@@ -225,32 +224,32 @@ class dbHandler
   {
     $dbConfig = $this->readDbConfig();
     $sql = "SELECT 
+        entrykey,
         eventcode,
         matchnumber,
         teamnumber,
         teamalias,
         scoutname,
-        autonStartPos,
-        autonLeave,
-        autonCoralL1,
-        autonCoralL2,
-        autonCoralL3,
-        autonCoralL4,
-        autonAlgaeNet,
-        autonAlgaeProc,
-        teleopCoralAcquired,
-        teleopAlgaeAcquired,
-        teleopCoralL1,
-        teleopCoralL2,
-        teleopCoralL3,
-        teleopCoralL4,
-        teleopAlgaeNet,
-        teleopAlgaeProc,
-        defenseLevel,
+        died,
+        autonShootPreload,
+        autonPreloadAccuracy,
+        autonHoppersShot,
+        autonHopperAccuracy,
+        autonAllianceZone,
+        autonDepot,
+        autonOutpost,
+        autonNeutralZone,
+        autonClimb,
+        teleopHoppersUsed,
+        teleopHopperAccuracy,
+        teleopIntakeAndShoot,
+        teleopNeutralToAlliance,
+        teleopAllianceToAlliance,
+        teleopPassingRate,
+        teleopDefenseLevel,
         endgameCageClimb,
         endgameStartClimb,
-        died,
-        comment 
+        comment
         FROM " . $dbConfig["datatable"] .
       " WHERE eventcode='" . $eventCode . "' AND teamnumber='" . $teamNumber . "'";
     $prepared_statement = $this->conn->prepare($sql);
@@ -670,26 +669,25 @@ class dbHandler
         teamnumber VARCHAR(10) NOT NULL,
         teamalias VARCHAR(10) NOT NULL,
         scoutname VARCHAR(30) NOT NULL,
-        autonStartPos TINYINT UNSIGNED NOT NULL,
-        autonLeave TINYINT UNSIGNED NOT NULL,
-        autonCoralL1 TINYINT UNSIGNED NOT NULL,
-        autonCoralL2 TINYINT UNSIGNED NOT NULL,
-        autonCoralL3 TINYINT UNSIGNED NOT NULL,
-        autonCoralL4 TINYINT UNSIGNED NOT NULL,
-        autonAlgaeNet TINYINT UNSIGNED NOT NULL,
-        autonAlgaeProc TINYINT UNSIGNED NOT NULL,
-        teleopCoralAcquired TINYINT UNSIGNED NOT NULL,
-        teleopAlgaeAcquired TINYINT UNSIGNED NOT NULL,
-        teleopCoralL1 TINYINT UNSIGNED NOT NULL,
-        teleopCoralL2 TINYINT UNSIGNED NOT NULL,
-        teleopCoralL3 TINYINT UNSIGNED NOT NULL,
-        teleopCoralL4 TINYINT UNSIGNED NOT NULL,
-        teleopAlgaeNet TINYINT UNSIGNED NOT NULL,
-        teleopAlgaeProc TINYINT UNSIGNED NOT NULL,
-        defenseLevel TINYINT UNSIGNED NOT NULL,
+        died TINYINT UNSIGNED NOT NULL,
+        autonShootPreload TINYINT UNSIGNED NOT NULL,
+        autonPreloadAccuracy TINYINT UNSIGNED NOT NULL,
+        autonHoppersShot TINYINT UNSIGNED NOT NULL,
+        autonHopperAccuracy TINYINT UNSIGNED NOT NULL,
+        autonAllianceZone TINYINT UNSIGNED NOT NULL,
+        autonDepot TINYINT UNSIGNED NOT NULL,
+        autonOutpost TINYINT UNSIGNED NOT NULL,
+        autonNeutralZone TINYINT UNSIGNED NOT NULL,
+        autonClimb TINYINT UNSIGNED NOT NULL,
+        teleopHoppersUsed TINYINT UNSIGNED NOT NULL,
+        teleopHopperAccuracy TINYINT UNSIGNED NOT NULL,
+        teleopIntakeAndShoot TINYINT UNSIGNED NOT NULL,
+        teleopNeutralToAlliance TINYINT UNSIGNED NOT NULL,
+        teleopAllianceToAlliance TINYINT UNSIGNED NOT NULL,
+        teleopPassingRate TINYINT UNSIGNED NOT NULL,
+        teleopDefenseLevel TINYINT UNSIGNED NOT NULL,
         endgameCageClimb TINYINT UNSIGNED NOT NULL,
         endgameStartClimb TINYINT UNSIGNED NOT NULL,
-        died TINYINT UNSIGNED NOT NULL,
         comment VARCHAR(500) NOT NULL,
         INDEX (eventcode, matchnumber, teamnumber)
       )";
