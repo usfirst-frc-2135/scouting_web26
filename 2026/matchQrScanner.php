@@ -107,12 +107,12 @@ require 'inc/header.php';
     // Autonomous
     matchData["autonShootPreload"] = qrList[6];
     matchData["autonPreloadAccuracy"] = qrList[7];
-    matchData["autonHoppersShot"] = qrList[8];
-    matchData["autonHopperAccuracy"] = qrList[9];
-    matchData["autonAllianceZone"] = qrList[10];
-    matchData["autonDepot"] = qrList[11];
-    matchData["autonOutpost"] = qrList[12];
-    matchData["autonNeutralZone"] = qrList[13];
+    matchData["autonAllianceZone"] = qrList[8];
+    matchData["autonDepot"] = qrList[9];
+    matchData["autonOutpost"] = qrList[10];
+    matchData["autonNeutralZone"] = qrList[11];
+    matchData["autonHoppersShot"] = qrList[12];
+    matchData["autonHopperAccuracy"] = qrList[13];
     matchData["autonClimb"] = qrList[14];
 
     // Teleop
