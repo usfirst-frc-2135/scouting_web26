@@ -248,4 +248,5 @@ require 'inc/header.php';
 <script src="./scripts/compareTeamNumbers.js"></script>
 <script src="./scripts/eventAveragesTable.js"></script>
 <script src="./scripts/matchDataProcessor.js"></script>
+<script src="./scripts/rebuiltFuelEstimates.js"></script>
 <script src="./scripts/sortFrcTables.js"></script>

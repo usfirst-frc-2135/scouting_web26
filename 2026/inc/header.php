@@ -68,6 +68,7 @@
               <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./matchQrScanner.php">QR Scanner</a></li>
               <!-- <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./matchFormReefscape.php">Match Form</a></li> -->
               <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./matchData.php">Match Data</a></li>
+              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./rebuiltFuelEstimates.php">Fuel Estimates</a></li>
             </ul>
           </li>
 

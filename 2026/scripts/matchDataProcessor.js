@@ -320,25 +320,25 @@ class matchDataProcessor {
         //        The field names on the left side of getMatchXXX must match the field names in this class
 
         // Autonomous mode
-        this.getMatchItem(team, "autonLeave", match, "autonLeave");
-        this.getMatchItem(team, "autonCoralL1", match, "autonCoralL1");
-        this.getMatchItem(team, "autonCoralL2", match, "autonCoralL2");
-        this.getMatchItem(team, "autonCoralL3", match, "autonCoralL3");
-        this.getMatchItem(team, "autonCoralL4", match, "autonCoralL4");
-        this.getMatchItem(team, "autonAlgaeProc", match, "autonAlgaeProc");
-        this.getMatchItem(team, "autonAlgaeNet", match, "autonAlgaeNet");
+        this.getMatchItem(team, "autonShootPreload", match, "autonShootPreload");
+        this.getMatchItem(team, "autonPreloadAccuracy", match, "autonPreloadAccuracy");
+        this.getMatchItem(team, "autonHoppersShot", match, "autonHoppersShot");
+        this.getMatchItem(team, "autonHopperAccuracy", match, "autonHopperAccuracy");
+        this.getMatchItem(team, "autonAllianceZone", match, "autonAllianceZone");
+        this.getMatchItem(team, "autonDepot", match, "autonDepot");
+        this.getMatchItem(team, "autonOutpost", match, "autonOutpost");
+        this.getMatchItem(team, "autonNeutralZone", match, "autonNeutralZone");
+        this.getMatchItem(team, "autonClimb", match, "autonClimb");
 
         // Teleop mode
-        this.getMatchItem(team, "teleopCoralL1", match, "teleopCoralL1");
-        this.getMatchItem(team, "teleopCoralL2", match, "teleopCoralL2");
-        this.getMatchItem(team, "teleopCoralL3", match, "teleopCoralL3");
-        this.getMatchItem(team, "teleopCoralL4", match, "teleopCoralL4");
-        this.getMatchItem(team, "teleopAlgaeProc", match, "teleopAlgaeProc");
-        this.getMatchItem(team, "teleopAlgaeNet", match, "teleopAlgaeNet");
-        this.getMatchItem(team, "teleopCoralAcquired", match, "teleopCoralAcquired");
-        this.getMatchItem(team, "teleopAlgaeAcquired", match, "teleopAlgaeAcquired");
+        this.getMatchItem(team, "teleopHoppersUsed", match, "teleopHoppersUsed");
+        this.getMatchItem(team, "teleopHopperAccuracy", match, "teleopHopperAccuracy");
+        this.getMatchItem(team, "teleopIntakeAndShoot", match, "teleopIntakeAndShoot");
+        this.getMatchItem(team, "teleopNeutralToAlliance", match, "teleopNeutralToAlliance");
+        this.getMatchItem(team, "teleopAllianceToAlliance", match, "teleopAllianceToAlliance");
+        this.getMatchItem(team, "teleopPassingRate", match, "teleopPassingRate");
 
-        let matchDefenseLevel = this.getMatchItem(team, "defenseLevel", match, "defenseLevel");
+        let matchDefenseLevel = this.getMatchItem(team, "teleopDefenseLevel", match, "teleopDefenseLevel");
         if (matchDefenseLevel != 0) {
           team["totalDefenseMatches"] += 1;  // increment if this team played defense
         }
@@ -355,37 +355,41 @@ class matchDataProcessor {
 
         //////////////////// GAME PIECE TOTALS ////////////////////
 
-        let autonCoralPieces = team["autonCoralL1"].val + team["autonCoralL2"].val + team["autonCoralL3"].val + team["autonCoralL4"].val;
-        let autonAlgaePieces = team["autonAlgaeNet"].val + team["autonAlgaeProc"].val;
+        let hopperCap = 0;
+        let preloadShot = match["autonShootPreload"];
+        let hoppersShot = match["autonHoppersShot"];
+        let preloadAcc = match["autonPreloadAccuracy"];
+        let hopperAcc = match["autonHopperAccuracy"];
+        let autonEstFuel = calcAutonTotalFuel(hopperCap, preloadShot, hoppersShot, preloadAcc, hopperAcc);
 
-        let teleopCoralPieces = team["teleopCoralL1"].val + team["teleopCoralL2"].val + team["teleopCoralL3"].val + team["teleopCoralL4"].val;
-        let teleopAlgaePieces = team["teleopAlgaeNet"].val + team["teleopAlgaeProc"].val;
-        let totalCoralPieces = autonCoralPieces + teleopCoralPieces;
-        let totalAlgaePieces = autonAlgaePieces + teleopAlgaePieces;
+        let autonClimbPoints = 0;
+        switch (String(team["autonClimb"].val)) {
+          case "1": autonClimbPoints = 15; break;  // Back
+          case "2": autonClimbPoints = 15; break;  // Left
+          case "3": autonClimbPoints = 15; break;  // Front
+          case "4": autonClimbPoints = 15; break; // Right
+          default: autonClimbPoints = 0; break;   // No climb
+        }
+
+        let autonTotalPoints = autonEstFuel + autonClimbPoints;
+
+        let teleopHoppersShot = match["teleopHoppersUsed"];
+        let teleopHopperAcc = match["teleopHopperAccuracy"];
+
+        let teleopEstFuel = calcTeleopTotalFuel(hopperCap, teleopHoppersShot, teleopHopperAcc);
+
+        //let totalPoints = autonTotalPoints + teleopEstFuel;
 
         // Store piece values
-        this.updateItem(team, "autonCoralPieces", autonCoralPieces);
-        this.updateItem(team, "autonAlgaePieces", autonAlgaePieces);
+        this.updateItem(team, "autonFuelEst", autonEstFuel);
+        this.updateItem(team, "autonClimbPoints", autonClimbPoints);
+        this.updateItem(team, "autonTotalPoints", autonTotalPoints);
 
-        this.updateItem(team, "teleopCoralPieces", teleopCoralPieces);
-        this.updateItem(team, "teleopAlgaePieces", teleopAlgaePieces);
+        this.updateItem(team, "teleopEstFuel", teleopEstFuel);
 
-        this.updateItem(team, "totalCoralPieces", totalCoralPieces);
-        this.updateItem(team, "totalAlgaePieces", totalAlgaePieces);
+        //this.updateItem(team, "totalPoints", totalPoints);
 
         //////////////////// POINT TOTALS ////////////////////
-
-        let autonLeavePoints = (team["autonLeave"].val === 1) ? 3 : 0;
-        let autonCoralPoints = (team["autonCoralL1"].val * 3) + (team["autonCoralL2"].val * 4) + (team["autonCoralL3"].val * 6) + (team["autonCoralL4"].val * 7);
-        let autonAlgaePoints = (team["autonAlgaeNet"].val * 4) + (team["autonAlgaeProc"].val * 6);
-        let totalAutoPoints = autonLeavePoints + autonCoralPoints + autonAlgaePoints;
-
-        let teleopCoralPoints = (team["teleopCoralL1"].val * 2) + (team["teleopCoralL2"].val * 3) + (team["teleopCoralL3"].val * 4) + (team["teleopCoralL4"].val * 5);
-        let teleopAlgaePoints = (team["teleopAlgaeNet"].val * 4) + (team["teleopAlgaeProc"].val * 6);
-        let totalTeleopPoints = teleopCoralPoints + teleopAlgaePoints;
-
-        let totalCoralPoints = autonCoralPoints + teleopCoralPoints;
-        let totalAlgaePoints = autonAlgaePoints + teleopAlgaePoints;
 
         let endgameClimbPoints = 0;
         switch (String(team["endgameCageClimb"].val)) {
@@ -396,20 +400,9 @@ class matchDataProcessor {
           default: endgameClimbPoints = 0; break;   // No climb
         }
 
-        let totalMatchPoints = totalAutoPoints + totalTeleopPoints + endgameClimbPoints;
+        let totalMatchPoints = autonEstFuel + teleopEstFuel + endgameClimbPoints;
 
         // Store point values
-        this.updateItem(team, "autonCoralPoints", autonCoralPoints);
-        this.updateItem(team, "autonAlgaePoints", autonAlgaePoints);
-        this.updateItem(team, "autonPoints", totalAutoPoints);
-
-        this.updateItem(team, "teleopCoralPoints", teleopCoralPoints);
-        this.updateItem(team, "teleopAlgaePoints", teleopAlgaePoints);
-        this.updateItem(team, "teleopPoints", totalTeleopPoints);
-
-        this.updateItem(team, "totalCoralPoints", totalCoralPoints);
-        this.updateItem(team, "totalAlgaePoints", totalAlgaePoints);
-
         this.updateItem(team, "endgamePoints", endgameClimbPoints);
         this.updateItem(team, "totalMatchPoints", totalMatchPoints);
       }
@@ -419,28 +412,18 @@ class matchDataProcessor {
       // console.log("===> doing MDP averages, max for team: " + key);  // TEST
 
       // Autonomous mode
-      this.calcAverage(team, "autonLeave", "totalMatches");
-      this.calcAverage(team, "autonCoralL1", "totalMatches");
-      this.calcAverage(team, "autonCoralL2", "totalMatches");
-      this.calcAverage(team, "autonCoralL3", "totalMatches");
-      this.calcAverage(team, "autonCoralL4", "totalMatches");
-      this.calcAverage(team, "autonAlgaeProc", "totalMatches");
-      this.calcAverage(team, "autonAlgaeNet", "totalMatches");
+      this.calcAverage(team, "autonFuelEst", "totalMatches");
+      this.calcAverage(team, "autonClimbPoints", "totalMatches");
 
       // Teleop mode
-      this.calcAverage(team, "teleopCoralL1", "totalMatches");
-      this.calcAverage(team, "teleopCoralL2", "totalMatches");
-      this.calcAverage(team, "teleopCoralL3", "totalMatches");
-      this.calcAverage(team, "teleopCoralL4", "totalMatches");
-      this.calcAverage(team, "teleopAlgaeProc", "totalMatches");
-      this.calcAverage(team, "teleopAlgaeNet", "totalMatches");
+      this.calcAverage(team, "teleopEstFuel", "totalMatches");
 
-      // Divide coral/algae pieces by acquired pieces
+      /*// Divide coral/algae pieces by acquired pieces
       this.calcAccuracy(team, "teleopCoralPieces", "teleopCoralAcquired");
-      this.calcAccuracy(team, "teleopAlgaePieces", "teleopAlgaeAcquired");
+      this.calcAccuracy(team, "teleopAlgaePieces", "teleopAlgaeAcquired");*/
 
       // Defense avg - only calculate this if this team played defense in a match
-      this.calcAverage(team, "defenseLevel", "totalDefenseMatches");
+      this.calcAverage(team, "teleopDefenseLevel", "totalDefenseMatches");
 
       this.calcAverage(team, "died", "totalMatches");
 
@@ -449,28 +432,8 @@ class matchDataProcessor {
       this.calcArray(team, "endgameCageClimb", "totalMatches");
 
       // points by game phase
-      this.calcAverage(team, "autonCoralPoints", "totalMatches");
-      this.calcAverage(team, "autonAlgaePoints", "totalMatches");
-      this.calcAverage(team, "teleopCoralPoints", "totalMatches");
-      this.calcAverage(team, "teleopAlgaePoints", "totalMatches");
-
-      this.calcAverage(team, "autonPoints", "totalMatches");
-      this.calcAverage(team, "teleopPoints", "totalMatches");
+      this.calcAverage(team, "autonTotalPoints", "totalMatches");
       this.calcAverage(team, "totalMatchPoints", "totalMatches");
-
-      // points by game piece
-      this.calcAverage(team, "totalCoralPoints", "totalMatches");
-      this.calcAverage(team, "totalAlgaePoints", "totalMatches");
-
-      // total auton
-      this.calcAverage(team, "autonCoralPieces", "totalMatches");
-      this.calcAverage(team, "autonAlgaePieces", "totalMatches");
-      this.calcAverage(team, "teleopCoralPieces", "totalMatches");
-      this.calcAverage(team, "teleopAlgaePieces", "totalMatches");
-
-      // total game pieces
-      this.calcAverage(team, "totalCoralPieces", "totalMatches");
-      this.calcAverage(team, "totalAlgaePieces", "totalMatches");
 
       this.calcAverage(team, "endgamePoints", "totalMatches");
     }
