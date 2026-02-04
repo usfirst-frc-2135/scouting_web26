@@ -202,8 +202,8 @@ function insertEventAveragesBody(tableId, eventAverages, coprData, aliasList, te
     rowString += tdPrefix1 + getDataValue(avgItem, "totalMatchPoints", "max") + "</td>";
     rowString += tdPrefix0 + getDataValue(avgItem, "autonTotalPoints", "avg") + "</td>";
     rowString += tdPrefix0 + getDataValue(avgItem, "autonTotalPoints", "max") + "</td>";
-    rowString += tdPrefix1 + getDataValue(avgItem, "autonTotalPoints", "avg") + "</td>";
-    rowString += tdPrefix1 + getDataValue(avgItem, "autonTotalPoints", "max") + "</td>";
+    rowString += tdPrefix1 + getDataValue(avgItem, "teleopEstFuel", "avg") + "</td>";
+    rowString += tdPrefix1 + getDataValue(avgItem, "teleopEstFuel", "max") + "</td>";
     rowString += tdPrefix0 + getDataValue(avgItem, "endgamePoints", "avg") + "</td>";
     rowString += tdPrefix0 + getDataValue(avgItem, "endgamePoints", "max") + "</td>";
 

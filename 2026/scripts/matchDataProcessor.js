@@ -400,7 +400,7 @@ class matchDataProcessor {
           default: endgameClimbPoints = 0; break;   // No climb
         }
 
-        let totalMatchPoints = autonEstFuel + teleopEstFuel + endgameClimbPoints;
+        let totalMatchPoints = autonEstFuel + autonClimbPoints + teleopEstFuel + endgameClimbPoints;
 
         // Store point values
         this.updateItem(team, "endgamePoints", endgameClimbPoints);
