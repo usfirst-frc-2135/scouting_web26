@@ -328,7 +328,7 @@ class matchDataProcessor {
         this.getMatchItem(team, "autonDepot", match, "autonDepot");
         this.getMatchItem(team, "autonOutpost", match, "autonOutpost");
         this.getMatchItem(team, "autonNeutralZone", match, "autonNeutralZone");
-        this.getMatchItem(team, "autonClimb", match, "autonClimb");
+        this.getMatchArray(team, "autonClimb", 5, match, "autonClimb");
 
         // Teleop mode
         this.getMatchItem(team, "teleopHoppersUsed", match, "teleopHoppersUsed");
@@ -382,7 +382,7 @@ class matchDataProcessor {
 
         // Store piece values
         this.updateItem(team, "autonFuelEst", autonEstFuel);
-        this.updateItem(team, "autonClimbPoints", autonClimbPoints);
+        this.updateItem(team, "autonClimb", autonClimbPoints);
         this.updateItem(team, "autonTotalPoints", autonTotalPoints);
 
         this.updateItem(team, "teleopEstFuel", teleopEstFuel);
@@ -400,9 +400,11 @@ class matchDataProcessor {
           default: endgameClimbPoints = 0; break;   // No climb
         }
 
+        let totalEstFuel = autonEstFuel + teleopEstFuel;
         let totalMatchPoints = autonEstFuel + autonClimbPoints + teleopEstFuel + endgameClimbPoints;
 
         // Store point values
+        this.updateItem(team, "totalEstFuel", totalEstFuel);
         this.updateItem(team, "endgamePoints", endgameClimbPoints);
         this.updateItem(team, "totalMatchPoints", totalMatchPoints);
       }
@@ -413,7 +415,7 @@ class matchDataProcessor {
 
       // Autonomous mode
       this.calcAverage(team, "autonFuelEst", "totalMatches");
-      this.calcAverage(team, "autonClimbPoints", "totalMatches");
+      this.calcArray(team, "autonClimb", "totalMatches");
 
       // Teleop mode
       this.calcAverage(team, "teleopEstFuel", "totalMatches");
@@ -433,6 +435,7 @@ class matchDataProcessor {
 
       // points by game phase
       this.calcAverage(team, "autonTotalPoints", "totalMatches");
+      this.calcAverage(team, "totalEstFuel", "totalMatches");
       this.calcAverage(team, "totalMatchPoints", "totalMatches");
 
       this.calcAverage(team, "endgamePoints", "totalMatches");

@@ -107,22 +107,7 @@ require 'inc/header.php';
                   </thead>
                   <tbody class="table-group-divider">
                     <tr>
-                      <th scope="row" class="text-start">Coral Scored</th>
-                      <td> </td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="text-start">Algae Scored</th>
-                      <td> </td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="text-start">Coral Points</th>
-                      <td> </td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="text-start">Algae Points</th>
+                      <th scope="row" class="text-start">Fuel Est</th>
                       <td> </td>
                       <td> </td>
                     </tr>
@@ -157,26 +142,34 @@ require 'inc/header.php';
                       <td> </td>
                     </tr>
                     <tr>
-                      <th scope="row" class="text-start">Coral Scored</th>
-                      <td> </td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="text-start">Algae Scored</th>
-                      <td> </td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="text-start">Coral Points</th>
-                      <td> </td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="text-start">Algae Points</th>
+                      <th scope="row" class="text-start">Fuel Est</th>
                       <td> </td>
                       <td> </td>
                     </tr>
                   </tbody>
+                  <table id="autonClimbTable"
+                  class="table table-striped table-bordered table-hover table-sm border-secondary text-center ">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="text-start"></th>
+                      <th scope="col" style="width:12%">NO</th>
+                      <th scope="col" style="width:12%">FL</th>
+                      <th scope="col" style="width:12%">PK</th>
+                      <th scope="col" style="width:12%">SH</th>
+                      <th scope="col" style="width:12%">DP</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table-group-divider">
+                    <tr>
+                      <th scope="row" class="text-start">Climb %</th>
+                      <td> </td>
+                      <td> </td>
+                      <td> </td>
+                      <td> </td>
+                      <td> </td>
+                    </tr>
+                  </tbody>
+                </table>
                 </table>
               </div>
             </div>
@@ -199,40 +192,16 @@ require 'inc/header.php';
                   </thead>
                   <tbody class="table-group-divider">
                     <tr>
-                      <th scope="row" class="text-start">Teleop Points</th>
+                      <th scope="row" class="text-start">Fuel Est</th>
                       <td> </td>
                       <td> </td>
                     </tr>
                     <tr>
-                      <th scope="row" class="text-start">Coral Scored</th>
+                      <th scope="row" class="text-start">Defense</th>
                       <td> </td>
                       <td> </td>
                     </tr>
-                    <tr>
-                      <th scope="row" class="text-start">Algae Scored</th>
-                      <td> </td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="text-start">Coral Points</th>
-                      <td> </td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="text-start">Algae Points</th>
-                      <td> </td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="text-start">Coral Acc%</th>
-                      <td> </td>
-                      <td> </td>
-                    </tr>
-                    <tr>
-                      <th scope="row" class="text-start">Algae Acc%</th>
-                      <td> </td>
-                      <td> </td>
-                    </tr>
+                  </tbody>
                   </tbody>
                 </table>
               </div>
@@ -415,64 +384,60 @@ require 'inc/header.php';
   //
   ///// AUTON GRAPH STARTS HERE /////
   //
-  function loadAutonGraph(matchData) {
+  function loadAutonGraph(matchData, pitData) {
     console.log("==> teamLookup: loadAutonGraph()");
 
     // Retrieve the data for each match
     let datasets = []; // Each entry is a dict with a label and data attribute
 
     datasets.push({
-      label: "Leave",
+      label: "Climb",
       data: [],
       backgroundColor: '#F7CF58'
     }); // Yellow
     datasets.push({
-      label: "Processor",
+      label: "Fuel Est",
       data: [],
       backgroundColor: '#B4E7D6'
     }); // Teal - algae
-    datasets.push({
-      label: "Net",
-      data: [],
-      backgroundColor: '#4C9F7C'
-    }); // Darker Teal - algae
-    datasets.push({
-      label: "L1",
-      data: [],
-      backgroundColor: '#D98AB3'
-    }); // Light pink - coral branch
-    datasets.push({
-      label: "L2",
-      data: [],
-      backgroundColor: '#CE649B'
-    }); // Medium light pink - coral branch
-    datasets.push({
-      label: "L3",
-      data: [],
-      backgroundColor: '#C54282'
-    }); // Medium dark pink - coral branch
-    datasets.push({
-      label: "L4",
-      data: [],
-      backgroundColor: '#9D3468'
-    }); // Dark pink - coral branch
 
     // Go thru each matchData QR code string and build up a table of the data, so we can
     // later sort it so the matches are listed in the right order. 
     let mydata = [];
     for (let i = 0; i < matchData.length; i++) {
-      let matchItem = matchData[i];
+    let matchItem = matchData[i];
+
+    let hopperCount = 0;
+    if (pitData != null) {
+      if (pitData != null) {
+        hopperCount = pitData["numbatteries"];
+        console.log("HOPPER COUNT: " + pitData["numbatteries"]);
+      };
+    };
+
+    let preloadShot = matchItem["autonShootPreload"];
+    let hoppersShot = matchItem["autonHoppersShot"];
+    let preloadAcc = matchItem["autonPreloadAccuracy"];
+    let hopperAcc = matchItem["autonHopperAccuracy"];
+    let autonEstFuel = calcAutonTotalFuel(hopperCount, preloadShot, hoppersShot, preloadAcc, hopperAcc);
+
+    let autonClimb = 0;
+    if (matchItem["autonClimb"] == 0) {
+      autonClimb = 0;
+    }; 
+    if (matchItem["autonClimb"] == 1 || matchItem["autonClimb"] == 2 || matchItem["autonClimb"] == 3 || matchItem["autonClimb"] == 4) {
+      autonClimb = 50;
+    };
+
+
       mydata.push({
         matchnum: matchItem["matchnumber"],
-        leave: matchItem["autonLeave"],
-        processor: matchItem["autonAlgaeProc"],
-        net: matchItem["autonAlgaeNet"],
-        one: matchItem["autonCoralL1"],
-        two: matchItem["autonCoralL2"],
-        three: matchItem["autonCoralL3"],
-        four: matchItem["autonCoralL4"]
+        fuel: autonEstFuel,
+        climb: autonClimb,
       });
     }
+
+    console.log("fuel est " + mydata[0]["fuel"]);
 
     mydata.sort(function(rowA, rowB) {
       return (compareMatchNumbers(rowA["matchnum"], rowB["matchnum"]));
@@ -480,13 +445,9 @@ require 'inc/header.php';
 
     // Build data sets; go thru each mydata row and populate the graph datasets.
     let matchList = []; // List of matches to use as x labels
-    let autonLeaveTips = []; // holds custom tooltips for auton leave start line data      
-    let autonAlgaeProcTips = []; // holds custom tooltips for auton algae processor
-    let autonAlgaeNetTips = []; // holds custom tooltips for auton algae net
-    let autonCoralL1Tips = []; // holds custom tooltips for auton coral L1
-    let autonCoralL2Tips = []; // holds custom tooltips for auton coral L2
-    let autonCoralL3Tips = []; // holds custom tooltips for auton coral L3
-    let autonCoralL4Tips = []; // holds custom tooltips for auton coral 4  
+    let autonFuelTips = []; // holds custom tooltips for auton fuel estimate dat
+    let autonClimbTips = []; // holds custom tooltips for auton climb data      
+
 
     for (let i = 0; i < mydata.length; i++) {
       let matchnum = mydata[i]["matchnum"];
@@ -500,33 +461,13 @@ require 'inc/header.php';
         return tipPrefix + value;
       }
 
-      autonLeaveTips.push({
+      autonClimbTips.push({
         xlabel: matchnum,
-        tip: storeAndGetTip(mydata[i]["leave"], "Leave=", datasets[0]["data"], true)
+        tip: storeAndGetTip(mydata[i]["climb"], "Climb=", datasets[0]["data"], true)
       });
-      autonAlgaeProcTips.push({
+      autonFuelTips.push({
         xlabel: matchnum,
-        tip: storeAndGetTip(mydata[i]["processor"], "Processor=", datasets[1]["data"], false)
-      });
-      autonAlgaeNetTips.push({
-        xlabel: matchnum,
-        tip: storeAndGetTip(mydata[i]["net"], "Net=", datasets[2]["data"], false)
-      });
-      autonCoralL1Tips.push({
-        xlabel: matchnum,
-        tip: storeAndGetTip(mydata[i]["one"], "L1=", datasets[3]["data"], false)
-      });
-      autonCoralL2Tips.push({
-        xlabel: matchnum,
-        tip: storeAndGetTip(mydata[i]["two"], "L2=", datasets[4]["data"], false)
-      });
-      autonCoralL3Tips.push({
-        xlabel: matchnum,
-        tip: storeAndGetTip(mydata[i]["three"], "L3=", datasets[5]["data"], false)
-      });
-      autonCoralL4Tips.push({
-        xlabel: matchnum,
-        tip: storeAndGetTip(mydata[i]["four"], "L4=", datasets[6]["data"], false)
+        tip: storeAndGetTip(mydata[i]["fuel"], "Fuel Est=", datasets[1]["data"], false)
       });
     }
 
@@ -554,7 +495,7 @@ require 'inc/header.php';
             ticks: {
               precision: 0
             },
-            max: 5
+            max:150
           } // Set Y axis maximum value - 4 coral + algae in  auto plus leave
         },
         plugins: {
@@ -572,19 +513,9 @@ require 'inc/header.php';
                 let tipStr = datasets[tooltipItem.datasetIndex].label;
                 switch (tooltipItem.datasetIndex) {
                   case 0:
-                    return getTip(matchnum, autonLeaveTips);
+                    return getTip(matchnum, autonClimbTips);
                   case 1:
-                    return getTip(matchnum, autonAlgaeProcTips);
-                  case 2:
-                    return getTip(matchnum, autonAlgaeNetTips);
-                  case 3:
-                    return getTip(matchnum, autonCoralL1Tips);
-                  case 4:
-                    return getTip(matchnum, autonCoralL2Tips);
-                  case 5:
-                    return getTip(matchnum, autonCoralL3Tips);
-                  case 6:
-                    return getTip(matchnum, autonCoralL4Tips);
+                    return getTip(matchnum, autonFuelTips);
                   default:
                     return "missing tip string!"
                 }
@@ -602,56 +533,46 @@ require 'inc/header.php';
   //
   ///// TELEOP GRAPH STARTS HERE /////
   //
-  function loadTeleopGraph(matchData) {
+  function loadTeleopGraph(matchData, pitData) {
     console.log("==> teamLookup: loadTeleopGraph()");
 
     // Declare variables
     let datasets = []; // Each entry is a dict with a label and data attribute
 
     datasets.push({
-      label: "Processor",
+      label: "Defense",
       data: [],
       backgroundColor: '#B4E7D6'
     }); // Teal - algae
     datasets.push({
-      label: "Net",
+      label: "Fuel Est",
       data: [],
       backgroundColor: '#4C9F7C'
     }); // Darker Teal - algae
-    datasets.push({
-      label: "L1",
-      data: [],
-      backgroundColor: '#D98AB3'
-    }); // Light pink - coral branch
-    datasets.push({
-      label: "L2",
-      data: [],
-      backgroundColor: '#CE649B'
-    }); // Medium light pink - coral branch
-    datasets.push({
-      label: "L3",
-      data: [],
-      backgroundColor: '#C54282'
-    }); // Medium dark pink - coral branch
-    datasets.push({
-      label: "L4",
-      data: [],
-      backgroundColor: '#9D3468'
-    }); // Dark pink - coral branch
 
     // Go thru each matchData QR code string and build up a table of the data, so we can
     // later sort it so the matches are listed in the right order. 
+
     let mydata = [];
     for (let i = 0; i < matchData.length; i++) {
       let matchItem = matchData[i];
+
+      let hopperCount = 0;
+      if (pitData != null) {
+        if (pitData != null) {
+          hopperCount = pitData["numbatteries"];
+          console.log("HOPPER COUNT: " + pitData["numbatteries"]);
+        };
+      };
+
+      let teleopHoppersShot = matchItem["teleopHoppersUsed"];
+      let teleopHopperAcc = matchItem["teleopHopperAccuracy"];
+      let teleopEstFuel = calcTeleopTotalFuel(hopperCount, teleopHoppersShot, teleopHopperAcc);
+
       mydata.push({
         matchnum: matchItem["matchnumber"],
-        teleopprocessor: matchItem["teleopAlgaeProc"],
-        teleopnet: matchItem["teleopAlgaeNet"],
-        levelone: matchItem["teleopCoralL1"],
-        leveltwo: matchItem["teleopCoralL2"],
-        levelthree: matchItem["teleopCoralL3"],
-        levelfour: matchItem["teleopCoralL4"]
+        defense: matchItem["teleopDefenseLevel"] * 25, // Defense level is 0-3, so multiply by 25 to get a value that will show up on the graph
+        fuel: teleopEstFuel,
       });
     }
 
@@ -661,12 +582,8 @@ require 'inc/header.php';
 
     // Build data sets; go thru each mydata row and populate the graph datasets.
     let matchList = []; // List of matches to use as x lables
-    let teleopAlgaeProcessorTips = []; // holds custom tooltips for teleop speaker notes
-    let teleopAlgaeNetTips = []; //holds custom tooltips for if amplification used
-    let teleopCoralL1Tips = []; // holds custom tooltips for teleop coral L1
-    let teleopCoralL2Tips = []; // holds custom tooltips for teleop coral L2
-    let teleopCoralL3Tips = []; // holds custom tooltips for teleop coral L3
-    let teleopCoralL4Tips = []; // holds custom tooltips for teleop coral 4      
+    let teleopDefenseTips = []; // holds custom tooltips for teleop defense level
+    let teleopFuelTips = []; //holds custom tooltips for teleop fuel estimate
 
     for (let i = 0; i < mydata.length; i++) {
       let matchnum = mydata[i]["matchnum"];
@@ -677,29 +594,13 @@ require 'inc/header.php';
         return tipPrefix + value;
       }
 
-      teleopAlgaeProcessorTips.push({
+      teleopDefenseTips.push({
         xlabel: matchnum,
-        tip: storeAndGetTip(mydata[i]["teleopprocessor"], "Processor=", datasets[0]["data"])
+        tip: storeAndGetTip(mydata[i]["defense"], "Defense=", datasets[0]["data"])
       });
-      teleopAlgaeNetTips.push({
+      teleopFuelTips.push({
         xlabel: matchnum,
-        tip: storeAndGetTip(mydata[i]["teleopnet"], "Net=", datasets[1]["data"])
-      });
-      teleopCoralL1Tips.push({
-        xlabel: matchnum,
-        tip: storeAndGetTip(mydata[i]["levelone"], "L1=", datasets[2]["data"])
-      });
-      teleopCoralL2Tips.push({
-        xlabel: matchnum,
-        tip: storeAndGetTip(mydata[i]["leveltwo"], "L2=", datasets[3]["data"])
-      });
-      teleopCoralL3Tips.push({
-        xlabel: matchnum,
-        tip: storeAndGetTip(mydata[i]["levelthree"], "L3=", datasets[4]["data"])
-      });
-      teleopCoralL4Tips.push({
-        xlabel: matchnum,
-        tip: storeAndGetTip(mydata[i]["levelfour"], "L4=", datasets[5]["data"])
+        tip: storeAndGetTip(mydata[i]["fuel"], "Fuel=", datasets[1]["data"])
       });
     }
 
@@ -727,7 +628,7 @@ require 'inc/header.php';
             ticks: {
               precision: 0
             },
-            max: 16
+            max: 200
           } // Set Y axis maximum value - 16 coral + algae in teleop
         },
         plugins: {
@@ -745,17 +646,9 @@ require 'inc/header.php';
                 let tipStr = datasets[tooltipItem.datasetIndex].label;
                 switch (tooltipItem.datasetIndex) {
                   case 0:
-                    return getTip(matchnum, teleopAlgaeProcessorTips);
+                    return getTip(matchnum, teleopDefenseTips);
                   case 1:
-                    return getTip(matchnum, teleopAlgaeNetTips);
-                  case 2:
-                    return getTip(matchnum, teleopCoralL1Tips);
-                  case 3:
-                    return getTip(matchnum, teleopCoralL2Tips);
-                  case 4:
-                    return getTip(matchnum, teleopCoralL3Tips);
-                  case 5:
-                    return getTip(matchnum, teleopCoralL4Tips);
+                    return getTip(matchnum, teleopFuelTips);
                   default:
                     return "missing tip string!"
                 }
@@ -901,27 +794,19 @@ require 'inc/header.php';
     console.log("==> teamLookup: loadAverageTables()");
 
     /////// Match Totals Table  
-    writeAverageTableRow("matchSheetTable", ["Coral Pieces", avgs["totalCoralPieces"].avg, avgs["totalCoralPieces"].max], 3);
-    writeAverageTableRow("matchSheetTable", ["Algae Pieces", avgs["totalAlgaePieces"].avg, avgs["totalAlgaePieces"].max], 3);
-    writeAverageTableRow("matchSheetTable", ["Coral Points", avgs["totalCoralPoints"].avg, avgs["totalCoralPoints"].max], 3);
-    writeAverageTableRow("matchSheetTable", ["Algae Points", avgs["totalAlgaePoints"].avg, avgs["totalAlgaePoints"].max], 3);
+    writeAverageTableRow("matchSheetTable", ["Fuel Est", avgs["totalEstFuel"].avg, avgs["totalEstFuel"].max], 3);
     writeAverageTableRow("matchSheetTable", ["Match Points", avgs["totalMatchPoints"].avg, avgs["totalMatchPoints"].max], 3);
 
     //Auton Table  
-    writeAverageTableRow("autonTable", ["Total Points", avgs["autonPoints"].avg, avgs["autonPoints"].max], 3);
-    writeAverageTableRow("autonTable", ["Coral Pieces", avgs["autonCoralPieces"].avg, avgs["autonCoralPieces"].max], 3);
-    writeAverageTableRow("autonTable", ["Algae Pieces", avgs["autonAlgaePieces"].avg, avgs["autonAlgaePieces"].max], 3);
-    writeAverageTableRow("autonTable", ["Coral Points", avgs["autonCoralPoints"].avg, avgs["autonCoralPoints"].max], 3);
-    writeAverageTableRow("autonTable", ["Algae Points", avgs["autonAlgaePoints"].avg, avgs["autonAlgaePoints"].max], 3);
+    writeAverageTableRow("autonTable", ["Auton Points", avgs["autonTotalPoints"].avg, avgs["autonTotalPoints"].max], 3);
+    writeAverageTableRow("autonTable", ["Fuel Est", avgs["autonFuelEst"].avg, avgs["autonFuelEst"].max], 3);
+
+    writeAverageTableRow("autonClimbTable", ["Climb %", avgs["autonClimb"].arr[0].avg, avgs["autonClimb"].arr[2].avg, avgs["autonClimb"].arr[1].avg, avgs["autonClimb"].arr[3].avg, avgs["autonClimb"].arr[4].avg], 6);
 
     // Teleop Table
-    writeAverageTableRow("teleopTable", ["Total Points", avgs["teleopPoints"].avg, avgs["teleopPoints"].max], 3);
-    writeAverageTableRow("teleopTable", ["Coral Pieces", avgs["teleopCoralPieces"].avg, avgs["teleopCoralPieces"].max], 3);
-    writeAverageTableRow("teleopTable", ["Algae Pieces", avgs["teleopAlgaePieces"].avg, avgs["teleopAlgaePieces"].max], 3);
-    writeAverageTableRow("teleopTable", ["Coral Points", avgs["teleopCoralPoints"].avg, avgs["teleopCoralPoints"].max], 3);
-    writeAverageTableRow("teleopTable", ["Algae Points", avgs["teleopAlgaePoints"].avg, avgs["teleopAlgaePoints"].max], 3);
-    writeAverageTableRow("teleopTable", ["Coral Acc%", avgs["teleopCoralPieces"].acc], 3);
-    writeAverageTableRow("teleopTable", ["Algae Acc%", avgs["teleopAlgaePieces"].acc], 3);
+    writeAverageTableRow("teleopTable", ["Fuel Est", avgs["teleopEstFuel"].avg, avgs["teleopEstFuel"].max], 3);
+    writeAverageTableRow("teleopTable", ["Defense", avgs["teleopDefenseLevel"].avg, avgs["teleopDefenseLevel"].max], 3);
+
 
     /////// Endgame Table
 
@@ -1013,14 +898,14 @@ require 'inc/header.php';
   //
   // Load the match data table
   //
-  function loadMatchData(team, allEventMatches, jAliasNames) {
+  function loadMatchData(team, allEventMatches, jAliasNames, pitData) {
     console.log("==> teamLookup: loadMatchData()");
     let mdp = new matchDataProcessor(allEventMatches);
     // mdp.sortMatches(allEventMatches);
     mdp.getSiteFilteredAverages(function(filteredMatches, filteredAvgData) {
       if (filteredMatches != undefined) {
-        loadAutonGraph(filteredMatches);
-        loadTeleopGraph(filteredMatches);
+        loadAutonGraph(filteredMatches, pitData);
+        loadTeleopGraph(filteredMatches, pitData);
         loadEndgameGraph(filteredMatches);
         insertMatchDataBody("matchDataTable", filteredMatches, jAliasNames, [team]);
       } else {
@@ -1045,6 +930,7 @@ require 'inc/header.php';
     document.getElementById("robotPics").innerText = "";
     document.getElementById("matchSheetTable").querySelector('tbody').innerHTML = "";
     document.getElementById("autonTable").querySelector('tbody').innerHTML = "";
+    document.getElementById("autonClimbTable").querySelector('tbody').innerHTML = "";
     document.getElementById("teleopTable").querySelector('tbody').innerHTML = "";
     document.getElementById("endgameTotalPtsTable").querySelector('tbody').innerHTML = "";
     document.getElementById("endgameCageClimbTable").querySelector('tbody').innerHTML = "";
@@ -1098,8 +984,13 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getTeamMatchData: teamNum
     }).done(function(teamMatches) {
-      console.log("=> getTeamMatchData");
-      loadMatchData(teamNum, JSON.parse(teamMatches), aliasList);
+        $.get("api/dbReadAPI.php", {
+        getTeamPitData: teamNum
+      }).done(function(teamPitData) {
+        console.log("=> getTeamPitData\n");
+        console.log("=> getTeamMatchData");
+      loadMatchData(teamNum, JSON.parse(teamMatches), aliasList, JSON.parse(teamPitData));
+      });
     });
 
     // Do the Pit Scouting Data
@@ -1204,5 +1095,6 @@ require 'inc/header.php';
 <script src="./scripts/matchDataTable.js"></script>
 <script src="./scripts/strategicDataTable.js"></script>
 <script src="./scripts/validateTeamNumber.js"></script>
+<script src="./scripts/rebuiltFuelEstimates.js"></script>
 
 <script src="./external/charts/chart.umd.js"></script>
