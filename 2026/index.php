@@ -29,6 +29,7 @@ require 'inc/header.php';
             <h5>Watch Table Status: <span id="watchTableStatus" class="badge bg-warning float-end">Not Connected</span></h5>
             <h5>Scout Table Status: <span id="scoutTableStatus" class="badge bg-warning float-end">Not Connected</span></h5>
             <h5>Alias Table Status: <span id="aliasTableStatus" class="badge bg-warning float-end">Not Connected</span></h5>
+            <h5>HopperCap Table Status: <span id="hopperCapTableStatus" class="badge bg-warning float-end">Not Connected</span></h5>
             <hr />
             <h5>MySQL Server: <span id="serverName" class="badge bg-secondary float-end">????</span></h5>
             <h5>Database: <span id="databaseName" class="badge bg-secondary float-end">????</span></h5>
@@ -139,6 +140,9 @@ require 'inc/header.php';
               <a class="btn btn-primary" href="./aliasData.php" role="button">Configure Team Aliases</a>
             </div>
             <div class="row mb-3 mx-auto" style=" width: 200px;">
+              <a class="btn btn-primary" href="./hopperCapData.php" role="button">Configure Hopper Caps</a>
+            </div>
+            <div class="row mb-3 mx-auto" style=" width: 200px;">
               <a class="btn btn-primary" href="./matchStatus.php" role="button">Match Data Status</a>
             </div>
             <div class="row mb-3 mx-auto" style=" width: 200px;">
@@ -204,6 +208,7 @@ require 'inc/header.php';
         setStatusBadge("strategicTableStatus", dbStatus["strategicTableExists"]);
         setStatusBadge("scoutTableStatus", dbStatus["scoutTableExists"]);
         setStatusBadge("aliasTableStatus", dbStatus["aliasTableExists"]);
+        setStatusBadge("hopperCapTableStatus", dbStatus["hopperCapTableExists"]);
         setStatusBadge("watchTableStatus", dbStatus["watchTableExists"]);
 
         document.getElementById("dataP").checked = dbStatus["useP"];
@@ -302,6 +307,7 @@ require 'inc/header.php';
       configData["strategictable"] = databaseName + "_strat";
       configData["scouttable"] = databaseName + "_scout";
       configData["aliastable"] = databaseName + "_alias";
+      configData["hoppercaptable"] = databaseName + "_hoppercap";
       configData["watchtable"] = databaseName + "_watch";
       configData["writeConfig"] = JSON.stringify(configData);
 

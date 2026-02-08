@@ -22,6 +22,7 @@ class dbHandler
     "scouttable",
     "aliastable",
     "watchtable",
+    "hoppercaptable",
     "useP",
     "useQm",
     "useSf",
@@ -531,6 +532,58 @@ class dbHandler
   }
 
   ////////////////////////////////////////////////////////
+  ////////////////////// Hopper Caps Table////////////////
+  ////////////////////////////////////////////////////////
+
+  // Write Hopper Capacity record into table and replace if an entry already exists
+  public function writeHopperCapToTable($hCap)
+  {
+    $dbConfig = $this->readDbConfig();
+    $sql = "REPLACE INTO " . $dbConfig["hoppercaptable"] .
+      "(
+        entrykey,
+        eventcode,
+        teamnumber,
+        hoppercap
+      )
+      VALUES
+      (
+        :entrykey,
+        :eventcode,
+        :teamnumber,
+        :hoppercap
+      )";
+    $prepared_statement = $this->conn->prepare($sql);
+    $prepared_statement->execute($hCap);
+  }
+
+  // Delete hopper cap record from table
+  public function deleteHopperCapFromTable($hCap)
+  {
+    $dbConfig = $this->readDbConfig();
+    $sql = "DELETE FROM " . $dbConfig["hoppercaptable"] . " WHERE entrykey='" . $hCap["entrykey"] . "'";
+    $prepared_statement = $this->conn->prepare($sql);
+    $prepared_statement->execute();
+  }
+
+  // Read all hopper cap records for event
+  public function readEventHopperCapTable($eventCode)
+  {
+    $dbConfig = $this->readDbConfig();
+    $sql = "SELECT 
+        entrykey,
+        eventcode,
+        teamnumber,
+        hoppercap
+        FROM " . $dbConfig["hoppercaptable"] .
+      " WHERE eventcode='" . $eventCode . "'";
+    $prepared_statement = $this->conn->prepare($sql);
+    $prepared_statement->execute();
+    $result = $prepared_statement->fetchAll();
+    return $result;
+  }
+
+  ////////////////////////////////////////////////////////
   ////////////////////// Team Alias //////////////////////
   ////////////////////////////////////////////////////////
 
@@ -837,6 +890,27 @@ class dbHandler
     fclose($fp);
   }
 
+  // Create Hopper Cap Data Table
+  public function createHopperCapTable()
+  {
+    error_log("Creating HopperCapTable");
+    $conn = $this->connectToDB();
+    $dbConfig = $this->readDbConfig();
+    $query = "CREATE TABLE " . $dbConfig["db"] . "." . $dbConfig["hoppercaptable"] .
+      " (
+        entrykey VARCHAR(60) NOT NULL PRIMARY KEY,
+        eventcode VARCHAR(10) NOT NULL,
+        teamnumber VARCHAR(10) NOT NULL,
+        hoppercap TINYINT UNSIGNED NOT NULL,
+        INDEX (eventcode)
+      )";
+    $statement = $conn->prepare($query);
+    if (!$statement->execute())
+    {
+      throw new Exception("createHopperCapTable Error: CREATE TABLE " . $dbConfig["hoppercaptable"] . " query failed.");
+    }
+  }
+
   // Create Team Alias Data Table
   public function createAliasTable()
   {
@@ -858,7 +932,7 @@ class dbHandler
     }
   }
 
-  // Create Team Alias Data Table
+  // Create Team Watch Data Table
   public function createWatchTable()
   {
     error_log("Creating Watch Table");
@@ -984,6 +1058,7 @@ class dbHandler
     $dbStatus["scoutTableExists"] = false;
     $dbStatus["aliasTableExists"] = false;
     $dbStatus["watchTableExists"] = false;
+    $dbStatus["hopperCapTableExists"] = false;
     $dbStatus["useP"] = $dbConfig["useP"];
     $dbStatus["useQm"] = $dbConfig["useQm"];
     $dbStatus["useSf"] = $dbConfig["useSf"];
@@ -1111,6 +1186,20 @@ class dbHandler
           catch (PDOException $e)
           {
             error_log("dbHandler: getDBStatus: alias table missing! - " . $e->getMessage());
+          }
+
+          // HopperCap table Connection
+          try
+          {
+            $dsn = "mysql:host=" . $dbConfig["server"] . ";dbname=" . $dbConfig["db"] . ";charset=" . $this->charset;
+            $conn = new PDO($dsn, $dbConfig["username"], $dbConfig["password"]);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $val = $conn->query('SELECT * FROM ' . $dbConfig["hoppercaptable"]);
+            $dbStatus["hopperCapTableExists"] = true;
+          }
+          catch (PDOException $e)
+          {
+            error_log("dbHandler: getDBStatus: hopperCap table missing! - " . $e->getMessage());
           }
 
           // Watch table Connection

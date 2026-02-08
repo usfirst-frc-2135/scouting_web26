@@ -110,6 +110,11 @@ else if (isset($_GET["getEventAliasNames"]))
   // Get team alias list for an event
   echo json_encode($db->readEventAliasTable($eventCode));
 }
+else if (isset($_GET["getEventHopperCaps"]))
+{
+  // Get hopper Caps list for an event
+  echo json_encode($db->readEventHopperCapTable($eventCode));
+}
 else if (isset($_GET["getEventScoutNames"]))
 {
   // Get scout list for an event

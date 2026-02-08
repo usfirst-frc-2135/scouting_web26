@@ -111,6 +111,15 @@ else if (isset($_POST["createTables"]))
 
   try
   {
+    $db->createHopperCapTable();
+  }
+  catch (Exception $e)
+  {
+    error_log($e);
+  }
+
+  try
+  {
     $db->createWatchTable();
   }
   catch (Exception $e)

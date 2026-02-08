@@ -109,6 +109,36 @@ if (isset($_POST["deleteSingleScoutName"]))
   echo "success";
 }
 
+////---------- Hopper Capacity handling  -----------
+function makeKeyHopperCap($ec, $tn)
+{
+  $key = $ec . "_" . $tn;
+  return $key;
+}
+
+if (isset($_POST["writeSingleTeamHopperCap"]))
+{
+  // Write Data API
+  $db->connectToDB();
+  $dat = json_decode($_POST["writeSingleTeamHopperCap"], true);
+  $dat["eventcode"] = $eventCode;
+  $dat["entrykey"] = makeKeyHopperCap($dat["eventcode"], $dat["teamnumber"]);
+  $db->writeHopperCapToTable($dat);
+  echo "success";
+}
+
+if (isset($_POST["deleteSingleTeamHopperCap"]))
+{
+  // Write Data API
+  $db->connectToDB();
+  $dat = json_decode($_POST["deleteSingleTeamHopperCap"], true);
+  $dat["eventcode"] = $eventCode;
+  $dat["entrykey"] = makeKeyHopperCap($dat["eventcode"], $dat["hoppercap"]);
+  $db->deleteHopperCapFromTable($dat);
+  echo "success";
+}
+
+////---------- Team Alias handling -----------
 function makeKeyTeamAlias($ec, $tn)
 {
   $key = $ec . "_" . $tn;
