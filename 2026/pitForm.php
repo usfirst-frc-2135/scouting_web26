@@ -42,7 +42,7 @@ require 'inc/header.php';
 
             <div class="card col-md-12 mx-auto bg-success-subtle">
               <div class="card-header">
-                <h5>Questions</h5>
+                <h6>Questions</h6>
               </div>
 
               <div class="card-body">
@@ -75,7 +75,7 @@ require 'inc/header.php';
                 </div>
 
                 <div class="mb-3">
-                  <span>Does your team have spare parts for the robot?</span>
+                  <span>Does your team have spare mechanisms for the robot?</span>
                   <div class="col-8">
                     <div class="input-group mb-3">
                       <select id="spareParts" class="form-select">
@@ -105,7 +105,7 @@ require 'inc/header.php';
 
                 <div class="mb-3">
                   <div>
-                    <span>Does your robot have computer vision?</span>
+                    <span>Does your robot have auto align?</span>
                     <div class="col-8">
                       <div class="input-group mb-3">
                         <select id="computerVision" class="form-select">
@@ -117,13 +117,47 @@ require 'inc/header.php';
                     </div>
                   </div>
                 </div>
+
+                <div class="mb-3">
+                  <div>
+                    <label for="numBatteries" class="form-label">How many total batteries do you have?</label>
+                    <div class="col-8">
+                      <div class="input-group mb-3">
+                        <input id="numBatteries" class="form-control" type="number" placeholder="Battery count">
+                      </div>
+                    </div>
+                  </div> 
+                </div> 
+              </div>   
+            </div>      
+            
+            
+            <div class="card col-md-12 mx-auto bg-info-subtle">
+              <div class="card-header">
+                <h1>Rebuilt Questions</h1>
               </div>
-            </div>
+
+              <div class="card-body">
+              <div class="mb-3">
+                  <div>
+                    <label for="capHopper" class="form-label">What is your hopper capacity?</label>
+                    <div class="col-8">
+                      <div class="input-group mb-3">
+                        <input id="capHopper" class="form-control" type="number" placeholder="Hopper capacity">
+                      </div>
+                    </div>
+                  </div> 
+                </div> 
+              </div>   
+            </div>      
+          
+          
+            
 
             <div class="card col-md-12 mx-auto bg-warning-subtle">
               <div class="card-header">
-                <h5>Observations</h5>
-                <h6><span class="text-danger">(observe only, do not ask)</span></h6>
+                <h8>Observations</h8>
+                <h9><span class="text-danger">(observe only, do not ask)</span></h9>
               </div>
 
               <div class="card-body">
@@ -158,15 +192,9 @@ require 'inc/header.php';
                     </div>
                   </div>
                 </div>
-
-                <div class="mb-3">
-                  <label for="numBatteries" class="form-label">Count the number of batteries they have</label>
-                  <div class="col-8">
-                    <input id="numBatteries" class="form-control" type="number" placeholder="Battery count">
-                  </div>
-                </div>
               </div>
             </div>
+
 
             <p> </p>
             <div class="d-grid gap-2 col-6 mx-auto">
@@ -274,6 +302,22 @@ require 'inc/header.php';
       isError = true;
     }
 
+    let numBatteries = parseInt(document.getElementById("numBatteries").value);
+    if ((numBatteries < 1) || (numBatteries > 20)) {
+      if (isError)
+        errMsg += ",";
+      errMsg += " Batteries [1..20]";
+      isError = true;
+    }
+
+    let capHopper = parseInt(document.getElementById("capHopper").value);
+    if ((capHopper < 1) || (capHopper > 70)) {
+      if (isError)
+        errMsg += ",";
+      errMsg += " Hopper [1..70]";
+      isError = true;
+    }
+
     if (!document.getElementById("pitOrganization").value === "-1") {
       if (isError)
         errMsg += ",";
@@ -285,14 +329,6 @@ require 'inc/header.php';
       if (isError)
         errMsg += ",";
       errMsg += " Preparedness";
-      isError = true;
-    }
-
-    let numBatteries = parseInt(document.getElementById("numBatteries").value);
-    if ((numBatteries < 1) || (numBatteries > 20)) {
-      if (isError)
-        errMsg += ",";
-      errMsg += " Batteries [1..20]";
       isError = true;
     }
 
@@ -316,9 +352,10 @@ require 'inc/header.php';
     document.getElementById("spareParts").value = "-1";
     document.getElementById("progLanguage").value = "-1";
     document.getElementById("computerVision").value = "-1";
+    document.getElementById("numBatteries").value = "-1";
+    document.getElementById("capHopper").value = "-1";
     document.getElementById("pitOrganization").value = "-1";
     document.getElementById("preparednessScore").value = "-1";
-    document.getElementById("numBatteries").value = "-1";
   }
 
   //
@@ -336,10 +373,11 @@ require 'inc/header.php';
     dataToSave["spareparts"] = document.getElementById("spareParts").value;
     dataToSave["proglanguage"] = document.getElementById("progLanguage").value;
     dataToSave["computervision"] = document.getElementById("computerVision").value;
+    dataToSave["numbatteries"] = document.getElementById("numBatteries").value;
+    dataToSave["caphopper"] = document.getElementById("capHopper").value;
     dataToSave["pitorg"] = document.getElementById("pitOrganization").value;
     dataToSave["preparedness"] = document.getElementById("preparednessScore").value;
-    dataToSave["numbatteries"] = document.getElementById("numBatteries").value;
-
+    
     return dataToSave;
   }
 

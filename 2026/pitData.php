@@ -64,16 +64,20 @@ require 'inc/header.php';
         class: "table-primary"
       },
       {
+        text: "Num Batteries",
+        class: "table-primary"
+      },
+      {
+        text: "Hopper Capacity",
+        class: "table-primary"
+      },
+      {
         text: "Pit Org",
         class: "table-primary text-start"
       },
       {
         text: "Prep",
         class: "table-primary text-start"
-      },
-      {
-        text: "Num Batteries",
-        class: "table-primary"
       },
       {
         text: "Scout",
@@ -163,9 +167,10 @@ require 'inc/header.php';
       rowString += "<td>" + toYesNo(teamPitData["spareparts"]) + "</td>";
       rowString += "<td>" + teamPitData["proglanguage"] + "</td>";
       rowString += "<td>" + toYesNo(teamPitData["computervision"]) + "</td>";
+      rowString += "<td>" + teamPitData["numbatteries"] + "</td>";
+      rowString += "<td>" + teamPitData["caphopper"] + "</td>";
       rowString += "<td class='text-start'>" + toOrganization(teamPitData["pitorg"]) + "</td>";
       rowString += "<td class='text-start'>" + toPreparedness(teamPitData["preparedness"]) + "</td>";
-      rowString += "<td>" + teamPitData["numbatteries"] + "</td>";
       rowString += "<td>" + teamPitData["scoutname"] + "</td>";
 
       tbodyRef.insertRow().innerHTML = rowString;
