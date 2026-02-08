@@ -34,9 +34,11 @@ require 'inc/header.php';
   //
   // Build the match data table
   //
+
   function buildEstimatedFuelTable(tableId) { // Load the alias table
     console.log("==> rebuiltFuelEstimates: buildEstimatedFuelTable()");
     let jAliasNames = null;
+    let jPitData = null;
 
     // Load alias lookup table
     $.get("api/dbReadAPI.php", {
@@ -51,12 +53,21 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getAllMatchData: true
     }).done(function(fuelEstimates) {
-      console.log("=> getFuelEstimates");
-      let mdp = new matchDataProcessor(JSON.parse(fuelEstimates));
-      // mdp.sortMatches(allEventMatches);
-      mdp.getSiteFilteredAverages(function(filteredMatchData, filteredAvgData) {
+      $.get("api/dbReadAPI.php", {
+        getAllPitData: true
+      }).done(function(allPitData) {
+        console.log("=> getAllPitData");
+        jPitData = JSON.parse(allPitData);
+        console.log("=> getFuelEstimates, pitData length = " + jPitData.length);
+        if (jPitData != null)
+        {
+          console.log("JPITDATA IS NOT NULL");
+        }
+        let mdp = new matchDataProcessor(JSON.parse(fuelEstimates));
+        // mdp.sortMatches(allEventMatches);
+        mdp.getSiteFilteredAverages(function(filteredMatchData, filteredAvgData) {
         if (filteredMatchData !== undefined) {
-          insertEstimatedFuelBody(tableId, filteredMatchData, jAliasNames, []);
+          insertEstimatedFuelBody(tableId, filteredMatchData, jAliasNames, [], jPitData);
           document.getElementById('spinner').style.display = 'none';
           // script instructions say this is needed, but it breaks table header sorting
           // sorttable.makeSortable(document.getElementById(tableId));
@@ -66,7 +77,8 @@ require 'inc/header.php';
         }
       });
     });
-  }
+    })
+  };
 
   /////////////////////////////////////////////////////////////////////////////
   //

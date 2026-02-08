@@ -71,31 +71,41 @@ function insertEstimatedFuelHeader(tableId, aliasList) {
 //      aliasList   - list of aliases at the event (length 0 if none)
 //      teamFilter  - list of teams to include in table (length 0 if all)
 //
-function insertEstimatedFuelBody(tableId, matchData, aliasList, teamFilter) {
+function insertEstimatedFuelBody(tableId, matchData, aliasList, teamFilter, pitData) {
   console.log("==> insertMatchDataTable: tableId " + tableId + " matches " + matchData.length + " aliases " + aliasList.length + " teams " + teamFilter.length);
 
   let tbodyRef = document.getElementById(tableId).querySelector('tbody');;
   tbodyRef.innerHTML = ""; // Clear Table
 
   // Go thru each match and build the HTML string for that row.
+
   for (let i = 0; i < matchData.length; i++) {
     let matchItem = matchData[i];
     let teamNum = matchItem["teamnumber"];
     if (teamFilter.length !== 0 && !teamFilter.includes(teamNum))
       continue;
 
-    let hopperCap = 0;
+    let hopperCount = 0;
+    if (pitData != null) {
+      if (pitData[teamNum] != null) {
+        hopperCount = pitData[teamNum]["numbatteries"];
+        console.log("HOPPER COUNT: " + pitData[teamNum]["numbatteries"]);
+      };
+    };
+
+    console.log("Num bat = " + hopperCount);
+    
     let preloadShot = matchItem["autonShootPreload"];
     let hoppersShot = matchItem["autonHoppersShot"];
     let preloadAcc = matchItem["autonPreloadAccuracy"];
     let hopperAcc = matchItem["autonHopperAccuracy"];
-    let autonEstFuel = calcAutonTotalFuel(hopperCap, preloadShot, hoppersShot, preloadAcc, hopperAcc);
+    let autonEstFuel = calcAutonTotalFuel(hopperCount, preloadShot, hoppersShot, preloadAcc, hopperAcc);
 
     console.log("autonEstFuel = " + autonEstFuel);
 
     let teleopHoppersShot = matchItem["teleopHoppersUsed"];
     let teleopHopperAcc = matchItem["teleopHopperAccuracy"];
-    let teleopEstFuel = calcTeleopTotalFuel(hopperCap, teleopHoppersShot, teleopHopperAcc);
+    let teleopEstFuel = calcTeleopTotalFuel(hopperCount, teleopHoppersShot, teleopHopperAcc);
 
     const tdBody = "<td class='bg-body'>";
     const tdBlue = "<td class='bg-primary-subtle'>";
@@ -108,14 +118,34 @@ function insertEstimatedFuelBody(tableId, matchData, aliasList, teamFilter) {
       rowString += tdBody + getAliasFromTeamNum(teamNum, aliasList) + "</td>";
     }
 
-    rowString += tdBody + autonEstFuel + "</td>";
-    rowString += tdBlue + matchItem["autonPreloadAccuracy"] + "</td>";
-    rowString += tdBody + teleopEstFuel + "</td>";
-    rowString += tdBlue + matchItem["autonHopperAccuracy"] + "</td>";
+    if (hopperCount == 0) {
+    rowString += tdBody + "<b style='color:red;'>" + autonEstFuel + "</b></td>";
+    }
+    else {
+      rowString += tdBody + "<b style='color:black;'>" + autonEstFuel + "</b></td>";
+    }
+    if (hopperCount == 0) {
+      rowString += tdBlue + "<b style='color:red;'>" + matchItem["autonPreloadAccuracy"] + "</b></td>";
+    }
+    else {
+      rowString += tdBlue + "<b style='color:black;'>" + matchItem["autonPreloadAccuracy"] + "</b></td>";
+    }
+    if (hopperCount == 0) {
+      rowString += tdBody + "<b style='color:red;'>" + teleopEstFuel + "</b></td>";
+    }
+    else { 
+      rowString += tdBody + "<b style='color:black;'>" + teleopEstFuel + "</b></td>";
+    }
+    if (hopperCount == 0) {
+      rowString += tdBlue + "<b style='color:red;'>" + matchItem["teleopHopperAccuracy"] + "</b></td>";
+    }
+    else { 
+      rowString += tdBlue + "<b style='color:black;'>" + matchItem["teleopHopperAccuracy"] + "</b></td>";
+    }
 
 
     tbodyRef.insertRow().innerHTML = rowString;
-  }
+};
 
   sorttable.makeSortable(document.getElementById(tableId));
 
@@ -151,10 +181,11 @@ function insertEstimatedFuelBody(tableId, matchData, aliasList, teamFilter) {
       console.log("preloadAcc = " + preloadAcc);
       switch (preloadAcc) {
           case 0: preloadAcc = AUTON_NONE_ACC_RATE; break;  // N/A
-          //case "2": preloadAcc = AUTON_ALL_ACC_RATE; break;  // All
-          case 1: preloadAcc = AUTON_MOST_ACC_RATE_PRE; break;  // Most
-          case 2: preloadAcc = AUTON_HALF_ACC_RATE; break; // Half
-          case 3: preloadAcc = AUTON_SOME_ACC_RATE_PRE; break; // Some
+          case 1: preloadAcc = AUTON_ALL_ACC_RATE; break;  // All
+          case 2: preloadAcc = AUTON_MOST_ACC_RATE_PRE; break;  // Most
+          case 3: preloadAcc = AUTON_HALF_ACC_RATE; break; // Half
+          case 4: preloadAcc = AUTON_SOME_ACC_RATE_PRE; break; // Some
+          case 5: preloadAcc = AUTON_NONE_ACC_RATE; break; // None
           default: preloadAcc = AUTON_IDK_ACC_RATE; break;   // IDK
       }
 
