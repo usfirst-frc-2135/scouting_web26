@@ -329,6 +329,7 @@ class matchDataProcessor {
         this.getMatchItem(team, "autonOutpost", match, "autonOutpost");
         this.getMatchItem(team, "autonNeutralZone", match, "autonNeutralZone");
         this.getMatchArray(team, "autonClimb", 5, match, "autonClimb");
+        this.getMatchItem(team, "autonClimb", match, "autonClimb");
 
         // Teleop mode
         this.getMatchItem(team, "teleopHoppersUsed", match, "teleopHoppersUsed");
@@ -383,6 +384,7 @@ class matchDataProcessor {
         // Store piece values
         this.updateItem(team, "autonFuelEst", autonEstFuel);
         this.updateItem(team, "autonClimb", autonClimbPoints);
+        this.updateItem(team, "autonClimbPoints", autonClimbPoints);
         this.updateItem(team, "autonTotalPoints", autonTotalPoints);
 
         this.updateItem(team, "teleopEstFuel", teleopEstFuel);
@@ -416,6 +418,7 @@ class matchDataProcessor {
       // Autonomous mode
       this.calcAverage(team, "autonFuelEst", "totalMatches");
       this.calcArray(team, "autonClimb", "totalMatches");
+      this.calcAverage(team, "autonClimbPoints", "totalMatches");
 
       // Teleop mode
       this.calcAverage(team, "teleopEstFuel", "totalMatches");
