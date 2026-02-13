@@ -244,24 +244,24 @@ require 'inc/header.php';
     datasets.push({
       label: team1,
       data: [
-        avgData[team1]["autonPoints"].avg,
-        avgData[team1]["teleopPoints"].avg,
+        avgData[team1]["autonTotalPoints"].avg,
+        avgData[team1]["teleopEstFuel"].avg,
         avgData[team1]["endgamePoints"].avg,
-        avgData[team1]["teleopAlgaeNet"].avg * 4, // Multiply teleopAlgaeNetAvg by 4 to get points.
-        avgData[team1]["teleopCoralL4"].avg * 5, // Multiply teleopCoralL4Avg by 5 to get points.
-        avgData[team1]["teleopCoralL3"].avg * 4 // Multiply teleopCoralL3Avg by 4 to get points.
+        //avgData[team1]["teleopAlgaeNet"].avg * 4, // Multiply teleopAlgaeNetAvg by 4 to get points.
+        //avgData[team1]["teleopCoralL4"].avg * 5, // Multiply teleopCoralL4Avg by 5 to get points.
+        //avgData[team1]["teleopCoralL3"].avg * 4 // Multiply teleopCoralL3Avg by 4 to get points.
       ],
       backgroundColor: '#FF4316'
     });
     datasets.push({
       label: team2,
       data: [
-        avgData[team2]["autonPoints"].avg,
-        avgData[team2]["teleopPoints"].avg,
+        avgData[team2]["autonTotalPoints"].avg,
+        avgData[team2]["teleopEstFuel"].avg,
         avgData[team2]["endgamePoints"].avg,
-        avgData[team2]["teleopAlgaeNet"].avg * 4, // Multiply teleopAlgaeNetAvg by 4 to get points.
-        avgData[team2]["teleopCoralL4"].avg * 5, // Multiply teleopCoralL4Avg by 5 to get points.
-        avgData[team2]["teleopCoralL3"].avg * 4 // Multiply teleopCoralL3Avg by 4 to get points.
+        //avgData[team2]["teleopAlgaeNet"].avg * 4, // Multiply teleopAlgaeNetAvg by 4 to get points.
+        //avgData[team2]["teleopCoralL4"].avg * 5, // Multiply teleopCoralL4Avg by 5 to get points.
+        //avgData[team2]["teleopCoralL3"].avg * 4 // Multiply teleopCoralL3Avg by 4 to get points.
       ],
       backgroundColor: '#0033FF'
     });
@@ -276,7 +276,7 @@ require 'inc/header.php';
     firstPickChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ["Auton Avg Pts", "Teleop Avg Pts", "Endgame Avg Pts", "Teleop Net Pts", "Teleop L4 Pts", "Teleop L3 Pts"],
+        labels: ["Auton Avg Pts", "Teleop Avg Pts", "Endgame Avg Pts"],
         datasets: datasets
       },
       options: {
@@ -287,7 +287,7 @@ require 'inc/header.php';
             ticks: {
               precision: 0
             },
-            max: 50
+            max: 300
           } // Set Y axis maximum value - 4 coral + algae in  auto plus leave
         },
         plugins: {}
@@ -306,24 +306,18 @@ require 'inc/header.php';
     datasets.push({
       label: team1,
       data: [
-        avgData[team1]["autonPoints"].avg,
-        avgData[team1]["teleopPoints"].avg,
+        avgData[team1]["autonTotalPoints"].avg,
+        avgData[team1]["teleopEstFuel"].avg,
         avgData[team1]["endgamePoints"].avg,
-        avgData[team1]["teleopAlgaeNet"].avg * 4, // Multiply teleopAlgaeNetAvg by 4 to get points.
-        avgData[team1]["teleopCoralL3"].avg * 4, // Multiply teleopCoralL3Avg by 4 to get points.
-        avgData[team1]["teleopCoralL2"].avg * 3 // Multiply teleopCoralL2Avg by 3 to get points.
       ],
       backgroundColor: '#FF4316'
     });
     datasets.push({
       label: team2,
       data: [
-        avgData[team2]["autonPoints"].avg,
-        avgData[team2]["teleopPoints"].avg,
+        avgData[team2]["autonTotalPoints"].avg,
+        avgData[team2]["teleopEstFuel"].avg,
         avgData[team2]["endgamePoints"].avg,
-        avgData[team2]["teleopAlgaeNet"].avg * 4, // Multiply teleopAlgaeNetAvg by 4 to get points.   
-        avgData[team2]["teleopCoralL3"].avg * 4, // Multiply teleopCoralL3Avg by 4 to get points.
-        avgData[team2]["teleopCoralL2"].avg * 3 // Multiply teleopCoralL2Avg by 3 to get points.
       ],
       backgroundColor: '#0033FF'
     });
@@ -338,7 +332,7 @@ require 'inc/header.php';
     secondPickChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ["Auton Avg Pts", "Teleop Avg Pts", "Endgame Avg Pts", "Teleop Net Pts", "Teleop L3 Pts", "Teleop L2 Pts"],
+        labels: ["Auton Avg Pts", "Teleop Avg Pts", "Endgame Avg Pts"],
         datasets: datasets
       },
       options: {
@@ -349,7 +343,7 @@ require 'inc/header.php';
             ticks: {
               precision: 0
             },
-            max: 50
+            max: 300
           } // Set Y axis maximum value - 4 coral + algae in  auto plus leave
         },
         plugins: {}
@@ -368,22 +362,20 @@ require 'inc/header.php';
     datasets.push({
       label: team1,
       data: [
-        avgData[team1]["autonPoints"].avg,
-        avgData[team1]["teleopPoints"].avg,
+        avgData[team1]["autonTotalPoints"].avg,
+        avgData[team1]["teleopEstFuel"].avg,
         avgData[team1]["endgamePoints"].avg,
-        avgData[team1]["teleopAlgaeNet"].avg * 4, // Multiply teleopAlgaeNetAvg by 4 to get points.
-        avgData[team1]["teleopCoralL3"].avg * 4 // Multiply teleopCoralL3Avg by 4 to get points.
+        avgData[team1]["teleopDefenseLevel"].avg * 25, // Multiply teleopAlgaeNetAvg by 4 to get points.
       ],
       backgroundColor: '#FF4316'
     });
     datasets.push({
       label: team2,
       data: [
-        avgData[team2]["autonPoints"].avg,
-        avgData[team2]["teleopPoints"].avg,
+        avgData[team2]["autonTotalPoints"].avg,
+        avgData[team2]["teleopEstFuel"].avg,
         avgData[team2]["endgamePoints"].avg,
-        avgData[team2]["teleopAlgaeNet"].avg * 4, // Multiply teleopAlgaeNetAvg by 4 to get points.
-        avgData[team2]["teleopCoralL3"].avg * 4 // Multiply teleopCoralL3Avg by 4 to get points.
+        avgData[team2]["teleopDefenseLevel"].avg * 25, // Multiply teleopAlgaeNetAvg by 4 to get points.
       ],
       backgroundColor: '#0033FF'
     });
@@ -398,7 +390,7 @@ require 'inc/header.php';
     thirdPickChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ["Auton Avg Pts", "Teleop Avg Pts", "Endgame Avg Pts", "Teleop Net Pts", "Teleop L3 Pts"],
+        labels: ["Auton Avg Pts", "Teleop Avg Pts", "Endgame Avg Pts", "Teleop Def Avg"],
         datasets: datasets
       },
       options: {
@@ -409,7 +401,7 @@ require 'inc/header.php';
             ticks: {
               precision: 0
             },
-            max: 50
+            max: 300
           } // Set Y axis maximum value - 4 coral + algae in  auto plus leave
         },
         plugins: {}
@@ -672,5 +664,6 @@ require 'inc/header.php';
 <script src="./scripts/matchDataProcessor.js"></script>
 <script src="./scripts/strategicDataTable.js"></script>
 <script src="./scripts/validateTeamNumber.js"></script>
+<script src="./scripts/rebuiltFuelEstimates.js"></script>
 
 <script src="./external/charts/chart.umd.js"></script>
