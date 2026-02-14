@@ -42,46 +42,59 @@ require 'inc/header.php';
     let headers = [{
         text: "Team",
         class: "table-primary sorttable_numeric"
-      },
-      {
-        text: "Swerve",
-        class: "table-primary"
-      },
-      {
-        text: "Drive Motors",
-        class: "table-primary"
-      },
-      {
-        text: "Spare Parts",
-        class: "table-primary"
-      },
-      {
-        text: "Prog Language",
-        class: "table-primary"
-      },
-      {
-        text: "Computer Vision",
-        class: "table-primary"
-      },
-      {
-        text: "Num Batteries",
-        class: "table-primary"
+        
       },
       {
         text: "Hopper Capacity",
-        class: "table-primary"
+        class: "table-info"
+      },
+      {
+        text: "Trench",
+        class: "table-info"
+      },
+      {
+        text: "Auton Climb",
+        class: "table-info"
+      },
+      {
+        text: "Climb Level",
+        class: "table-info"
+      },
+      {
+        text: "Swerve",
+        class: "table-success"
+      },
+      {
+        text: "Drive Motors",
+        class: "table-success"
+      },
+      {
+        text: "Spare Mechanism",
+        class: "table-success"
+      },
+      {
+        text: "Prog Language",
+        class: "table-success"
+      },
+      {
+        text: "Auto Align",
+        class: "table-success"
+      },
+      {
+        text: "Num Batteries",
+        class: "table-success"
       },
       {
         text: "Pit Org",
-        class: "table-primary text-start"
+        class: "table-warning"
       },
       {
         text: "Prep",
-        class: "table-primary text-start"
+        class: "table-warning"
       },
       {
         text: "Scout",
-        class: "table-primary"
+        class: "table-warning"
       }
     ];
 
@@ -162,13 +175,16 @@ require 'inc/header.php';
       rowString += "<td><a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</a>";
 
       let teamPitData = pitData[teamNum];
+      rowString += "<td>" + teamPitData["caphopper"] + "</td>";
+      rowString += "<td>" + toYesNo(teamPitData["trenchdrive"]) + "</td>";
+      rowString += "<td>" + toYesNo(teamPitData["climbable"]) + "</td>";
+      rowString += "<td>" + teamPitData["climblevel"] + "</td>";
       rowString += "<td>" + toYesNo(teamPitData["swerve"]) + "</td>";
       rowString += "<td>" + teamPitData["drivemotors"] + "</td>";
       rowString += "<td>" + toYesNo(teamPitData["spareparts"]) + "</td>";
       rowString += "<td>" + teamPitData["proglanguage"] + "</td>";
       rowString += "<td>" + toYesNo(teamPitData["computervision"]) + "</td>";
       rowString += "<td>" + teamPitData["numbatteries"] + "</td>";
-      rowString += "<td>" + teamPitData["caphopper"] + "</td>";
       rowString += "<td class='text-start'>" + toOrganization(teamPitData["pitorg"]) + "</td>";
       rowString += "<td class='text-start'>" + toPreparedness(teamPitData["preparedness"]) + "</td>";
       rowString += "<td>" + teamPitData["scoutname"] + "</td>";
@@ -186,6 +202,7 @@ require 'inc/header.php';
     }).done(function(pitData) {
       console.log("=> eventAliasNames");
       let jPitData = JSON.parse(pitData);
+      console.log("YOLO " + JSON.parse(pitData));
       insertPitTableHeader(tableId, jPitData);
       insertPitTableBody(tableId, jPitData);
       // script instructions say this is needed, but it breaks table header sorting

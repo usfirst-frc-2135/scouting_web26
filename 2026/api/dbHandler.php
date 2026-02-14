@@ -280,7 +280,11 @@ class dbHandler
         computervision,
         pitorg,
         preparedness,
-        numbatteries
+        numbatteries,
+        caphopper,
+        trenchdrive,
+        climbable,
+        climblevel
       )
       VALUES
       (
@@ -295,7 +299,11 @@ class dbHandler
         :computervision,
         :pitorg,
         :preparedness,
-        :numbatteries
+        :numbatteries,
+        :caphopper,
+        :trenchdrive,
+        :climbable,
+        :climblevel
       )";
     $prepared_statement = $this->conn->prepare($sql);
     $prepared_statement->execute($pData);
@@ -314,9 +322,14 @@ class dbHandler
         proglanguage,
         computervision,
         numbatteries,
+        caphopper,
         pitorg,
         preparedness,
-        numbatteries
+        numbatteries,
+        caphopper,
+        trenchdrive,
+        climbable,
+        climblevel
         FROM " . $dbConfig["pittable"] .
       " WHERE eventcode='" . $eventCode . "'";
     $prepared_statement = $this->conn->prepare($sql);
@@ -790,6 +803,11 @@ class dbHandler
         pitorg TINYINT UNSIGNED NOT NULL,
         preparedness TINYINT UNSIGNED NOT NULL,
         numbatteries VARCHAR(8) NOT NULL,
+        caphopper VARCHAR(8) NOT NULL,
+        trenchdrive TINYINT UNSIGNED NOT NULL,
+        climbable TINYINT UNSIGNED NOT NULL,
+        climblevel TINYINT UNSIGNED NOT NULL,
+
         INDEX (eventcode)
       )";
     $statement = $conn->prepare($query);
