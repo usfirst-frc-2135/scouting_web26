@@ -58,177 +58,166 @@ require 'inc/header.php';
               </div>
             </div>
 
-            <!-- Autonomous Mode -->
+            <!-- Active Shift Actions -->
             <div class="card mb-3 bg-success-subtle">
               <div class="card-header fw-bold">
-                Autonomous Mode
+                Active Shift Actions
               </div>
               <div class="card-body">
-                <div>
-                  <span class="fw-bold">Auton - Get coral from:</span>
+                <div class="form-check form-check-inline">
+                  <label for="activeShiftLoadedHopper" class="form-label">Loaded Hopper</label>
+                  <input id="activeShiftLoadedHopper" class="form-check-input" type="checkbox">
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="autonGetCoralFromFloor" class="form-label">Floor</label>
-                  <input id="autonGetCoralFromFloor" class="form-check-input" type="checkbox">
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="autonGetCoralFromStation" class="form-label">Coral Station</label>
-                  <input id="autonGetCoralFromStation" class="form-check-input" type="checkbox">
+                  <label for="activeShiftShotHopper" class="form-label">Shot Hopper</label>
+                  <input id="activeShiftShotHopper" class="form-check-input" type="checkbox">
                 </div>
                 <div>
-                  <span class="fw-bold">Auton - Get algae from:</span>
+                  <span class="fw-bold">Active Shift - Passing:</span>
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="autonGetAlgaeFromFloor" class="form-label">Floor</label>
-                  <input id="autonGetAlgaeFromFloor" class="form-check-input" type="checkbox">
+                  <label for="activeShiftPassingFromAlliance" class="form-label">Passed fuel from other Alliance Zone</label>
+                  <input id="activeShiftPassingFromAlliance" class="form-check-input" type="checkbox">
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="autonGetAlgaeFromReef" class="form-label">Reef</label>
-                  <input id="autonGetAlgaeFromReef" class="form-check-input" type="checkbox">
+                  <label for="activeShiftPassingFromNeutral" class="form-label">Passed fuel from Neutral Zone</label>
+                  <input id="activeShiftPassingFromNeutral" class="form-check-input" type="checkbox">
                 </div>
 
                 <!-- Auton - Committed fouls section -->
                 <div>
-                  <span class="fw-bold">Auton - Committed fouls:</span>
+                  <span class="fw-bold">Active Shift - Defense:</span>
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="autonFoul1" class="form-label">Contact with opposing robot in their barge zone</label>
-                  <input id="autonFoul1" class="form-check-input" type="checkbox">
+                  <label for="activeShiftDefenseAgainstShooter" class="form-label">Played defense against shooter</label>
+                  <input id="activeShiftDefenseAgainstShooter" class="form-check-input" type="checkbox">
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="autonFoul2" class="form-label">Contact with opposing cage</label>
-                  <input id="autonFoul2" class="form-check-input" type="checkbox">
+                  <label for="activeShiftDefenseAtBump" class="form-label">Played defense at bump</label>
+                  <input id="activeShiftDefenseAtBump" class="form-check-input" type="checkbox">
+                </div>
+                <div class="form-check form-check-inline">
+                  <label for="activeShiftDefenseAtTrench" class="form-label">Played defense at trench</label>
+                  <input id="activeShiftDefenseAtTrench" class="form-check-input" type="checkbox">
                 </div>
               </div>
             </div>
-            <!-- end Autonomous Mode -->
+            <!-- end Active Shift Mode -->
 
-            <!-- Teleop Mode -->
+            <!-- Inactive Shift Mode -->
             <div class="card mb-3 bg-primary-subtle">
               <div class="card-header fw-bold">
-                Teleop Mode
+                Inactive Shift Actions
               </div>
               <div class="card-body">
-
-                <!-- Teleop - Floor pickup section -->
+                <div class="form-check form-check-inline">
+                  <label for="inactiveShiftLoadedHopper" class="form-label">Loaded Hopper</label>
+                  <input id="inactiveShiftLoadedHopper" class="form-check-input" type="checkbox">
+                </div>
+                <div class="form-check form-check-inline">
+                  <label for="inactiveShiftShotHopper" class="form-label">Shot Hopper</label>
+                  <input id="inactiveShiftShotHopper" class="form-check-input" type="checkbox">
+                </div>
                 <div>
-                  <span class="fw-bold">Teleop - Floor pickup:</span>
+                  <span class="fw-bold">Inactive Shift - Passing:</span>
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="teleopFloorPickupCoral" class="form-label">Coral</label>
-                  <input id="teleopFloorPickupCoral" class="form-check-input" type="checkbox">
+                  <label for="inactiveShiftPassingFromAlliance" class="form-label">Passed fuel from other Alliance Zone</label>
+                  <input id="inactiveShiftPassingFromAlliance" class="form-check-input" type="checkbox">
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="teleopFloorPickupAlgae" class="form-label">Algae</label>
-                  <input id="teleopFloorPickupAlgae" class="form-check-input" type="checkbox">
-                </div>
-                <!-- Teleop - Algae from reef section -->
-                <div>
-                  <span class="fw-bold">Teleop - Algae from reef:</span>
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="teleopKnockOffAlgaeFromReef" class="form-label">Knock off algae from reef</label>
-                  <input id="teleopKnockOffAlgaeFromReef" class="form-check-input" type="checkbox">
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="teleopAcquireAlgaeFromReef" class="form-label">Acquire algae from reef</label>
-                  <input id="teleopAcquireAlgaeFromReef" class="form-check-input" type="checkbox">
+                  <label for="inactiveShiftPassingFromNeutral" class="form-label">Passed fuel from Neutral Zone</label>
+                  <input id="inactiveShiftPassingFromNeutral" class="form-check-input" type="checkbox">
                 </div>
 
-                <!-- Driver ability section -->
-                <div class="mb-2">
-                  <span class="fw-bold">Driver ability/speed:</span>
-                </div>
-                <div class="col-6">
-                  <div class="input-group mb-3">
-                    <select id="driverAbility" class="form-select">
-                      <option selected value="-1">Choose ...</option>
-                      <option value="0">0-N/A</option>
-                      <option value="1">1-Jerky</option>
-                      <option value="2">2-Slow</option>
-                      <option value="3">3-Average!</option>
-                      <option value="4">4-Quick/Agile</option>
-                    </select>
-                  </div>
-                </div>
-
-                <!-- Against defensive robot section -->
+                <!-- Auton - Committed fouls section -->
                 <div>
-                  <span class="fw-bold">Against defensive robot:</span>
+                  <span class="fw-bold">Active Shift - Defense:</span>
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="againstTactic1" class="form-label">Path Blocked (able to escape quickly?)</label>
-                  <input id="againstTactic1" class="form-check-input" type="checkbox">
-                </div>
-                <div class="mb-3">
-                  <label for="againstComment" class="form-label">Against defense note: </label>
-                  <input id="againstComment" class="form-control" type="text">
-                </div>
-                <div>
-                  <span class="fw-bold">Climbing Foul:</span>
+                  <label for="inactiveShiftDefenseAgainstShooter" class="form-label">Played defense against shooter</label>
+                  <input id="inactiveShiftDefenseAgainstShooter" class="form-check-input" type="checkbox">
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="teleopFoul1" class="form-label">Contact with anchor when climbing</label>
-                  <input id="teleopFoul1" class="form-check-input" type="checkbox">
+                  <label for="inactiveShiftDefenseAtBump" class="form-label">Played defense at bump</label>
+                  <input id="inactiveShiftDefenseAtBump" class="form-check-input" type="checkbox">
+                </div>
+                <div class="form-check form-check-inline">
+                  <label for="inactiveShiftDefenseAtTrench" class="form-label">Played defense at trench</label>
+                  <input id="inactiveShiftDefenseAtTrench" class="form-check-input" type="checkbox">
                 </div>
               </div>
             </div>
-            <!-- end Teleop Mode -->
+            <!-- end Inactive Shift Mode -->
 
             <!-- Playing Defense Section -->
             <div class="card mb-3 bg-warning-subtle">
               <div class="card-header fw-bold">
-                Playing Defense
+                Evading Defense
               </div>
               <div class="card-body">
                 <!-- Defense tactics section -->
-                <div>
-                  <span class="fw-bold">Defense tactics played:</span>
+                <div class="mb-2">
+                  <span class="fw-bold">Effectiveness:</span>
                 </div>
-                <div class="form-check form-check-inline">
-                  <label for="defenseTactic1" class="form-label">Blocking loading station (how long detained?)</label>
-                  <input id="defenseTactic1" class="form-check-input" type="checkbox">
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="defenseTactic2" class="form-label">Blocking path (how long detained? where?)</label>
-                  <input id="defenseTactic2" class="form-check-input" type="checkbox">
-                </div>
-                <div class="mb-3">
-                  <label for="defenseComment" class="form-label">Defense note: </label>
-                  <input id="defenseComment" class="form-control" type="text">
-                </div>
-
-                <!-- Committed fouls section -->
-                <div>
-                  <span class="fw-bold">Committed fouls:</span>
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="foul1" class="form-label">Pinning for 3 count</label>
-                  <input id="foul1" class="form-check-input" type="checkbox">
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="teleopFoul3" class="form-label">Contact with opposing robot in their reef zone</label>
-                  <input id="teleopFoul3" class="form-check-input" type="checkbox">
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="teleopFoul2" class="form-label">Contact with opposing robot in their barge zone</label>
-                  <input id="teleopFoul2" class="form-check-input" type="checkbox">
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="teleopFoul4" class="form-label">Contact with opposing cage </label>
-                  <input id="teleopFoul4" class="form-check-input" type="checkbox">
-                </div>
-
-                <!-- Endgame fouls section -->
-                <div>
-                  <span class="fw-bold">Endgame fouls:</span>
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="endgameFoul1" class="form-label">Contact with opposing robot while it is touching its cage</label>
-                  <input id="endgameFoul1" class="form-check-input" type="checkbox">
+                <div class="col-6">
+                  <div class="input-group mb-3">
+                    <select id="againstDefenseEffectiveness" class="form-select">
+                      <option selected value="-1">Choose ...</option>
+                      <option value="0">0-Low</option>
+                      <option value="1">1-Med Low</option>
+                      <option value="2">2-Avg</option>
+                      <option value="3">3-Med High</option>
+                      <option value="4">4-High</option>
+                    </select>
+                  </div>
                 </div>
               </div>
+              </div>
+
+                <!-- Against defensive robot section -->
+
+            <!-- end Playing Defense Section -->
+
+           <!-- Bump Mode -->
+            <div class="card mb-3 bg-success-subtle">
+              <div class="card-header fw-bold">
+                Bump
+              </div>
+              <div class="card-body">
+                <div class="form-check form-check-inline">
+                  <label for="bumpTippedOver" class="form-label">Tipped Over</label>
+                  <input id="bumpTippedOver" class="form-check-input" type="checkbox">
+                </div>
+                <div class="form-check form-check-inline">
+                  <label for="bumpBottomedOut" class="form-label">Bottomed Out</label>
+                  <input id="bumpBottomedOut" class="form-check-input" type="checkbox">
+                </div>
+                <div class="form-check form-check-inline">
+                  <label for="bumpAvoidedDefender" class="form-label">Avoided Defender</label>
+                  <input id="bumpAvoidedDefender" class="form-check-input" type="checkbox">
+                </div>
+                <div class="form-check form-check-inline">
+                  <label for="bumpGotStuckOnFuel" class="form-label">Got Stuck on Fuel</label>
+                  <input id="bumpGotStuckOnFuel" class="form-check-input" type="checkbox">
+                </div>
+              </div>  
             </div>
+            <!-- end bump -->
+
+            <!-- Fouls Mode -->
+            <div class="card mb-3 bg-primary-subtle">
+              <div class="card-header fw-bold">
+                Fouls
+              </div>
+              <div class="card-body">
+                <div class="form-check form-check-inline">
+                  <label for="fouls" class="form-label">Caused a foul</label>
+                  <input id="fouls" class="form-check-input" type="checkbox">
+                </div>
+              </div>  
+            </div>
+            <!-- end fouls -->
 
             <!-- Comments section -->
             <div class="card bg-body-subtle mb-3">
@@ -346,35 +335,37 @@ require 'inc/header.php';
     document.getElementById("selectScoutName").value = "Choose ...";
     document.getElementById("otherScoutName").value = "";
 
-    // Autonomous Scouting
-    document.getElementById("autonGetCoralFromFloor").checked = false;
-    document.getElementById("autonGetCoralFromStation").checked = false;
-    document.getElementById("autonGetAlgaeFromFloor").checked = false;
-    document.getElementById("autonGetAlgaeFromReef").checked = false;
-    document.getElementById("autonFoul1").checked = false;
-    document.getElementById("autonFoul2").checked = false;
+    // Active Shift Scouting
+    document.getElementById("activeShiftLoadedHopper").checked = false;
+    document.getElementById("activeShiftShotHopper").checked = false;
+    document.getElementById("activeShiftPassingFromAlliance").checked = false;
+    document.getElementById("activeShiftPassingFromNeutral").checked = false;
+    document.getElementById("activeShiftDefenseAgainstShooter").checked = false;
+    document.getElementById("activeShiftDefenseAtBump").checked = false;
+    document.getElementById("activeShiftDefenseAtTrench").checked = false;
 
-    // Teleop Scouting
-    document.getElementById("teleopFloorPickupCoral").checked = false;
-    document.getElementById("teleopFloorPickupAlgae").checked = false;
-    document.getElementById("teleopKnockOffAlgaeFromReef").checked = false;
-    document.getElementById("teleopAcquireAlgaeFromReef").checked = false;
-    document.getElementById("driverAbility").value = "";
-    document.getElementById("teleopFoul1").checked = false;
-    document.getElementById("againstTactic1").checked = false;
-    document.getElementById("againstComment").value = "";
+    // Inactive Shift Scouting
+    document.getElementById("inactiveShiftLoadedHopper").checked = false;
+    document.getElementById("inactiveShiftShotHopper").checked = false;
+    document.getElementById("inactiveShiftPassingFromAlliance").checked = false;
+    document.getElementById("inactiveShiftPassingFromNeutral").checked = false;
+    document.getElementById("inactiveShiftDefenseAgainstShooter").checked = false;
+    document.getElementById("inactiveShiftDefenseAtBump").checked = false;
+    document.getElementById("inactiveShiftDefenseAtTrench").checked = false;
 
-    // Defense Scouting
-    document.getElementById("defenseTactic1").checked = false;
-    document.getElementById("defenseTactic2").checked = false;
-    document.getElementById("defenseComment").value = "";
-    document.getElementById("foul1").checked = false;
-    document.getElementById("teleopFoul3").checked = false;
-    document.getElementById("teleopFoul2").checked = false;
-    document.getElementById("teleopFoul4").checked = false;
-    document.getElementById("endgameFoul1").checked = false;
+    // Evading Defense Scouting
+    document.getElementById("againstDefenseEffectiveness").value = "";
 
-    // Coment boxes
+    // Bump Scouting
+    document.getElementById("bumpTippedOver").checked = false;
+    document.getElementById("bumpBottomedOut").checked = false;
+    document.getElementById("bumpAvoidedDefender").checked = false;
+    document.getElementById("bumpGotStuckOnFuel").checked = false;
+
+    // Bump Scouting
+    document.getElementById("fouls").checked = false;
+
+    // Comment boxes
     document.getElementById("problemComment").value = "";
     document.getElementById("generalComment").value = "";
   }
@@ -393,33 +384,35 @@ require 'inc/header.php';
     dataToSave["teamnumber"] = document.getElementById("enterTeamNumber").value.toUpperCase().trim();
     dataToSave["scoutname"] = getScoutName();
 
-    // Autonomous scouting
-    dataToSave["autonGetCoralFromFloor"] = (document.getElementById("autonGetCoralFromFloor").checked) ? 1 : 0;
-    dataToSave["autonGetCoralFromStation"] = (document.getElementById("autonGetCoralFromStation").checked) ? 1 : 0;
-    dataToSave["autonGetAlgaeFromFloor"] = (document.getElementById("autonGetAlgaeFromFloor").checked) ? 1 : 0;
-    dataToSave["autonGetAlgaeFromReef"] = (document.getElementById("autonGetAlgaeFromReef").checked) ? 1 : 0;
-    dataToSave["autonFoul1"] = (document.getElementById("autonFoul1").checked) ? 1 : 0;
-    dataToSave["autonFoul2"] = (document.getElementById("autonFoul2").checked) ? 1 : 0;
+    // Active Shift scouting
+    dataToSave["activeShiftLoadedHopper"] = (document.getElementById("activeShiftLoadedHopper").checked) ? 1 : 0;
+    dataToSave["activeShiftShotHopper"] = (document.getElementById("activeShiftShotHopper").checked) ? 1 : 0;
+    dataToSave["activeShiftPassingFromAlliance"] = (document.getElementById("activeShiftPassingFromAlliance").checked) ? 1 : 0;
+    dataToSave["activeShiftPassingFromNeutral"] = (document.getElementById("activeShiftPassingFromNeutral").checked) ? 1 : 0;
+    dataToSave["activeShiftDefenseAgainstShooter"] = (document.getElementById("activeShiftDefenseAgainstShooter").checked) ? 1 : 0;
+    dataToSave["activeShiftDefenseAtBump"] = (document.getElementById("activeShiftDefenseAtBump").checked) ? 1 : 0;
+    dataToSave["activeShiftDefenseAtTrench"] = (document.getElementById("activeShiftDefenseAtTrench").checked) ? 1 : 0;
 
-    // Teleop scouting
-    dataToSave["teleopFloorPickupCoral"] = (document.getElementById("teleopFloorPickupCoral").checked) ? 1 : 0;
-    dataToSave["teleopFloorPickupAlgae"] = (document.getElementById("teleopFloorPickupAlgae").checked) ? 1 : 0;
-    dataToSave["teleopKnockOffAlgaeFromReef"] = (document.getElementById("teleopKnockOffAlgaeFromReef").checked) ? 1 : 0;
-    dataToSave["teleopAcquireAlgaeFromReef"] = (document.getElementById("teleopAcquireAlgaeFromReef").checked) ? 1 : 0;
-    dataToSave["teleopFoul1"] = (document.getElementById("teleopFoul1").checked) ? 1 : 0;
-    dataToSave["driverability"] = document.getElementById('driverAbility').value;
-    dataToSave["against_tactic1"] = (document.getElementById("againstTactic1").checked) ? 1 : 0;
-    dataToSave["against_comment"] = document.getElementById("againstComment").value;
+    // Inactive Shift scouting
+    dataToSave["inactiveShiftLoadedHopper"] = (document.getElementById("inactiveShiftLoadedHopper").checked) ? 1 : 0;
+    dataToSave["inactiveShiftShotHopper"] = (document.getElementById("inactiveShiftShotHopper").checked) ? 1 : 0;
+    dataToSave["inactiveShiftPassingFromAlliance"] = (document.getElementById("inactiveShiftPassingFromAlliance").checked) ? 1 : 0;
+    dataToSave["inactiveShiftPassingFromNeutral"] = (document.getElementById("inactiveShiftPassingFromNeutral").checked) ? 1 : 0;
+    dataToSave["inactiveShiftDefenseAgainstShooter"] = (document.getElementById("inactiveShiftDefenseAgainstShooter").checked) ? 1 : 0;
+    dataToSave["inactiveShiftDefenseAtBump"] = (document.getElementById("inactiveShiftDefenseAtBump").checked) ? 1 : 0;
+    dataToSave["inactiveShiftDefenseAtTrench"] = (document.getElementById("inactiveShiftDefenseAtTrench").checked) ? 1 : 0;
 
-    // Defense scouting
-    dataToSave["defense_tactic1"] = (document.getElementById("defenseTactic1").checked) ? 1 : 0;
-    dataToSave["defense_tactic2"] = (document.getElementById("defenseTactic2").checked) ? 1 : 0;
-    dataToSave["defense_comment"] = document.getElementById("defenseComment").value;
-    dataToSave["foul1"] = (document.getElementById("foul1").checked) ? 1 : 0;
-    dataToSave["teleopFoul3"] = (document.getElementById("teleopFoul3").checked) ? 1 : 0;
-    dataToSave["teleopFoul2"] = (document.getElementById("teleopFoul2").checked) ? 1 : 0;
-    dataToSave["teleopFoul4"] = (document.getElementById("teleopFoul4").checked) ? 1 : 0;
-    dataToSave["endgameFoul1"] = (document.getElementById("endgameFoul1").checked) ? 1 : 0;
+    // Evading Defense scouting
+    dataToSave["againstDefenseEffectiveness"] = document.getElementById("againstDefenseEffectiveness").value;
+
+    // Bump scouting
+    dataToSave["bumpTippedOver"] = (document.getElementById("bumpTippedOver").checked) ? 1 : 0;
+    dataToSave["bumpBottomedOut"] = (document.getElementById("bumpBottomedOut").checked) ? 1 : 0;
+    dataToSave["bumpAvoidedDefender"] = (document.getElementById("bumpAvoidedDefender").checked) ? 1 : 0;
+    dataToSave["bumpGotStuckOnFuel"] = (document.getElementById("bumpGotStuckOnFuel").checked) ? 1 : 0;
+
+    // Fouls scouting
+    dataToSave["fouls"] = (document.getElementById("fouls").checked) ? 1 : 0;
 
     // Comment boxes
     dataToSave["problem_comment"] = document.getElementById("problemComment").value;
