@@ -539,7 +539,7 @@ require 'inc/header.php';
     $.get("api/tbaAPI.php", {
       getEventMatches: true
     }).done(function(eventMatches) {
-      console.log("=> getEventMatches");
+      console.log("=> matchCheck: getEventMatches");
       jEventMatches = JSON.parse(eventMatches)["response"];
       loadMatchCheckTable(tableId, jEventMatches, jAllMatchData);
     });

@@ -32,13 +32,41 @@ require 'inc/header.php';
 
 <script>
   //
-  // Build the match data table
+  // Build the REBUILT Fuel Estimates data table
   //
+  function loadFuelEstTable(tableId, aliasNames, matchTableData, pitData, tbaMatchData) 
+  {
+    if (aliasNames == [] || pitData == [] || matchTableData === null || tbaMatchData === null) {
+      console.log("loadFuelEstTable: still waiting for get APIs to finish!");
+      return;
+    }   
 
-  function buildEstimatedFuelTable(tableId) { // Load the alias table
-    console.log("==> rebuiltFuelEstimates: buildEstimatedFuelTable()");
+    // All the args were obtained, so now create mdp and it will figure out all the calculations.
+    console.log("==> loadFuelEstTable(): setting up mdp");
+    let mdp = new matchDataProcessor(matchTableData,tbaMatchData,pitData);
+    mdp.getSiteFilteredAverages(function(filteredMatchData, filteredAvgData) {
+      if (filteredMatchData != undefined) {
+
+
+
+// TODO - change insertFuelEstimatesBody() to just use mdp data (filteredMatchData)
+        insertFuelEstimatesBody(tableId, filteredMatchData, aliasNames, [], pitData, tbaMatchData);
+        document.getElementById('spinner').style.display = 'none';
+        // script instructions say this is needed, but it breaks table header sorting
+        // sorttable.makeSortable(document.getElementById(tableId));
+        document.getElementById(tableId).click(); // This magic fixes the floating column bug
+      } else {
+        alert("loadFuelEstTable(): mdp not created!");
+      }
+    });
+  }
+
+  function buildFuelEstimatesTable(tableId) { 
+    console.log("==> rebuiltFuelEstimates: starting buildFuelEstimatesTable()");
     let jAliasNames = null;
     let jPitData = null;
+    let jMatchTableData = null;
+    let tbaMatchData = null;
 
     // Load alias lookup table
     $.get("api/dbReadAPI.php", {
@@ -46,44 +74,40 @@ require 'inc/header.php';
     }).done(function(eventAliasNames) {
       console.log("=> eventAliasNames");
       jAliasNames = JSON.parse(eventAliasNames);
-      insertEstimatedFuelHeader(tableId, jAliasNames);
+      insertFuelEstimatesHeader(tableId, jAliasNames);
     });
 
-    // Load the match data
+    // Load the match table data
     $.get("api/dbReadAPI.php", {
       getAllMatchData: true
-    }).done(function(fuelEstimates) {
-      $.get("api/dbReadAPI.php", {
-        getAllPitData: true
-      }).done(function(allPitData) {
-        console.log("=> getAllPitData");
-        jPitData = JSON.parse(allPitData);
-        console.log("=> getFuelEstimates, pitData length = " + jPitData.length);
-        if (jPitData != null)
-        {
-          console.log("JPITDATA IS NOT NULL");
-        }
-        let mdp = new matchDataProcessor(JSON.parse(fuelEstimates));
-        // mdp.sortMatches(allEventMatches);
-        mdp.getSiteFilteredAverages(function(filteredMatchData, filteredAvgData) {
-        if (filteredMatchData !== undefined) {
-          insertEstimatedFuelBody(tableId, filteredMatchData, jAliasNames, [], jPitData);
-          document.getElementById('spinner').style.display = 'none';
-          // script instructions say this is needed, but it breaks table header sorting
-          // sorttable.makeSortable(document.getElementById(tableId));
-          document.getElementById(tableId).click(); // This magic fixes the floating column bug
-        } else {
-          alert("No match data found!");
-        }
-      });
+    }).done(function(matchTableData) {
+       jMatchTableData = JSON.parse(matchTableData);
+       loadFuelEstTable(tableId,jAliasNames,jMatchTableData,jPitData,tbaMatchData);
     });
-    })
-  };
+
+    // In parallel, load the pitTable data
+    $.get("api/dbReadAPI.php", {
+      getAllPitData: true
+    }).done(function(allPitData) {
+      jPitData = JSON.parse(allPitData);
+      loadFuelEstTable(tableId,jAliasNames,jMatchTableData,jPitData,tbaMatchData);
+    });
+
+    // In parallel, load the TBA matches data
+    $.get("api/tbaAPI.php", {
+      getEventMatches: true
+    }).done(function(eventMatches) {
+      tbaMatchData = JSON.parse(eventMatches)["response"];
+      loadFuelEstTable(tableId,jAliasNames,jMatchTableData,jPitData,tbaMatchData);
+    });
+  }
+
+  
 
   /////////////////////////////////////////////////////////////////////////////
   //
   // Process the generated html
-  //    Get all match data from our database
+  //    Calculate all fuel estimates data from our database
   //    When completed, display the web page
   //
   document.addEventListener("DOMContentLoaded", function() {
@@ -93,7 +117,7 @@ require 'inc/header.php';
       fixedNavbar: '.navbar'
     });
 
-    buildEstimatedFuelTable(tableId);
+    buildFuelEstimatesTable(tableId);
 
     // Create frozen table panes and keep the panes updated
     document.getElementById(tableId).addEventListener('click', function() {

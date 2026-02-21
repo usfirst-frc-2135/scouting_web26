@@ -419,7 +419,7 @@ require 'inc/header.php';
     let hoppersShot = matchItem["autonHoppersShot"];
     let preloadAcc = matchItem["autonPreloadAccuracy"];
     let hopperAcc = matchItem["autonHopperAccuracy"];
-    let autonEstFuel = calcAutonTotalFuel(hopperCount, preloadShot, hoppersShot, preloadAcc, hopperAcc);
+    let autonFuelEst = calcAutonTotalFuel(hopperCount, preloadShot, hoppersShot, preloadAcc, hopperAcc);
 
     let autonClimb = 0;
     if (matchItem["autonClimb"] == 0) {
@@ -432,7 +432,7 @@ require 'inc/header.php';
 
       mydata.push({
         matchnum: matchItem["matchnumber"],
-        fuel: autonEstFuel,
+        fuel: autonFuelEst,
         climb: autonClimb,
       });
     }
@@ -567,12 +567,12 @@ require 'inc/header.php';
 
       let teleopHoppersShot = matchItem["teleopHoppersUsed"];
       let teleopHopperAcc = matchItem["teleopHopperAccuracy"];
-      let teleopEstFuel = calcTeleopTotalFuel(hopperCount, teleopHoppersShot, teleopHopperAcc);
+      let teleopFuelEst = calcTeleopTotalFuel(hopperCount, teleopHoppersShot, teleopHopperAcc);
 
       mydata.push({
         matchnum: matchItem["matchnumber"],
         defense: matchItem["teleopDefenseLevel"] * 25, // Defense level is 0-3, so multiply by 25 to get a value that will show up on the graph
-        fuel: teleopEstFuel,
+        fuel: teleopFuelEst,
       });
     }
 
@@ -794,7 +794,7 @@ require 'inc/header.php';
     console.log("==> teamLookup: loadAverageTables()");
 
     /////// Match Totals Table  
-    writeAverageTableRow("matchSheetTable", ["Fuel Est", avgs["totalEstFuel"].avg, avgs["totalEstFuel"].max], 3);
+    writeAverageTableRow("matchSheetTable", ["Fuel Est", avgs["totalFuelEst"].avg, avgs["totalFuelEst"].max], 3);
     writeAverageTableRow("matchSheetTable", ["Match Points", avgs["totalMatchPoints"].avg, avgs["totalMatchPoints"].max], 3);
 
     //Auton Table  
@@ -804,7 +804,7 @@ require 'inc/header.php';
     writeAverageTableRow("autonClimbTable", ["Climb %", avgs["autonClimb"].arr[0].avg, avgs["autonClimb"].arr[2].avg, avgs["autonClimb"].arr[1].avg, avgs["autonClimb"].arr[3].avg, avgs["autonClimb"].arr[4].avg], 6);
 
     // Teleop Table
-    writeAverageTableRow("teleopTable", ["Fuel Est", avgs["teleopEstFuel"].avg, avgs["teleopEstFuel"].max], 3);
+    writeAverageTableRow("teleopTable", ["Fuel Est", avgs["teleopFuelEst"].avg, avgs["teleopFuelEst"].max], 3);
     writeAverageTableRow("teleopTable", ["Defense", avgs["teleopDefenseLevel"].avg, avgs["teleopDefenseLevel"].max], 3);
 
 

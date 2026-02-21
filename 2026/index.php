@@ -348,7 +348,7 @@ require 'inc/header.php';
       });
     });
 
-    // Create the button to create new tables in the atabase
+    // Create the button to create new tables in the database
     document.getElementById("createTables").addEventListener('click', function() {
       $.post("api/dbAPI.php", {
         createTables: true

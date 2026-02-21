@@ -245,7 +245,7 @@ require 'inc/header.php';
       label: team1,
       data: [
         avgData[team1]["autonTotalPoints"].avg,
-        avgData[team1]["teleopEstFuel"].avg,
+        avgData[team1]["teleopFuelEst"].avg,
         avgData[team1]["endgamePoints"].avg,
         //avgData[team1]["teleopAlgaeNet"].avg * 4, // Multiply teleopAlgaeNetAvg by 4 to get points.
         //avgData[team1]["teleopCoralL4"].avg * 5, // Multiply teleopCoralL4Avg by 5 to get points.
@@ -257,7 +257,7 @@ require 'inc/header.php';
       label: team2,
       data: [
         avgData[team2]["autonTotalPoints"].avg,
-        avgData[team2]["teleopEstFuel"].avg,
+        avgData[team2]["teleopFuelEst"].avg,
         avgData[team2]["endgamePoints"].avg,
         //avgData[team2]["teleopAlgaeNet"].avg * 4, // Multiply teleopAlgaeNetAvg by 4 to get points.
         //avgData[team2]["teleopCoralL4"].avg * 5, // Multiply teleopCoralL4Avg by 5 to get points.
@@ -307,7 +307,7 @@ require 'inc/header.php';
       label: team1,
       data: [
         avgData[team1]["autonTotalPoints"].avg,
-        avgData[team1]["teleopEstFuel"].avg,
+        avgData[team1]["teleopFuelEst"].avg,
         avgData[team1]["endgamePoints"].avg,
       ],
       backgroundColor: '#FF4316'
@@ -316,7 +316,7 @@ require 'inc/header.php';
       label: team2,
       data: [
         avgData[team2]["autonTotalPoints"].avg,
-        avgData[team2]["teleopEstFuel"].avg,
+        avgData[team2]["teleopFuelEst"].avg,
         avgData[team2]["endgamePoints"].avg,
       ],
       backgroundColor: '#0033FF'
@@ -363,7 +363,7 @@ require 'inc/header.php';
       label: team1,
       data: [
         avgData[team1]["autonTotalPoints"].avg,
-        avgData[team1]["teleopEstFuel"].avg,
+        avgData[team1]["teleopFuelEst"].avg,
         avgData[team1]["endgamePoints"].avg,
         avgData[team1]["teleopDefenseLevel"].avg * 25, // Multiply teleopAlgaeNetAvg by 4 to get points.
       ],
@@ -373,7 +373,7 @@ require 'inc/header.php';
       label: team2,
       data: [
         avgData[team2]["autonTotalPoints"].avg,
-        avgData[team2]["teleopEstFuel"].avg,
+        avgData[team2]["teleopFuelEst"].avg,
         avgData[team2]["endgamePoints"].avg,
         avgData[team2]["teleopDefenseLevel"].avg * 25, // Multiply teleopAlgaeNetAvg by 4 to get points.
       ],

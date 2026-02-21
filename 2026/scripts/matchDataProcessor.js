@@ -2,24 +2,32 @@
   Match Data Processor
   Takes in match data from source and calculates averages and other derived data from it.
   Data types:
-    jMatchData - the JSON parsed match data from our scouting database
-    matchId - the string used to identify a match competition level and match number (e.g. qm5)
-    matchTuple - a two entry tuple that identifies a match (e.g. ["qm", "5"])
+    jMatchData   - the JSON parsed match data from our scouting database
+    tbaMatchData - For REBUILT: the event match data from TBA 
+    pitData      - For REBUILT: the event pit scouting data  
+    matchId      - the string used to identify a match competition level and match number (e.g. qm5)
+    matchTuple   - a two entry tuple that identifies a match (e.g. ["qm", "5"])
 */
+
 class matchDataProcessor {
-  mData = {};   // Match data from scouting database
-  pData = [];   // Processed data after totals and averages calculated
+  mData = {};          // Match (raw) data from scouting database
+  tbaMatchData = {};   // For REBUILT: TBA event Match data 
+  pitData = {};        // For REBUILT: pit scoutimg data 
+  pData = [];          // Processed data after totals and averages calculated
 
-  constructor(jMatchData) {
+  // matchDataProcess constructor 
+  constructor(jMatchData,tbaMatchData,pitData) {
     this.mData = jMatchData;
+    this.tbaMatchData = tbaMatchData;   // For REBUILT
+    this.pitData = pitData;             // For REBUILT
     this.siteFilter = null;
-    console.log("matchDataProcessor: MatchData: num of matches = " + this.mData.length);
+    console.log("mdp constr: mData: num of matches = " + this.mData.length);
 
-    // Organize the match data by team number
+    // Organize the mData (raw match data) by team number
     for (let i = 0; i < this.mData.length; i++) {
       let teamNum = this.mData[i]["teamnumber"];
       if (this.pData[teamNum] === undefined) {
-        this.pData[teamNum] = { teamNum: teamNum, matches: [] };
+        this.pData[teamNum] = { teamNum: teamNum, matches: [], fuelD: [] };  // fuelD for REBUILT
       }
       this.pData[teamNum]["matches"].push(this.mData[i]);
     }
@@ -189,8 +197,25 @@ class matchDataProcessor {
     });
   }
 
+  // Find the pData team item for the given teamnum or return null if not found.
+  findTeamPDataItem(teamnum) {
+    for (const i in this.pData) {
+      let teamItem = this.pData[i];
+      if ( teamItem.teamnum == teamnum ) { 
+        console.log(">>>>>>>> findTeamPDataItem: found team "+teamnum);
+        return teamItem;
+      }
+    }
+    return null;
+  } 
+
   //  
-  // Initialize match item statistics
+  // Initialize match item statistics: 
+  // Sets up a new data entry for the given team array, if none yet exists for this keyword, where 
+  //    "item" is the array holding match raw data for a specific team (from this.pData) and
+  //    "itemField" is the mdp keyword for this data (i.e. "autonShootPreload").
+  // Sets up the new entry to have these fields and defaults:
+  //     val: 0, sum: 0, max: 0, avg: 0, acc: 0 
   //
   initializeItem(item, itemField) {
     if (!Object.prototype.hasOwnProperty.call(item, itemField)) {
@@ -199,98 +224,288 @@ class matchDataProcessor {
   }
 
   //
-  // Retrieve match data into item statistics
+  // Updates the pData match data for the given keyword (which holds an integer value) with the 
+  // given raw match data and stores it in the given team array, where
+  //    "item"       -> the array holding mdp data for a specific team (from this.pData). 
+  //    "mdpKeyword" -> the mdp keyword for this data (i.e. "autonShootPreload").
+  //    "match"      -> the raw match data table entry for a specific match and 
+  //    "mtKeyword"  -> the (raw) matchTable keyword for this data (as defined in dbHandler.php).
   //
-  getMatchItem(item, itemField, match, matchField) {
-    this.initializeItem(item, itemField);
+  getMatchItem(item, mdpKeyword, match, mtKeyword) {
+    this.initializeItem(item, mdpKeyword);
 
-    // If the match data field is null, use the item field name instead
-    if (match[matchField] === null) {
-      matchField = itemField;
+    // If the match table keyword does not exist for the match table, use the mdp keyword instead.
+    if (match[mtKeyword] === null) {
+      mtKeyword = mdpKeyword;
     }
 
-    let value = parseInt(match[matchField]);
-    item[itemField].val = value;
-    item[itemField].sum += value;
-    item[itemField].max = Math.max(item[itemField].max, value);
+    // Saves the (raw) value for this keyword from this match in .val
+    // Adds the value to the stored sum of all the matches' values for this keyword in .sum
+    // Updates the max value if this value is the new max) in .max
+    let value = parseInt(match[mtKeyword]);
+    item[mdpKeyword].val = value;
+    item[mdpKeyword].sum += value;
+    item[mdpKeyword].max = Math.max(item[mdpKeyword].max, value);
 
     return value;
   }
 
   //
-  // Update match array into item statistics
+  // Updates the pData match data for the given keyword (which holds an array of possible values) 
+  // with the given raw match data and stores it in the given team array, where
+  //    "item"       -> the array holding mdp data for a specific team (from this.pData).
+  //    "mdpKeyword" -> the mdp keyword for this data (i.e. "autonShootPreload").
+  //    "arraySize"  -> the number of possible values (radio buttons).
+  //    "match"      -> the raw match data table entry for a specific match and 
+  //    "mtKeyword"  -> the (raw) matchTable keyword for this data (as defined in dbHandler.php).
   //
-  getMatchArray(item, itemField, arraySize, match, matchField) {
-    if (!Object.prototype.hasOwnProperty.call(item, itemField)) {
-      item[itemField] = { val: 0, arr: [] };
+  getMatchArray(item, mdpKeyword, arraySize, match, mtKeyword) {
+
+    // Initialize this entry if none exists yet for this keyword.
+    if (!Object.prototype.hasOwnProperty.call(item, mdpKeyword)) {
+      // The entry holds the value (val) and an array (arr) to hold info for each possible value.
+      item[mdpKeyword] = { val: 0, arr: [] };
+
+      // Sets up the arr (array) to hold this info: 
       for (let i = 0; i < arraySize; i++) {
-        item[itemField].arr[i] = { sum: 0, max: 0, avg: 0, acc: 0 };
+        // Holds this data for each possible value->  sum, max, avg, acc
+        item[mdpKeyword].arr[i] = { sum: 0, max: 0, avg: 0, acc: 0 };
       }
     }
 
-    // If the match data field is null, use the item field name instead
-    if (match[matchField] === null) {
-      matchField = itemField;
+    // If the match table keyword does not exist for the match table, use the mdp keyword instead.
+    if (match[mtKeyword] === null) {
+      mtKeyword = mdpKeyword;
     }
 
-    let value = parseFloat(match[matchField]);
-    item[itemField].val = value;
+    // Saves the (raw) value for this keyword from this match in .val
+    let value = parseFloat(match[mtKeyword]);
+    item[mdpKeyword].val = value;
+
+    // If the value (radio button value) is greater than the array size, that's BAD so exit!
     if (value >= arraySize) {
       console.error("getMatchArray: array index out of bounds! " + value + " >= " + arraySize);
       return -1;
     }
 
-    item[itemField].arr[value].sum += 1;
+    // Increment the number of times this value (radio button) was used in .sum
+    item[mdpKeyword].arr[value].sum += 1;
     return value;
   }
 
   //
-  // Update match item statistics
+  // Used for mdp team data that does not have a matching raw match table entry. 
+  // Stores the given value in the given team array where 
+  //    "item"       -> the array holding mdp data for a specific team (from this.pData).
+  //    "mdpKeyword" -> the mdp keyword for this data 
+  //    "value"      -> the value for this data 
   //
-  updateItem(item, itemField, value) {
-    this.initializeItem(item, itemField);
+  updateItem(item, mdpKeyword, value) {
+    this.initializeItem(item, mdpKeyword);
 
-    item[itemField].sum += value;
-    item[itemField].max = Math.max(item[itemField].max, value);
+    item[mdpKeyword].sum += value;     // Add value to the 'sum' for this mdpKeyword 
+    item[mdpKeyword].max = Math.max(item[mdpKeyword].max, value);
+  }
+
+  //
+  // For REBUILT: Used for mdp fuelD data to hold the fuel estimates for each match. 
+  // Stores the given value in the given team fuelD array where 
+  //    "item"       -> the array holding mdp data for a specific team (from this.pData).
+  //    "matchnum"   -> the match number for this data
+  //    "key"        -> "autonFE" or "teleopFE"
+  //    "value"      -> the value for this data 
+  //
+  updateMatchFuelDItem(item, matchnum, key, value)
+  {
+    if(key != "autonFE" && key != "teleopFE") {
+      console.log("!!!! ERROR! updateMatchFuelDItem() keyword '"+key+"' not recognized!!");
+      return;
+    }
+    // Initialize this fuelD entry if not yet used.
+    if (item.fuelD[matchnum] === undefined) {
+      item.fuelD[matchnum] = { matchnum: matchnum, autonFE: 0, teleopFE: 0 };  
+    }
+    item.fuelD[matchnum].key = value;   
   }
 
   //
   // Update match item average
   //
-  calcAverage(item, itemField, denominator) {
-    item[itemField].avg = (item[denominator] != 0) ? this.roundOnePlace(item[itemField].sum / item[denominator]) : 0;
+  calcAverage(item, mdpKeyword, denominator) {
+    item[mdpKeyword].avg = (item[denominator] != 0) ? this.roundOnePlace(item[mdpKeyword].sum / item[denominator]) : 0;
   }
 
   //
   // Update match item accuracy
   //
-  calcAccuracy(item, itemField, denominator) {
-    item[itemField].acc = (item[denominator].sum != 0) ? this.toPercent(item[itemField].sum / item[denominator].sum) : 0;
+  calcAccuracy(item, mdpKeyword, denominator) {
+    item[mdpKeyword].acc = (item[denominator].sum != 0) ? this.toPercent(item[mdpKeyword].sum / item[denominator].sum) : 0;
   }
 
   //
   // Update match item percent array
   //
-  calcArray(item, itemField, denominator) {
-    for (const i in item[itemField].arr) {
-      item[itemField].arr[i].avg = (item[denominator] != 0) ? this.toPercent(item[itemField].arr[i].sum / item[denominator]) : 0;
+  calcArray(item, mdpKeyword, denominator) {
+    for (const i in item[mdpKeyword].arr) {
+      item[mdpKeyword].arr[i].avg = (item[denominator] != 0) ? this.toPercent(item[mdpKeyword].arr[i].sum / item[denominator]) : 0;
     }
   }
+
+  // For REBUILT: Calculate the estimated fuel totals based on the TBA match data and store the 
+  // results in the given MDP pData for each team.
+  calcMatchesFuelEstTBA(pData, tbaMatchData) 
+  {
+    console.log("!!====> STARTING calcMatchesFuelEstTBA()");
+
+    // Go thru the TBA matches and process each match (all 6 teams) to get the auton and teleop
+    // fuel estimates using the TBA auton fuel total and teleop fuel total. Distribute those TBA
+    // totals between the 3 teams based on the ratio of the basic fuel estimates.
+    for (let emi in tbaMatchData) {
+      let match = tbaMatchData[emi];
+      if (match["comp_level"] !== "qm") { // Limit to qual matches for now
+        continue;
+      }
+
+      let matchNum = match["match_number"]; 
+      let matchId = match["comp_level"] + matchNum;   // i.e. "qm3"
+      console.log("===> calcMatchesFuelEstTBA: doing match: "+matchId);
+
+      this.calcAllianceFuelEstTBA(pData, match, "red");
+      this.calcAllianceFuelEstTBA(pData, match, "blue");
+    }
+    console.log("  <==== DONE calcMatchesFuelEstTBA()");
+  } 
+
+  // For REBUILT: Calculate the final (TBA) estimated fuel totals for the given match and alliance.
+  // Save the results for each team in pData, where "aColor" (alliance color) is "red" or "blue".
+  calcAllianceFuelEstTBA(pData, match, aColor)
+  {
+    let alliances = match["alliances"];
+    let matchnum = match["comp_level"]+match["matchnumber"];
+    console.log("---> calcAllianceFuelEstTBA() matchnum = "+matchnum);
+
+    // Get the teams in this alliance
+    let teams = [];
+    teams[0] = alliances[aColor]["team_keys"][0];
+    teams[1] = alliances[aColor]["team_keys"][1];
+    teams[2] = alliances[aColor]["team_keys"][2];
+    console.log("  ---> "+aColor+" Teams = "+teams[0]+", "+teams[1]+", "+teams[2]);
+
+    for (let i = 0; i < teams.length; i++) {
+      // Remove leading "frc" if any
+      if (teams[i].startsWith("frc")) {
+        teams[i] = teams[i].substring(3);
+      }
+    }
+    console.log("     ---> Revised "+aColor+" Teams = "+teams[0]+", "+teams[1]+", "+teams[2]);
+
+    // Get the 3 teams' current fuel estimates and also get the tbaMatch total fuel counts.
+    let tbaBreakdown = match["score_breakdown"];
+    let autoFuelTBA = parseFloat(tbaBreakdown[aColor]["autoPoints"]); // TODO - fix for auton fuel count
+    let teleopFuelTBA = parseFloat(tbaBreakdown[aColor]["teleopPoints"]); // TODO - fix for teleop fuel count
+
+    // Find the corresponding team pData item.
+    let pDataTeam1 = this.findTeamPDataItem(teams[0]);
+    let pDataTeam2 = this.findTeamPDataItem(teams[1]);
+    let pDataTeam3 = this.findTeamPDataItem(teams[2]);
+
+    // Return if any of the teams don't have a pData item.
+    if ( pDataTeam1 == null || pDataTeam2 == null || pDataTeam3 == null) {
+      console.log("  -->>> calcAllianceFuelEstTBA(): team pData not found!");
+      return;
+    }
+    // Return if any of the teams fuelD doesn't have an entry for this matchnum.
+    if ( pDataTeam1.fuelD[matchnum] == null || pDataTeam2.fuelD[matchnum] == null || pDataTeam3.fuelD[matchnum] == null) {
+      console.log("  -->>> calcAllianceFuelEstTBA(): pData team fuelD not found!");
+      return;
+    }
+  
+    // Now get the existing fuelD data (should be the basic fuel estimates w/o TBA data
+    let autoFuel1 = parseFloat(pDataTeam1.fuelD[matchnum].autonFuelEst);
+    let autoFuel2 = parseFloat(pDataTeam2.fuelD[matchnum].autonFuelEst);
+    let autoFuel3 = parseFloat(pDataTeam3.fuelD[matchnum].autonFuelEst);
+    let teleopFuel1 = parseFloat(pDataTeam1.fuelD[matchnum].teleopFuelEst);
+    let teleopFuel2 = parseFloat(pDataTeam2.fuelD[matchnum].teleopFuelEst);
+    let teleopFuel3 = parseFloat(pDataTeam3.fuelD[matchnum].teleopFuelEst);
+    console.log("  ---->>> basic autoFuel = "+autoFuel1+", "+autoFuel2+", "+autoFuel3);
+    console.log("  ---->>> basic teleopFuel = "+teleopFuel1+", "+teleopFuel2+", "+teleopFuel3);
+
+    // Calculate ratio of each robot's contribution to the the base auton total fuel.
+    let autoPercentage1 = (autoFuel1 / (autoFuel1 + autoFuel2 + autoFuel3));
+    let autoPercentage2 = (autoFuel2 / (autoFuel1 + autoFuel2 + autoFuel3));
+    let autoPercentage3 = (autoFuel3 / (autoFuel1 + autoFuel2 + autoFuel3));
+    console.log("    ---->> autoPercentages = "+autoPercentage1+", "+autoPercentage2+", "+autoPercentage3);
+
+    // Now use the percentages to calc each team's contribution to the actual (tba) auton fuel count.
+    let autoFinal1 = autoPercentage1 * autoFuelTBA;
+    let autoFinal2 = autoPercentage2 * autoFuelTBA;
+    let autoFinal3 = autoPercentage3 * autoFuelTBA;
+    console.log("      ---->> autoFinals = "+autoFinal1+", "+autoFinal2+", "+autoFinal3);
+
+    // Update this field in regular team pData, to be used for max and avgs.
+    this.updateItem(pDataTeam1, "autonFuelEst", autoFinal1);
+    this.updateItem(pDataTeam2, "autonFuelEst", autoFinal2);
+    this.updateItem(pDataTeam3, "autonFuelEst", autoFinal3);
+
+    // Save the final auton fuel estimates in pData for each team.
+    pDataTeam1.fuelD[matchnum].autonFuelEst = autoFinal1;
+    pDataTeam2.fuelD[matchnum].autonFuelEst = autoFinal2;
+    pDataTeam3.fuelD[matchnum].autonFuelEst = autoFinal3;
+
+    // Now do teleop calcs.
+    let telePercentage1 = (teleopFuel1 / (teleopFuel1 + teleopFuel2 + teleopFuel3));
+    let telePercentage2 = (teleopFuel2 / (teleopFuel1 + teleopFuel2 + teleopFuel3));
+    let telePercentage3 = (teleopFuel3 / (teleopFuel1 + teleopFuel2 + teleopFuel3));
+    console.log("    ---->> teleopPercentages = "+telePercentage1+", "+telePercentage2+", "+telePercentage3);
+
+    // Use the percentages to calc each team's contribution to the actual (tba) teleop fuel count.
+    let teleFinal1 = telePercentage1 * teleopFuelTBA;
+    let teleFinal2 = telePercentage2 * teleopFuelTBA;
+    let teleFinal3 = telePercentage3 * teleopFuelTBA;
+    console.log("      ---->> teleFinals = "+teleFinal1+", "+teleFinal2+", "+teleFinal3);
+
+    // Save the final teleop fuel estimates in pData for each team.
+    pDataTeam1.fuelD[matchnum].teleopFuelEst = teleFinal1;
+    pDataTeam2.fuelD[matchnum].teleopFuelEst = teleFinal2;
+    pDataTeam3.fuelD[matchnum].teleopFuelEst = teleFinal3;
+
+    // Update this field in regular team pData, to be used for max and avgs.
+    this.updateItem(pDataTeam1, "teleopFuelEst", teleFinal1);
+    this.updateItem(pDataTeam2, "teleopFuelEst", teleFinal2);
+    this.updateItem(pDataTeam3, "teleopFuelEst", teleFinal3);
+
+    // Calculate the total fuel estimates.
+    let totalFinal1 = autoFinal1 + teleFinal1;
+    let totalFinal2 = autoFinal2 + teleFinal2;
+    let totalFinal3 = autoFinal3 + teleFinal3;
+
+    // Update this field in regular team pData, to be used for max and avgs.
+    this.updateItem(pDataTeam1, "totalFuelEst", totalFinal1);
+    this.updateItem(pDataTeam2, "totalFuelEst", totalFinal2);
+    this.updateItem(pDataTeam3, "totalFuelEst", totalFinal3);
+  };
 
   //
   // Get event averages by calculating averages from the match data
   //
-  // pData - processed data structure is an array of team numbered objects with match data and calculated averages
-  //  structure:
-  //  teamNumber: {
-  //   matches: [match1, match2, ...]
-  //   totalMatches: int
-  //   autonLeave: { sum: int, max: int, avg: float }
-  //   autonCoralL1: { sum: int, max: int, avg: float }
-  //   ...
-  //   scoutNames: [name1, name2, ...]
-  //   commentList: [comment1, comment2, ...]
-  //  }
+  // pData - processed data structure is an array of team numbered objects with match data and 
+  // calculated averages/max/percentages, with this structure: 
+  //   teamNumber: {
+  //     matches: [match1, match2, ...]         -> this is the raw match data from QR code 
+  //     totalMatches: int
+  //          -- Game specific data with corresponding QR code data:
+  //     autonClimb: { val: int, sum: int, max: int, avg: float, acc: float }  -> for integer data
+  //     endgameStartClimb: { val: 0, arr: [] };                               -> for array data
+  //                  where arr[i] = { val: int,  sum: int, max: int, avg: float, acc: float }
+  //     ...   -> Same for each piece of data (keyword) from the QR code information
+  //     scoutNames: [name1, name2, ...]
+  //     commentList: [comment1, comment2, ...]
+  //          -- Additional data for REBUILT (has no corresponding QR code data):
+  //     autonFuelEst { val: int, sum: int, max: int, avg: float }  // For REBUILT
+  //     teleopFuelEst { val: int, sum: int, max: int, avg: float }  // For REBUILT
+  //     totalFuelEst { val: int, sum: int, max: int, avg: float }  // For REBUILT
+  //     fuelD: { matchid: matchnum, autonFE: int, teleopFE: int }  // REBUILT fuelEst by matchnum
+  //    }
   //
   getEventAverages() {
     console.log("matchDataProcessor: getEventAverages:");
@@ -299,152 +514,166 @@ class matchDataProcessor {
 
     //  For each team, go thru all its matches and do the calculations for this event
     for (const i in this.pData) {
-      let team = this.pData[i];
-      let matchList = team["matches"];
-      console.log("===> MDP calcs team: " + team["teamNum"] + " matches: " + matchList.length);  // TEST
+      let teamItem = this.pData[i];
+      let matchList = teamItem["matches"];
+      let teamnum = teamItem["teamNum"];
+      console.log("===> MDP calcs team: " + teamItem["teamNum"] + " matches: " + matchList.length);  
 
       // Initialize text data for matches
-      team["scoutNames"] = [];
-      team["commentList"] = [];
+      teamItem["scoutNames"] = [];
+      teamItem["commentList"] = [];
 
-      // Initialize team processed data
-      team["totalDefenseMatches"] = 0;  // incremented each match this team played defense
-      team["totalMatches"] = matchList.length;
+      // Initialize teamItem processed data
+      teamItem["totalDefenseMatches"] = 0;  // incremented each match this team played defense
+      teamItem["totalMatches"] = matchList.length;
 
       //////////////////// PROCESS MATCHES INTO TEAM OBJECT ////////////////////
-
+      // Save the match (raw) table data in the mdp pData for this team.
       for (const j in matchList) {
         let match = matchList[j];
+        let matchnum = match["matchnumber"];
+        console.log("!->>> matchList: matchnum = "+matchnum);
 
-        // NOTE: The field names on the right side of getMatchXXX must match the DB field names in the scouting database
-        //        The field names on the left side of getMatchXXX must match the field names in this class
+        // NOTE: The field names on the right side of getMatchXXX must match the DB field names in the matchtable (raw scouted) database
+        //       The field names on the left side of getMatchXXX must match the field names in this class (mdp)
 
-        // Autonomous mode
-        this.getMatchItem(team, "autonShootPreload", match, "autonShootPreload");
-        this.getMatchItem(team, "autonPreloadAccuracy", match, "autonPreloadAccuracy");
-        this.getMatchItem(team, "autonHoppersShot", match, "autonHoppersShot");
-        this.getMatchItem(team, "autonHopperAccuracy", match, "autonHopperAccuracy");
-        this.getMatchItem(team, "autonAllianceZone", match, "autonAllianceZone");
-        this.getMatchItem(team, "autonDepot", match, "autonDepot");
-        this.getMatchItem(team, "autonOutpost", match, "autonOutpost");
-        this.getMatchItem(team, "autonNeutralZone", match, "autonNeutralZone");
-        this.getMatchArray(team, "autonClimb", 5, match, "autonClimb");
-        this.getMatchItem(team, "autonClimb", match, "autonClimb");
+        // For REBUILT: get hopper capacity from pit data.
+        let hopperCap = 0;  // default
+        if(this.pitData != null && this.pitData[teamnum] != null && this.pitData[teamnum]["caphopper"] != null) 
+           hopperCap = this.pitData[teamnum]["caphopper"];   
+        else console.log("!!! pData.pitData is NULL or does not have team "+teamnum);
 
-        // Teleop mode
-        this.getMatchItem(team, "teleopHoppersUsed", match, "teleopHoppersUsed");
-        this.getMatchItem(team, "teleopHopperAccuracy", match, "teleopHopperAccuracy");
-        this.getMatchItem(team, "teleopIntakeAndShoot", match, "teleopIntakeAndShoot");
-        this.getMatchItem(team, "teleopNeutralToAlliance", match, "teleopNeutralToAlliance");
-        this.getMatchItem(team, "teleopAllianceToAlliance", match, "teleopAllianceToAlliance");
-        this.getMatchItem(team, "teleopPassingRate", match, "teleopPassingRate");
+        // Autonomous mode - save this raw match data to the mdp pData for this team.
+        let preloadShot = this.getMatchItem(teamItem, "autonShootPreload", match, "autonShootPreload");
+        let preloadAcc = this.getMatchItem(teamItem, "autonPreloadAccuracy", match, "autonPreloadAccuracy");
+        let autonHopperShot = this.getMatchItem(teamItem, "autonHoppersShot", match, "autonHoppersShot");
+        let autonHopperAcc = this.getMatchItem(teamItem, "autonHopperAccuracy", match, "autonHopperAccuracy");
+        this.getMatchItem(teamItem, "autonAllianceZone", match, "autonAllianceZone");
+        this.getMatchItem(teamItem, "autonDepot", match, "autonDepot");
+        this.getMatchItem(teamItem, "autonOutpost", match, "autonOutpost");
+        this.getMatchItem(teamItem, "autonNeutralZone", match, "autonNeutralZone");
+        this.getMatchArray(teamItem, "autonClimb", 5, match, "autonClimb");
+        this.getMatchItem(teamItem, "autonClimb", match, "autonClimb");
+         
+        // For REBUILT: calculate basic auton fuel estimate for this team/match, store in pData:fuelD
+        let autonFuelEst = calcAutonTotalFuel(hopperCap, preloadShot, autonHopperShot, preloadAcc, autonHopperAcc);
+        this.updateMatchFuelDItem(teamItem, matchnum, "autonFE", autonFuelEst);
 
-        let matchDefenseLevel = this.getMatchItem(team, "teleopDefenseLevel", match, "teleopDefenseLevel");
+        // Teleop mode: save raw match data to mdp
+        let teleopHoppersShot = this.getMatchItem(teamItem, "teleopHoppersUsed", match, "teleopHoppersUsed");
+        let teleopHopperAcc = this.getMatchItem(teamItem, "teleopHopperAccuracy", match, "teleopHopperAccuracy");
+        this.getMatchItem(teamItem, "teleopIntakeAndShoot", match, "teleopIntakeAndShoot");
+        this.getMatchItem(teamItem, "teleopNeutralToAlliance", match, "teleopNeutralToAlliance");
+        this.getMatchItem(teamItem, "teleopAllianceToAlliance", match, "teleopAllianceToAlliance");
+        this.getMatchItem(teamItem, "teleopPassingRate", match, "teleopPassingRate");
+
+        let matchDefenseLevel = this.getMatchItem(teamItem, "teleopDefenseLevel", match, "teleopDefenseLevel");
         if (matchDefenseLevel != 0) {
-          team["totalDefenseMatches"] += 1;  // increment if this team played defense
+          teamItem["totalDefenseMatches"] += 1;  // increment if this team played defense
         }
 
-        // Endgame
-        this.getMatchArray(team, "endgameStartClimb", 4, match, "endgameStartClimb");
-        this.getMatchArray(team, "endgameCageClimb", 5, match, "endgameCageClimb");
+        // For REBUILT: calculate basic teleop fuel est for this team/match and store in mdp pData.
+        let teleopFuelEst = calcTeleopTotalFuel(hopperCap, teleopHoppersShot, teleopHopperAcc);
+        this.updateMatchFuelDItem(teamItem, matchnum, "teleopFE", teleopFuelEst);
 
-        this.getMatchItem(team, "died", match, "died");
+        // Endgame
+        this.getMatchArray(teamItem, "endgameStartClimb", 4, match, "endgameStartClimb");
+        this.getMatchArray(teamItem, "endgameCageClimb", 5, match, "endgameCageClimb");
+
+        this.getMatchItem(teamItem, "died", match, "died");
 
         // Append text data for matches
-        team["scoutNames"].push(match["matchnumber"] + " - " + match["scoutname"]);
-        team["commentList"].push(match["matchnumber"] + " - " + match["comment"]);
+        teamItem["scoutNames"].push(match["matchnumber"] + " - " + match["scoutname"]);
+        teamItem["commentList"].push(match["matchnumber"] + " - " + match["comment"]);
+      }
+    }
 
-        //////////////////// GAME PIECE TOTALS ////////////////////
+    /////////// Calculate final fuel estimates using TBA data
+    // For REBUILT: Calc auton and teleop fuel estimates using the TBA match data, for all teams 
+    // and matches; (Note: this requires the basic fuel estimates to already be done.)
+    // Store the calc'd data in pData for each team.
+    this.calcMatchesFuelEstTBA(this.pData,this.tbaMatchData);    // for REBUILT
 
-        let hopperCap = 0;
-        let preloadShot = match["autonShootPreload"];
-        let hoppersShot = match["autonHoppersShot"];
-        let preloadAcc = match["autonPreloadAccuracy"];
-        let hopperAcc = match["autonHopperAccuracy"];
-        let autonEstFuel = calcAutonTotalFuel(hopperCap, preloadShot, hoppersShot, preloadAcc, hopperAcc);
+    /////////// Calculate Averages, Max and Accuracies
+    // Now go thru the pData again and calc averages and totals.
+    // For each team, go thru all its matches and do the calculations for this event
+    for (const i in this.pData) {
+      let teamItem = this.pData[i];
+      let matchList = teamItem["matches"];
+      for (const j in matchList) {
+        let match = matchList[j];
+        let matchnum = match["matchnumber"]
+
+        ////////////  Calculate scoring totals that use fuel estimates.
+        // Calc the total auton points for this match.
+        // Get the final auton fuel est for this match from the fuelD data.
+        let autonFinalFuelEst = teamItem.fuelD[matchnum].autonFE;
 
         let autonClimbPoints = 0;
-        switch (String(team["autonClimb"].val)) {
+        let autonClimb = match["autonClimb"];
+        console.log("   ==> autonClimb (radio) value = "+autonClimb);
+        switch (String(autonClimb)) {
           case "1": autonClimbPoints = 15; break;  // Back
           case "2": autonClimbPoints = 15; break;  // Left
           case "3": autonClimbPoints = 15; break;  // Front
           case "4": autonClimbPoints = 15; break; // Right
           default: autonClimbPoints = 0; break;   // No climb
         }
+        let autonTotalPoints = autonFinalFuelEst + autonClimbPoints;
+        this.updateItem(teamItem, "autonClimbPoints", autonClimbPoints);
+        this.updateItem(teamItem, "autonTotalPoints", autonTotalPoints);
+//        console.log("   ==> autonTotalPoints = "+autonTotalPoints);
 
-        let autonTotalPoints = autonEstFuel + autonClimbPoints;
-
-        let teleopHoppersShot = match["teleopHoppersUsed"];
-        let teleopHopperAcc = match["teleopHopperAccuracy"];
-
-        let teleopEstFuel = calcTeleopTotalFuel(hopperCap, teleopHoppersShot, teleopHopperAcc);
-
-        //let totalPoints = autonTotalPoints + teleopEstFuel;
-
-        // Store piece values
-        this.updateItem(team, "autonFuelEst", autonEstFuel);
-        this.updateItem(team, "autonClimb", autonClimbPoints);
-        this.updateItem(team, "autonClimbPoints", autonClimbPoints);
-        this.updateItem(team, "autonTotalPoints", autonTotalPoints);
-
-        this.updateItem(team, "teleopEstFuel", teleopEstFuel);
-
-        //this.updateItem(team, "totalPoints", totalPoints);
-
-        //////////////////// POINT TOTALS ////////////////////
+        let teleopFinalFuelEst = teamItem.fuelD[matchnum].teleopFE;
+        this.updateItem(teamItem, "teleopTotalPoints", teleopFinalFuelEst);
 
         let endgameClimbPoints = 0;
-        switch (String(team["endgameCageClimb"].val)) {
+        switch (String(teamItem["endgameCageClimb"].val)) {
           case "1": endgameClimbPoints = 2; break;  // Parked
           case "2": endgameClimbPoints = 2; break;  // Fell
           case "3": endgameClimbPoints = 6; break;  // Shallow
           case "4": endgameClimbPoints = 12; break; // Deep
           default: endgameClimbPoints = 0; break;   // No climb
         }
+        this.updateItem(teamItem, "endgamePoints", endgameClimbPoints);
 
-        let totalEstFuel = autonEstFuel + teleopEstFuel;
-        let totalMatchPoints = autonEstFuel + autonClimbPoints + teleopEstFuel + endgameClimbPoints;
-
-        // Store point values
-        this.updateItem(team, "totalEstFuel", totalEstFuel);
-        this.updateItem(team, "endgamePoints", endgameClimbPoints);
-        this.updateItem(team, "totalMatchPoints", totalMatchPoints);
+        let totalMatchPoints = autonTotalPoints + teleopFinalFuelEst + endgameClimbPoints;
+        this.updateItem(teamItem, "totalMatchPoints", totalMatchPoints);
       }
 
       //////////////////// CALCULATE AVERAGES USING TOTAL MATCH COUNT ////////////////////
-
-      // console.log("===> doing MDP averages, max for team: " + key);  // TEST
-
       // Autonomous mode
-      this.calcAverage(team, "autonFuelEst", "totalMatches");
-      this.calcArray(team, "autonClimb", "totalMatches");
-      this.calcAverage(team, "autonClimbPoints", "totalMatches");
+//HOLD?      console.log("--> calling calcAverage() for autonFuelEst"); //TEST
+//HOLD?      this.calcAverage(teamItem, "autonFuelEst", "totalMatches");
+      this.calcArray(teamItem, "autonClimb", "totalMatches");
+      console.log("--> calling calcAverage() for autonClimbPoints"); //TEST
+      this.calcAverage(teamItem, "autonClimbPoints", "totalMatches");
 
       // Teleop mode
-      this.calcAverage(team, "teleopEstFuel", "totalMatches");
+//HOLD?      console.log("--> calling calcAverage() for teleopFuelEst"); //TEST
+//HOLD?      this.calcAverage(teamItem, "teleopFuelEst", "totalMatches");
 
-      /*// Divide coral/algae pieces by acquired pieces
-      this.calcAccuracy(team, "teleopCoralPieces", "teleopCoralAcquired");
-      this.calcAccuracy(team, "teleopAlgaePieces", "teleopAlgaeAcquired");*/
+//HOLD for example      // Divide coral/algae pieces by acquired pieces
+//HOLD for example      this.calcAccuracy(teamItem, "teleopCoralPieces", "teleopCoralAcquired");
+//HOLD for example      this.calcAccuracy(teamItem, "teleopAlgaePieces", "teleopAlgaeAcquired");
 
       // Defense avg - only calculate this if this team played defense in a match
-      this.calcAverage(team, "teleopDefenseLevel", "totalDefenseMatches");
+      console.log("--> calling calcAverage() for teleopDefenseLevel"); //TEST
+      this.calcAverage(teamItem, "teleopDefenseLevel", "totalDefenseMatches");
 
-      this.calcAverage(team, "died", "totalMatches");
+//HOLD?      console.log("--> calling calcAverage() for died"); //TEST
+//HOLD?      this.calcAverage(teamItem, "died", "totalMatches");
 
       // endgame
-      this.calcArray(team, "endgameStartClimb", "totalMatches");
-      this.calcArray(team, "endgameCageClimb", "totalMatches");
+      this.calcArray(teamItem, "endgameStartClimb", "totalMatches");
+      this.calcArray(teamItem, "endgameCageClimb", "totalMatches");
 
       // points by game phase
-      this.calcAverage(team, "autonTotalPoints", "totalMatches");
-      this.calcAverage(team, "totalEstFuel", "totalMatches");
-      this.calcAverage(team, "totalMatchPoints", "totalMatches");
-
-      this.calcAverage(team, "endgamePoints", "totalMatches");
+//HOLD?      this.calcAverage(teamItem, "autonTotalPoints", "totalMatches");
+//HOLD?      this.calcAverage(teamItem, "totalFuelEst", "totalFuelEst");
+      this.calcAverage(teamItem, "totalMatchPoints", "totalMatches");
+      this.calcAverage(teamItem, "endgamePoints", "totalMatches");
     }
-
     return this.pData;
   }
-
 }

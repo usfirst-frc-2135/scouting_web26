@@ -633,7 +633,7 @@ require 'inc/header.php';
     if (ad != null) {
       row += "<td>" + ad["autonFuelEst"].avg + "</td>";
       row += "<td>" + ad["autonClimbPoints"].avg + "</td>";
-      row += "<td>" + ad["teleopEstFuel"].avg + "</td>";
+      row += "<td>" + ad["teleopFuelEst"].avg + "</td>";
       row += "<td>" + ad["endgameCageClimb"].arr[4].avg + "</td>";
       row += "<td>" + ad["endgameCageClimb"].arr[3].avg + "</td>";
       row += "<td>" + ad["endgameCageClimb"].arr[2].avg + "</td>";
@@ -676,10 +676,10 @@ require 'inc/header.php';
       teamNum = matchSpec.red[i];
       let ad = averagesData[teamNum];
       if (ad != null) {
-        totalFuelEstAvg["red"] += ad["totalEstFuel"].avg;
+        totalFuelEstAvg["red"] += ad["totalFuelEst"].avg;
         avgAutoPoints["red"] += ad["autonFuelEst"].avg;
         avgAutoClimbPoints["red"] += ad["autonClimbPoints"].avg;
-        avgTeleopPoints["red"] += ad["teleopEstFuel"].avg;
+        avgTeleopPoints["red"] += ad["teleopFuelEst"].avg;
         endgamePointsAvg["red"] += ad["endgamePoints"].avg;
         predictedPoints["red"] += ad["totalMatchPoints"].avg;
       }
@@ -690,10 +690,10 @@ require 'inc/header.php';
       teamNum = matchSpec.blue[i];
       let ad = averagesData[teamNum];
       if (ad != null) {
-        totalFuelEstAvg["blue"] += ad["totalEstFuel"].avg;
+        totalFuelEstAvg["blue"] += ad["totalFuelEst"].avg;
         avgAutoPoints["blue"] += ad["autonFuelEst"].avg;
         avgAutoClimbPoints["blue"] += ad["autonClimbPoints"].avg;
-        avgTeleopPoints["blue"] += ad["teleopEstFuel"].avg;
+        avgTeleopPoints["blue"] += ad["teleopFuelEst"].avg;
         endgamePointsAvg["blue"] += ad["endgamePoints"].avg;
         predictedPoints["blue"] += ad["totalMatchPoints"].avg;
       }
