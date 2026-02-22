@@ -75,14 +75,14 @@ function insertFuelEstimatesHeader(tableId, aliasList) {
 //  Insert a fuel estimates data table body (all rows)
 //    Params
 //      tableId     - the HTML ID where the table header is inserted
-//      matchData   - the list of available matches to include in this table
+//      matchData   - the list of matches with the raw scouted data
+//      pData       - the mdp processed data 
 //      aliasList   - list of aliases at the event (length 0 if none)
 //      teamFilter  - list of teams to include in table (length 0 if all teams)
 //      pitData     - pit scouting data 
 //      tbaMatchData  - event matches data from TBA (length 0 if none)
 //
-function insertFuelEstimatesBody(tableId, matchData, aliasList, teamFilter, pitData, tbaMatchData) {
-  console.log("==> insertFuelEstimatesDataTable() starting");
+function insertFuelEstimatesBody(tableId, matchData, pData, aliasList, teamFilter, pitData, tbaMatchData) {
 
   let tbodyRef = document.getElementById(tableId).querySelector('tbody');;
   tbodyRef.innerHTML = ""; // Clear Table
@@ -91,9 +91,10 @@ function insertFuelEstimatesBody(tableId, matchData, aliasList, teamFilter, pitD
   for (let i = 0; i < matchData.length; i++) {
     let matchItem = matchData[i];
     let teamNum = matchItem["teamnumber"];
+    let matchnum = matchItem["matchnumber"];
     if (teamFilter.length !== 0 && !teamFilter.includes(teamNum))
       continue;
-    console.log("  !!>> insertFuelEstimatesBody: doing team = "+teamNum+", match = "+matchItem["matchnumber"]);
+    console.log(" --> insertFuelEstimatesBody: doing team = "+teamNum+", match = "+matchnum);
 
     // Getting hopperCapacity from pitData");
     let hopperCap = 0;
@@ -102,24 +103,21 @@ function insertFuelEstimatesBody(tableId, matchData, aliasList, teamFilter, pitD
         hopperCap = pitData[teamNum]["caphopper"];
       }
     }
-    console.log("   ==>> hopperCap = " + hopperCap);
 
-    // Calculate the Auton fuel estimate.
+    // Calculate the basic Auton fuel estimate.
     let preloadShot = matchItem["autonShootPreload"];
     let autonHoppersShot = matchItem["autonHoppersShot"];
     let preloadAcc = matchItem["autonPreloadAccuracy"];
     let autonHopperAcc = matchItem["autonHopperAccuracy"];
     let autonEstFuel = calcAutonTotalFuel(hopperCap, preloadShot, autonHoppersShot, preloadAcc, autonHopperAcc);
-    console.log("       ===>> autonEstFuel = " + autonEstFuel);
 
-    // Calculate the Teleop fuel estimate.
+    // Calculate the basic Teleop fuel estimate.
     let teleopHoppersShot = matchItem["teleopHoppersUsed"];
     let teleopHopperAcc = matchItem["teleopHopperAccuracy"];
     let teleopEstFuel = calcTeleopTotalFuel(hopperCap, teleopHoppersShot, teleopHopperAcc);
-    console.log("          ===>> teleopEstFuel = " + teleopEstFuel);
 
     const tdBody = "<td class='bg-body'>";
-    let rowString = "<th class='fw-bold'>" + matchItem["matchnumber"] + "</th>";
+    let rowString = "<th class='fw-bold'>" + matchnum + "</th>";
 
     rowString += tdBody + "<a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</td>";
 
@@ -133,8 +131,17 @@ function insertFuelEstimatesBody(tableId, matchData, aliasList, teamFilter, pitD
     if (hopperCap == 0) 
       colorTag = tdBody + "<span style='color:red;'>";
 
+    // Get the TBA-based fuel estimates from the pData fuelD for this match.
     let autonEstFuelTBA = 0;
     let teleopEstFuelTBA = 0;
+    if(pData[teamNum]["fuelD"] == null || pData[teamNum]["fuelD"][matchnum] == null) {
+      if(pData[teamNum]["fuelD"] == null)
+        console.log("     ERROR - no fuelD found for pData team: "+teamNum);
+      else console.log("     ERROR - no fuelD found for pData: "+teamNum+", matchnum="+matchnum);
+    } else {
+      autonEstFuelTBA = pData[teamNum]["fuelD"][matchnum]["autonFE"];
+      teleopEstFuelTBA = pData[teamNum]["fuelD"][matchnum]["teleopFE"];
+    }
 
     // Add fuel estimates to rowString with appropriate color.
     rowString += colorTag + autonEstFuel + "</span></td>";
@@ -153,12 +160,11 @@ function insertFuelEstimatesBody(tableId, matchData, aliasList, teamFilter, pitD
 /////////////////// Rebuilt calculations  //////////////
 function calcAutonTotalFuel(hopperCap, preloadShot, hoppersShot, preloadAcc, hopperAcc)
 {
-  console.log("---> starting calcAutonTotalFuel()");
   if (hopperCap == 0)
   {
     hopperCap = DEF_HOPPER_CAP;
   }
-  console.log("   --> hopperCap = " + hopperCap);
+  console.log(" --> For auton fuel est: hopperCap = " + hopperCap);
 
   console.log("   --> preloadAcc (radio button data) = " + preloadAcc);
   // Convert the scouted preloadAcc data (radio button number) to the appropriate percentage.
@@ -176,7 +182,7 @@ function calcAutonTotalFuel(hopperCap, preloadShot, hoppersShot, preloadAcc, hop
   autonPreloadTotal = Number(autonPreloadTotal).toFixed(2);
 
   // Convert the scouted hopperAcc data (radio button number) to the appropriate percentage.
-  console.log("     --> hopperAcc (radio button data) = " + hopperAcc);
+  console.log("   --> auto hopperAcc (radio button data) = " + hopperAcc);
   switch (hopperAcc) {
       case 0: hopperAcc = AUTON_NONE_ACC_RATE; break;        // N/A
       case 1: hopperAcc = AUTON_MOST_ACC_RATE_EXTRA; break;  // Most
@@ -187,28 +193,27 @@ function calcAutonTotalFuel(hopperCap, preloadShot, hoppersShot, preloadAcc, hop
       case 6: hopperAcc = AUTON_NONE_ACC_RATE; break;        // None
       default: hopperAcc = AUTON_IDK_ACC_RATE; break;        // IDK
   }
-  console.log("        --> hopperAcc (percentage) = " + hopperAcc);
+  console.log("     --> auto hopperAcc (percentage) = " + hopperAcc);
+  console.log("     --> auto hoppersShot = " + hoppersShot);
   let autonExtraTotal = hoppersShot * hopperAcc * hopperCap;
   autonExtraTotal = Number(autonExtraTotal).toFixed(2);
-
-  console.log("        --> autonPreloadTotal = "+ autonPreloadTotal);
-  console.log("        --> autonExtraTotal = "+ autonExtraTotal);
+  console.log("       --> autonPreloadTotal = "+ autonPreloadTotal);
+  console.log("       --> autonExtraTotal = "+ autonExtraTotal);
 
   let totalEstFuel = parseFloat(autonPreloadTotal) + parseFloat(autonExtraTotal);
-  console.log("          -----> total Auton estFuel = " + totalEstFuel);
+  console.log("        -----> total Auton estFuel = " + totalEstFuel);
   return totalEstFuel;
 };
 
 function calcTeleopTotalFuel(hopperCap, hoppersShot, hopperAcc)
 {
-  console.log(" ==> starting calcTeleopTotalFuel()");
   if (hopperCap == 0)
     hopperCap = DEF_HOPPER_CAP;
 
-  console.log("    --> hopperCap = " + hopperCap);
+  console.log(" --> For teleop fuel est: hopperCap = " + hopperCap);
    
   // Convert the scouted teleop hopperAcc data (radio button) to the appropriate percentage.
-  console.log("      --> hopperAcc (radio button) = " + hopperAcc);
+  console.log("   --> teleop hopperAcc (radio button) = " + hopperAcc);
   switch (hopperAcc) {
       case 0: hopperAcc = TELEOP_NONE_ACC_RATE; break;    // N/A
       case 1: hopperAcc = TELEOP_MOST_ACC_RATE; break;    // Most
@@ -219,10 +224,10 @@ function calcTeleopTotalFuel(hopperCap, hoppersShot, hopperAcc)
       case 6: hopperAcc = TELEOP_NONE_ACC_RATE; break;    // None
       default: hopperAcc = TELEOP_IDK_ACC_RATE; break;    // IDK
   }
-  console.log("      --> hopperAcc (percentage) = " + hopperAcc);
+  console.log("   --> teleop hopperAcc (percentage) = " + hopperAcc);
 
   let teleopEstFuel = Number(hoppersShot * hopperAcc * hopperCap).toFixed(2);
-  console.log("        ------> teleopEstFuel = "+ teleopEstFuel);
+  console.log("     -----> teleopEstFuel = "+ teleopEstFuel);
   return teleopEstFuel;
 };
 

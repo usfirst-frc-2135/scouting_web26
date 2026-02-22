@@ -17,7 +17,6 @@ class matchDataProcessor {
 
   // matchDataProcess constructor 
   constructor(jMatchData, tbaMatchData, pitData) {
-    console.log("===>>> matchDataProcessor constructor starting");
     if(tbaMatchData == null) //TEST
       console.log("   ===>>> matchDataProcessor constructor tbaMatchData is null");
     if(pitData == null) //TEST
@@ -315,11 +314,13 @@ class matchDataProcessor {
       return;
     }
     // Initialize this fuelD entry if not yet used.
-    if (item.fuelD[matchnum] === undefined) {
-      item.fuelD[matchnum] = { matchnum: matchnum, autonFE: 0.0, teleopFE: 0.0 };  
+    if (item["fuelD"][matchnum] === undefined) {
+      item["fuelD"][matchnum] = { matchnum: matchnum, autonFE: 0.0, teleopFE: 0.0 };  
     }
-    console.log("!!!!!!!!!!!!!->> update pData["+item.teamnum+"].fuelD["+matchnum+"]."+key+" = "+value);
-    item.fuelD[matchnum].key = value;   
+    let teamnum = item["teamNum"]; //TEST
+    item["fuelD"][matchnum][key] = value;   
+//TEST    let tvalue = this.pData[teamnum]["fuelD"][matchnum][key];
+//TEST    console.log("    !!!!!!!!!->> verifying update fuelD: "+ tvalue);
   }
 
   //
@@ -353,7 +354,7 @@ class matchDataProcessor {
       if(teamNum == teamnum)
         return teamItem;
     }
-    console.log("===> findPDataTeamItem() could not find for team: " + teamnum);  
+//    console.log("===> findPDataTeamItem() could not find for team: " + teamnum);  
     return null;
   }
 
@@ -361,8 +362,6 @@ class matchDataProcessor {
   // results in the given MDP pData for each team.
   calcMatchesFuelEstTBA(pData, tbaMatchData) 
   {
-    console.log("!!====> STARTING calcMatchesFuelEstTBA()");
-
     // Go thru the TBA matches and process each match (all 6 teams) to get the auton and teleop
     // fuel estimates using the TBA auton fuel total and teleop fuel total. Distribute those TBA
     // totals between the 3 teams based on the ratio of the basic fuel estimates.
@@ -374,12 +373,10 @@ class matchDataProcessor {
 
       let matchNum = match["match_number"]; 
       let matchId = match["comp_level"] + matchNum;   // i.e. "qm3"
-      console.log("===> calcMatchesFuelEstTBA: doing match: "+matchId);
 
       this.calcAllianceFuelEstTBA(pData, match, "red");
       this.calcAllianceFuelEstTBA(pData, match, "blue");
     }
-    console.log("  <==== DONE calcMatchesFuelEstTBA()");
   } 
 
   // For REBUILT: Calculate the final (TBA) estimated fuel totals for the given match and alliance.
@@ -402,12 +399,16 @@ class matchDataProcessor {
         teams[i] = teams[i].substring(3);
       }
     }
-    console.log("     ---> Revised "+aColor+" Teams = "+teams[0]+", "+teams[1]+", "+teams[2]);
+    console.log("   ---> "+aColor+" Teams = "+teams[0]+", "+teams[1]+", "+teams[2]);
 
     // Get the 3 teams' current fuel estimates and also get the tbaMatch total fuel counts.
     let tbaBreakdown = match["score_breakdown"];
     let autoFuelTBA = parseFloat(tbaBreakdown[aColor]["autoPoints"]); // TODO - fix for auton fuel count
+    autoFuelTBA = autoFuelTBA * 3; // FORNOW - REMOVE
+    console.log("    ---> (fake) autonFuelTBA ("+aColor+") = "+autoFuelTBA);
     let teleopFuelTBA = parseFloat(tbaBreakdown[aColor]["teleopPoints"]); // TODO - fix for teleop fuel count
+    teleopFuelTBA = teleopFuelTBA * 6; // FORNOW - REMOVE
+    console.log("    ---> (fake) teleopFuelTBA ("+aColor+") = "+teleopFuelTBA);
 
     // Find the corresponding team pData item.
     let pDataTeam1 = this.findPDataTeamItem(pData, teams[0]);
@@ -416,36 +417,37 @@ class matchDataProcessor {
 
     // Return if any of the teams don't have a pData item.
     if ( pData[teams[0]] == null || pData[teams[1]] == null || pData[teams[2]] == null) {
-      console.log("  -->>> calcAllianceFuelEstTBA(): team pData not found!");
+//      console.log("  --> calcAllianceFuelEstTBA(): team pData not found!");
       return;
     }
     // Return if any of the teams fuelD doesn't have an entry for this matchnum.
-    if ( pData[teams[0]].fuelD[matchnum] == null || pData[teams[1]].fuelD[matchnum] == null || pData[teams[2]].fuelD[matchnum] == null) {
-      console.log("  -->>> calcAllianceFuelEstTBA(): pData team fuelD not found!");
+    if ( pData[teams[0]]["fuelD"][matchnum] == null || pDataTeam2["fuelD"][matchnum] == null || pDataTeam3["fuelD"][matchnum] == null) {
+//      console.log("  -->>> calcAllianceFuelEstTBA(): pData team fuelD not found!");
       return;
     }
   
     // Now get the existing fuelD data (should be the basic fuel estimates w/o TBA data)
-    let autoFuel1 = Number(pDataTeam1.fuelD[matchnum].autonFE).toFixed(2);
-    console.log("--->> pData["+teams[0]+"].fuelD["+matchnum+"].autonFE = "+autoFuel1);
-    let autoFuel2 = pData[teams[1]].fuelD[matchnum].autonFE;
-    let autoFuel3 = pData[teams[2]].fuelD[matchnum].autonFE;
-    let teleopFuel1 = pDataTeam1.fuelD[matchnum].teleopFE;
-    let teleopFuel2 = pDataTeam2.fuelD[matchnum].teleopFE;
-    let teleopFuel3 = pDataTeam3.fuelD[matchnum].teleopFE;
+    let autoFuel1 = parseFloat(pDataTeam1["fuelD"][matchnum]["autonFE"]);
+    let autoFuel2 = parseFloat(pDataTeam2["fuelD"][matchnum]["autonFE"]);
+    let autoFuel3 = parseFloat(pDataTeam3["fuelD"][matchnum]["autonFE"]);
+    let teleopFuel1 = parseFloat(pDataTeam1["fuelD"][matchnum]["teleopFE"]);
+    let teleopFuel2 = parseFloat(pDataTeam2["fuelD"][matchnum]["teleopFE"]);
+    let teleopFuel3 = parseFloat(pDataTeam3["fuelD"][matchnum]["teleopFE"]);
     console.log("  ---->>> basic autoFuel = "+autoFuel1+", "+autoFuel2+", "+autoFuel3);
-    console.log("  ---->>> basic teleopFuel = "+teleopFuel1+", "+teleopFuel2+", "+teleopFuel3);
 
     // Calculate ratio of each robot's contribution to the the base auton total fuel.
-    let autoPercentage1 = (autoFuel1 / (autoFuel1 + autoFuel2 + autoFuel3));
-    let autoPercentage2 = (autoFuel2 / (autoFuel1 + autoFuel2 + autoFuel3));
-    let autoPercentage3 = (autoFuel3 / (autoFuel1 + autoFuel2 + autoFuel3));
-    console.log("    ---->> autoPercentages = "+autoPercentage1+", "+autoPercentage2+", "+autoPercentage3);
+    let autoSum = Number(autoFuel1 + autoFuel2 + autoFuel3).toFixed(2);
+    console.log("    ---->> autoSum = "+autoSum);
 
-    // Now use the percentages to calc each team's contribution to the actual (tba) auton fuel count.
-    let autoFinal1 = autoPercentage1 * autoFuelTBA;
-    let autoFinal2 = autoPercentage2 * autoFuelTBA;
-    let autoFinal3 = autoPercentage3 * autoFuelTBA;
+    let autoRatio1 = Number(autoFuel1 / autoSum).toFixed(2);
+    let autoRatio2 = Number(autoFuel2 / autoSum).toFixed(2);
+    let autoRatio3 = Number(autoFuel3 / autoSum).toFixed(2);
+    console.log("    ---->> autoRatios = "+autoRatio1+", "+autoRatio2+", "+autoRatio3);
+
+    // Now use the ratios to calc each team's contribution to the actual (tba) auton fuel count.
+    let autoFinal1 = Number(autoRatio1 * autoFuelTBA).toFixed(2);
+    let autoFinal2 = Number(autoRatio2 * autoFuelTBA).toFixed(2);
+    let autoFinal3 = Number(autoRatio3 * autoFuelTBA).toFixed(2);
     console.log("      ---->> autoFinals = "+autoFinal1+", "+autoFinal2+", "+autoFinal3);
 
     // Update this field in regular team pData, to be used for max and avgs.
@@ -453,32 +455,35 @@ class matchDataProcessor {
     this.updateItem(pDataTeam2, "autonFuelEst", autoFinal2);
     this.updateItem(pDataTeam3, "autonFuelEst", autoFinal3);
 
-    // Save the final auton fuel estimates in pData for each team.
-    pDataTeam1.fuelD[matchnum].autonFuelEst = autoFinal1;
-    pDataTeam2.fuelD[matchnum].autonFuelEst = autoFinal2;
-    pDataTeam3.fuelD[matchnum].autonFuelEst = autoFinal3;
+    // Replace the basic auton fuel est for this match in fuelD with the TBA-based value. 
+    this.updateMatchFuelDItem(pDataTeam1, matchnum, "autonFE", autoFinal1);
+    this.updateMatchFuelDItem(pDataTeam2, matchnum, "autonFE", autoFinal2);
+    this.updateMatchFuelDItem(pDataTeam3, matchnum, "autonFE", autoFinal3);
 
     // Now do teleop calcs.
-    let telePercentage1 = (teleopFuel1 / (teleopFuel1 + teleopFuel2 + teleopFuel3));
-    let telePercentage2 = (teleopFuel2 / (teleopFuel1 + teleopFuel2 + teleopFuel3));
-    let telePercentage3 = (teleopFuel3 / (teleopFuel1 + teleopFuel2 + teleopFuel3));
-    console.log("    ---->> teleopPercentages = "+telePercentage1+", "+telePercentage2+", "+telePercentage3);
+    console.log("  ---->>> basic teleopFuel = "+teleopFuel1+", "+teleopFuel2+", "+teleopFuel3);
+    let teleSum = Number(teleopFuel1 + teleopFuel2 + teleopFuel3).toFixed(2);
+    console.log("    ---->>> teleSum = "+teleSum);
+    let teleRatio1 = Number(teleopFuel1 / teleSum).toFixed(2);
+    let teleRatio2 = Number(teleopFuel2 / teleSum).toFixed(2);
+    let teleRatio3 = Number(teleopFuel3 / teleSum).toFixed(2);
+    console.log("    ---->> teleopRatios = "+teleRatio1+", "+teleRatio2+", "+teleRatio3);
 
-    // Use the percentages to calc each team's contribution to the actual (tba) teleop fuel count.
-    let teleFinal1 = telePercentage1 * teleopFuelTBA;
-    let teleFinal2 = telePercentage2 * teleopFuelTBA;
-    let teleFinal3 = telePercentage3 * teleopFuelTBA;
+    // Use the ratios to calc each team's contribution to the actual (tba) teleop fuel count.
+    let teleFinal1 = Number(teleRatio1 * teleopFuelTBA).toFixed(2);
+    let teleFinal2 = Number(teleRatio2 * teleopFuelTBA).toFixed(2);
+    let teleFinal3 = Number(teleRatio3 * teleopFuelTBA).toFixed(2);
     console.log("      ---->> teleFinals = "+teleFinal1+", "+teleFinal2+", "+teleFinal3);
 
-    // Save the final teleop fuel estimates in pData for each team.
-    pDataTeam1.fuelD[matchnum].teleopFuelEst = teleFinal1;
-    pDataTeam2.fuelD[matchnum].teleopFuelEst = teleFinal2;
-    pDataTeam3.fuelD[matchnum].teleopFuelEst = teleFinal3;
-
-    // Update this field in regular team pData, to be used for max and avgs.
+    // Save the final teleop fuel estimates in pData, to be used for max and avgs.
     this.updateItem(pDataTeam1, "teleopFuelEst", teleFinal1);
     this.updateItem(pDataTeam2, "teleopFuelEst", teleFinal2);
     this.updateItem(pDataTeam3, "teleopFuelEst", teleFinal3);
+
+    // Replace the basic auton fuel est for this match in fuelD with the TBA-based value. 
+    this.updateMatchFuelDItem(pDataTeam1, matchnum, "teleopFE", teleFinal1);
+    this.updateMatchFuelDItem(pDataTeam2, matchnum, "teleopFE", teleFinal2);
+    this.updateMatchFuelDItem(pDataTeam3, matchnum, "teleopFE", teleFinal3);
 
     // Calculate the total fuel estimates.
     let totalFinal1 = autoFinal1 + teleFinal1;
@@ -514,7 +519,7 @@ class matchDataProcessor {
   //    }
   //
   getEventAverages() {
-    console.log("matchDataProcessor: getEventAverages:");
+    console.log("mdp: getEventAverages starting");
 
     //////////////////// PROCESS ALL TEAMS ////////////////////
 
@@ -523,7 +528,7 @@ class matchDataProcessor {
       let teamItem = this.pData[i];
       let matchList = teamItem["matches"];
       let teamnum = teamItem["teamNum"];
-      console.log("===> MDP calcs team: " + teamItem["teamNum"] + " matches: " + matchList.length);  
+      console.log("MDP doing team " + teamItem["teamNum"] + ", # of matches: " + matchList.length);  
 
       // Initialize text data for matches
       teamItem["scoutNames"] = [];
@@ -538,7 +543,7 @@ class matchDataProcessor {
       for (const j in matchList) {
         let match = matchList[j];
         let matchnum = match["matchnumber"];
-        console.log("!->>> matchList: matchnum = "+matchnum);
+        console.log("MDP for team "+teamnum+", doing match "+matchnum);
 
         // NOTE: The field names on the right side of getMatchXXX must match the DB field names in the matchtable (raw scouted) database
         //       The field names on the left side of getMatchXXX must match the field names in this class (mdp)
@@ -547,7 +552,7 @@ class matchDataProcessor {
         let hopperCap = 0;  // default
         if(this.pitData != null && this.pitData[teamnum] != null && this.pitData[teamnum]["caphopper"] != null) 
            hopperCap = this.pitData[teamnum]["caphopper"];   
-        else console.log("!!! pData.pitData is NULL or does not have team "+teamnum);
+        else console.log("!!! NO pitData for team "+teamnum);
 
         // Autonomous mode - save this raw match data to the mdp pData for this team.
         let preloadShot = this.getMatchItem(teamItem, "autonShootPreload", match, "autonShootPreload");

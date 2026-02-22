@@ -46,11 +46,7 @@ require 'inc/header.php';
     let mdp = new matchDataProcessor(matchTableData,tbaMatchData,pitData);
     mdp.getSiteFilteredAverages(function(filteredMatchData, filteredAvgData) {
       if (filteredMatchData != undefined) {
-
-
-
-// TODO - change insertFuelEstimatesBody() to just use mdp data (filteredMatchData)
-        insertFuelEstimatesBody(tableId, filteredMatchData, aliasNames, [], pitData, tbaMatchData);
+        insertFuelEstimatesBody(tableId, filteredMatchData, filteredAvgData, aliasNames, [], pitData, tbaMatchData);
         document.getElementById('spinner').style.display = 'none';
         // script instructions say this is needed, but it breaks table header sorting
         // sorttable.makeSortable(document.getElementById(tableId));
@@ -101,8 +97,6 @@ require 'inc/header.php';
       loadFuelEstTable(tableId,jAliasNames,jMatchTableData,jPitData,tbaMatchData);
     });
   }
-
-  
 
   /////////////////////////////////////////////////////////////////////////////
   //
