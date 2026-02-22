@@ -16,7 +16,12 @@ class matchDataProcessor {
   pData = [];          // Processed data after totals and averages calculated
 
   // matchDataProcess constructor 
-  constructor(jMatchData,tbaMatchData,pitData) {
+  constructor(jMatchData, tbaMatchData, pitData) {
+    console.log("===>>> matchDataProcessor constructor starting");
+    if(tbaMatchData == null) //TEST
+      console.log("   ===>>> matchDataProcessor constructor tbaMatchData is null");
+    if(pitData == null) //TEST
+      console.log("   ===>>> matchDataProcessor constructor pitData is null");
     this.mData = jMatchData;
     this.tbaMatchData = tbaMatchData;   // For REBUILT
     this.pitData = pitData;             // For REBUILT
@@ -197,18 +202,6 @@ class matchDataProcessor {
     });
   }
 
-  // Find the pData team item for the given teamnum or return null if not found.
-  findTeamPDataItem(teamnum) {
-    for (const i in this.pData) {
-      let teamItem = this.pData[i];
-      if ( teamItem.teamnum == teamnum ) { 
-        console.log(">>>>>>>> findTeamPDataItem: found team "+teamnum);
-        return teamItem;
-      }
-    }
-    return null;
-  } 
-
   //  
   // Initialize match item statistics: 
   // Sets up a new data entry for the given team array, if none yet exists for this keyword, where 
@@ -310,7 +303,7 @@ class matchDataProcessor {
   //
   // For REBUILT: Used for mdp fuelD data to hold the fuel estimates for each match. 
   // Stores the given value in the given team fuelD array where 
-  //    "item"       -> the array holding mdp data for a specific team (from this.pData).
+  //    "item"       -> the array holding mdp data for a specific team (pData[teamnum]).
   //    "matchnum"   -> the match number for this data
   //    "key"        -> "autonFE" or "teleopFE"
   //    "value"      -> the value for this data 
@@ -323,8 +316,9 @@ class matchDataProcessor {
     }
     // Initialize this fuelD entry if not yet used.
     if (item.fuelD[matchnum] === undefined) {
-      item.fuelD[matchnum] = { matchnum: matchnum, autonFE: 0, teleopFE: 0 };  
+      item.fuelD[matchnum] = { matchnum: matchnum, autonFE: 0.0, teleopFE: 0.0 };  
     }
+    console.log("!!!!!!!!!!!!!->> update pData["+item.teamnum+"].fuelD["+matchnum+"]."+key+" = "+value);
     item.fuelD[matchnum].key = value;   
   }
 
@@ -349,6 +343,18 @@ class matchDataProcessor {
     for (const i in item[mdpKeyword].arr) {
       item[mdpKeyword].arr[i].avg = (item[denominator] != 0) ? this.toPercent(item[mdpKeyword].arr[i].sum / item[denominator]) : 0;
     }
+  }
+
+  // Find this team entry in pData.
+  findPDataTeamItem(pData, teamnum) {
+    for (const i in pData) {
+      let teamItem = this.pData[i];
+      let teamNum = teamItem["teamNum"];
+      if(teamNum == teamnum)
+        return teamItem;
+    }
+    console.log("===> findPDataTeamItem() could not find for team: " + teamnum);  
+    return null;
   }
 
   // For REBUILT: Calculate the estimated fuel totals based on the TBA match data and store the 
@@ -381,7 +387,7 @@ class matchDataProcessor {
   calcAllianceFuelEstTBA(pData, match, aColor)
   {
     let alliances = match["alliances"];
-    let matchnum = match["comp_level"]+match["matchnumber"];
+    let matchnum = match["comp_level"]+match["match_number"];
     console.log("---> calcAllianceFuelEstTBA() matchnum = "+matchnum);
 
     // Get the teams in this alliance
@@ -389,7 +395,6 @@ class matchDataProcessor {
     teams[0] = alliances[aColor]["team_keys"][0];
     teams[1] = alliances[aColor]["team_keys"][1];
     teams[2] = alliances[aColor]["team_keys"][2];
-    console.log("  ---> "+aColor+" Teams = "+teams[0]+", "+teams[1]+", "+teams[2]);
 
     for (let i = 0; i < teams.length; i++) {
       // Remove leading "frc" if any
@@ -405,28 +410,29 @@ class matchDataProcessor {
     let teleopFuelTBA = parseFloat(tbaBreakdown[aColor]["teleopPoints"]); // TODO - fix for teleop fuel count
 
     // Find the corresponding team pData item.
-    let pDataTeam1 = this.findTeamPDataItem(teams[0]);
-    let pDataTeam2 = this.findTeamPDataItem(teams[1]);
-    let pDataTeam3 = this.findTeamPDataItem(teams[2]);
+    let pDataTeam1 = this.findPDataTeamItem(pData, teams[0]);
+    let pDataTeam2 = pData[teams[1]];
+    let pDataTeam3 = pData[teams[2]];
 
     // Return if any of the teams don't have a pData item.
-    if ( pDataTeam1 == null || pDataTeam2 == null || pDataTeam3 == null) {
+    if ( pData[teams[0]] == null || pData[teams[1]] == null || pData[teams[2]] == null) {
       console.log("  -->>> calcAllianceFuelEstTBA(): team pData not found!");
       return;
     }
     // Return if any of the teams fuelD doesn't have an entry for this matchnum.
-    if ( pDataTeam1.fuelD[matchnum] == null || pDataTeam2.fuelD[matchnum] == null || pDataTeam3.fuelD[matchnum] == null) {
+    if ( pData[teams[0]].fuelD[matchnum] == null || pData[teams[1]].fuelD[matchnum] == null || pData[teams[2]].fuelD[matchnum] == null) {
       console.log("  -->>> calcAllianceFuelEstTBA(): pData team fuelD not found!");
       return;
     }
   
-    // Now get the existing fuelD data (should be the basic fuel estimates w/o TBA data
-    let autoFuel1 = parseFloat(pDataTeam1.fuelD[matchnum].autonFuelEst);
-    let autoFuel2 = parseFloat(pDataTeam2.fuelD[matchnum].autonFuelEst);
-    let autoFuel3 = parseFloat(pDataTeam3.fuelD[matchnum].autonFuelEst);
-    let teleopFuel1 = parseFloat(pDataTeam1.fuelD[matchnum].teleopFuelEst);
-    let teleopFuel2 = parseFloat(pDataTeam2.fuelD[matchnum].teleopFuelEst);
-    let teleopFuel3 = parseFloat(pDataTeam3.fuelD[matchnum].teleopFuelEst);
+    // Now get the existing fuelD data (should be the basic fuel estimates w/o TBA data)
+    let autoFuel1 = Number(pDataTeam1.fuelD[matchnum].autonFE).toFixed(2);
+    console.log("--->> pData["+teams[0]+"].fuelD["+matchnum+"].autonFE = "+autoFuel1);
+    let autoFuel2 = pData[teams[1]].fuelD[matchnum].autonFE;
+    let autoFuel3 = pData[teams[2]].fuelD[matchnum].autonFE;
+    let teleopFuel1 = pDataTeam1.fuelD[matchnum].teleopFE;
+    let teleopFuel2 = pDataTeam2.fuelD[matchnum].teleopFE;
+    let teleopFuel3 = pDataTeam3.fuelD[matchnum].teleopFE;
     console.log("  ---->>> basic autoFuel = "+autoFuel1+", "+autoFuel2+", "+autoFuel3);
     console.log("  ---->>> basic teleopFuel = "+teleopFuel1+", "+teleopFuel2+", "+teleopFuel3);
 
@@ -501,10 +507,10 @@ class matchDataProcessor {
   //     scoutNames: [name1, name2, ...]
   //     commentList: [comment1, comment2, ...]
   //          -- Additional data for REBUILT (has no corresponding QR code data):
-  //     autonFuelEst { val: int, sum: int, max: int, avg: float }  // For REBUILT
-  //     teleopFuelEst { val: int, sum: int, max: int, avg: float }  // For REBUILT
-  //     totalFuelEst { val: int, sum: int, max: int, avg: float }  // For REBUILT
-  //     fuelD: { matchid: matchnum, autonFE: int, teleopFE: int }  // REBUILT fuelEst by matchnum
+  //     autonFuelEst { val: float, sum: float, max: float, avg: float }  // For REBUILT
+  //     teleopFuelEst { val: float, sum: float, max: float, avg: float }  // For REBUILT
+  //     totalFuelEst { val: float, sum: float, max: float, avg: float }  // For REBUILT
+  //     fuelD: { matchid: matchnum, autonFE: float, teleopFE: float }  // REBUILT fuelEst by matchnum
   //    }
   //
   getEventAverages() {

@@ -42,7 +42,6 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getEventAliasNames: true
     }).done(function(eventAliasNames) {
-      console.log("=> eventAliasNames");
       jAliasNames = JSON.parse(eventAliasNames);
       insertMatchDataHeader(tableId, jAliasNames);
     });
@@ -51,9 +50,9 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getAllMatchData: true
     }).done(function(matchData) {
-      console.log("=> getAllMatchData");
+      console.log("=> buildMatchDataTable(): getAllMatchData done");
+
       let mdp = new matchDataProcessor(JSON.parse(matchData));
-      // mdp.sortMatches(allEventMatches);
       mdp.getSiteFilteredAverages(function(filteredMatchData, filteredAvgData) {
         if (filteredMatchData !== undefined) {
           insertMatchDataBody(tableId, filteredMatchData, jAliasNames, []);
@@ -62,7 +61,7 @@ require 'inc/header.php';
           // sorttable.makeSortable(document.getElementById(tableId));
           document.getElementById(tableId).click(); // This magic fixes the floating column bug
         } else {
-          alert("No match data found!");
+          alert(" buildMatchDataTable(): No match data found!");
         }
       });
     });

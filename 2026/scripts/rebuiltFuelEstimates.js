@@ -84,11 +84,6 @@ function insertFuelEstimatesHeader(tableId, aliasList) {
 function insertFuelEstimatesBody(tableId, matchData, aliasList, teamFilter, pitData, tbaMatchData) {
   console.log("==> insertFuelEstimatesDataTable() starting");
 
-  // TODO --- set up mdp and it will do the calcs needed, then build table from that data.
-
-
-
-
   let tbodyRef = document.getElementById(tableId).querySelector('tbody');;
   tbodyRef.innerHTML = ""; // Clear Table
 
@@ -98,13 +93,13 @@ function insertFuelEstimatesBody(tableId, matchData, aliasList, teamFilter, pitD
     let teamNum = matchItem["teamnumber"];
     if (teamFilter.length !== 0 && !teamFilter.includes(teamNum))
       continue;
-    console.log("  !!> insertFuelEstimatesBody: doing team = "+teamNum+", match = "+matchItem["matchnumber"]);
+    console.log("  !!>> insertFuelEstimatesBody: doing team = "+teamNum+", match = "+matchItem["matchnumber"]);
 
     // Getting hopperCapacity from pitData");
     let hopperCap = 0;
     if (pitData != null) {
       if (pitData[teamNum] != null) {
-        hopperCap = pitData[teamNum]["numbatteries"];    // TODO - fix this to be auto hopper count
+        hopperCap = pitData[teamNum]["caphopper"];
       }
     }
     console.log("   ==>> hopperCap = " + hopperCap);
@@ -133,30 +128,20 @@ function insertFuelEstimatesBody(tableId, matchData, aliasList, teamFilter, pitD
       rowString += tdBody + getAliasFromTeamNum(teamNum, aliasList) + "</td>";
     }
 
-    if (hopperCap == 0) {
-      rowString += tdBody + "<span style='color:red;'>" + autonEstFuel + "</span></td>";
-    }
-    else {
-      rowString += tdBody + "<span style='color:black;'>" + autonEstFuel + "</span></td>";
-    }
-    if (hopperCap == 0) {
-      rowString += tdBody + "<span style='color:red;'>" + matchItem["autonPreloadAccuracy"] + "</span></td>";
-    }
-    else {
-      rowString += tdBody + "<span style='color:black;'>" + matchItem["autonPreloadAccuracy"] + "</span></td>";
-    }
-    if (hopperCap == 0) {
-      rowString += tdBody + "<span style='color:red;'>" + teleopEstFuel + "</span></td>";
-    }
-    else { 
-      rowString += tdBody + "<span style='color:black;'>" + teleopEstFuel + "</span></td>";
-    }
-    if (hopperCap == 0) {
-      rowString += tdBody + "<span style='color:red;'>" + matchItem["teleopHopperAccuracy"] + "</span></td>";
-    }
-    else { 
-      rowString += tdBody + "<span style='color:black;'>" + matchItem["teleopHopperAccuracy"] + "</span></td>";
-    }
+    // Use red text for the fuel estimate numbers when we don't know the true hopper capacity.
+    colorTag = tdBody + "<span style='color:black;'>";
+    if (hopperCap == 0) 
+      colorTag = tdBody + "<span style='color:red;'>";
+
+    let autonEstFuelTBA = 0;
+    let teleopEstFuelTBA = 0;
+
+    // Add fuel estimates to rowString with appropriate color.
+    rowString += colorTag + autonEstFuel + "</span></td>";
+    rowString += colorTag + autonEstFuelTBA + "</span></td>"; 
+    rowString += colorTag + teleopEstFuel + "</span></td>";
+    rowString += colorTag + teleopEstFuelTBA + "</span></td>";
+     
     tbodyRef.insertRow().innerHTML = rowString;
   }  // end of matches loop
 
