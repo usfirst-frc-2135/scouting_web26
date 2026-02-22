@@ -46,7 +46,7 @@ require 'inc/header.php';
     let mdp = new matchDataProcessor(matchTableData,tbaMatchData,pitData);
     mdp.getSiteFilteredAverages(function(filteredMatchData, filteredAvgData) {
       if (filteredMatchData != undefined) {
-        insertFuelEstimatesBody(tableId, filteredMatchData, filteredAvgData, aliasNames, [], pitData, tbaMatchData);
+        insertFuelEstimatesBody(tableId,filteredMatchData, filteredAvgData, aliasNames, [], pitData);
         document.getElementById('spinner').style.display = 'none';
         // script instructions say this is needed, but it breaks table header sorting
         // sorttable.makeSortable(document.getElementById(tableId));

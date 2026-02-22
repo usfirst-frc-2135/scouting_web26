@@ -304,12 +304,12 @@ class matchDataProcessor {
   // Stores the given value in the given team fuelD array where 
   //    "item"       -> the array holding mdp data for a specific team (pData[teamnum]).
   //    "matchnum"   -> the match number for this data
-  //    "key"        -> "autonFE" or "teleopFE"
+  //    "key"        -> "autonFE", "teleopFE", "tbaAutonFE", or "tbaTeleopFE"
   //    "value"      -> the value for this data 
   //
   updateMatchFuelDItem(item, matchnum, key, value)
   {
-    if(key != "autonFE" && key != "teleopFE") {
+    if(key != "autonFE" && key != "teleopFE" && key != "tbaAutonFE" && key != "tbaTeleopFE") {
       console.log("!!!! ERROR! updateMatchFuelDItem() keyword '"+key+"' not recognized!!");
       return;
     }
@@ -455,10 +455,10 @@ class matchDataProcessor {
     this.updateItem(pDataTeam2, "autonFuelEst", autoFinal2);
     this.updateItem(pDataTeam3, "autonFuelEst", autoFinal3);
 
-    // Replace the basic auton fuel est for this match in fuelD with the TBA-based value. 
-    this.updateMatchFuelDItem(pDataTeam1, matchnum, "autonFE", autoFinal1);
-    this.updateMatchFuelDItem(pDataTeam2, matchnum, "autonFE", autoFinal2);
-    this.updateMatchFuelDItem(pDataTeam3, matchnum, "autonFE", autoFinal3);
+    // Save the new tba-based fuel est for this match in fuelD..
+    this.updateMatchFuelDItem(pDataTeam1, matchnum, "tbaAutonFE", autoFinal1);
+    this.updateMatchFuelDItem(pDataTeam2, matchnum, "tbaAutonFE", autoFinal2);
+    this.updateMatchFuelDItem(pDataTeam3, matchnum, "tbaAutonFE", autoFinal3);
 
     // Now do teleop calcs.
     console.log("  ---->>> basic teleopFuel = "+teleopFuel1+", "+teleopFuel2+", "+teleopFuel3);
@@ -480,10 +480,10 @@ class matchDataProcessor {
     this.updateItem(pDataTeam2, "teleopFuelEst", teleFinal2);
     this.updateItem(pDataTeam3, "teleopFuelEst", teleFinal3);
 
-    // Replace the basic auton fuel est for this match in fuelD with the TBA-based value. 
-    this.updateMatchFuelDItem(pDataTeam1, matchnum, "teleopFE", teleFinal1);
-    this.updateMatchFuelDItem(pDataTeam2, matchnum, "teleopFE", teleFinal2);
-    this.updateMatchFuelDItem(pDataTeam3, matchnum, "teleopFE", teleFinal3);
+    // Save the new tba-based fuel est for this match in fuelD..
+    this.updateMatchFuelDItem(pDataTeam1, matchnum, "tbaTeleopFE", teleFinal1);
+    this.updateMatchFuelDItem(pDataTeam2, matchnum, "tbaTeleopFE", teleFinal2);
+    this.updateMatchFuelDItem(pDataTeam3, matchnum, "tbaTeleopFE", teleFinal3);
 
     // Calculate the total fuel estimates.
     let totalFinal1 = autoFinal1 + teleFinal1;
@@ -515,7 +515,7 @@ class matchDataProcessor {
   //     autonFuelEst { val: float, sum: float, max: float, avg: float }  // For REBUILT
   //     teleopFuelEst { val: float, sum: float, max: float, avg: float }  // For REBUILT
   //     totalFuelEst { val: float, sum: float, max: float, avg: float }  // For REBUILT
-  //     fuelD: { matchid: matchnum, autonFE: float, teleopFE: float }  // REBUILT fuelEst by matchnum
+  //     fuelD: { matchid: matchnum, autonFE: float, teleopFE: float, tbaAutonFE: float, tbaTeleopFE: float }  // REBUILT fuelEst stored by matchnum
   //    }
   //
   getEventAverages() {
@@ -566,7 +566,7 @@ class matchDataProcessor {
         this.getMatchArray(teamItem, "autonClimb", 5, match, "autonClimb");
         this.getMatchItem(teamItem, "autonClimb", match, "autonClimb");
          
-        // For REBUILT: calculate basic auton fuel estimate for this team/match, store in pData:fuelD
+        // For REBUILT: calc basic auton fuel estimate for this team/match, store in pData:fuelD
         let autonFuelEst = calcAutonTotalFuel(hopperCap, preloadShot, autonHopperShot, preloadAcc, autonHopperAcc);
         this.updateMatchFuelDItem(teamItem, matchnum, "autonFE", autonFuelEst);
 
@@ -616,10 +616,18 @@ class matchDataProcessor {
         let matchnum = match["matchnumber"]
 
         ////////////  Calculate scoring totals that use fuel estimates.
-        // Calc the total auton points for this match.
+        // Calc the total auton points for this match (fuel est plus climb).
         // Get the final auton fuel est for this match from the fuelD data.
-        let autonFinalFuelEst = teamItem.fuelD[matchnum].autonFE;
+        let autonFinalFuelEst = teamItem["fuelD"][matchnum]["autonFE"];  // default with basic est 
 
+        // If there's a TBA-based auton est, use it instead of basic est.
+        if(teamItem["fuelD"][matchnum]["tbaAutonFE"] != null) {
+          autonFinalFuelEst = teamItem["fuelD"][matchnum]["tbaAutonFE"];
+          console.log(" --> total auto points is using tbaAutonFE value: "+autonFinalFuelEst);
+        }
+        else console.log(" --> total auto points is using basic autonFE value: "+autonFinalFuelEst);
+
+        // Get automn climb points.
         let autonClimbPoints = 0;
         let autonClimb = match["autonClimb"];
         console.log("   ==> autonClimb (radio) value = "+autonClimb);
@@ -635,7 +643,13 @@ class matchDataProcessor {
         this.updateItem(teamItem, "autonTotalPoints", autonTotalPoints);
 //        console.log("   ==> autonTotalPoints = "+autonTotalPoints);
 
-        let teleopFinalFuelEst = teamItem.fuelD[matchnum].teleopFE;
+        let teleopFinalFuelEst = teamItem["fuelD"][matchnum]["teleopFE"];   // default  w basic est
+        // If there's a TBA-based teleop est, use it instead of basic est.
+        if(teamItem["fuelD"][matchnum]["tbaTeleopFE"] != null) {
+          teleopFinalFuelEst = teamItem["fuelD"][matchnum]["tbaTeleopnFE"];
+          console.log(" --> final teleop fuel est is using tbaTeleopFE value: "+teleopFinalFuelEst);
+        }
+        else console.log(" --> final teleop ifuel points is using basic value: "+teleopFinalFuelEst);
         this.updateItem(teamItem, "teleopTotalPoints", teleopFinalFuelEst);
 
         let endgameClimbPoints = 0;
