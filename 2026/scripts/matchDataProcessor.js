@@ -327,7 +327,14 @@ class matchDataProcessor {
   // Update match item average
   //
   calcAverage(item, mdpKeyword, denominator) {
+    if(item[mdpKeyword] == null) {
+      console.log("calcAverage(): key doesn't exist in pData: "+mdpKeyword);
+      return;
+    }
     item[mdpKeyword].avg = (item[denominator] != 0) ? this.roundOnePlace(item[mdpKeyword].sum / item[denominator]) : 0;
+    console.log("!! calcAverage( "+mdpKeyword+" ) denominator = "+item[denominator]);
+    console.log("!! calcAverage( "+mdpKeyword+" ) sum = "+item[mdpKeyword].sum);
+    console.log("!! calcAverage( "+mdpKeyword+" ) avg = "+item[mdpKeyword].avg);
   }
 
   //
@@ -485,15 +492,15 @@ class matchDataProcessor {
     this.updateMatchFuelDItem(pDataTeam2, matchnum, "tbaTeleopFE", teleFinal2);
     this.updateMatchFuelDItem(pDataTeam3, matchnum, "tbaTeleopFE", teleFinal3);
 
-    // Calculate the total fuel estimates.
-    let totalFinal1 = autoFinal1 + teleFinal1;
-    let totalFinal2 = autoFinal2 + teleFinal2;
-    let totalFinal3 = autoFinal3 + teleFinal3;
+//REMOVE    // Calculate the total fuel estimates.
+//REMOVE    let totalFinal1 = autoFinal1 + teleFinal1;
+//REMOVE    let totalFinal2 = autoFinal2 + teleFinal2;
+//REMOVE    let totalFinal3 = autoFinal3 + teleFinal3;
 
-    // Update this field in regular team pData, to be used for max and avgs.
-    this.updateItem(pDataTeam1, "totalFuelEst", totalFinal1);
-    this.updateItem(pDataTeam2, "totalFuelEst", totalFinal2);
-    this.updateItem(pDataTeam3, "totalFuelEst", totalFinal3);
+//REMOVE    // Update this field in regular team pData, to be used for max and avgs.
+//REMOVE    this.updateItem(pDataTeam1, "totalFuelEst", totalFinal1);
+//REMOVE    this.updateItem(pDataTeam2, "totalFuelEst", totalFinal2);
+//REMOVE    this.updateItem(pDataTeam3, "totalFuelEst", totalFinal3);
   };
 
   //
@@ -606,7 +613,7 @@ class matchDataProcessor {
     this.calcMatchesFuelEstTBA(this.pData,this.tbaMatchData);    // for REBUILT
 
     /////////// Calculate Averages, Max and Accuracies
-    // Now go thru the pData again and calc averages and totals.
+    // Now go thru the pData again and calc total points and final numbers.
     // For each team, go thru all its matches and do the calculations for this event
     for (const i in this.pData) {
       let teamItem = this.pData[i];
@@ -638,18 +645,20 @@ class matchDataProcessor {
           case "4": autonClimbPoints = 15; break; // Right
           default: autonClimbPoints = 0; break;   // No climb
         }
-        let autonTotalPoints = autonFinalFuelEst + autonClimbPoints;
+        let autonTotalPoints = parseInt(autonFinalFuelEst) + parseInt(autonClimbPoints);
         this.updateItem(teamItem, "autonClimbPoints", autonClimbPoints);
         this.updateItem(teamItem, "autonTotalPoints", autonTotalPoints);
+        this.updateItem(teamItem, "autonFinalFuelEst", autonFinalFuelEst);
 //        console.log("   ==> autonTotalPoints = "+autonTotalPoints);
 
-        let teleopFinalFuelEst = teamItem["fuelD"][matchnum]["teleopFE"];   // default  w basic est
+        let teleopFinalFuelEst = parseInt(teamItem["fuelD"][matchnum]["teleopFE"]);   // default  w basic est
+
         // If there's a TBA-based teleop est, use it instead of basic est.
         if(teamItem["fuelD"][matchnum]["tbaTeleopFE"] != null) {
           teleopFinalFuelEst = teamItem["fuelD"][matchnum]["tbaTeleopnFE"];
           console.log(" --> final teleop fuel est is using tbaTeleopFE value: "+teleopFinalFuelEst);
         }
-        else console.log(" --> final teleop ifuel points is using basic value: "+teleopFinalFuelEst);
+        else console.log(" --> final teleop fuel points is using basic value: "+teleopFinalFuelEst);
         this.updateItem(teamItem, "teleopTotalPoints", teleopFinalFuelEst);
 
         let endgameClimbPoints = 0;
@@ -662,41 +671,45 @@ class matchDataProcessor {
         }
         this.updateItem(teamItem, "endgamePoints", endgameClimbPoints);
 
-        let totalMatchPoints = autonTotalPoints + teleopFinalFuelEst + endgameClimbPoints;
+        let totalMatchPoints = parseInt(autonTotalPoints) + parseInt(teleopFinalFuelEst) + parseInt(endgameClimbPoints);
         this.updateItem(teamItem, "totalMatchPoints", totalMatchPoints);
       }
 
       //////////////////// CALCULATE AVERAGES USING TOTAL MATCH COUNT ////////////////////
+      // NOTE: some of the keywords used may not exist in pData, if there was no TBA calculations.
       // Autonomous mode
-//HOLD?      console.log("--> calling calcAverage() for autonFuelEst"); //TEST
-//HOLD?      this.calcAverage(teamItem, "autonFuelEst", "totalMatches");
-      this.calcArray(teamItem, "autonClimb", "totalMatches");
-      console.log("--> calling calcAverage() for autonClimbPoints"); //TEST
+      console.log("===> calcAvg for autonFinalFuelEst");
+      this.calcAverage(teamItem, "autonFinalFuelEst", "totalMatches");
+      console.log("===> calcAvg for autonClimbPoints");
       this.calcAverage(teamItem, "autonClimbPoints", "totalMatches");
 
       // Teleop mode
-//HOLD?      console.log("--> calling calcAverage() for teleopFuelEst"); //TEST
-//HOLD?      this.calcAverage(teamItem, "teleopFuelEst", "totalMatches");
+      console.log("===> calcAvg for teleopTotalPoints");
+      this.calcAverage(teamItem, "teleopTotalPoints", "totalMatches");
 
 //HOLD for example      // Divide coral/algae pieces by acquired pieces
 //HOLD for example      this.calcAccuracy(teamItem, "teleopCoralPieces", "teleopCoralAcquired");
 //HOLD for example      this.calcAccuracy(teamItem, "teleopAlgaePieces", "teleopAlgaeAcquired");
 
       // Defense avg - only calculate this if this team played defense in a match
-      console.log("--> calling calcAverage() for teleopDefenseLevel"); //TEST
+      console.log("===> calcAvg for teleopDefenseLevel");
       this.calcAverage(teamItem, "teleopDefenseLevel", "totalDefenseMatches");
 
-//HOLD?      console.log("--> calling calcAverage() for died"); //TEST
-//HOLD?      this.calcAverage(teamItem, "died", "totalMatches");
+      console.log("===> calcAvg for died");
+      this.calcAverage(teamItem, "died", "totalMatches");
 
-      // endgame
+      // Endgame - TODO get correct keywords here
+      console.log("===> calcAvg for endgameStartClimb");
       this.calcArray(teamItem, "endgameStartClimb", "totalMatches");
+      console.log("===> calcAvg for endgameCageClimb");
       this.calcArray(teamItem, "endgameCageClimb", "totalMatches");
 
-      // points by game phase
-//HOLD?      this.calcAverage(teamItem, "autonTotalPoints", "totalMatches");
-//HOLD?      this.calcAverage(teamItem, "totalFuelEst", "totalFuelEst");
+      // Points by game phase
+      console.log("===> calcAvg for autonTotalPoints");
+      this.calcAverage(teamItem, "autonTotalPoints", "totalMatches");
+      console.log("===> calcAvg for totalMatchPoints");
       this.calcAverage(teamItem, "totalMatchPoints", "totalMatches");
+      console.log("===> calcAvg for endgamePoints");
       this.calcAverage(teamItem, "endgamePoints", "totalMatches");
     }
     return this.pData;
