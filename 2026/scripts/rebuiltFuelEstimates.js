@@ -130,9 +130,9 @@ function insertFuelEstimatesBody(tableId, matchData, pData, aliasList, teamFilte
     }
 
     // Use red text for the fuel estimate numbers when we don't know the true hopper capacity.
-    colorTag = tdBody + "<span style='color:black;'>";
+    colorTag = tdBody;  // normal color
     if (hopperCap == 0) 
-      colorTag = tdBody + "<span style='color:red;'>";
+      colorTag = tdBody + "<span class='text-danger'>";
 
     // Get the TBA-based fuel estimates from the pData fuelD for this match.
     if(pData[teamNum]["fuelD"] == null || pData[teamNum]["fuelD"][matchnum] == null || pData[teamNum]["fuelD"][matchnum]["tbaAutonFE"] == null || pData[teamNum]["fuelD"][matchnum]["tbaTeleopFE"] == null ){
