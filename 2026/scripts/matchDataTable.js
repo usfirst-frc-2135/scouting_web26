@@ -33,8 +33,8 @@ function insertMatchDataHeader(tableId, aliasList) {
 
   rowString += '<th scope="col" class="bg-body sorttable_numeric">Match</th>';
   rowString += '<th scope="col" class="bg-body sorttable_numeric">Team</th>';
-  // Insert column if the aliasList is not empty
 
+  // Insert column if the aliasList is not empty
   if (aliasList.length > 0) {
     rowString += thMatch + 'Alias</th>';
   }
@@ -123,13 +123,13 @@ function insertMatchDataBody(tableId, matchData, aliasList, teamFilter) {
     rowString += tdBody + matchItem["teleopHopperAccuracy"] + "</td>";
     rowString += tdBlue + matchItem["teleopIntakeAndShoot"] + "</td>";
     rowString += tdBody + matchItem["teleopNeutralToAlliance"] + "</td>";
-    rowString += tdBody + matchItem["teleopAllianceToAlliance"] + "</td>";
-    rowString += tdBlue + matchItem["teleopPassingRate"] + "</td>";
+    rowString += tdBlue + matchItem["teleopAllianceToAlliance"] + "</td>";
+    rowString += tdBody + matchItem["teleopPassingRate"] + "</td>";
     rowString += tdBlue + matchItem["teleopDefenseLevel"] + "</td>";
     rowString += tdBody + toClimbLevel(matchItem["endgameCageClimb"]) + "</td>";
     rowString += tdBlue + matchItem["endgameStartClimb"] + "</td>";
-    rowString += tdBlue + matchItem["comment"] + "</td>";
-    rowString += tdBody + matchItem["scoutname"] + "</td>";
+    rowString += tdBody + matchItem["comment"] + "</td>";
+    rowString += tdBlue + matchItem["scoutname"] + "</td>";
 
     tbodyRef.insertRow().innerHTML = rowString;
   }

@@ -83,8 +83,11 @@ function insertEventAveragesHeader(tableId, aliasList) {
   theadRef.insertRow().innerHTML = rowString2;
 
   let rowString3 = '';
+ 
+  // Cell colors (thPrefix0 = clear, thPrefix1 = blue) constants
   const thPrefix0 = '<th scope="col" ' + thBodySort + '>';
   const thPrefix1 = '<th scope="col" ' + thBlueSort + '>';
+
   // team number
   rowString3 += thPrefix0 + 'Team' + '</th>';
   if (aliasList.length > 0) {
@@ -115,25 +118,25 @@ function insertEventAveragesHeader(tableId, aliasList) {
   // teleop coral
   rowString3 += thPrefix1 + 'Avg' + '</th>';
   rowString3 += thPrefix1 + 'Max' + '</th>';
-  rowString3 += thPrefix1 + 'Avg' + '</th>';
+  rowString3 += thPrefix0 + 'Avg' + '</th>';
 
   // endgame(start climb)
-  rowString3 += thPrefix0 + 'NO' + '</th>';
-  rowString3 += thPrefix0 + 'B20' + '</th>';
-  rowString3 += thPrefix0 + 'A10' + '</th>';
-  rowString3 += thPrefix0 + 'L5' + '</th>';
+  rowString3 += thPrefix1 + 'NO' + '</th>';
+  rowString3 += thPrefix1 + 'B20' + '</th>';
+  rowString3 += thPrefix1 + 'A10' + '</th>';
+  rowString3 += thPrefix1 + 'L5' + '</th>';
 
   // endgame(climb)
-  rowString3 += thPrefix1 + 'NO' + '</th>';
-  rowString3 += thPrefix1 + 'PK' + '</th>';
-  rowString3 += thPrefix1 + 'FL' + '</th>';
-  rowString3 += thPrefix1 + 'SH' + '</th>';
-  rowString3 += thPrefix1 + 'DP' + '</th>';
+  rowString3 += thPrefix0 + 'NO' + '</th>';
+  rowString3 += thPrefix0 + 'PK' + '</th>';
+  rowString3 += thPrefix0 + 'FL' + '</th>';
+  rowString3 += thPrefix0 + 'SH' + '</th>';
+  rowString3 += thPrefix0 + 'DP' + '</th>';
 
   theadRef.insertRow().innerHTML = rowString3;
 };
 
-// Add a team (key) to the final team list
+// Return a list of the pData item for all teams found in avgData
 function getTeamListFromData(avgData) {
   console.log("==> eventAverages: getTeamListFromData()");
   let keyList = [];
@@ -167,10 +170,12 @@ function getDataValue(dict, key, field) {
 //    Params
 //      tableId       - the HTML ID where the table header is inserted
 //      avgData       - the MDP processed data (pData)
+//      coprData      - the COPR data from TBA 
+//      pitData       - the pittable data
 //      aliasList     - list of aliases at the event (length 0 if none)
 //      teamFilter    - list of teams to include in table (length 0 if all)
 //
-function insertEventAveragesBody(tableId, avgData, coprData, aliasList, teamFilter) {
+function insertEventAveragesBody(tableId, avgData, coprData, aliasList, pitData, teamFilter) {
 
   console.log("==> insertEventAveragesBody: tableId " + tableId + " avgData " + Object.keys(avgData).length + " aliases " + aliasList.length + " teams " + teamFilter.length);
 
@@ -185,8 +190,9 @@ function insertEventAveragesBody(tableId, avgData, coprData, aliasList, teamFilt
     if (teamFilter.length !== 0 && !teamFilter.includes(teamNum))
       continue;
 
-    const tdPrefix0 = '<td ' + thBody + '>';
-    const tdPrefix1 = '<td ' + thBlueSort + '>';
+    console.log("==>>> Averages Table: doing team: "+teamNum);
+    const tdPrefix0 = '<td ' + thBody + '>';          // clear cell color
+    const tdPrefix1 = '<td ' + thBlueSort + '>';      // blue cell color
     let rowString = "";
     rowString += tdPrefix0 + "<a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</td>";
 
@@ -195,48 +201,57 @@ function insertEventAveragesBody(tableId, avgData, coprData, aliasList, teamFilt
       rowString += tdPrefix0 + getAliasFromTeamNum(teamNum, aliasList) + "</td>";
     }
 
+    // Getting hopperCapacity from pitData so we know if default was used.
+    // TODO - also check hopperCap table!!!
+    let hopperCap = 0;
+    if (pitData != null) {
+      if (pitData[teamNum] != null) {
+        hopperCap = pitData[teamNum]["caphopper"];
+      }
+    }
+
     let coprEntry = "-"; // default
     if(coprData.length !== 0  && coprData[teamNum] != null) 
-      coprEntry = (coprData.length !== 0) ? getDataValue(coprData[teamNum], "totalPoints") : "";  // TODO: Load COPR data from TBA and pass in here
+      coprEntry = (coprData.length !== 0) ? getDataValue(coprData[teamNum], "totalPoints") : ""; 
 
     rowString += tdPrefix0 + coprEntry + "</td>";
     rowString += tdPrefix0 + getDataValue(avgItem, "totalMatches") + "</td>";
     rowString += tdPrefix0 + getDataValue(avgItem, "died", "sum") + "</td>";
 
     // points by game phase
-    rowString += tdPrefix1 + getDataValue(avgItem, "totalMatchPoints", "avg") + "</td>";
+    rowString += tdPrefix1 + Math.round(getDataValue(avgItem, "totalMatchPoints", "avg")) + "</td>";
     rowString += tdPrefix1 + getDataValue(avgItem, "totalMatchPoints", "max") + "</td>";
-    rowString += tdPrefix0 + getDataValue(avgItem, "autonTotalPoints", "avg") + "</td>";
+    rowString += tdPrefix0 + Math.round(getDataValue(avgItem, "autonTotalPoints", "avg")) + "</td>";
     rowString += tdPrefix0 + getDataValue(avgItem, "autonTotalPoints", "max") + "</td>";
-    rowString += tdPrefix1 + getDataValue(avgItem, "teleopTotalPoints", "avg") + "</td>";
+    rowString += tdPrefix1 + Math.round(getDataValue(avgItem, "teleopTotalPoints", "avg")) + "</td>";
     rowString += tdPrefix1 + getDataValue(avgItem, "teleopTotalPoints", "max") + "</td>";
     rowString += tdPrefix0 + getDataValue(avgItem, "endgamePoints", "avg") + "</td>";
     rowString += tdPrefix0 + getDataValue(avgItem, "endgamePoints", "max") + "</td>";
 
     // auton 
-    rowString += tdPrefix1 + getDataValue(avgItem, "autonFinalFuelEst", "avg") + "</td>";
+    rowString += tdPrefix1 + Math.round(getDataValue(avgItem, "autonFinalFuelEst", "avg")) + "</td>";
     rowString += tdPrefix1 + getDataValue(avgItem, "autonFinalFuelEst", "max") + "</td>";
     rowString += tdPrefix0 + getDataValue(avgItem, "autonClimbPoints", "avg") + "</td>";
     rowString += tdPrefix0 + getDataValue(avgItem, "autonClimbPoints", "max") + "</td>";
 
     // teleop 
-    rowString += tdPrefix1 + getDataValue(avgItem, "teleopTotalPoints", "avg") + "</td>";
+    rowString += tdPrefix1 + Math.round(getDataValue(avgItem, "teleopTotalPoints", "avg")) + "</td>";
     rowString += tdPrefix1 + getDataValue(avgItem, "teleopTotalPoints", "max") + "</td>";
     rowString += tdPrefix0 + getDataValue(avgItem, "teleopDefenseLevel", "avg") + "</td>";
 
     // endgame
     let endgameClimbStartPercentage = getDataValue(avgItem, "endgameStartClimb", "arr");
-    rowString += tdPrefix0 + getDataValue(endgameClimbStartPercentage, 0, "avg") + "</td>";
-    rowString += tdPrefix0 + getDataValue(endgameClimbStartPercentage, 1, "avg") + "</td>";
-    rowString += tdPrefix0 + getDataValue(endgameClimbStartPercentage, 2, "avg") + "</td>";
-    rowString += tdPrefix0 + getDataValue(endgameClimbStartPercentage, 3, "avg") + "</td>";
+    rowString += tdPrefix1 + getDataValue(endgameClimbStartPercentage, 0, "avg") + "</td>";
+    rowString += tdPrefix1 + getDataValue(endgameClimbStartPercentage, 1, "avg") + "</td>";
+    rowString += tdPrefix1 + getDataValue(endgameClimbStartPercentage, 2, "avg") + "</td>";
+    rowString += tdPrefix1 + getDataValue(endgameClimbStartPercentage, 3, "avg") + "</td>";
 
     let endgameClimbPercentage = getDataValue(avgItem, "endgameCageClimb", "arr");
-    rowString += tdPrefix1 + getDataValue(endgameClimbPercentage, 0, "avg") + "</td>";
-    rowString += tdPrefix1 + getDataValue(endgameClimbPercentage, 1, "avg") + "</td>";
-    rowString += tdPrefix1 + getDataValue(endgameClimbPercentage, 2, "avg") + "</td>";
-    rowString += tdPrefix1 + getDataValue(endgameClimbPercentage, 3, "avg") + "</td>";
-    rowString += tdPrefix1 + getDataValue(endgameClimbPercentage, 4, "avg") + "</td>";
+    rowString += tdPrefix0 + getDataValue(endgameClimbPercentage, 0, "avg") + "</td>";
+    rowString += tdPrefix0 + getDataValue(endgameClimbPercentage, 1, "avg") + "</td>";
+    rowString += tdPrefix0 + getDataValue(endgameClimbPercentage, 2, "avg") + "</td>";
+    rowString += tdPrefix0 + getDataValue(endgameClimbPercentage, 3, "avg") + "</td>";
+    rowString += tdPrefix0 + getDataValue(endgameClimbPercentage, 4, "avg") + "</td>";
 
     tbodyRef.insertRow().innerHTML = rowString;
   }

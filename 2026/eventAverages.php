@@ -142,18 +142,18 @@ require 'inc/header.php';
   //
   // Get all match data, filter it, create final HTML table, and sort it
   //
-  function buildAveragesBody(tableId, aliasNames, coprs, matchData, startMatch, endMatch) {
-    if (aliasNames === null || coprs === null || matchData === null) {
+  function buildAveragesBody(tableId, aliasNames, coprs, matchData, tbaMatchData, pitData, startMatch, endMatch) {
+    if (aliasNames === null || coprs === null || matchData === null || tbaMatchData === null || pitData === null) {
       return;
     }
 
     console.log("==> eventAverages: buildAveragesBody()");
-    let mdp = new matchDataProcessor(matchData);
+    let mdp = new matchDataProcessor(matchData, tbaMatchData, pitData);
     if (startMatch !== null && endMatch !== null) {
       mdp.filterMatchRange(startMatch, endMatch);
     }
     mdp.getSiteFilteredAverages(function(filteredMatchData, filteredAvgData) {
-      insertEventAveragesBody(tableId, filteredAvgData, coprs, aliasNames, []);
+      insertEventAveragesBody(tableId, filteredAvgData, coprs, aliasNames, pitData, []);
       // script instructions say this is needed, but it breaks table header sorting
       // sorttable.makeSortable(document.getElementById(tableId));
       document.getElementById(tableId).click(); // This magic fixes the floating column bug
@@ -168,6 +168,8 @@ require 'inc/header.php';
     let jAliasNames = null;
     let jMatchData = null;
     let jCoprData = null;
+    let pitData = null;
+    let tbaMatchData = null;
 
     // Get Alias lookup table
     $.get("api/dbReadAPI.php", {
@@ -176,7 +178,7 @@ require 'inc/header.php';
       console.log("=> eventAliasNames");
       jAliasNames = JSON.parse(eventAliasNames);
       buildAveragesHeader(tableId, jAliasNames);
-      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, null, null); // Retrieve all data
+      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, null, null); 
     });
 
     // Get OPR data from TBA
@@ -188,16 +190,32 @@ require 'inc/header.php';
       }
       console.log("=> getCOPRs");
       jCoprData = JSON.parse(coprs)["data"];
-      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, null, null); // Retrieve all data
+      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, null, null);
     });
 
-    // Get match data from DB
+    // In parallel, get match data from DB
     $.get("api/dbReadAPI.php", {
       getAllMatchData: true
     }).done(function(matchData) {
       console.log("=> getAllMatchData");
       jMatchData = JSON.parse(matchData);
-      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, null, null); // Retrieve all data
+      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, null, null);
+    });
+
+    // In parallel, load the pitTable data
+    $.get("api/dbReadAPI.php", {
+      getAllPitData: true
+    }).done(function(allPitData) {
+      pitData = JSON.parse(allPitData);
+      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, null, null);
+    });
+
+   // In parallel, load the TBA matches data
+    $.get("api/tbaAPI.php", {
+      getEventMatches: true
+    }).done(function(eventMatches) {
+      tbaMatchData = JSON.parse(eventMatches)["response"];
+      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, null, null);
     });
 
     // Filter out unwanted matches
