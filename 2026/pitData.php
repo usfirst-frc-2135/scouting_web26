@@ -173,25 +173,29 @@ require 'inc/header.php';
     for (let teamNum in pitData) {
       let rowString = "";
       rowString += "<td><a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</a>";
+      
+       //setting up the colors for the vertical rows 
+      const tdBody = "<td class='bg-body'>";
+      const tdBlue = "<td class='bg-primary-subtle'>";
 
       let teamPitData = pitData[teamNum];
-      rowString += "<td>" + teamPitData["caphopper"] + "</td>";
-      rowString += "<td>" + toYesNo(teamPitData["trenchdrive"]) + "</td>";
-      rowString += "<td>" + toYesNo(teamPitData["climbable"]) + "</td>";
-      rowString += "<td>" + teamPitData["climblevel"] + "</td>";
-      rowString += "<td>" + toYesNo(teamPitData["swerve"]) + "</td>";
-      rowString += "<td>" + teamPitData["drivemotors"] + "</td>";
-      rowString += "<td>" + toYesNo(teamPitData["spareparts"]) + "</td>";
-      rowString += "<td>" + teamPitData["proglanguage"] + "</td>";
-      rowString += "<td>" + toYesNo(teamPitData["computervision"]) + "</td>";
-      rowString += "<td>" + teamPitData["numbatteries"] + "</td>";
-      rowString += "<td class='text-start'>" + toOrganization(teamPitData["pitorg"]) + "</td>";
-      rowString += "<td class='text-start'>" + toPreparedness(teamPitData["preparedness"]) + "</td>";
-      rowString += "<td>" + teamPitData["scoutname"] + "</td>";
+      rowString += tdBody + teamPitData["caphopper"] + "</td>";
+      rowString += tdBlue + toYesNo(teamPitData["trenchdrive"]) + "</td>";
+      rowString += tdBody + toYesNo(teamPitData["climbable"]) + "</td>";
+      rowString += tdBlue + teamPitData["climblevel"] + "</td>";
+      rowString += tdBody  + toYesNo(teamPitData["swerve"]) + "</td>";
+      rowString += tdBlue  + teamPitData["drivemotors"] + "</td>";
+      rowString += tdBody + toYesNo(teamPitData["spareparts"]) + "</td>";
+      rowString += tdBlue + teamPitData["proglanguage"] + "</td>";
+      rowString += tdBody + toYesNo(teamPitData["computervision"]) + "</td>";
+      rowString += tdBlue + teamPitData["numbatteries"] + "</td>";
+      rowString += tdBody + toOrganization(teamPitData["pitorg"]) + "</td>";
+      rowString += tdBlue + toPreparedness(teamPitData["preparedness"]) + "</td>";
+      rowString += tdBody + teamPitData["scoutname"] + "</td>";
 
-      tbodyRef.insertRow().innerHTML = rowString;
-    }
+       tbodyRef.insertRow().innerHTML = rowString;
   }
+}
 
   //
   // Acquire match data and build the page
