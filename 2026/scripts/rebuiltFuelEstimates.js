@@ -71,17 +71,33 @@ function insertFuelEstimatesHeader(tableId, aliasList) {
   theadRef.insertRow().innerHTML = rowString;
 };
 
+// Get the hopper capacity from the HopperCap table for the given team.  (Also found in matchDataProcessor.js file)
+function getHopperCapForTeam(hopperCapData, teamnum) {
+  let hopperCap = 0;
+  for (let entry of hopperCapData) {
+    let tnum = entry["teamnumber"];
+    if (tnum === teamnum) {
+      hopperCap = entry["hoppercap"]
+      console.log("   !!!-> FOUND HOPPERCAP: teamnum "+teamnum+", hopperCap = " + hopperCap);
+      break;
+    } 
+  }
+  return hopperCap;
+}
+
+
 //
 //  Insert a fuel estimates data table body (all rows)
 //    Params
-//      tableId     - the HTML ID where the table header is inserted
-//      matchData   - the list of matches with the raw scouted data
-//      pData       - the mdp processed data 
-//      aliasList   - list of aliases at the event (length 0 if none)
-//      teamFilter  - list of teams to include in table (length 0 if all teams)
-//      pitData     - pit scouting data 
+//      tableId       - the HTML ID where the table header is inserted
+//      matchData     - the list of matches with the raw scouted data
+//      pData         - the mdp processed data 
+//      aliasList     - list of aliases at the event (length 0 if none)
+//      teamFilter    - list of teams to include in table (length 0 if all teams)
+//      pitData       - pit scouting data 
+//      hopperCapData - hopper capacity table data
 //
-function insertFuelEstimatesBody(tableId, matchData, pData, aliasList, teamFilter, pitData) {
+function insertFuelEstimatesBody(tableId, matchData, pData, aliasList, teamFilter, pitData, hopperCapData) {
 
   let tbodyRef = document.getElementById(tableId).querySelector('tbody');;
   tbodyRef.innerHTML = ""; // Clear Table
@@ -95,16 +111,20 @@ function insertFuelEstimatesBody(tableId, matchData, pData, aliasList, teamFilte
       continue;
     console.log(">>> Building FuelEst table: Doing team = "+teamNum+", match = "+matchnum);
 
-    // Getting hopperCapacity from pitData so we know if default was used.
-    // TODO - also check hopperCap table!!!
-    let hopperCap = 0;
-    if (pitData != null) {
-      if (pitData[teamNum] != null) {
-        hopperCap = pitData[teamNum]["caphopper"];
+    // Getting hopperCapacity from hopperCapData first, then pitData, so we know if default was used.
+    let hopperCap = 0;  // default
+    if(hopperCapData != null && hopperCapData.length > 0) 
+      hopperCap = getHopperCapForTeam(hopperCapData,teamNum);
+    if(hopperCap == 0) {  // Not in hopperCap data so check the pitData
+      if (pitData != null) {
+        if (pitData[teamNum] != null) {
+          hopperCap = pitData[teamNum]["caphopper"];
+        }
       }
     }
 
-    // Fuel ests only exist in pData if we have scouted match data for all 3 teams of the match's red/blue alliances. 
+    // TBA Fuel ests only exist in pData if we have scouted match data for all 3 teams of 
+    // the match's red/blue alliances. 
     let autonEstFuel = "-";    // default: use "-" when no fuel ests found from pData
     let teleopEstFuel = "-";
     let autonEstFuelTBA = "-"; 

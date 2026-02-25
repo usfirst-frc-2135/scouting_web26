@@ -142,13 +142,13 @@ require 'inc/header.php';
   //
   // Get all match data, filter it, create final HTML table, and sort it
   //
-  function buildAveragesBody(tableId, aliasNames, coprs, matchData, tbaMatchData, pitData, startMatch, endMatch) {
-    if (aliasNames === null || coprs === null || matchData === null || tbaMatchData === null || pitData === null) {
+  function buildAveragesBody(tableId, aliasNames, coprs, matchData, tbaMatchData, pitData, hopperCapData, startMatch, endMatch) {
+    if (aliasNames === null || coprs === null || matchData === null || tbaMatchData === null || pitData === null || hopperCapData === null) {
       return;
     }
 
     console.log("==> eventAverages: buildAveragesBody()");
-    let mdp = new matchDataProcessor(matchData, tbaMatchData, pitData);
+    let mdp = new matchDataProcessor(matchData, tbaMatchData, pitData, hopperCapData);
     if (startMatch !== null && endMatch !== null) {
       mdp.filterMatchRange(startMatch, endMatch);
     }
@@ -170,6 +170,7 @@ require 'inc/header.php';
     let jCoprData = null;
     let pitData = null;
     let tbaMatchData = null;
+    let hopperCapData = null;
 
     // Get Alias lookup table
     $.get("api/dbReadAPI.php", {
@@ -178,7 +179,7 @@ require 'inc/header.php';
       console.log("=> eventAliasNames");
       jAliasNames = JSON.parse(eventAliasNames);
       buildAveragesHeader(tableId, jAliasNames);
-      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, null, null); 
+      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, hopperCapData, null, null); 
     });
 
     // Get OPR data from TBA
@@ -190,7 +191,7 @@ require 'inc/header.php';
       }
       console.log("=> getCOPRs");
       jCoprData = JSON.parse(coprs)["data"];
-      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, null, null);
+      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, hopperCapData, null, null);
     });
 
     // In parallel, get match data from DB
@@ -199,7 +200,7 @@ require 'inc/header.php';
     }).done(function(matchData) {
       console.log("=> getAllMatchData");
       jMatchData = JSON.parse(matchData);
-      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, null, null);
+      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, hopperCapData, null, null);
     });
 
     // In parallel, load the pitTable data
@@ -207,7 +208,15 @@ require 'inc/header.php';
       getAllPitData: true
     }).done(function(allPitData) {
       pitData = JSON.parse(allPitData);
-      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, null, null);
+      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, hopperCapData, null, null);
+    });
+
+    // In parallel, load the hopperCap data
+    $.get("api/dbReadAPI.php", {
+      getEventHopperCaps: true
+    }).done(function(allHopperCaps) {
+      hopperCapData = JSON.parse(allHopperCaps);
+      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, hopperCapData, null, null);
     });
 
    // In parallel, load the TBA matches data
@@ -215,7 +224,7 @@ require 'inc/header.php';
       getEventMatches: true
     }).done(function(eventMatches) {
       tbaMatchData = JSON.parse(eventMatches)["response"];
-      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, null, null);
+      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, hopperCapData, null, null);
     });
 
     // Filter out unwanted matches

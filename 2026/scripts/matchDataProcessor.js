@@ -14,16 +14,23 @@ class matchDataProcessor {
   tbaMatchData = {};   // For REBUILT: TBA event Match data 
   pitData = {};        // For REBUILT: pit scoutimg data 
   pData = [];          // Processed data after totals and averages calculated
+  hopperCapData = [];  // Hopper Capacity table data 
 
   // matchDataProcess constructor 
-  constructor(jMatchData, tbaMatchData, pitData) {
+  constructor(jMatchData, tbaMatchData, pitData, hopperCapData) {
     if(tbaMatchData == null) //TEST
       console.log("   ===>>> matchDataProcessor constructor tbaMatchData is null");
     if(pitData == null) //TEST
       console.log("   ===>>> matchDataProcessor constructor pitData is null");
+    if(hopperCapData == null) //TEST
+      console.log("   ===>>> matchDataProcessor constructor hopperCapData is null");
+    else if(hopperCapData.length == 0)   // TEST
+      console.log("   ===>>> matchDataProcessor constructor hopperCapData is empty");
+
     this.mData = jMatchData;
     this.tbaMatchData = tbaMatchData;   // For REBUILT
     this.pitData = pitData;             // For REBUILT
+    this.hopperCapData = hopperCapData; // For REBUILT
     this.siteFilter = null;
     console.log("mdp constr: mData: num of matches = " + this.mData.length);
 
@@ -62,6 +69,22 @@ class matchDataProcessor {
   //
   roundTwoPlaces(val) {
     return Math.round((val + Number.EPSILON) * 100) / 100;
+  }
+
+  // Get the hopper capacity from the HopperCap table for the given team.  For REBUILT
+  // (Also found in rebuiltFuelEstimates.js)
+  getHopperCapForTeam(hopperCapData, teamnum) {
+    let hopperCap = 0;
+    for (let entry of hopperCapData) {
+      let tnum = entry["teamnumber"];
+      console.log( "    HOPPERCAP check---> comparing teamnum " + teamnum + " with tnum " + tnum);
+      if (tnum === teamnum) {
+        hopperCap = entry["hoppercap"]
+        console.log("   !!!-> FOUND HOPPERCAP: teamnum "+teamnum+", hopperCap = " + hopperCap);
+        break;
+      }
+    }
+    return hopperCap;
   }
 
   //
@@ -547,11 +570,15 @@ class matchDataProcessor {
         // NOTE: The field names on the right side of getMatchXXX must match the DB field names in the matchtable (raw scouted) database
         //       The field names on the left side of getMatchXXX must match the field names in this class (mdp)
 
-        // For REBUILT: get hopper capacity from pit data.
+        // For REBUILT: get hopper capacity from hopperCapData, then if not there, try pit data.
         let hopperCap = 0;  // default
-        if(this.pitData != null && this.pitData[teamnum] != null && this.pitData[teamnum]["caphopper"] != null) 
-           hopperCap = this.pitData[teamnum]["caphopper"];   
-        else console.log("!!! NO pitData for team "+teamnum);
+        if(this.hopperCapData != null && this.hopperCapData.length > 0) 
+          hopperCap = this.getHopperCapForTeam(this.hopperCapData,teamnum);
+        if(hopperCap == 0) {  // Now check the pitData
+          if(this.pitData != null && this.pitData[teamnum] != null && this.pitData[teamnum]["caphopper"] != null) 
+             hopperCap = this.pitData[teamnum]["caphopper"];   
+          else console.log("!!! NO pitData for team "+teamnum);
+        }
 
         // Autonomous mode - save this raw match data to the mdp pData for this team.
         let preloadShot = this.getMatchItem(teamItem, "autonShootPreload", match, "autonShootPreload");
@@ -699,3 +726,4 @@ class matchDataProcessor {
     return this.pData;
   }
 }
+

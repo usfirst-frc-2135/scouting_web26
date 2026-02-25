@@ -34,19 +34,19 @@ require 'inc/header.php';
   //
   // Build the REBUILT Fuel Estimates data table
   //
-  function loadFuelEstTable(tableId, aliasNames, matchTableData, pitData, tbaMatchData) 
+  function loadFuelEstTable(tableId, aliasNames, matchTableData, pitData, tbaMatchData, hopperCapData) 
   {
-    if (aliasNames == [] || pitData == [] || matchTableData === null || tbaMatchData === null) {
+    if (aliasNames == [] || pitData == [] || matchTableData === null || tbaMatchData === null || hopperCapData === []) {
       console.log("loadFuelEstTable: still waiting for get APIs to finish!");
       return;
     }   
 
     // All the args were obtained, so now create mdp and it will figure out all the calculations.
     console.log("==> loadFuelEstTable(): setting up mdp");
-    let mdp = new matchDataProcessor(matchTableData,tbaMatchData,pitData);
+    let mdp = new matchDataProcessor(matchTableData,tbaMatchData,pitData,hopperCapData);
     mdp.getSiteFilteredAverages(function(filteredMatchData, filteredAvgData) {
       if (filteredMatchData != undefined) {
-        insertFuelEstimatesBody(tableId,filteredMatchData, filteredAvgData, aliasNames, [], pitData);
+        insertFuelEstimatesBody(tableId,filteredMatchData, filteredAvgData, aliasNames, [], pitData, hopperCapData);
         document.getElementById('spinner').style.display = 'none';
         // script instructions say this is needed, but it breaks table header sorting
         // sorttable.makeSortable(document.getElementById(tableId));
@@ -63,6 +63,7 @@ require 'inc/header.php';
     let jPitData = null;
     let jMatchTableData = null;
     let tbaMatchData = null;
+    let hopperCapData = null;
 
     // Load alias lookup table
     $.get("api/dbReadAPI.php", {
@@ -78,7 +79,7 @@ require 'inc/header.php';
       getAllMatchData: true
     }).done(function(matchTableData) {
        jMatchTableData = JSON.parse(matchTableData);
-       loadFuelEstTable(tableId,jAliasNames,jMatchTableData,jPitData,tbaMatchData);
+       loadFuelEstTable(tableId,jAliasNames,jMatchTableData,jPitData,tbaMatchData,hopperCapData);
     });
 
     // In parallel, load the pitTable data
@@ -86,7 +87,15 @@ require 'inc/header.php';
       getAllPitData: true
     }).done(function(allPitData) {
       jPitData = JSON.parse(allPitData);
-      loadFuelEstTable(tableId,jAliasNames,jMatchTableData,jPitData,tbaMatchData);
+      loadFuelEstTable(tableId,jAliasNames,jMatchTableData,jPitData,tbaMatchData,hopperCapData);
+    });
+
+    // In parallel, load the hopperCap data
+    $.get("api/dbReadAPI.php", {
+      getEventHopperCaps: true
+    }).done(function(allHopperCaps) {
+      hopperCapData = JSON.parse(allHopperCaps);
+      loadFuelEstTable(tableId,jAliasNames,jMatchTableData,jPitData,tbaMatchData,hopperCapData);
     });
 
     // In parallel, load the TBA matches data
@@ -94,7 +103,7 @@ require 'inc/header.php';
       getEventMatches: true
     }).done(function(eventMatches) {
       tbaMatchData = JSON.parse(eventMatches)["response"];
-      loadFuelEstTable(tableId,jAliasNames,jMatchTableData,jPitData,tbaMatchData);
+      loadFuelEstTable(tableId,jAliasNames,jMatchTableData,jPitData,tbaMatchData,hopperCapData);
     });
   }
 
