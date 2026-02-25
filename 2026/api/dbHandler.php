@@ -85,6 +85,7 @@ class dbHandler
     $sql = "INSERT INTO " . $dbConfig["datatable"] .
       "(
         entrykey,
+        appVersion,
         eventcode,
         matchnumber,
         teamnumber,
@@ -107,13 +108,15 @@ class dbHandler
         teleopAllianceToAlliance,
         teleopPassingRate,
         teleopDefenseLevel,
-        endgameCageClimb,
         endgameStartClimb,
+        endgameTowerClimb,
+        endgameTowerPosition,
         comment
       )
       VALUES
       (
         :entrykey,
+        :appVersion,
         :eventcode,
         :matchnumber,
         :teamnumber,
@@ -136,8 +139,9 @@ class dbHandler
         :teleopAllianceToAlliance,
         :teleopPassingRate,
         :teleopDefenseLevel,
-        :endgameCageClimb,
         :endgameStartClimb,
+        :endgameTowerClimb,
+        :endgameTowerPosition,
         :comment
       )";
     $prepared_statement = $this->conn->prepare($sql);
@@ -164,7 +168,7 @@ class dbHandler
             $key === "autonClimb" || $key === "teleopHoppersUsed" ||
             $key === "teleopHopperAccuracy" || $key === "teleopIntakeAndShoot" || $key === "teleopNeutralToAlliance" || $key === "teleopAllianceToAlliance" ||
             $key === "teleopPassingRate" || $key === "teleopDefenseLevel" ||
-            $key === "endgameCageClimb" || $key === "endgameStartClimb" || $key === "died" || $key === "teamalias"
+            $key === "endgameStartClimb" || $key === "endgameTowerClimb" || $key === "endgameTowerPosition" || $key === "died" || $key === "teamalias" || $key === "appVersion"
         )
         {
           // verifying and enforcing all keys above to be an integer
@@ -187,6 +191,7 @@ class dbHandler
     $dbConfig = $this->readDbConfig();
     $sql = "SELECT 
         entrykey,
+        appVersion,
         eventcode,
         matchnumber,
         teamnumber,
@@ -209,8 +214,9 @@ class dbHandler
         teleopAllianceToAlliance,
         teleopPassingRate,
         teleopDefenseLevel,
-        endgameCageClimb,
         endgameStartClimb,
+        endgameTowerClimb,
+        endgameTowerPosition,
         comment
         FROM " . $dbConfig["datatable"] .
       " WHERE eventcode='" . $eventCode . "'";
@@ -226,6 +232,7 @@ class dbHandler
     $dbConfig = $this->readDbConfig();
     $sql = "SELECT 
         entrykey,
+        appVersion,
         eventcode,
         matchnumber,
         teamnumber,
@@ -248,8 +255,9 @@ class dbHandler
         teleopAllianceToAlliance,
         teleopPassingRate,
         teleopDefenseLevel,
-        endgameCageClimb,
         endgameStartClimb,
+        endgameTowerClimb,
+        endgameTowerPosition,
         comment
         FROM " . $dbConfig["datatable"] .
       " WHERE eventcode='" . $eventCode . "' AND teamnumber='" . $teamNumber . "'";
@@ -722,6 +730,7 @@ class dbHandler
     $query = "CREATE TABLE " . $dbConfig["db"] . "." . $dbConfig["datatable"] .
       " (
         entrykey VARCHAR(60) NOT NULL PRIMARY KEY,
+        appVersion VARCHAR(20) NOT NULL,
         eventcode VARCHAR(10) NOT NULL,
         matchnumber VARCHAR(10) NOT NULL,
         teamnumber VARCHAR(10) NOT NULL,
@@ -744,8 +753,9 @@ class dbHandler
         teleopAllianceToAlliance TINYINT UNSIGNED NOT NULL,
         teleopPassingRate TINYINT UNSIGNED NOT NULL,
         teleopDefenseLevel TINYINT UNSIGNED NOT NULL,
-        endgameCageClimb TINYINT UNSIGNED NOT NULL,
         endgameStartClimb TINYINT UNSIGNED NOT NULL,
+        endgameTowerClimb TINYINT UNSIGNED NOT NULL,
+        endgameTowerPosition TINYINT UNSIGNED NOT NULL,
         comment VARCHAR(500) NOT NULL,
         INDEX (eventcode, matchnumber, teamnumber)
       )";

@@ -49,7 +49,7 @@ require 'inc/header.php';
 <!-- Javascript page handlers -->
 
 <script>
-  const qrValidLength = 26; // This is determined by game requirements and adjusted each year
+  const qrValidLength = 30; // This is determined by game requirements and adjusted each year
   const qrPadLength = 1; // TODO: no explanation why this is padded--did we delete something? Remove for 2026
 
   //
@@ -92,44 +92,46 @@ require 'inc/header.php';
   function qrListToMatchData(qrList) {
     let matchData = {};
     // Perennial fields that always occur
-    matchData["eventcode"] = qrList[0]; // Make this [0] in 2026
-    matchData["matchnumber"] = qrList[1]; // Make this [1] in 2026
-    matchData["teamnumber"] = qrList[2]; // Make this [2] in 2026
-    matchData["teamalias"] = qrList[3]; // Make this [3] in 2026
-    matchData["scoutname"] = qrList[4]; // Make this [4] in 2026
+    matchData["appVersion"] = qrList[0]; //
+    matchData["eventcode"] = qrList[1]; // Make this [0] in 2026
+    matchData["matchnumber"] = qrList[2]; // Make this [1] in 2026
+    matchData["teamnumber"] = qrList[3]; // Make this [2] in 2026
+    matchData["teamalias"] = qrList[4]; // Make this [3] in 2026
+    matchData["scoutname"] = qrList[5]; // Make this [4] in 2026
     // matchData["version"] = qrList[];       // Make this [5] in 2026 - this will be a NEW field from the Android app
 
     // Recurring (and overall) data
-    matchData["died"] = qrList[5]; // Make this [6] in 2026
+    matchData["died"] = qrList[6]; // Make this [6] in 2026
 
     // Match or year-specific fields below here!
 
     // Autonomous
-    matchData["autonShootPreload"] = qrList[6];
-    matchData["autonPreloadAccuracy"] = qrList[7];
-    matchData["autonHoppersShot"] = qrList[8];
-    matchData["autonHopperAccuracy"] = qrList[9];
-    matchData["autonAllianceZone"] = qrList[10];
-    matchData["autonDepot"] = qrList[11];
-    matchData["autonOutpost"] = qrList[12];
-    matchData["autonNeutralZone"] = qrList[13];
-    matchData["autonClimb"] = qrList[14];
+    matchData["autonShootPreload"] = qrList[7];
+    matchData["autonPreloadAccuracy"] = qrList[8];
+    matchData["autonHoppersShot"] = qrList[9];
+    matchData["autonHopperAccuracy"] = qrList[10];
+    matchData["autonAllianceZone"] = qrList[11];
+    matchData["autonDepot"] = qrList[12];
+    matchData["autonOutpost"] = qrList[13];
+    matchData["autonNeutralZone"] = qrList[14];
+    matchData["autonClimb"] = qrList[15];
 
     // Teleop
-    matchData["teleopHoppersUsed"] = qrList[15];
-    matchData["teleopHopperAccuracy"] = qrList[16];
-    matchData["teleopIntakeAndShoot"] = qrList[17];
-    matchData["teleopNeutralToAlliance"] = qrList[18];
-    matchData["teleopAllianceToAlliance"] = qrList[19];
-    matchData["teleopPassingRate"] = qrList[20];
-    matchData["teleopDefenseLevel"] = qrList[21];
+    matchData["teleopHoppersUsed"] = qrList[16];
+    matchData["teleopHopperAccuracy"] = qrList[17];
+    matchData["teleopIntakeAndShoot"] = qrList[18];
+    matchData["teleopNeutralToAlliance"] = qrList[19];
+    matchData["teleopAllianceToAlliance"] = qrList[20];
+    matchData["teleopPassingRate"] = qrList[21];
+    matchData["teleopDefenseLevel"] = qrList[22];
 
     // Endgame
-    matchData["endgameCageClimb"] = qrList[22];
     matchData["endgameStartClimb"] = qrList[23];
+    matchData["endgameTowerClimb"] = qrList[24];
+    matchData["endgameTowerPosition"] = qrList[25];
 
     // Overall
-    matchData["comment"] = qrList[24];
+    matchData["comment"] = qrList[26];
     return matchData;
   }
 
