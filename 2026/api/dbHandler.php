@@ -104,14 +104,19 @@ class dbHandler
         teleopHoppersUsed,
         teleopHopperAccuracy,
         teleopIntakeAndShoot,
-        teleopNeutralToAlliance,
-        teleopAllianceToAlliance,
         teleopPassingRate,
         teleopDefenseLevel,
+        driverAbility,
+        teleopAllianceToAlliance,
+        teleopNeutralToAlliance,
         endgameStartClimb,
-        endgameTowerClimb,
-        endgameTowerPosition,
-        comment
+        endgameClimbLevel,
+        endgameClimbPosition,
+        comment,
+        other1,
+        other2,
+        other3,
+        other4
       )
       VALUES
       (
@@ -135,14 +140,19 @@ class dbHandler
         :teleopHoppersUsed,
         :teleopHopperAccuracy,
         :teleopIntakeAndShoot,
-        :teleopNeutralToAlliance,
-        :teleopAllianceToAlliance,
         :teleopPassingRate,
         :teleopDefenseLevel,
+        :driverAbility,
+        :teleopAllianceToAlliance,
+        :teleopNeutralToAlliance,
         :endgameStartClimb,
-        :endgameTowerClimb,
-        :endgameTowerPosition,
-        :comment
+        :endgameClimbLevel,
+        :endgameClimbPosition,
+        :comment,
+        :other1,
+        :other2,
+        :other3,
+        :other4
       )";
     $prepared_statement = $this->conn->prepare($sql);
     $prepared_statement->execute($mData);
@@ -163,15 +173,20 @@ class dbHandler
       foreach ($row as $key => $value)
       {
         if ($key === "autonShootPreload" || $key === "autonPreloadAccuracy" ||
-            $key === "autonHoppersShot" || $key === "autonHopperAccuracy" || $key === "autonAllianceZone" || $key === "autonDepot" ||
+            $key === "autonHoppersShot" || $key === "autonHopperAccuracy" || 
+            $key === "autonAllianceZone" || $key === "autonDepot" ||
             $key === "autonOutpost" || $key === "autonNeutralZone" ||
             $key === "autonClimb" || $key === "teleopHoppersUsed" ||
-            $key === "teleopHopperAccuracy" || $key === "teleopIntakeAndShoot" || $key === "teleopNeutralToAlliance" || $key === "teleopAllianceToAlliance" ||
+            $key === "teleopHopperAccuracy" || $key === "teleopIntakeAndShoot" || 
             $key === "teleopPassingRate" || $key === "teleopDefenseLevel" ||
-            $key === "endgameStartClimb" || $key === "endgameTowerClimb" || $key === "endgameTowerPosition" || $key === "died" || $key === "teamalias" || $key === "appVersion"
+            $key === "driverAbility" || 
+            $key === "teleopNeutralToAlliance" || $key === "teleopAllianceToAlliance" ||
+            $key === "endgameStartClimb" || $key === "endgameClimbLevel" || 
+            $key === "endgameClimbPosition" || $key === "died" || $key === "teamalias" || 
+            $key === "appVersion"
         )
         {
-          // verifying and enforcing all keys above to be an integer
+          // verifying and enforcing all keys above to be an integer (includes bools)
           $row[$key] = $this->enforceInt($value);
         }
         else
@@ -210,14 +225,19 @@ class dbHandler
         teleopHoppersUsed,
         teleopHopperAccuracy,
         teleopIntakeAndShoot,
-        teleopNeutralToAlliance,
-        teleopAllianceToAlliance,
         teleopPassingRate,
         teleopDefenseLevel,
+        driverAbility,
+        teleopAllianceToAlliance,
+        teleopNeutralToAlliance,
         endgameStartClimb,
-        endgameTowerClimb,
-        endgameTowerPosition,
-        comment
+        endgameClimbLevel,
+        endgameClimbPosition,
+        comment,
+        other1,
+        other2,
+        other3,
+        other4
         FROM " . $dbConfig["datatable"] .
       " WHERE eventcode='" . $eventCode . "'";
     $prepared_statement = $this->conn->prepare($sql);
@@ -251,14 +271,19 @@ class dbHandler
         teleopHoppersUsed,
         teleopHopperAccuracy,
         teleopIntakeAndShoot,
-        teleopNeutralToAlliance,
-        teleopAllianceToAlliance,
         teleopPassingRate,
         teleopDefenseLevel,
+        driverAbility,
+        teleopAllianceToAlliance,
+        teleopNeutralToAlliance,
         endgameStartClimb,
-        endgameTowerClimb,
-        endgameTowerPosition,
-        comment
+        endgameClimbLevel,
+        endgameClimbPosition,
+        comment,
+        other1,
+        other2,
+        other3,
+        other4
         FROM " . $dbConfig["datatable"] .
       " WHERE eventcode='" . $eventCode . "' AND teamnumber='" . $teamNumber . "'";
     $prepared_statement = $this->conn->prepare($sql);
@@ -730,7 +755,7 @@ class dbHandler
     $query = "CREATE TABLE " . $dbConfig["db"] . "." . $dbConfig["datatable"] .
       " (
         entrykey VARCHAR(60) NOT NULL PRIMARY KEY,
-        appVersion VARCHAR(20) NOT NULL,
+        appVersion VARCHAR(10) NOT NULL,
         eventcode VARCHAR(10) NOT NULL,
         matchnumber VARCHAR(10) NOT NULL,
         teamnumber VARCHAR(10) NOT NULL,
@@ -749,14 +774,19 @@ class dbHandler
         teleopHoppersUsed TINYINT UNSIGNED NOT NULL,
         teleopHopperAccuracy TINYINT UNSIGNED NOT NULL,
         teleopIntakeAndShoot TINYINT UNSIGNED NOT NULL,
-        teleopNeutralToAlliance TINYINT UNSIGNED NOT NULL,
-        teleopAllianceToAlliance TINYINT UNSIGNED NOT NULL,
         teleopPassingRate TINYINT UNSIGNED NOT NULL,
         teleopDefenseLevel TINYINT UNSIGNED NOT NULL,
+        driverAbility TINYINT UNSIGNED NOT NULL,
+        teleopAllianceToAlliance TINYINT UNSIGNED NOT NULL,
+        teleopNeutralToAlliance TINYINT UNSIGNED NOT NULL,
         endgameStartClimb TINYINT UNSIGNED NOT NULL,
-        endgameTowerClimb TINYINT UNSIGNED NOT NULL,
-        endgameTowerPosition TINYINT UNSIGNED NOT NULL,
+        endgameClimbLevel TINYINT UNSIGNED NOT NULL,
+        endgameClimbPosition TINYINT UNSIGNED NOT NULL,
         comment VARCHAR(500) NOT NULL,
+        other1 VARCHAR(20) NOT NULL,
+        other2 VARCHAR(20) NOT NULL,
+        other3 VARCHAR(20) NOT NULL,
+        other4 VARCHAR(20) NOT NULL,
         INDEX (eventcode, matchnumber, teamnumber)
       )";
     $statement = $conn->prepare($query);

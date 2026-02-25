@@ -26,10 +26,21 @@ function insertMatchDataHeader(tableId, aliasList) {
   theadRef.innerHTML = ""; // Clear Table
 
   let rowString = '';
+  let rowString1 = '';
   const thMatch = '<th scope="col" class="bg-body">';               // No color
   const thAuto = '<th scope="col" class="bg-success-subtle">';        // Auton color
   const thTeleop = '<th scope="col" class="bg-primary-subtle">';      // Teleop color
   const thEndgame = '<th scope="col" class="bg-warning-subtle">';     // Endgame color
+
+  if (aliasList.length > 0) 
+    rowString1 += '<th colspan="3" ' + thMatch + ' </th>';
+  else rowString1 += '<th colspan="2" ' + thMatch + ' </th>';
+  rowString1 += '<th colspan="1" ' + thMatch + ' </th>';
+  rowString1 += '<th colspan="9" ' + thAuto + 'Auton' + '</th>';
+  rowString1 += '<th colspan="8" ' + thTeleop + 'Teleop' + '</th>';
+  rowString1 += '<th colspan="3" ' + thEndgame + 'Endgame' + '</th>';
+  rowString1 += '<th colspan="2" ' + thMatch + ' </th>';
+  theadRef.insertRow().innerHTML = rowString1;
 
   rowString += '<th scope="col" class="bg-body sorttable_numeric">Match</th>';
   rowString += '<th scope="col" class="bg-body sorttable_numeric">Team</th>';
@@ -40,34 +51,33 @@ function insertMatchDataHeader(tableId, aliasList) {
   }
 
   rowString += thMatch + 'Died</th>';
-  rowString += thAuto + 'Auton Preload</th>';
-  rowString += thAuto + 'Auton Preload Acc</th>';
-  rowString += thAuto + 'Auton Hopper</th>';
-  rowString += thAuto + 'Auton Hopper Acc</th>';
-  rowString += thAuto + 'Auton Alliance Zone</th>';
-  rowString += thAuto + 'Auton Depot</th>';
-  rowString += thAuto + 'Auton Outpost</th>';
-  rowString += thAuto + 'Auton Neutral Zone</th>';
-  rowString += thAuto + 'Auton Climb</th>';
-  rowString += thTeleop + 'Teleop Hopper</th>';
-  rowString += thTeleop + 'Teleop Hopper Acc</th>';
-  rowString += thTeleop + 'Teleop Intake_Shoot</th>';
-  rowString += thTeleop + 'Teleop Neutral to Al</th>';
-  rowString += thTeleop + 'Teleop Al to Al</th>';
-  rowString += thTeleop + 'Teleop Passing Eff Rate</th>';
-  rowString += thTeleop + 'Teleop Defense Lvl</th>';
+  rowString += thAuto + 'Preload</th>';
+  rowString += thAuto + 'Preload Acc</th>';
+  rowString += thAuto + 'Hopper</th>';
+  rowString += thAuto + 'Hopper Acc</th>';
+  rowString += thAuto + 'Alliance Zone</th>';
+  rowString += thAuto + 'Depot</th>';
+  rowString += thAuto + 'Outpost</th>';
+  rowString += thAuto + 'Neutral Zone</th>';
+  rowString += thAuto + 'Climb</th>';
+  rowString += thTeleop + 'Hopper</th>';
+  rowString += thTeleop + 'Hopper Acc</th>';
+  rowString += thTeleop + 'Intake & Shoot</th>';
+  rowString += thTeleop + 'Passing Rate</th>';
+  rowString += thTeleop + 'Defense Rate</th>';
+  rowString += thTeleop + 'Driver Ability</th>';
+  rowString += thTeleop + 'Pass From NeutralZ</th>';
+  rowString += thTeleop + 'Pass From AllianceZ</th>';
   rowString += thEndgame + 'Start Climb</th>';
-  rowString += thEndgame + 'Tower Climb</th>';
-  rowString += thEndgame + 'Start Position</th>';
+  rowString += thEndgame + 'Climb Level</th>';
+  rowString += thEndgame + 'Climb Position</th>';
   rowString += thMatch + 'Comment</th>';
   rowString += thMatch + 'Scout Name</th>';
 
   theadRef.insertRow().innerHTML = rowString;
 };
 
-//
-// Converts a given climb level to a string
-//
+// Converts a given tower climb number to a string
 function toClimbLevel(value) {
   switch (String(value)) {
     case "1": return "1-L1";
@@ -77,12 +87,37 @@ function toClimbLevel(value) {
   }
 }
 
+// Converts a given climb position number to a string
 function toClimbPosition(value) {
   switch (String(value)) {
-    case "1": return "1-B";
-    case "2": return "2-L";
-    case "3": return "3-F";
-    case "4": return "4-R";
+    case "1": return "1-Back";
+    case "2": return "2-Left";
+    case "3": return "3-Front";
+    case "4": return "4-Right";
+    default: return "-";
+  }
+}
+
+// Converts a given driver ability number to a string
+function toDriverAbility(value) {
+  switch (String(value)) {
+    case "1": return "1-Slow";
+    case "2": return "2-Jerky";
+    case "3": return "3-Avg";
+    case "4": return "4-Quick";
+    case "5": return "5-Elite";
+    default: return "-";
+  }
+}
+
+// Converts a given defense rate number to a string
+function toDefenseRate(value) {
+  switch (String(value)) {
+    case "1": return "1-Low";
+    case "2": return "2-Med Low";
+    case "3": return "3-Med";
+    case "4": return "4-Med High";
+    case "5": return "5-High";
     default: return "-";
   }
 }
@@ -143,13 +178,14 @@ function insertMatchDataBody(tableId, matchData, aliasList, teamFilter) {
     rowString += tdBlue + matchItem["teleopHoppersUsed"] + "</td>";
     rowString += tdBody + matchItem["teleopHopperAccuracy"] + "</td>";
     rowString += tdBlue + matchItem["teleopIntakeAndShoot"] + "</td>";
-    rowString += tdBody + matchItem["teleopNeutralToAlliance"] + "</td>";
-    rowString += tdBlue + matchItem["teleopAllianceToAlliance"] + "</td>";
     rowString += tdBody + matchItem["teleopPassingRate"] + "</td>";
-    rowString += tdBlue + matchItem["teleopDefenseLevel"] + "</td>";
+    rowString += tdBlue + toDefenseRate(matchItem["teleopDefenseLevel"]) + "</td>";
+    rowString += tdBody + matchItem["driverAbility"] + "</td>";
+    rowString += tdBlue + matchItem["teleopAllianceToAlliance"] + "</td>";
+    rowString += tdBody + matchItem["teleopNeutralToAlliance"] + "</td>";
     rowString += tdBlue + matchItem["endgameStartClimb"] + "</td>";
-    rowString += tdBody + toClimbLevel(matchItem["endgameTowerClimb"]) + "</td>";
-    rowString += tdBody + toClimbPosition(matchItem["endgameTowerPosition"]) + "</td>";
+    rowString += tdBody + toClimbLevel(matchItem["endgameClimbLevel"]) + "</td>";
+    rowString += tdBlue + toClimbPosition(matchItem["endgameClimbPosition"]) + "</td>";
     rowString += tdBody + matchItem["comment"] + "</td>";
     rowString += tdBlue + matchItem["scoutname"] + "</td>";
 

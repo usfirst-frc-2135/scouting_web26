@@ -615,7 +615,7 @@ class matchDataProcessor {
 
         // Endgame
         this.getMatchArray(teamItem, "endgameStartClimb", 4, match, "endgameStartClimb");
-        this.getMatchArray(teamItem, "endgameTowerClimb", 5, match, "endgameTowerClimb");
+        this.getMatchArray(teamItem, "endgameClimbLevel", 5, match, "endgameClimbLevel");
 
         this.getMatchItem(teamItem, "died", match, "died");
 
@@ -682,7 +682,7 @@ class matchDataProcessor {
         this.updateItem(teamItem, "teleopTotalPoints", teleopFinalFuelEst);
 
         let endgameClimbPoints = 0;
-        switch (String(teamItem["endgameTowerClimb"].val)) {
+        switch (String(teamItem["endgameClimbLevel"].val)) {
           case "1": endgameClimbPoints = 2; break;  // Parked
           case "2": endgameClimbPoints = 2; break;  // Fell
           case "3": endgameClimbPoints = 6; break;  // Shallow
@@ -716,7 +716,7 @@ class matchDataProcessor {
 
       // Endgame - TODO get correct keywords here
       this.calcArray(teamItem, "endgameStartClimb", "totalMatches");
-      this.calcArray(teamItem, "endgameTowerClimb", "totalMatches");
+      this.calcArray(teamItem, "endgameClimbLevel", "totalMatches");
 
       // Points by game phase
       this.calcAverage(teamItem, "autonTotalPoints", "totalMatches");

@@ -49,19 +49,20 @@ require 'inc/header.php';
 <!-- Javascript page handlers -->
 
 <script>
-  const qrValidLength = 30; // This is determined by game requirements and adjusted each year
-  const qrPadLength = 1; // TODO: no explanation why this is padded--did we delete something? Remove for 2026
+  const qrValidLength = 32; // This is determined by game requirements and adjusted each year
+ //REMOVE const qrPadLength = 1; // TODO: no explanation why this is padded--did we delete something? Remove for 2026
 
   //
   // update this data list length whenever more data is added to the table
   //
-  function padList(qrList) {
-    if (qrList.length === qrValidLength - qrPadLength) {
-      qrList.push("");
-      console.warn("Padding QR scan! (Why is this needed?)");
-    }
-    return qrList;
-  }
+//REMOVE  function padList(qrList) {
+//REMOVE    if (qrList.length === qrValidLength - qrPadLength) {
+//REMOVE    if (qrList.length === qrValidLength ) {
+//REMOVE      qrList.push("");
+//REMOVE    }
+//REMOVE    return qrList;
+//REMOVE  }
+
   // Validate the scanned QR string
   function validateQrList(qrList) {
     console.log("==> validateQrList: qrList.length = " + qrList.length + " (valid " + qrValidLength + ")");
@@ -86,22 +87,19 @@ require 'inc/header.php';
 
   //
   // IMPORTANT! also need to adjust data list size in "validateQrList" and "padList"!!!
-  //  TODO: For 2026, please change the field order to put match or year-specific items LAST (order is suggested below in comments)
-  //        For 2026, remove any undocumented "padding" on the structure. Just declare an "other" field.
-  //        Also for 2026, add about 10 extra "other" fields to the QR list so it can be slightly expanded without breaking the android app
   function qrListToMatchData(qrList) {
     let matchData = {};
+
     // Perennial fields that always occur
     matchData["appVersion"] = qrList[0]; //
-    matchData["eventcode"] = qrList[1]; // Make this [0] in 2026
-    matchData["matchnumber"] = qrList[2]; // Make this [1] in 2026
-    matchData["teamnumber"] = qrList[3]; // Make this [2] in 2026
-    matchData["teamalias"] = qrList[4]; // Make this [3] in 2026
-    matchData["scoutname"] = qrList[5]; // Make this [4] in 2026
-    // matchData["version"] = qrList[];       // Make this [5] in 2026 - this will be a NEW field from the Android app
+    matchData["eventcode"] = qrList[1]; 
+    matchData["matchnumber"] = qrList[2]; 
+    matchData["teamnumber"] = qrList[3]; 
+    matchData["teamalias"] = qrList[4]; 
+    matchData["scoutname"] = qrList[5]; 
 
     // Recurring (and overall) data
-    matchData["died"] = qrList[6]; // Make this [6] in 2026
+    matchData["died"] = qrList[6];
 
     // Match or year-specific fields below here!
 
@@ -120,18 +118,24 @@ require 'inc/header.php';
     matchData["teleopHoppersUsed"] = qrList[16];
     matchData["teleopHopperAccuracy"] = qrList[17];
     matchData["teleopIntakeAndShoot"] = qrList[18];
-    matchData["teleopNeutralToAlliance"] = qrList[19];
-    matchData["teleopAllianceToAlliance"] = qrList[20];
-    matchData["teleopPassingRate"] = qrList[21];
-    matchData["teleopDefenseLevel"] = qrList[22];
+    matchData["teleopPassingRate"] = qrList[19];
+    matchData["teleopDefenseLevel"] = qrList[20];
+    matchData["driverAbility"] = qrList[21];
+    matchData["teleopAllianceToAlliance"] = qrList[22];
+    matchData["teleopNeutralToAlliance"] = qrList[23];
 
     // Endgame
-    matchData["endgameStartClimb"] = qrList[23];
-    matchData["endgameTowerClimb"] = qrList[24];
-    matchData["endgameTowerPosition"] = qrList[25];
+    matchData["endgameStartClimb"] = qrList[24];
+    matchData["endgameClimbLevel"] = qrList[25];
+    matchData["endgameClimbPosition"] = qrList[26];
 
     // Overall
-    matchData["comment"] = qrList[26];
+    matchData["comment"] = qrList[27];
+
+    matchData["other1"] = qrList[28];    // extra spots
+    matchData["other2"] = qrList[29];
+    matchData["other3"] = qrList[30];
+    matchData["other4"] = qrList[31];
     return matchData;
   }
 
@@ -233,7 +237,7 @@ require 'inc/header.php';
     scanner.decodeFromInputVideoDeviceContinuously(camId, 'camera', function(result, err) {
       if (result) {
         let qrList = qrStringToList(result.text);
-        qrList = padList(qrList);
+//REMOVE        qrList = padList(qrList);
         console.log("addCameraScanner: qrList = " + qrList);
         if (validateQrList(qrList)) {
           indicateScanSuccess();
