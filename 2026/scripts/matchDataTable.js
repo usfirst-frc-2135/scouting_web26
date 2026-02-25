@@ -56,8 +56,9 @@ function insertMatchDataHeader(tableId, aliasList) {
   rowString += thTeleop + 'Teleop Al to Al</th>';
   rowString += thTeleop + 'Teleop Passing Eff Rate</th>';
   rowString += thTeleop + 'Teleop Defense Lvl</th>';
-  rowString += thEndgame + 'Cage Climb</th>';
   rowString += thEndgame + 'Start Climb</th>';
+  rowString += thEndgame + 'Tower Climb</th>';
+  rowString += thEndgame + 'Start Position</th>';
   rowString += thMatch + 'Comment</th>';
   rowString += thMatch + 'Scout Name</th>';
 
@@ -69,10 +70,30 @@ function insertMatchDataHeader(tableId, aliasList) {
 //
 function toClimbLevel(value) {
   switch (String(value)) {
-    case "1": return "1-Park";
-    case "2": return "2-Fell";
-    case "3": return "3-Shallow";
-    case "4": return "4-Deep";
+    case "1": return "1-L1";
+    case "2": return "2-L2";
+    case "3": return "3-L3";
+    default: return "-";
+  }
+}
+
+function toClimbPosition(value) {
+  switch (String(value)) {
+    case "1": return "1-B";
+    case "2": return "2-L";
+    case "3": return "3-F";
+    case "4": return "4-R";
+    default: return "-";
+  }
+}
+
+function died(value) {
+  switch (String(value)) {
+    case "1": return "Most";
+    case "2": return "1min";
+    case "3": return "30sec";
+    case "4": return "30-15s";
+    case "5": return "No Show";
     default: return "-";
   }
 }
@@ -109,7 +130,7 @@ function insertMatchDataBody(tableId, matchData, aliasList, teamFilter) {
       rowString += tdBody + getAliasFromTeamNum(teamNum, aliasList) + "</td>";
     }
 
-    rowString += tdBlue + matchItem["died"] + "</td>";
+    rowString += tdBlue + died(matchItem["died"]) + "</td>";
     rowString += tdBody + matchItem["autonShootPreload"] + "</td>";
     rowString += tdBlue + matchItem["autonPreloadAccuracy"] + "</td>";
     rowString += tdBody + matchItem["autonHoppersShot"] + "</td>";
@@ -126,8 +147,9 @@ function insertMatchDataBody(tableId, matchData, aliasList, teamFilter) {
     rowString += tdBlue + matchItem["teleopAllianceToAlliance"] + "</td>";
     rowString += tdBody + matchItem["teleopPassingRate"] + "</td>";
     rowString += tdBlue + matchItem["teleopDefenseLevel"] + "</td>";
-    rowString += tdBody + toClimbLevel(matchItem["endgameCageClimb"]) + "</td>";
     rowString += tdBlue + matchItem["endgameStartClimb"] + "</td>";
+    rowString += tdBody + toClimbLevel(matchItem["endgameTowerClimb"]) + "</td>";
+    rowString += tdBody + toClimbPosition(matchItem["endgameTowerPosition"]) + "</td>";
     rowString += tdBody + matchItem["comment"] + "</td>";
     rowString += tdBlue + matchItem["scoutname"] + "</td>";
 

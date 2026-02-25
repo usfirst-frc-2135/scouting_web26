@@ -302,7 +302,7 @@ class matchDataProcessor {
       console.error("getMatchArray: array index out of bounds! " + value + " >= " + arraySize);
       return -1;
     }
-
+    console.log("getMatchArray: mdpKeyword = " + mdpKeyword + " value = " + value);
     // Increment the number of times this value (radio button) was used in .sum
     item[mdpKeyword].arr[value].sum += 1;
     return value;
@@ -615,7 +615,7 @@ class matchDataProcessor {
 
         // Endgame
         this.getMatchArray(teamItem, "endgameStartClimb", 4, match, "endgameStartClimb");
-        this.getMatchArray(teamItem, "endgameCageClimb", 5, match, "endgameCageClimb");
+        this.getMatchArray(teamItem, "endgameTowerClimb", 5, match, "endgameTowerClimb");
 
         this.getMatchItem(teamItem, "died", match, "died");
 
@@ -682,7 +682,7 @@ class matchDataProcessor {
         this.updateItem(teamItem, "teleopTotalPoints", teleopFinalFuelEst);
 
         let endgameClimbPoints = 0;
-        switch (String(teamItem["endgameCageClimb"].val)) {
+        switch (String(teamItem["endgameTowerClimb"].val)) {
           case "1": endgameClimbPoints = 2; break;  // Parked
           case "2": endgameClimbPoints = 2; break;  // Fell
           case "3": endgameClimbPoints = 6; break;  // Shallow
@@ -716,7 +716,7 @@ class matchDataProcessor {
 
       // Endgame - TODO get correct keywords here
       this.calcArray(teamItem, "endgameStartClimb", "totalMatches");
-      this.calcArray(teamItem, "endgameCageClimb", "totalMatches");
+      this.calcArray(teamItem, "endgameTowerClimb", "totalMatches");
 
       // Points by game phase
       this.calcAverage(teamItem, "autonTotalPoints", "totalMatches");

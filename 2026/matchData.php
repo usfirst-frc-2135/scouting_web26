@@ -52,7 +52,7 @@ require 'inc/header.php';
     }).done(function(matchData) {
       console.log("=> buildMatchDataTable(): getAllMatchData done");
 
-      let mdp = new matchDataProcessor(JSON.parse(matchData));
+      let mdp = new matchDataProcessor(JSON.parse(matchData), null, null, null);
       mdp.getSiteFilteredAverages(function(filteredMatchData, filteredAvgData) {
         if (filteredMatchData !== undefined) {
           insertMatchDataBody(tableId, filteredMatchData, jAliasNames, []);
