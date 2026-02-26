@@ -95,12 +95,12 @@ require 'inc/header.php';
           </thead>
           <tbody class="table-group-divider">
             <tr>
-              <td class="text-start table-secondary">Avg Total Fuel</td>
+              <td class="text-start table-secondary">Avg Total Points</td>
               <td id="redTotalFuel" class="table-danger"></td>
               <td id="blueTotalFuel" class="table-primary"></td>
             </tr>
             <tr>
-              <td class="text-start table-secondary">Avg Auton Points</td>
+              <td class="text-start table-secondary">Avg Auton Fuel</td>
               <td id="redAvgAutoPoints" class="table-danger"></td>
               <td id="blueAvgAutoPoints" class="table-primary"></td>
             </tr>
@@ -577,7 +577,7 @@ require 'inc/header.php';
     let rowString1 = "";
     rowString1 += '<th colspan="2" class="text-center fs-6 table-success">Auton</th>';
     rowString1 += '<th colspan="1" class="text-center fs-6 table-primary">Teleop</th>';
-    rowString1 += '<th colspan="5" class="text-center fs-6 table-warning">Endgame</th>';
+    rowString1 += '<th colspan="4" class="text-center fs-6 table-warning">Endgame</th>';
 
     let rowString2 = "";
     const thAuto = '<th scope="col" class="table-success">';
@@ -588,11 +588,10 @@ require 'inc/header.php';
     rowString2 += thTeleop + 'Fuel' + '</th >';
 
     const thEndgame = '<th scope="col" class="table-warning">';
-    rowString2 += thEndgame + 'DP' + '</th>';
-    rowString2 += thEndgame + 'SH' + '</th>';
-    rowString2 += thEndgame + 'FL' + '</th>';
-    rowString2 += thEndgame + 'PK' + '</th>';
-    rowString2 += thEndgame + 'NO' + '</th>';
+    rowString2 += thEndgame + 'NA' + '</th>';
+    rowString2 += thEndgame + 'L1' + '</th>';
+    rowString2 += thEndgame + 'L2' + '</th>';
+    rowString2 += thEndgame + 'L3' + '</th>';
 
     document.getElementById(tableId).querySelector('thead').insertRow().innerHTML = rowString1;
     document.getElementById(tableId).querySelector('thead').insertRow().innerHTML = rowString2;
@@ -631,14 +630,13 @@ require 'inc/header.php';
     tbodyRef.innerHTML = "";
     let row = "";
     if (ad != null) {
-      row += "<td>" + ad["autonFuelEst"].avg + "</td>";
+      row += "<td>" + ad["autonFinalFuelEst"].avg + "</td>";
       row += "<td>" + ad["autonClimbPoints"].avg + "</td>";
-      row += "<td>" + ad["teleopFuelEst"].avg + "</td>";
-      row += "<td>" + ad["endgameCageClimb"].arr[4].avg + "</td>";
-      row += "<td>" + ad["endgameCageClimb"].arr[3].avg + "</td>";
-      row += "<td>" + ad["endgameCageClimb"].arr[2].avg + "</td>";
-      row += "<td>" + ad["endgameCageClimb"].arr[1].avg + "</td>";
-      row += "<td>" + ad["endgameCageClimb"].arr[0].avg + "</td>";
+      row += "<td>" + ad["teleopTotalPoints"].avg + "</td>";
+      row += "<td>" + ad["endgameClimbLevel"].arr[4].avg + "</td>";
+      row += "<td>" + ad["endgameClimbLevel"].arr[3].avg + "</td>";
+      row += "<td>" + ad["endgameClimbLevel"].arr[2].avg + "</td>";
+      row += "<td>" + ad["endgameClimbLevel"].arr[1].avg + "</td>";
     }
     tbodyRef.insertRow().innerHTML = row;
   }
@@ -647,7 +645,7 @@ require 'inc/header.php';
   // Update the match summary table comparing both alliances
   //
   function updateMatchSummary(matchSpec, averagesData) {
-    let totalFuelEstAvg = {
+    let totalPointsAvg = {
       "red": 0,
       "blue": 0
     };
@@ -676,24 +674,24 @@ require 'inc/header.php';
       teamNum = matchSpec.red[i];
       let ad = averagesData[teamNum];
       if (ad != null) {
-        totalFuelEstAvg["red"] += ad["totalFuelEst"].avg;
-        avgAutoPoints["red"] += ad["autonFuelEst"].avg;
+        totalPointsAvg["red"] += ad["totalMatchPoints"].avg;
+        avgAutoPoints["red"] += ad["autonFinalFuelEst"].avg;
         avgAutoClimbPoints["red"] += ad["autonClimbPoints"].avg;
-        avgTeleopPoints["red"] += ad["teleopFuelEst"].avg;
+        avgTeleopPoints["red"] += ad["teleopTotalPoints"].avg;
         endgamePointsAvg["red"] += ad["endgamePoints"].avg;
         predictedPoints["red"] += ad["totalMatchPoints"].avg;
       }
 
-      console.log("==> matchSheet: team " + teamNum + " red: totalFuelEstAvg: " + totalFuelEstAvg["red"] + " avgAutoPoints: " + avgAutoPoints["red"] + " avgAutoClimbPoints: " + avgAutoClimbPoints["red"] + " avgTeleopPoints: " + avgTeleopPoints["red"] + " endgamePointsAvg: " + endgamePointsAvg["red"] + " predictedPoints: " + predictedPoints["red"]);
+      console.log("==> matchSheet: team " + teamNum + " red: totalPointsAvg: " + totalPointsAvg["red"] + " avgAutoPoints: " + avgAutoPoints["red"] + " avgAutoClimbPoints: " + avgAutoClimbPoints["red"] + " avgTeleopPoints: " + avgTeleopPoints["red"] + " endgamePointsAvg: " + endgamePointsAvg["red"] + " predictedPoints: " + predictedPoints["red"]);
     }
     for (let i in matchSpec.blue) {
       teamNum = matchSpec.blue[i];
       let ad = averagesData[teamNum];
       if (ad != null) {
-        totalFuelEstAvg["blue"] += ad["totalFuelEst"].avg;
-        avgAutoPoints["blue"] += ad["autonFuelEst"].avg;
+        totalPointsAvg["blue"] += ad["totalMatchPoints"].avg;
+        avgAutoPoints["blue"] += ad["autonFinalFuelEst"].avg;
         avgAutoClimbPoints["blue"] += ad["autonClimbPoints"].avg;
-        avgTeleopPoints["blue"] += ad["teleopFuelEst"].avg;
+        avgTeleopPoints["blue"] += ad["teleopTotalPoints"].avg;
         endgamePointsAvg["blue"] += ad["endgamePoints"].avg;
         predictedPoints["blue"] += ad["totalMatchPoints"].avg;
       }
@@ -703,6 +701,7 @@ require 'inc/header.php';
     // Predict ranking points
     //    This can be done in two different ways:
     //    - Sum the averages of the three teams and decide probable outcomes (estimate probable outcome)
+//HERE
     //      - Sum of AutoLeave averages > 2.5 (two robots 100% and one at 50%)
     //      - Sum of AutoCoralPieces > 1.0 (at least one coral scored between all three robots)
     //    - Best case of all robots (highly optimistic)
@@ -716,14 +715,14 @@ require 'inc/header.php';
       "red": 0,
       "blue": 0
     };
-    predictedRP["red"] += (totalFuelEstAvg["red"] > 100.0);
-    predictedRP["blue"] += (totalFuelEstAvg["blue"] > 100.0);
+    predictedRP["red"] += (totalPointsAvg["red"] > 100.0);
+    predictedRP["blue"] += (totalPointsAvg["blue"] > 100.0);
     console.log("==> matchSheet: (Energized RP): red: " + predictedRP["red"] + " blue: " + predictedRP["blue"]);
 
     //      CoralRP - 5 coral on each of the 4 levels L1-L4 (ignores Co-op):  
     //          robots can score on levels L1-L4 and average a total of at tleast 18.5 coral
-    predictedRP["red"] += (totalFuelEstAvg["red"] > 360.0) ? 1 : 0;
-    predictedRP["blue"] += (totalFuelEstAvg["blue"] > 360.0) ? 1 : 0;
+    predictedRP["red"] += (totalPointsAvg["red"] > 360.0) ? 1 : 0;
+    predictedRP["blue"] += (totalPointsAvg["blue"] > 360.0) ? 1 : 0;
     console.log("==> matchSheet: (Supercharged RP): red: " + predictedRP["red"] + " blue: " + predictedRP["blue"]);
 
     //      Endgame average points > 10 (indicates at least one deep climb, because one shallow plus 2 parks is == 10)
@@ -739,7 +738,7 @@ require 'inc/header.php';
     console.log("==> matchSheet: (Win/Lose): red: " + predictedRP["red"] + " blue: " + predictedRP["blue"]);
 
     // Fill the table
-    document.getElementById("redTotalFuel").innerText = roundTwoPlaces(totalFuelEstAvg["red"]);
+    document.getElementById("redTotalFuel").innerText = roundTwoPlaces(totalPointsAvg["red"]);
     document.getElementById("redAvgAutoPoints").innerText = roundTwoPlaces(avgAutoPoints["red"]);
     document.getElementById("redAvgAutoClimb").innerText = roundTwoPlaces(avgAutoClimbPoints["red"]);
     document.getElementById("redAvgTeleopPoints").innerText = roundTwoPlaces(avgTeleopPoints["red"]);
@@ -749,7 +748,7 @@ require 'inc/header.php';
     document.getElementById("redPredictedRP").innerText = roundTwoPlaces(predictedRP["red"]);
     document.getElementById("redActualRP").innerText = roundTwoPlaces(matchSpec["redRP"]);
 
-    document.getElementById("blueTotalFuel").innerText = roundTwoPlaces(totalFuelEstAvg["blue"]);
+    document.getElementById("blueTotalFuel").innerText = roundTwoPlaces(totalPointsAvg["blue"]);
     document.getElementById("blueAvgAutoPoints").innerText = roundTwoPlaces(avgAutoPoints["blue"]);
     document.getElementById("blueAvgAutoClimb").innerText = roundTwoPlaces(avgAutoClimbPoints["blue"]);
     document.getElementById("blueAvgTeleopPoints").innerText = roundTwoPlaces(avgTeleopPoints["blue"]);
@@ -904,6 +903,7 @@ require 'inc/header.php';
   //
   function loadMatchSheet(matchSpec, averagesData) {
     console.log("==> matchSheet: loadMatchSheet()");
+
     clearMatchSheet();
 
     if (matchSpec === null) {
@@ -924,6 +924,58 @@ require 'inc/header.php';
     buildTeamBoxTableBody("B", 0, matchSpec.blue[0], averagesData);
     buildTeamBoxTableBody("B", 1, matchSpec.blue[1], averagesData);
     buildTeamBoxTableBody("B", 2, matchSpec.blue[2], averagesData);
+  }
+
+
+  // Set up the MDP and its averages data
+  function setupMatchSheet(matchSpec, jMatchData, tbaMatchData, pitData, hopperCapData) {
+    console.log("==> matchSheet: setupMatchSheet()");
+    let averagesData = null;
+
+    if(matchSpec !== null) {
+      let mdp = new matchDataProcessor(jMatchData, tbaMatchData, pitData, hopperCapData);
+      mdp.getSiteFilteredAverages(function(filteredMatchData, filteredAvgData) {
+        averagesData = filteredAvgData;
+        if (averagesData !== null)
+          loadMatchSheet(matchSpec, averagesData);
+      });
+    }
+  }
+
+  // Load the necessary data: pit table data, hopperCap data, and scouted match data.
+  function loadRequiredData(matchSpec, tbaMatchData) {
+    console.log("==> matchSheet: loadRequiredData()");
+    let pitData = null;
+    let hopperCapData = null;
+    let jMatchData = null;
+
+    // In parallel, load the pitTable data
+    $.get("api/dbReadAPI.php", {
+      getAllPitData: true
+    }).done(function(allPitData) {
+      pitData = JSON.parse(allPitData);
+      console.log("   => got Pit data ");
+      setupMatchSheet(matchSpec, jMatchData, tbaMatchData, pitData, hopperCapData);
+    });
+
+    // In parallel, load the hopperCap data
+    $.get("api/dbReadAPI.php", {
+      getEventHopperCaps: true
+    }).done(function(allHopperCaps) {
+      hopperCapData = JSON.parse(allHopperCaps);
+      console.log("   => got hopperCap data ");
+      setupMatchSheet(matchSpec, jMatchData, tbaMatchData, pitData, hopperCapData);
+    });
+
+    // In parallel, load all match scouting data 
+    $.get("api/dbReadAPI.php", {
+      getAllMatchData: true
+    }).done(function(allMatchData) {
+      console.log("=> getAllMatchData");
+      jMatchData = JSON.parse(allMatchData);
+      console.log("   => got raw match data ");
+      setupMatchSheet(matchSpec, jMatchData, tbaMatchData, pitData, hopperCapData);
+    });
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -948,7 +1000,7 @@ require 'inc/header.php';
   document.addEventListener("DOMContentLoaded", function() {
     let matchId = null;
     let matchList = null;
-    let averagesData = null;
+    let tbaMatchData = null;
     let matchSpec = null;
 
     buildTeamBoxTableHeader("R0DataTable");
@@ -958,20 +1010,20 @@ require 'inc/header.php';
     buildTeamBoxTableHeader("B1DataTable");
     buildTeamBoxTableHeader("B2DataTable");
 
-    // Load event matches from TBA and build our links and a full match list
+    // Load TBA event matches and build our links and a full match list
     $.get("api/tbaAPI.php", {
       getEventMatches: true
     }).done(function(eventMatches) {
-      console.log("=> getEventMatches");
+      console.log("=> TBA getEventMatches");
       if (eventMatches === null) {
-        return alert("Can't load eventMatches from TBA; check if TBA Key was set in db_config");
+        return alert("Can't load TBA eventMatches; check if TBA Key was set in db_config");
       } else {
-        let jEventMatches = JSON.parse(eventMatches)["response"];
-        matchList = buildMatchList(jEventMatches);
+        tbaMatchData = JSON.parse(eventMatches)["response"];
+        matchList = buildMatchList(tbaMatchData);
         if (matchId !== null)
           matchSpec = getEventMatchSpec(matchId, matchList);
-        if ((matchSpec !== null) && (averagesData !== null))
-          loadMatchSheet(matchSpec, averagesData);
+        if ((matchSpec !== null) && (tbaMatchData !== null))
+          loadRequiredData(matchSpec, tbaMatchData);
       }
     });
 
@@ -979,13 +1031,9 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getAllMatchData: true
     }).done(function(allMatchData) {
-      console.log("=> getAllMatchData");
-      let mdp = new matchDataProcessor(JSON.parse(allMatchData));
-      mdp.getSiteFilteredAverages(function(filteredMatchData, filteredAvgData) {
-        averagesData = filteredAvgData;
-        if ((matchSpec !== null) && (averagesData !== null))
-          loadMatchSheet(matchSpec, averagesData);
-      });
+      console.log("=> get scouted matchData");
+      if (matchSpec !== null && tbaMatchData !== null)
+        loadRequiredData(matchSpec, tbaMatchData);
     });
 
     // Check URL for match ID to load
@@ -993,8 +1041,8 @@ require 'inc/header.php';
     if (matchId !== null) {
       console.log("==> matchsheet: building from URL match ID! " + matchId);
       matchSpec = getEventMatchSpec(matchId, matchList);
-      if ((matchSpec !== null) && (averagesData !== null))
-        loadMatchSheet(matchSpec, averagesData);
+      if ((matchSpec !== null) && (tbaMatchData !== null))
+        loadRequiredData(matchSpec, tbaMatchData);
     }
 
     // Load the match sheet from the match number entries
@@ -1002,8 +1050,8 @@ require 'inc/header.php';
       console.log("=> matchsheet: load event match!");
       matchId = document.getElementById("enterCompLevel").value + document.getElementById("enterMatchNumber").value.trim();
       matchSpec = getEventMatchSpec(matchId, matchList);
-      if ((matchSpec !== null) && (averagesData !== null))
-        loadMatchSheet(matchSpec, averagesData);
+      if ((matchSpec !== null) && (tbaMatchData !== null))
+        loadRequiredData(matchSpec, tbaMatchData);
     });
 
     // Load the custom match using the custom team numbers entries
@@ -1021,8 +1069,8 @@ require 'inc/header.php';
         return alert("Please fill in Red Team Number 1 and Blue Team Number 1!");
       } else {
         matchSpec = newSpec;
-        if ((matchSpec !== null) && (averagesData !== null))
-          loadMatchSheet(matchSpec, averagesData);
+        if ((matchSpec !== null) && (tbaMatchData !== null))
+          loadRequiredData(matchSpec, tbaMatchData);
       }
     });
 

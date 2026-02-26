@@ -687,10 +687,9 @@ class matchDataProcessor {
 
         let endgameClimbPoints = 0;
         switch (String(teamItem["endgameClimbLevel"].val)) {
-          case "1": endgameClimbPoints = 2; break;  // Parked
-          case "2": endgameClimbPoints = 2; break;  // Fell
-          case "3": endgameClimbPoints = 6; break;  // Shallow
-          case "4": endgameClimbPoints = 12; break; // Deep
+          case "1": endgameClimbPoints = 10; break;  // L1
+          case "2": endgameClimbPoints = 20; break;  // L2
+          case "3": endgameClimbPoints = 30; break;  // L3
           default: endgameClimbPoints = 0; break;   // No climb
         }
         this.updateItem(teamItem, "endgamePoints", endgameClimbPoints);
