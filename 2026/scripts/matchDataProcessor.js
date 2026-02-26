@@ -436,76 +436,78 @@ class matchDataProcessor {
 //HOLD    console.log("   ---> "+aColor+" Teams = "+teams[0]+", "+teams[1]+", "+teams[2]);
 
     // Get the 3 teams' current fuel estimates and also get the tbaMatch total fuel counts.
-    let tbaBreakdown = match["score_breakdown"];
-    let tbaBreakdownAFuel = parseFloat(tbaBreakdown[aColor]["hubScore"]["autoPoints"]); 
-    console.log("    ---> tbaBreakdownAFuel ("+aColor+") = "+tbaBreakdownAFuel);
-    let tbaBreakdownTFuel = parseFloat(tbaBreakdown[aColor]["hubScore"]["teleopPoints"]);
-    console.log("    ---> tbaBreakdownTFuel ("+aColor+") = "+tbaBreakdownTFuel);
+    if(match["score_breakdown"] != null && match["score_breakdown"][aColor] != null && match["score_breakdown"][aColor]["hubScore"] != null && match["score_breakdown"][aColor]["hubScore"]["autoPoints"] != null) 
+    {
+      let tbaBreakdown = match["score_breakdown"];
+      let tbaBreakdownAFuel = parseFloat(tbaBreakdown[aColor]["hubScore"]["autoPoints"]); 
+      console.log("    ---> tbaBreakdownAFuel ("+aColor+") = "+tbaBreakdownAFuel);
+      let tbaBreakdownTFuel = parseFloat(tbaBreakdown[aColor]["hubScore"]["teleopPoints"]);
+      console.log("    ---> tbaBreakdownTFuel ("+aColor+") = "+tbaBreakdownTFuel);
 
-    // Find the corresponding team pData item.
-    let pDataTeam1 = this.findPDataTeamItem(pData, teams[0]);
-    let pDataTeam2 = pData[teams[1]];
-    let pDataTeam3 = pData[teams[2]];
+      // Find the corresponding team pData item.
+      let pDataTeam1 = this.findPDataTeamItem(pData, teams[0]);
+      let pDataTeam2 = pData[teams[1]];
+      let pDataTeam3 = pData[teams[2]];
 
-    // Return if any of the teams don't have a pData item.
-    if ( pData[teams[0]] == null || pData[teams[1]] == null || pData[teams[2]] == null) {
-      console.log("  --> calcAllianceFuelEstTBA(): team pData not found!");
-      return;
-    }
-    // Return if any of the teams fuelD doesn't have an entry for this matchnum.
-    if ( pData[teams[0]]["fuelD"][matchnum] == null || pDataTeam2["fuelD"][matchnum] == null || pDataTeam3["fuelD"][matchnum] == null) {
-      console.log("  -->>> calcAllianceFuelEstTBA(): pData team fuelD not found!");
-      return;
-    }
+      // Return if any of the teams don't have a pData item.
+      if ( pData[teams[0]] == null || pData[teams[1]] == null || pData[teams[2]] == null) {
+        console.log("  --> calcAllianceFuelEstTBA(): team pData not found!");
+        return;
+      }
+      // Return if any of the teams fuelD doesn't have an entry for this matchnum.
+      if ( pData[teams[0]]["fuelD"][matchnum] == null || pDataTeam2["fuelD"][matchnum] == null || pDataTeam3["fuelD"][matchnum] == null) {
+        console.log("  -->>> calcAllianceFuelEstTBA(): pData team fuelD not found!");
+        return;
+      }
   
-    // Now get the existing fuelD data (should be the basic fuel estimates w/o TBA data)
-    let autoFuel1 = parseFloat(pDataTeam1["fuelD"][matchnum]["autonFE"]);
-    let autoFuel2 = parseFloat(pDataTeam2["fuelD"][matchnum]["autonFE"]);
-    let autoFuel3 = parseFloat(pDataTeam3["fuelD"][matchnum]["autonFE"]);
-    let teleopFuel1 = parseFloat(pDataTeam1["fuelD"][matchnum]["teleopFE"]);
-    let teleopFuel2 = parseFloat(pDataTeam2["fuelD"][matchnum]["teleopFE"]);
-    let teleopFuel3 = parseFloat(pDataTeam3["fuelD"][matchnum]["teleopFE"]);
-    console.log("  ---->>> basic autoFuel = "+autoFuel1+", "+autoFuel2+", "+autoFuel3);
+      // Now get the existing fuelD data (should be the basic fuel estimates w/o TBA data)
+      let autoFuel1 = parseFloat(pDataTeam1["fuelD"][matchnum]["autonFE"]);
+      let autoFuel2 = parseFloat(pDataTeam2["fuelD"][matchnum]["autonFE"]);
+      let autoFuel3 = parseFloat(pDataTeam3["fuelD"][matchnum]["autonFE"]);
+      let teleopFuel1 = parseFloat(pDataTeam1["fuelD"][matchnum]["teleopFE"]);
+      let teleopFuel2 = parseFloat(pDataTeam2["fuelD"][matchnum]["teleopFE"]);
+      let teleopFuel3 = parseFloat(pDataTeam3["fuelD"][matchnum]["teleopFE"]);
+      console.log("  ---->>> basic autoFuel = "+autoFuel1+", "+autoFuel2+", "+autoFuel3);
 
-    // Calculate ratio of each robot's contribution to the the base auton total fuel.
-    let autoSum = Number(autoFuel1 + autoFuel2 + autoFuel3).toFixed(2);
-    console.log("    ---->> autoSum = "+autoSum);
+      // Calculate ratio of each robot's contribution to the the base auton total fuel.
+      let autoSum = Number(autoFuel1 + autoFuel2 + autoFuel3).toFixed(2);
+      console.log("    ---->> autoSum = "+autoSum);
 
-    let autoRatio1 = Number(autoFuel1 / autoSum).toFixed(2);
-    let autoRatio2 = Number(autoFuel2 / autoSum).toFixed(2);
-    let autoRatio3 = Number(autoFuel3 / autoSum).toFixed(2);
-    console.log("    ---->> autoRatios = "+autoRatio1+", "+autoRatio2+", "+autoRatio3);
+      let autoRatio1 = Number(autoFuel1 / autoSum).toFixed(2);
+      let autoRatio2 = Number(autoFuel2 / autoSum).toFixed(2);
+      let autoRatio3 = Number(autoFuel3 / autoSum).toFixed(2);
+      console.log("    ---->> autoRatios = "+autoRatio1+", "+autoRatio2+", "+autoRatio3);
 
-    // Now use the ratios to calc each team's contribution to the actual (tba) auton fuel count.
-    let autoFinal1 = Number(autoRatio1 * tbaBreakdownAFuel).toFixed(2);
-    let autoFinal2 = Number(autoRatio2 * tbaBreakdownAFuel).toFixed(2);
-    let autoFinal3 = Number(autoRatio3 * tbaBreakdownAFuel).toFixed(2);
-    console.log("      ---->> autoFinals = "+autoFinal1+", "+autoFinal2+", "+autoFinal3);
+      // Now use the ratios to calc each team's contribution to the actual (tba) auton fuel count.
+      let autoFinal1 = Number(autoRatio1 * tbaBreakdownAFuel).toFixed(2);
+      let autoFinal2 = Number(autoRatio2 * tbaBreakdownAFuel).toFixed(2);
+      let autoFinal3 = Number(autoRatio3 * tbaBreakdownAFuel).toFixed(2);
+      console.log("      ---->> autoFinals = "+autoFinal1+", "+autoFinal2+", "+autoFinal3);
 
-    // Save the new tba-based fuel est for this match in fuelD..
-    this.updateMatchFuelDItem(pDataTeam1, matchnum, "tbaAutonFE", autoFinal1);
-    this.updateMatchFuelDItem(pDataTeam2, matchnum, "tbaAutonFE", autoFinal2);
-    this.updateMatchFuelDItem(pDataTeam3, matchnum, "tbaAutonFE", autoFinal3);
+      // Save the new tba-based fuel est for this match in fuelD..
+      this.updateMatchFuelDItem(pDataTeam1, matchnum, "tbaAutonFE", autoFinal1);
+      this.updateMatchFuelDItem(pDataTeam2, matchnum, "tbaAutonFE", autoFinal2);
+      this.updateMatchFuelDItem(pDataTeam3, matchnum, "tbaAutonFE", autoFinal3);
 
-    // Now do teleop calcs.
-    console.log("  ---->>> basic teleopFuel = "+teleopFuel1+", "+teleopFuel2+", "+teleopFuel3);
-    let teleSum = Number(teleopFuel1 + teleopFuel2 + teleopFuel3).toFixed(2);
-    console.log("    ---->>> teleSum = "+teleSum);
-    let teleRatio1 = Number(teleopFuel1 / teleSum).toFixed(2);
-    let teleRatio2 = Number(teleopFuel2 / teleSum).toFixed(2);
-    let teleRatio3 = Number(teleopFuel3 / teleSum).toFixed(2);
-    console.log("    ---->> teleopRatios = "+teleRatio1+", "+teleRatio2+", "+teleRatio3);
+      // Now do teleop calcs.
+      console.log("  ---->>> basic teleopFuel = "+teleopFuel1+", "+teleopFuel2+", "+teleopFuel3);
+      let teleSum = Number(teleopFuel1 + teleopFuel2 + teleopFuel3).toFixed(2);
+      console.log("    ---->>> teleSum = "+teleSum);
+      let teleRatio1 = Number(teleopFuel1 / teleSum).toFixed(2);
+      let teleRatio2 = Number(teleopFuel2 / teleSum).toFixed(2);
+      let teleRatio3 = Number(teleopFuel3 / teleSum).toFixed(2);
+      console.log("    ---->> teleopRatios = "+teleRatio1+", "+teleRatio2+", "+teleRatio3);
 
-    // Use the ratios to calc each team's contribution to the actual (tba) teleop fuel count.
-    let teleFinal1 = Number(teleRatio1 * tbaBreakdownTFuel).toFixed(2);
-    let teleFinal2 = Number(teleRatio2 * tbaBreakdownTFuel).toFixed(2);
-    let teleFinal3 = Number(teleRatio3 * tbaBreakdownTFuel).toFixed(2);
-    console.log("      ---->> teleFinals = "+teleFinal1+", "+teleFinal2+", "+teleFinal3);
+      // Use the ratios to calc each team's contribution to the actual (tba) teleop fuel count.
+      let teleFinal1 = Number(teleRatio1 * tbaBreakdownTFuel).toFixed(2);
+      let teleFinal2 = Number(teleRatio2 * tbaBreakdownTFuel).toFixed(2);
+      let teleFinal3 = Number(teleRatio3 * tbaBreakdownTFuel).toFixed(2);
+      console.log("      ---->> teleFinals = "+teleFinal1+", "+teleFinal2+", "+teleFinal3);
 
-    // Save the new tba-based fuel est for this match in fuelD..
-    this.updateMatchFuelDItem(pDataTeam1, matchnum, "tbaTeleopFE", teleFinal1);
-    this.updateMatchFuelDItem(pDataTeam2, matchnum, "tbaTeleopFE", teleFinal2);
-    this.updateMatchFuelDItem(pDataTeam3, matchnum, "tbaTeleopFE", teleFinal3);
+      // Save the new tba-based fuel est for this match in fuelD..
+      this.updateMatchFuelDItem(pDataTeam1, matchnum, "tbaTeleopFE", teleFinal1);
+      this.updateMatchFuelDItem(pDataTeam2, matchnum, "tbaTeleopFE", teleFinal2);
+      this.updateMatchFuelDItem(pDataTeam3, matchnum, "tbaTeleopFE", teleFinal3);
 
 //REMOVE    // Calculate the total fuel estimates.
 //REMOVE    let totalFinal1 = autoFinal1 + teleFinal1;
@@ -516,6 +518,8 @@ class matchDataProcessor {
 //REMOVE    this.updateItem(pDataTeam1, "totalFuelEst", totalFinal1);
 //REMOVE    this.updateItem(pDataTeam2, "totalFuelEst", totalFinal2);
 //REMOVE    this.updateItem(pDataTeam3, "totalFuelEst", totalFinal3);
+    }
+    else console.log("  --> Can't access TBA score breakdown data, so no TBA fuel ests!");
   };
 
   //
