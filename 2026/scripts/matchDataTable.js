@@ -77,12 +77,60 @@ function insertMatchDataHeader(tableId, aliasList) {
   theadRef.insertRow().innerHTML = rowString;
 };
 
+// Converts a given Preload Accuracy Rate number to a string
+function toPreloadAcc(value) {
+  switch (String(value)) {
+    case "1": return "1:All";
+    case "2": return "2:Most";
+    case "3": return "3:Half";
+    case "4": return "4:Some";
+    case "5": return "5:None";
+    default: return "-";
+  }
+}
+
+// Converts a given Accuracy Rate number to a string
+function toAccuracyRate(value) {
+  switch (String(value)) {
+    case "1": return "1:Most";
+    case "2": return "2:3/4";
+    case "3": return "3:1/2";
+    case "4": return "4:1/4";
+    case "5": return "5:Few";
+    case "6": return "6:None";
+    default: return "-";
+  }
+}
+
+// Converts a given Passing Rate number to a string
+function toPassingRate(value) {
+  switch (String(value)) {
+    case "1": return "1:Low";
+    case "2": return "2:Med";
+    case "3": return "3:Half";
+    case "4": return "4:Tons";
+    default: return "-";
+  }
+}
+
+// Converts a given Accuracy Rate number to a string
 // Converts a given tower climb number to a string
 function toClimbLevel(value) {
   switch (String(value)) {
-    case "1": return "1-L1";
-    case "2": return "2-L2";
-    case "3": return "3-L3";
+    case "1": return "1:L1";
+    case "2": return "2:L2";
+    case "3": return "3:L3";
+    default: return "-";
+  }
+}
+
+// Converts a given Start Climb number to a string
+function toStartClimb(value) {
+  switch (String(value)) {
+    case "1": return "1:Before";
+    case "2": return "2:Bell";
+    case "3": return "3:10s";
+    case "4": return "4:<10s";
     default: return "-";
   }
 }
@@ -90,10 +138,10 @@ function toClimbLevel(value) {
 // Converts a given climb position number to a string
 function toClimbPosition(value) {
   switch (String(value)) {
-    case "1": return "1-Back";
-    case "2": return "2-Left";
-    case "3": return "3-Front";
-    case "4": return "4-Right";
+    case "1": return "1:Back";
+    case "2": return "2:Left";
+    case "3": return "3:Front";
+    case "4": return "4:Right";
     default: return "-";
   }
 }
@@ -101,11 +149,11 @@ function toClimbPosition(value) {
 // Converts a given driver ability number to a string
 function toDriverAbility(value) {
   switch (String(value)) {
-    case "1": return "1-Slow";
-    case "2": return "2-Jerky";
-    case "3": return "3-Avg";
-    case "4": return "4-Quick";
-    case "5": return "5-Elite";
+    case "1": return "1:Slow";
+    case "2": return "2:Jerky";
+    case "3": return "3:Avg";
+    case "4": return "4:Fast";
+    case "5": return "5:Elite";
     default: return "-";
   }
 }
@@ -113,22 +161,34 @@ function toDriverAbility(value) {
 // Converts a given defense rate number to a string
 function toDefenseRate(value) {
   switch (String(value)) {
-    case "1": return "1-Low";
-    case "2": return "2-Med Low";
-    case "3": return "3-Med";
-    case "4": return "4-Med High";
-    case "5": return "5-High";
+    case "1": return "1:Low";
+    case "2": return "2:M Low";
+    case "3": return "3:Med";
+    case "4": return "4:M High";
+    case "5": return "5:High";
     default: return "-";
   }
 }
 
-function died(value) {
+// Converts a given Driver Ability number to a string
+function toDriverAbility(value) {
   switch (String(value)) {
-    case "1": return "Most";
-    case "2": return "1min";
-    case "3": return "30sec";
-    case "4": return "30-15s";
-    case "5": return "No Show";
+    case "1": return "1:Slow";
+    case "2": return "2:Jerky";
+    case "3": return "3:Avg";
+    case "4": return "4:Fast";
+    case "5": return "5:Elite";
+    default: return "-";
+  }
+}
+
+function toDiedValue(value) {
+  switch (String(value)) {
+    case "1": return "1:Most";
+    case "2": return "2:1m+";
+    case "3": return "3:30s+";
+    case "4": return "4:15-30s";
+    case "5": return "5:No Show";
     default: return "-";
   }
 }
@@ -165,25 +225,25 @@ function insertMatchDataBody(tableId, matchData, aliasList, teamFilter) {
       rowString += tdBody + getAliasFromTeamNum(teamNum, aliasList) + "</td>";
     }
 
-    rowString += tdBlue + died(matchItem["died"]) + "</td>";
+    rowString += tdBlue + toDiedValue(matchItem["died"]) + "</td>";
     rowString += tdBody + matchItem["autonShootPreload"] + "</td>";
-    rowString += tdBlue + matchItem["autonPreloadAccuracy"] + "</td>";
+    rowString += tdBlue + toPreloadAcc(matchItem["autonPreloadAccuracy"]) + "</td>";
     rowString += tdBody + matchItem["autonHoppersShot"] + "</td>";
-    rowString += tdBlue + matchItem["autonHopperAccuracy"] + "</td>";
+    rowString += tdBlue + toAccuracyRate(matchItem["autonHopperAccuracy"]) + "</td>";
     rowString += tdBody + matchItem["autonAllianceZone"] + "</td>";
     rowString += tdBlue + matchItem["autonDepot"] + "</td>";
     rowString += tdBody + matchItem["autonOutpost"] + "</td>";
     rowString += tdBlue + matchItem["autonNeutralZone"] + "</td>";
-    rowString += tdBody + matchItem["autonClimb"] + "</td>";
+    rowString += tdBody + toClimbPosition(matchItem["autonClimb"]) + "</td>";
     rowString += tdBlue + matchItem["teleopHoppersUsed"] + "</td>";
-    rowString += tdBody + matchItem["teleopHopperAccuracy"] + "</td>";
+    rowString += tdBody + toAccuracyRate(matchItem["teleopHopperAccuracy"]) + "</td>";
     rowString += tdBlue + matchItem["teleopIntakeAndShoot"] + "</td>";
-    rowString += tdBody + matchItem["teleopPassingRate"] + "</td>";
+    rowString += tdBody + toPassingRate(matchItem["teleopPassingRate"]) + "</td>";
     rowString += tdBlue + toDefenseRate(matchItem["teleopDefenseLevel"]) + "</td>";
-    rowString += tdBody + matchItem["driverAbility"] + "</td>";
-    rowString += tdBlue + matchItem["teleopAllianceToAlliance"] + "</td>";
-    rowString += tdBody + matchItem["teleopNeutralToAlliance"] + "</td>";
-    rowString += tdBlue + matchItem["endgameStartClimb"] + "</td>";
+    rowString += tdBody + toDriverAbility(matchItem["driverAbility"]) + "</td>";
+    rowString += tdBlue + matchItem["teleopNeutralToAlliance"] + "</td>";
+    rowString += tdBody + matchItem["teleopAllianceToAlliance"] + "</td>";
+    rowString += tdBlue + toStartClimb(matchItem["endgameStartClimb"]) + "</td>";
     rowString += tdBody + toClimbLevel(matchItem["endgameClimbLevel"]) + "</td>";
     rowString += tdBlue + toClimbPosition(matchItem["endgameClimbPosition"]) + "</td>";
     rowString += tdBody + matchItem["comment"] + "</td>";

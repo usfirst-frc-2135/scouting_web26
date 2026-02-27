@@ -77,8 +77,8 @@ function insertEventAveragesHeader(tableId, aliasList) {
   rowString2 += '<th colspan="1" ' + thTeleop + '>Def' + '</th>';
 
   // endgame 
-  rowString2 += '<th colspan="4" ' + thEndgame + '>Start Climb%' + '</th>';
-  rowString2 += '<th colspan="5" ' + thEndgame + '>Climb%' + '</th>';
+  rowString2 += '<th colspan="5" ' + thEndgame + '>Start Climb%' + '</th>';
+  rowString2 += '<th colspan="4" ' + thEndgame + '>Climb%' + '</th>';
 
   theadRef.insertRow().innerHTML = rowString2;
 
@@ -121,17 +121,17 @@ function insertEventAveragesHeader(tableId, aliasList) {
   rowString3 += thPrefix0 + 'Avg' + '</th>';
 
   // endgame(start climb)
-  rowString3 += thPrefix1 + 'NO' + '</th>';
-  rowString3 += thPrefix1 + 'B20' + '</th>';
-  rowString3 += thPrefix1 + 'A10' + '</th>';
-  rowString3 += thPrefix1 + 'L5' + '</th>';
+  rowString3 += thPrefix1 + 'NA' + '</th>';
+  rowString3 += thPrefix1 + 'B4' + '</th>';
+  rowString3 += thPrefix1 + 'Bell' + '</th>';
+  rowString3 += thPrefix1 + '10s' + '</th>';
+  rowString3 += thPrefix1 + '<10s' + '</th>';
 
   // endgame(climb)
-  rowString3 += thPrefix0 + 'NO' + '</th>';
-  rowString3 += thPrefix0 + 'PK' + '</th>';
-  rowString3 += thPrefix0 + 'FL' + '</th>';
-  rowString3 += thPrefix0 + 'SH' + '</th>';
-  rowString3 += thPrefix0 + 'DP' + '</th>';
+  rowString3 += thPrefix0 + 'NA' + '</th>';
+  rowString3 += thPrefix0 + 'L1' + '</th>';
+  rowString3 += thPrefix0 + 'L2' + '</th>';
+  rowString3 += thPrefix0 + 'L3' + '</th>';
 
   theadRef.insertRow().innerHTML = rowString3;
 };
@@ -216,7 +216,15 @@ function insertEventAveragesBody(tableId, avgData, coprData, aliasList, pitData,
 
     rowString += tdPrefix0 + coprEntry + "</td>";
     rowString += tdPrefix0 + getDataValue(avgItem, "totalMatches") + "</td>";
-    rowString += tdPrefix0 + getDataValue(avgItem, "died", "sum") + "</td>";
+
+    // For died, we just want to show Yes if they ever died, and No if they didn't die.
+    let didDie = "No";  // default 
+    let diedPercentage = getDataValue(avgItem, "died", "arr");
+    let notDiedAvg = getDataValue(diedPercentage, 0, "avg");
+    console.log("---> notDiedAvg = "+notDiedAvg);
+    if(notDiedAvg != 100)
+      didDie = "Yes"; 
+    rowString += tdPrefix0 + didDie + "</td>";
 
     // points by game phase
     rowString += tdPrefix1 + Math.round(getDataValue(avgItem, "totalMatchPoints", "avg")) + "</td>";
@@ -245,13 +253,13 @@ function insertEventAveragesBody(tableId, avgData, coprData, aliasList, pitData,
     rowString += tdPrefix1 + getDataValue(endgameClimbStartPercentage, 1, "avg") + "</td>";
     rowString += tdPrefix1 + getDataValue(endgameClimbStartPercentage, 2, "avg") + "</td>";
     rowString += tdPrefix1 + getDataValue(endgameClimbStartPercentage, 3, "avg") + "</td>";
+    rowString += tdPrefix1 + getDataValue(endgameClimbStartPercentage, 4, "avg") + "</td>";
 
-    let endgameClimbPercentage = getDataValue(avgItem, "endgameCageClimb", "arr");
+    let endgameClimbPercentage = getDataValue(avgItem, "endgameClimbLevel", "arr");
     rowString += tdPrefix0 + getDataValue(endgameClimbPercentage, 0, "avg") + "</td>";
     rowString += tdPrefix0 + getDataValue(endgameClimbPercentage, 1, "avg") + "</td>";
     rowString += tdPrefix0 + getDataValue(endgameClimbPercentage, 2, "avg") + "</td>";
     rowString += tdPrefix0 + getDataValue(endgameClimbPercentage, 3, "avg") + "</td>";
-    rowString += tdPrefix0 + getDataValue(endgameClimbPercentage, 4, "avg") + "</td>";
 
     tbodyRef.insertRow().innerHTML = rowString;
   }

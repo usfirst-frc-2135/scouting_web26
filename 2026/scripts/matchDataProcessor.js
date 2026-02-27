@@ -618,10 +618,10 @@ class matchDataProcessor {
         this.updateMatchFuelDItem(teamItem, matchnum, "teleopFE", teleopFuelEst);
 
         // Endgame
-        this.getMatchArray(teamItem, "endgameStartClimb", 4, match, "endgameStartClimb");
-        this.getMatchArray(teamItem, "endgameClimbLevel", 5, match, "endgameClimbLevel");
+        this.getMatchArray(teamItem, "endgameStartClimb", 5, match, "endgameStartClimb");
+        this.getMatchArray(teamItem, "endgameClimbLevel", 4, match, "endgameClimbLevel");
 
-        this.getMatchItem(teamItem, "died", match, "died");
+        this.getMatchArray(teamItem, "died", 6, match, "died");
 
         // Append text data for matches
         teamItem["scoutNames"].push(match["matchnumber"] + " - " + match["scoutname"]);
@@ -712,12 +712,12 @@ class matchDataProcessor {
 //HOLD for example      this.calcAccuracy(teamItem, "teleopCoralPieces", "teleopCoralAcquired");
 //HOLD for example      this.calcAccuracy(teamItem, "teleopAlgaePieces", "teleopAlgaeAcquired");
 
-      // Defense avg - only calculate this if this team played defense in a match
+      // Defense avg 
       this.calcAverage(teamItem, "teleopDefenseLevel", "totalDefenseMatches");
 
-      this.calcAverage(teamItem, "died", "totalMatches");
+      this.calcArray(teamItem, "died", "totalMatches");
 
-      // Endgame - TODO get correct keywords here
+      // Endgame 
       this.calcArray(teamItem, "endgameStartClimb", "totalMatches");
       this.calcArray(teamItem, "endgameClimbLevel", "totalMatches");
 
