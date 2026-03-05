@@ -196,7 +196,7 @@ function calcAutonTotalFuel(hopperCap, preloadShot, hoppersShot, preloadAcc, hop
       case 3: preloadAcc = AUTON_HALF_ACC_RATE; break;     // Half
       case 4: preloadAcc = AUTON_SOME_ACC_RATE_PRE; break; // Some
       case 5: preloadAcc = AUTON_NONE_ACC_RATE; break;     // None
-      default: preloadAcc = AUTON_IDK_ACC_RATE; break;     // IDK
+      default: preloadAcc = AUTON_NONE_ACC_RATE; break;     
   }
 //HOLD  console.log("   --> preloadAcc (converted to percentage) = " + preloadAcc);
   let autonPreloadTotal = preloadShot * preloadAcc * 8;
@@ -212,7 +212,7 @@ function calcAutonTotalFuel(hopperCap, preloadShot, hoppersShot, preloadAcc, hop
       case 4: hopperAcc = AUTON_QUARTER_ACC_RATE; break;     // 1/4
       case 5: hopperAcc = AUTON_FEW_ACC_RATE; break;         // Few
       case 6: hopperAcc = AUTON_NONE_ACC_RATE; break;        // None
-      default: hopperAcc = AUTON_IDK_ACC_RATE; break;        // IDK
+      default: hopperAcc = AUTON_NONE_ACC_RATE; break;     
   }
 //HOLD  console.log("     --> auto hopperAcc (percentage) = " + hopperAcc);
 //HOLD  console.log("     --> auto hoppersShot = " + hoppersShot);

@@ -107,11 +107,6 @@ require 'inc/header.php';
                   </thead>
                   <tbody class="table-group-divider">
                     <tr>
-                      <th scope="row" class="text-start">Fuel Est</th>
-                      <td> </td>
-                      <td> </td>
-                    </tr>
-                    <tr>
                       <th scope="row" class="text-start">Match Points</th>
                       <td> </td>
                       <td> </td>
@@ -152,11 +147,11 @@ require 'inc/header.php';
                   <thead>
                     <tr>
                       <th scope="col" class="text-start"></th>
-                      <th scope="col" style="width:12%">NO</th>
-                      <th scope="col" style="width:12%">FL</th>
-                      <th scope="col" style="width:12%">PK</th>
-                      <th scope="col" style="width:12%">SH</th>
-                      <th scope="col" style="width:12%">DP</th>
+                      <th scope="col" style="width:12%">NA</th>
+                      <th scope="col" style="width:12%">B</th>
+                      <th scope="col" style="width:12%">L</th>
+                      <th scope="col" style="width:12%">F</th>
+                      <th scope="col" style="width:12%">R</th>
                     </tr>
                   </thead>
                   <tbody class="table-group-divider">
@@ -232,16 +227,15 @@ require 'inc/header.php';
                     </tr>
                   </tbody>
                 </table>
-                <table id="endgameCageClimbTable"
+                <table id="endgameClimbTable"
                   class="table table-striped table-bordered table-hover table-sm border-secondary text-center ">
                   <thead>
                     <tr>
                       <th scope="col" class="text-start"></th>
-                      <th scope="col" style="width:12%">NO</th>
-                      <th scope="col" style="width:12%">FL</th>
-                      <th scope="col" style="width:12%">PK</th>
-                      <th scope="col" style="width:12%">SH</th>
-                      <th scope="col" style="width:12%">DP</th>
+                      <th scope="col" style="width:12%">NA</th>
+                      <th scope="col" style="width:12%">L1</th>
+                      <th scope="col" style="width:12%">L2</th>
+                      <th scope="col" style="width:12%">L3</th>
                     </tr>
                   </thead>
                   <tbody class="table-group-divider">
@@ -260,15 +254,38 @@ require 'inc/header.php';
                   <thead>
                     <tr>
                       <th scope="col" class="text-start"></th>
-                      <th scope="col" style="width:12%">NO</th>
-                      <th scope="col" style="width:12%">B20</th>
-                      <th scope="col" style="width:12%">A10</th>
-                      <th scope="col" style="width:12%">L5</th>
+                      <th scope="col" style="width:12%">NA</th>
+                      <th scope="col" style="width:12%">B4</th>
+                      <th scope="col" style="width:12%">Bell</th>
+                      <th scope="col" style="width:12%">10s</th>
+                      <th scope="col" style="width:12%">lt10s</th>
                     </tr>
                   </thead>
                   <tbody class="table-group-divider">
                     <tr>
                       <th scope="row" class="text-start">Start Climb %</th>
+                      <td> </td>
+                      <td> </td>
+                      <td> </td>
+                      <td> </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table id="endgameClimbPosTable"
+                  class="table table-striped table-bordered table-hover table-sm border-secondary text-center ">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="text-start"></th>
+                      <th scope="col" style="width:12%">NA</th>
+                      <th scope="col" style="width:12%">B</th>
+                      <th scope="col" style="width:12%">L</th>
+                      <th scope="col" style="width:12%">F</th>
+                      <th scope="col" style="width:12%">R</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table-group-divider">
+                    <tr>
+                      <th scope="row" class="text-start">Climb Pos %</th>
                       <td> </td>
                       <td> </td>
                       <td> </td>
@@ -384,60 +401,60 @@ require 'inc/header.php';
   //
   ///// AUTON GRAPH STARTS HERE /////
   //
-  function loadAutonGraph(matchData, pitData) {
+  function loadAutonGraph(teamNum, matchData, avgsData) {
     console.log("==> teamLookup: loadAutonGraph()");
 
-    // Retrieve the data for each match
+    // Set up the datasets for this graph.
     let datasets = []; // Each entry is a dict with a label and data attribute
-
     datasets.push({
       label: "Climb",
       data: [],
-      backgroundColor: '#F7CF58'
+      backgroundColor: '#DE8E2C'
     }); // Yellow
     datasets.push({
       label: "Fuel Est",
       data: [],
-      backgroundColor: '#B4E7D6'
-    }); // Teal - algae
-
-    // Go thru each matchData QR code string and build up a table of the data, so we can
-    // later sort it so the matches are listed in the right order. 
+      backgroundColor: '#2779F5'
+    }); // Blue 
     let mydata = [];
-    for (let i = 0; i < matchData.length; i++) {
-    let matchItem = matchData[i];
 
-    let hopperCount = 0;
-    if (pitData != null) {
-      if (pitData != null) {
-        hopperCount = pitData["numbatteries"];
-        console.log("HOPPER COUNT: " + pitData["numbatteries"]);
-      };
-    };
+    // Note: matchData contains scouted data for all teams, so find each match for this team.
+    for (let i=0; i<matchData.length; i++) {
+      let matchItem = matchData[i];
+      let matchnum = matchItem["matchnumber"];
+      let teamnumber = matchItem["teamnumber"];
+      if(teamnumber == teamNum) {
+//        console.log("    ==> teamLookup: match "+matchnum+": found team "+teamNum);
 
-    let preloadShot = matchItem["autonShootPreload"];
-    let hoppersShot = matchItem["autonHoppersShot"];
-    let preloadAcc = matchItem["autonPreloadAccuracy"];
-    let hopperAcc = matchItem["autonHopperAccuracy"];
-    let autonFuelEst = calcAutonTotalFuel(hopperCount, preloadShot, hoppersShot, preloadAcc, hopperAcc);
+        // Get the auton fuel estimate for this team / match from the avgsData
+        let autonFuelEst = 0; // default
+        let pDataTeamItem = avgsData[teamNum];
+        if(pDataTeamItem !== undefined) {
+          if(pDataTeamItem["fuelD"][matchnum]["autonFE"] !== undefined) {
+            autonFuelEst = pDataTeamItem["fuelD"][matchnum]["autonFE"];
+//            console.log("        ==> basic autonFE = "+autonFuelEst);
+          }
+          if(pDataTeamItem["fuelD"][matchnum]["tbaAutonFE"] !== undefined) {
+            autonFuelEst = pDataTeamItem["fuelD"][matchnum]["tbaAutonFE"];
+//            console.log("        ==> tba autonFE = "+autonFuelEst);
+          }
+        }
 
-    let autonClimb = 0;
-    if (matchItem["autonClimb"] == 0) {
-      autonClimb = 0;
-    }; 
-    if (matchItem["autonClimb"] == 1 || matchItem["autonClimb"] == 2 || matchItem["autonClimb"] == 3 || matchItem["autonClimb"] == 4) {
-      autonClimb = 50;
-    };
+        let autonClimb = 0;
+        if (matchItem["autonClimb"] == 0) {
+          autonClimb = 0;
+        }; 
+        if (matchItem["autonClimb"] == 1 || matchItem["autonClimb"] == 2 || matchItem["autonClimb"] == 3 || matchItem["autonClimb"] == 4) {
+          autonClimb = 15;   
+        };
 
-
-      mydata.push({
-        matchnum: matchItem["matchnumber"],
-        fuel: autonFuelEst,
-        climb: autonClimb,
-      });
-    }
-
-    console.log("fuel est " + mydata[0]["fuel"]);
+        mydata.push({
+          matchnum: matchnum,
+          fuel: autonFuelEst,
+          climb: autonClimb,
+        });
+      }
+    }  // done with matchData for loop
 
     mydata.sort(function(rowA, rowB) {
       return (compareMatchNumbers(rowA["matchnum"], rowB["matchnum"]));
@@ -447,7 +464,6 @@ require 'inc/header.php';
     let matchList = []; // List of matches to use as x labels
     let autonFuelTips = []; // holds custom tooltips for auton fuel estimate dat
     let autonClimbTips = []; // holds custom tooltips for auton climb data      
-
 
     for (let i = 0; i < mydata.length; i++) {
       let matchnum = mydata[i]["matchnum"];
@@ -495,12 +511,14 @@ require 'inc/header.php';
             ticks: {
               precision: 0
             },
-            max:150
-          } // Set Y axis maximum value - 4 coral + algae in  auto plus leave
+            max:160
+          } 
         },
-        plugins: {
+        plugins: 
+        {
           tooltip: {
-            callbacks: { // Special tooltip handling
+            callbacks: 
+            { // Special tooltip handling
               label: function(tooltipItem, ddata) {
 
                 function getTip(matchno, tipList) {
@@ -526,14 +544,13 @@ require 'inc/header.php';
         }
       }
     });
-  }
-
+  } 
   ///// AUTON GRAPH ENDS HERE /////
 
   //
   ///// TELEOP GRAPH STARTS HERE /////
   //
-  function loadTeleopGraph(matchData, pitData) {
+  function loadTeleopGraph(teamNum, matchData, avgsData) {
     console.log("==> teamLookup: loadTeleopGraph()");
 
     // Declare variables
@@ -542,38 +559,46 @@ require 'inc/header.php';
     datasets.push({
       label: "Defense",
       data: [],
-      backgroundColor: '#B4E7D6'
-    }); // Teal - algae
+      backgroundColor: '#097513'
+    }); // Green
     datasets.push({
       label: "Fuel Est",
       data: [],
-      backgroundColor: '#4C9F7C'
-    }); // Darker Teal - algae
+      backgroundColor: '#2779F5'
+    }); // Blue
 
-    // Go thru each matchData QR code string and build up a table of the data, so we can
-    // later sort it so the matches are listed in the right order. 
-
+    // Go thru each matchData QR code string and build up a table of the data for this team, 
+    // so we can later sort it so the matches are listed in the right order. 
     let mydata = [];
     for (let i = 0; i < matchData.length; i++) {
       let matchItem = matchData[i];
+      let matchnum = matchItem["matchnumber"];
+      let teamnumber = matchItem["teamnumber"];
+      if(teamnumber == teamNum) {
+//        console.log("    ==> loadTeleopGraph: match "+matchnum+": found team "+teamNum);
 
-      let hopperCount = 0;
-      if (pitData != null) {
-        if (pitData != null) {
-          hopperCount = pitData["numbatteries"];
-          console.log("HOPPER COUNT: " + pitData["numbatteries"]);
-        };
-      };
-
-      let teleopHoppersShot = matchItem["teleopHoppersUsed"];
-      let teleopHopperAcc = matchItem["teleopHopperAccuracy"];
-      let teleopFuelEst = calcTeleopTotalFuel(hopperCount, teleopHoppersShot, teleopHopperAcc);
-
-      mydata.push({
-        matchnum: matchItem["matchnumber"],
-        defense: matchItem["teleopDefenseLevel"] * 25, // Defense level is 0-3, so multiply by 25 to get a value that will show up on the graph
-        fuel: teleopFuelEst,
-      });
+        // Get the teleop fuel estimate for this team / match from the avgsData
+        let teleopFuelEst = 0; // default
+        let pDataTeamItem = avgsData[teamNum];
+        if(pDataTeamItem !== undefined) {
+          if(pDataTeamItem["fuelD"][matchnum]["teleopFE"] !== undefined) {
+            teleopFuelEst = pDataTeamItem["fuelD"][matchnum]["teleopFE"];
+//            console.log("        ==> basic teleopFE = "+teleopFuelEst);
+          }
+          if(pDataTeamItem["fuelD"][matchnum]["tbaTeleopFE"] !== undefined) {
+            teleopFuelEst = pDataTeamItem["fuelD"][matchnum]["tbaTeleopFE"];
+//            console.log("        ==> tba teleopFE = "+teleopFuelEst);
+          }
+        }
+ 
+        // Note: defense level is 0-5, so multiply by 10 to get a value that will show on the graph.
+        // IF THIS MULT value changes from 10, you must update the toDefenseLevel() function.
+        mydata.push({
+          matchnum: matchItem["matchnumber"],
+          defense: matchItem["teleopDefenseLevel"] * 10, 
+          fuel: teleopFuelEst,
+        });
+      }
     }
 
     mydata.sort(function(rowA, rowB) {
@@ -581,26 +606,29 @@ require 'inc/header.php';
     });
 
     // Build data sets; go thru each mydata row and populate the graph datasets.
-    let matchList = []; // List of matches to use as x lables
-    let teleopDefenseTips = []; // holds custom tooltips for teleop defense level
-    let teleopFuelTips = []; //holds custom tooltips for teleop fuel estimate
+    let matchList = [];          // List of matches to use as x lables
+    let teleopDefenseTips = [];  // holds custom tooltips for teleop defense level
+    let teleopFuelTips = [];     //holds custom tooltips for teleop fuel estimate
 
     for (let i = 0; i < mydata.length; i++) {
-      let matchnum = mydata[i]["matchnum"];
-      matchList.push(matchnum);
+      let mNum = mydata[i]["matchnum"];
+      matchList.push(mNum);
 
-      function storeAndGetTip(value, tipPrefix, dataset) {
+      function storeAndGetTip(value, tipPrefix, dataset, defLevel) {
         dataset.push(value);
+        if (defLevel) {
+          value = toDefenseLevel(value);
+        }
         return tipPrefix + value;
       }
 
       teleopDefenseTips.push({
-        xlabel: matchnum,
-        tip: storeAndGetTip(mydata[i]["defense"], "Defense=", datasets[0]["data"])
+        xlabel: mNum,
+        tip: storeAndGetTip(mydata[i]["defense"], "Defense=", datasets[0]["data"], true)
       });
       teleopFuelTips.push({
-        xlabel: matchnum,
-        tip: storeAndGetTip(mydata[i]["fuel"], "Fuel=", datasets[1]["data"])
+        xlabel: mNum,
+        tip: storeAndGetTip(mydata[i]["fuel"], "Fuel=", datasets[1]["data"],false)
       });
     }
 
@@ -642,13 +670,13 @@ require 'inc/header.php';
                       return tipList[i].tip;
                 }
 
-                let matchnum = tooltipItem.label;
+                let xNum = tooltipItem.label;
                 let tipStr = datasets[tooltipItem.datasetIndex].label;
                 switch (tooltipItem.datasetIndex) {
                   case 0:
-                    return getTip(matchnum, teleopDefenseTips);
+                    return getTip(xNum, teleopDefenseTips);
                   case 1:
-                    return getTip(matchnum, teleopFuelTips);
+                    return getTip(xNum, teleopFuelTips);
                   default:
                     return "missing tip string!"
                 }
@@ -660,33 +688,37 @@ require 'inc/header.php';
       }
     });
   }
-
   ///// TELEOP GRAPH ENDS HERE /////
 
   //
   ///// ENDGAME GRAPH STARTS HERE /////
   //
-  function loadEndgameGraph(matchData) {
+  function loadEndgameGraph(teamNum,matchData) {
     console.log("==> teamLookup: loadEndgameGraph()");
 
     // Retrieve the data for each match
     let datasets = [];
 
     datasets.push({
-      label: "Cage Climb",
+      label: "Climb Level",
       data: [],
-      backgroundColor: '#ED8537'
-    }); // Orange - endgame
+      backgroundColor: '#2CA9DE'
+    }); 
 
     // Go thru each matchData QR code string and build up a table of the data, so we can
     // later sort it so the matches are listed in the right order. 
     let mydata = [];
     for (let i = 0; i < matchData.length; i++) {
       let matchItem = matchData[i];
-      mydata.push({
-        matchnum: matchItem["matchnumber"],
-        cage: matchItem["endgameCageClimb"],
-      });
+      let matchnum = matchItem["matchnumber"];
+      let teamnumber = matchItem["teamnumber"];
+      if(teamnumber == teamNum) {
+//        console.log("    ==> loadEndgameGraph: match "+matchnum+": found team "+teamNum);
+        mydata.push({
+          matchnum: matchItem["matchnumber"],
+          climblevel: matchItem["endgameClimbLevel"],
+        });
+      }
     }
 
     mydata.sort(function(rowA, rowB) {
@@ -696,7 +728,7 @@ require 'inc/header.php';
 
     // Build data sets; go thru each mydata row and populate the graph datasets.
     let matchList = [];
-    let cageClimbTips = [];
+    let climbLevelTips = [];
 
     for (let i = 0; i < mydata.length; i++) {
       let matchnum = mydata[i]["matchnum"];
@@ -704,18 +736,17 @@ require 'inc/header.php';
 
       value = {
         0: "N/A",
-        1: "Parked",
-        2: "Fell",
-        3: "Shallow",
-        4: "Deep"
+        1: "L1",
+        2: "L2",
+        3: "L3"
       };
 
-      // Get endgame climb cage level
-      let endgameCageClimb = mydata[i]["cage"];
-      datasets[0]["data"].push(endgameCageClimb);
-      cageClimbTips.push({
+      // Get endgame climb level
+      let endgameClimbLevel = mydata[i]["climblevel"];
+      datasets[0]["data"].push(endgameClimbLevel);
+      climbLevelTips.push({
         xlabel: matchnum,
-        tip: "Cage Climb =" + value[endgameCageClimb]
+        tip: "Climb Level =" + value[endgameClimbLevel]
       });
     }
 
@@ -760,7 +791,7 @@ require 'inc/header.php';
                 let tipStr = datasets[tooltipItem.datasetIndex].label;
                 switch (tooltipItem.datasetIndex) {
                   case 0:
-                    return getTip(matchnum, cageClimbTips);
+                    return getTip(matchnum, climbLevelTips);
                   default:
                     return "missing tip string!"
                 }
@@ -794,25 +825,22 @@ require 'inc/header.php';
     console.log("==> teamLookup: loadAverageTables()");
 
     /////// Match Totals Table  
-    writeAverageTableRow("matchSheetTable", ["Fuel Est", avgs["totalFuelEst"].avg, avgs["totalFuelEst"].max], 3);
-    writeAverageTableRow("matchSheetTable", ["Match Points", avgs["totalMatchPoints"].avg, avgs["totalMatchPoints"].max], 3);
+    writeAverageTableRow("matchSheetTable", ["Total Match Points", avgs["totalMatchPoints"].avg, avgs["totalMatchPoints"].max], 3);
 
     //Auton Table  
     writeAverageTableRow("autonTable", ["Auton Points", avgs["autonTotalPoints"].avg, avgs["autonTotalPoints"].max], 3);
-    writeAverageTableRow("autonTable", ["Fuel Est", avgs["autonFuelEst"].avg, avgs["autonFuelEst"].max], 3);
-
-    writeAverageTableRow("autonClimbTable", ["Climb %", avgs["autonClimb"].arr[0].avg, avgs["autonClimb"].arr[2].avg, avgs["autonClimb"].arr[1].avg, avgs["autonClimb"].arr[3].avg, avgs["autonClimb"].arr[4].avg], 6);
+    writeAverageTableRow("autonTable", ["Fuel Est", avgs["autonFinalFuelEst"].avg, avgs["autonFinalFuelEst"].max], 3);
+    writeAverageTableRow("autonClimbTable", ["Climb %", avgs["autonClimb"].arr[0].avg, avgs["autonClimb"].arr[1].avg, avgs["autonClimb"].arr[2].avg, avgs["autonClimb"].arr[3].avg, avgs["autonClimb"].arr[4].avg], 6);
 
     // Teleop Table
-    writeAverageTableRow("teleopTable", ["Fuel Est", avgs["teleopFuelEst"].avg, avgs["teleopFuelEst"].max], 3);
+    writeAverageTableRow("teleopTable", ["Fuel Est", avgs["teleopTotalPoints"].avg, avgs["teleopTotalPoints"].max], 3);
     writeAverageTableRow("teleopTable", ["Defense", avgs["teleopDefenseLevel"].avg, avgs["teleopDefenseLevel"].max], 3);
 
-
     /////// Endgame Table
-
     writeAverageTableRow("endgameTotalPtsTable", ["Endgame Points", avgs["endgamePoints"].avg, avgs["endgamePoints"].max], 3);
-    writeAverageTableRow("endgameCageClimbTable", ["Climb %", avgs["endgameCageClimb"].arr[0].avg, avgs["endgameCageClimb"].arr[2].avg, avgs["endgameCageClimb"].arr[1].avg, avgs["endgameCageClimb"].arr[3].avg, avgs["endgameCageClimb"].arr[4].avg], 6);
-    writeAverageTableRow("endgameStartClimbTable", ["Start Climb %", avgs["endgameStartClimb"].arr[0].avg, avgs["endgameStartClimb"].arr[1].avg, avgs["endgameStartClimb"].arr[2].avg, avgs["endgameStartClimb"].arr[3].avg], 5);
+    writeAverageTableRow("endgameClimbTable", ["Climb %", avgs["endgameClimbLevel"].arr[0].avg, avgs["endgameClimbLevel"].arr[1].avg, avgs["endgameClimbLevel"].arr[2].avg, avgs["endgameClimbLevel"].arr[3].avg], 5);
+    writeAverageTableRow("endgameStartClimbTable", ["Start Climb %", avgs["endgameStartClimb"].arr[0].avg, avgs["endgameStartClimb"].arr[1].avg, avgs["endgameStartClimb"].arr[2].avg, avgs["endgameStartClimb"].arr[3].avg, avgs["endgameStartClimb"].arr[4].avg], 6);
+    writeAverageTableRow("endgameClimbPosTable", ["Climb Pos %", avgs["endgameClimbPosition"].arr[0].avg, avgs["endgameClimbPosition"].arr[1].avg, avgs["endgameClimbPosition"].arr[2].avg, avgs["endgameClimbPosition"].arr[3].avg, avgs["endgameClimbPosition"].arr[4].avg], 6);
   }
 
   // MAIN PAGE PROCESSORS HERE
@@ -846,9 +874,25 @@ require 'inc/header.php';
     }
   }
 
-  //
+  // Converts a given defenseLevel value to approprate word.
+  function toDefenseLevel(value) {
+    switch (String(value)) {
+      case "10":
+        return "Low";
+      case "20":
+        return "Med Low";
+      case "30":
+        return "Medium";
+      case "40":
+        return "Med High";
+      case "50":
+        return "High";
+      default:
+        return "-";
+    }
+  }
+
   // Converts a given "1" to yes, "0" to no, anything else to empty string.
-  //
   function toYesNo(value) {
     switch (String(value)) {
       case "1":
@@ -875,47 +919,54 @@ require 'inc/header.php';
   //
   // Load the pit data table for this team
   //
-  function loadPitData(pitData) {
-    console.log("==> teamLookup: loadPitData()");
-    if (!pitData || !pitData.length) {
-      // row one    
-      pitData["swervedrivestring"] = pitData["swerve"] ? "Yes" : "No";
-      pitData["drivemotors"];
-      pitData["sparepartsstring"] = pitData["spareparts"] ? "Yes" : "No";
-      pitData["proglanguage"];
+  function loadPitData(teamNum, pitData) {
+    console.log("==> teamLookup: loadPitData() for team: "+teamNum);
 
-      // row two    
-      pitData["computervisionstring"] = pitData["computervision"] ? "Yes" : "No";
-      pitData["pitorg"];
-      pitData["preparedness"];
-      pitData["numbatteries"];
+    // Find this teamNum in the pitData and display that.
+    for (let tIndex in pitData) {  
+      console.log("--> looking for team '"+teamNum+"' in pitData["+tIndex+"]");
+      if(tIndex == teamNum) {
+        let teamPitInfo = pitData[tIndex];
+//        console.log("  --> found team in pitData: "+teamNum);
+        // row one    
+        teamPitInfo["swervedrivestring"] = teamPitInfo["swerve"] ? "Yes" : "No";
+        teamPitInfo["drivemotors"];
+        teamPitInfo["sparepartsstring"] = teamPitInfo["spareparts"] ? "Yes" : "No";
+        teamPitInfo["proglanguage"];
+
+        // row two    
+        teamPitInfo["computervisionstring"] = teamPitInfo["computervision"] ? "Yes" : "No";
+        teamPitInfo["pitorg"];
+        teamPitInfo["preparedness"];
+        teamPitInfo["numbatteries"];
+
+        writePitTableRow("pitTable1", teamPitInfo, ["swervedrivestring", "drivemotors", "sparepartsstring", "proglanguage"], 4);
+        writePitTableRow("pitTable2", teamPitInfo, ["computervisionstring", "pitorg", "preparedness", "numbatteries"], 4);
+        break;
+      }
     }
-
-    writePitTableRow("pitTable1", pitData, ["swervedrivestring", "drivemotors", "sparepartsstring", "proglanguage"], 4);
-    writePitTableRow("pitTable2", pitData, ["computervisionstring", "pitorg", "preparedness", "numbatteries"], 4);
   }
 
   //
   // Load the match data table
   //
-  function loadMatchData(team, allEventMatches, jAliasNames, pitData) {
+  function loadMatchData(team, matchData, aliasList, pitData, tbaMatchData, hopperCapData) {
     console.log("==> teamLookup: loadMatchData()");
-    let mdp = new matchDataProcessor(allEventMatches);
-    // mdp.sortMatches(allEventMatches);
+    let mdp = new matchDataProcessor(matchData, tbaMatchData, pitData, hopperCapData);
     mdp.getSiteFilteredAverages(function(filteredMatches, filteredAvgData) {
-      if (filteredMatches != undefined) {
-        loadAutonGraph(filteredMatches, pitData);
-        loadTeleopGraph(filteredMatches, pitData);
-        loadEndgameGraph(filteredMatches);
-        insertMatchDataBody("matchDataTable", filteredMatches, jAliasNames, [team]);
-      } else {
-        alert("No match data for this team at this event!");
-      }
-      let teamAverages = filteredAvgData[team];
-      if (teamAverages !== undefined) {
-        loadAverageTables(teamAverages);
-      } else {
-        alert("No averages data for this team at this event!");
+      if (filteredMatches != undefined && filteredAvgData != undefined) {
+        console.log("   ==> loadMatchData: got MDP");
+        loadAutonGraph(team, filteredMatches, filteredAvgData);
+        loadTeleopGraph(team, filteredMatches, filteredAvgData);
+        loadEndgameGraph(team, filteredMatches);
+        insertMatchDataBody("matchDataTable", filteredMatches, aliasList, [team]);
+
+        let teamAverages = filteredAvgData[team];
+        if (teamAverages !== undefined) {
+          loadAverageTables(teamAverages);
+        } else {
+          alert("No averages data for this team at this event!");
+        }
       }
     });
   }
@@ -933,8 +984,9 @@ require 'inc/header.php';
     document.getElementById("autonClimbTable").querySelector('tbody').innerHTML = "";
     document.getElementById("teleopTable").querySelector('tbody').innerHTML = "";
     document.getElementById("endgameTotalPtsTable").querySelector('tbody').innerHTML = "";
-    document.getElementById("endgameCageClimbTable").querySelector('tbody').innerHTML = "";
+    document.getElementById("endgameClimbTable").querySelector('tbody').innerHTML = "";
     document.getElementById("endgameStartClimbTable").querySelector('tbody').innerHTML = "";
+    document.getElementById("endgameClimbPosTable").querySelector('tbody').innerHTML = "";
     document.getElementById("pitTable1").querySelector('tbody').innerHTML = "";
     document.getElementById("pitTable2").querySelector('tbody').innerHTML = "";
     document.getElementById("strategicDataTable").querySelector('tbody').innerHTML = "";
@@ -960,7 +1012,7 @@ require 'inc/header.php';
     $.get("api/tbaAPI.php", {
       getTeamInfo: evtTeam
     }).done(function(teamInfo) {
-      console.log("=> getTeamInfo:\n" + teamInfo);
+//      console.log("=> getTeamInfo:\n" + teamInfo);
       if (teamInfo === null) {
         return alert("Can't load teamName from TBA; check if TBA Key was set in db_config");
       }
@@ -980,32 +1032,40 @@ require 'inc/header.php';
       loadTeamPhotos(JSON.parse(teamImages));
     });
 
-    // Add Match Scouting Data
+    // Add Match Scouting Data and pit data
+    // Going to need all the match data and all the pit data (to calc all the other teams fuel est)
     $.get("api/dbReadAPI.php", {
-      getTeamMatchData: teamNum
-    }).done(function(teamMatches) {
+      getAllMatchData: true
+    }).done(function(allMatches) {
+        let matchData = JSON.parse(allMatches);
+//        console.log("=> got all Match data");
         $.get("api/dbReadAPI.php", {
-        getTeamPitData: teamNum
-      }).done(function(teamPitData) {
-        console.log("=> getTeamPitData\n");
-        console.log("=> getTeamMatchData");
-      loadMatchData(teamNum, JSON.parse(teamMatches), aliasList, JSON.parse(teamPitData));
+          getAllPitData: true
+        }).done(function(allPitData) {
+          let pitData = JSON.parse(allPitData);
+//          console.log("=> got all pit data");
+          loadPitData(teamNum,pitData);
+          $.get("api/tbaAPI.php", {
+            getEventMatches: true
+          }).done(function(eventMatches) {
+            tbaMatchData = JSON.parse(eventMatches)["response"];
+//            console.log("=> got TBA event matches");
+            $.get("api/dbReadAPI.php", {
+              getEventHopperCaps: true
+            }).done(function(allHopperCaps) {
+              hopperCapData = JSON.parse(allHopperCaps);
+//              console.log("=> got Hopper Cap data ");
+              loadMatchData(teamNum, matchData, aliasList, pitData, tbaMatchData, hopperCapData);
+          });
+        });
       });
-    });
-
-    // Do the Pit Scouting Data
-    $.get("api/dbReadAPI.php", {
-      getTeamPitData: teamNum
-    }).done(function(teamPitData) {
-      console.log("=> getTeamPitData\n");
-      loadPitData(JSON.parse(teamPitData));
     });
 
     // Do the Strategic Data Table.
     $.get("api/dbReadAPI.php", {
       getTeamStrategicData: teamNum
     }).done(function(teamStratData) {
-      console.log("=> getTeamStrategicData");
+//      console.log("=> getTeamStrategicData");
       insertStrategicDataBody("strategicDataTable", JSON.parse(teamStratData), aliasList, [teamNum]);
     });
   }
@@ -1014,7 +1074,7 @@ require 'inc/header.php';
   // Autocorrects alias number in team number entry field
   //
   function validateEnteredTeamNumber(event, aliasList) {
-    console.log("enterTeamNumber: focus out");
+//    console.log("enterTeamNumber: focus out");
     let enteredNum = event.target.value.toUpperCase().trim();
     if (isAliasNumber(enteredNum) && aliasList !== null) {
       let teamNum = getTeamNumFromAlias(enteredNum, aliasList);
@@ -1039,15 +1099,12 @@ require 'inc/header.php';
   //        - Strategic scouting data from database
   //
   document.addEventListener("DOMContentLoaded", function() {
-
-    console.log("!!> addEventListener");
     let jAliasNames = null;
 
     // Read the alias table
     $.get("api/dbReadAPI.php", {
       getEventAliasNames: true
     }).done(function(eventAliasNames) {
-      console.log("=> eventAliasNames");
       jAliasNames = JSON.parse(eventAliasNames);
       insertStrategicDataHeader("strategicDataTable", jAliasNames);
       insertMatchDataHeader("matchDataTable", jAliasNames);
@@ -1073,7 +1130,7 @@ require 'inc/header.php';
 
     // Attach enterTeamNumber listener when losing focus to check for alias numbers
     document.getElementById('enterTeamNumber').addEventListener('focusout', function() {
-      console.log("enterTeamNumber: focus out");
+//      console.log("enterTeamNumber: focus out");
       validateEnteredTeamNumber(event, jAliasNames);
     });
 

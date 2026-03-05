@@ -202,7 +202,7 @@ function toDiedValue(value) {
 //      teamFilter  - list of teams to include in table (length 0 if all)
 //
 function insertMatchDataBody(tableId, matchData, aliasList, teamFilter) {
-  console.log("==> insertMatchDataTable: tableId " + tableId + " matches " + matchData.length + " aliases " + aliasList.length + " teams " + teamFilter.length);
+  console.log("==> insertMatchDataTable: tableId " + tableId + ", matches " + matchData.length + ", aliases " + aliasList.length + ", teams " + teamFilter.length);
 
   let tbodyRef = document.getElementById(tableId).querySelector('tbody');;
   tbodyRef.innerHTML = ""; // Clear Table

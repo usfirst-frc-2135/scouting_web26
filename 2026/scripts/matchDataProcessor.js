@@ -594,7 +594,6 @@ class matchDataProcessor {
         this.getMatchItem(teamItem, "autonOutpost", match, "autonOutpost");
         this.getMatchItem(teamItem, "autonNeutralZone", match, "autonNeutralZone");
         this.getMatchArray(teamItem, "autonClimb", 5, match, "autonClimb");
-//??        this.getMatchItem(teamItem, "autonClimb", match, "autonClimb");
          
         // For REBUILT: calc basic auton fuel estimate for this team/match, store in pData:fuelD
         let autonEst = calcAutonTotalFuel(hopperCap, preloadShot, autonHopperShot, preloadAcc, autonHopperAcc);
@@ -620,6 +619,7 @@ class matchDataProcessor {
         // Endgame
         this.getMatchArray(teamItem, "endgameStartClimb", 5, match, "endgameStartClimb");
         this.getMatchArray(teamItem, "endgameClimbLevel", 4, match, "endgameClimbLevel");
+        this.getMatchArray(teamItem, "endgameClimbPosition", 5, match, "endgameClimbPosition");
 
         this.getMatchArray(teamItem, "died", 6, match, "died");
 
@@ -704,6 +704,7 @@ class matchDataProcessor {
       console.log(">>>>> Calculating averages for team: "+teamNum);
       this.calcAverage(teamItem, "autonFinalFuelEst", "totalMatches");
       this.calcAverage(teamItem, "autonClimbPoints", "totalMatches");
+      this.calcArray(teamItem, "autonClimb", "totalMatches");
 
       // Teleop mode
       this.calcAverage(teamItem, "teleopTotalPoints", "totalMatches");
@@ -720,6 +721,7 @@ class matchDataProcessor {
       // Endgame 
       this.calcArray(teamItem, "endgameStartClimb", "totalMatches");
       this.calcArray(teamItem, "endgameClimbLevel", "totalMatches");
+      this.calcArray(teamItem, "endgameClimbPosition", "totalMatches");
 
       // Points by game phase
       this.calcAverage(teamItem, "autonTotalPoints", "totalMatches");
