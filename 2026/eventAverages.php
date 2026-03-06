@@ -93,18 +93,10 @@ require 'inc/header.php';
     let hdrStr = "Team,Alias,COPRs,Matches" +
       "Total Pts Avg,Total Pts Max," +
       "Auto Pts Avg,Auto Pts Max,Tel Pts Avg,Tel Pts Max,End Pts Avg,End Pts Max," +
-      "Auton Coral Pts Avg,Auton Coral Pts Max,Auto Algae Pts Avg,Auto Algae Pts Max," +
-      "Tel Coral Pts Avg, Tel Coral Pts Max, Tel Algae Pts Avg, Tel Algae Pts Max," +
-      "Total Coral Avg,Total Coral Max,Total Algae Avg,Total Algae Max," +
-      "Auto Coral Avg,Auto Coral Max," +
-      "Auto L4 Avg,Auto L4 Max,Auto L3 Avg,Auto L3 Max,Auto L2 Avg,Auto L2 Max,Auto L1 Avg,Auto L1 Max," +
-      "Auto Algae Avg,Auto Algae Max,Auto Proc Avg,Auto Proc Max,Auto Net Avg,Auto Net Max," +
-      "Tel Coral Acc,Tel Coral Avg,Tel Coral Max," +
-      "Tel L4 Avg,Tel L4 Max,Tel L3 Avg,Tel L3 Max,Tel L2 Avg,Tel L2 Max,Tel L1 Avg,Tel L1 Max," +
-      "Tel Algae Acc,Tel Algae Avg,Tel Algae Max,Tel Proc Avg,Tel Proc Max,Tel Net Avg,Tel Net Max," +
-      "Def Avg," +
-      "Start N/A,Start Before,Start At,Start Less10," +
-      "End N/A,End Park,End Fall,End Shal,End Deep," +
+      "Auto Est Fuel Pts Avg,Auto Est Fuel Pts Max,Auto Climb Pts Avg,Auto Climb Pts Max," +
+      "Tel Est Fuel Pts Avg, Tel Est Fuel Pts Max, Def Avg," +
+      "Start N/A,Start Before,Start At,Start10,Less10," +
+      "End N/A,End L1,End L2,End L3," +
       "Total Died, Note";
     csv.push(hdrStr);
 
