@@ -68,11 +68,10 @@ require 'inc/header.php';
                   <thead>
                     <tr>
                       <th>Team</th>
-                      <th scope="col" style="width:12%">N%</th>
-                      <th scope="col" style="width:12%">F%</th>
-                      <th scope="col" style="width:12%">P%</th>
-                      <th scope="col" style="width:12%">S%</th>
-                      <th scope="col" style="width:12%">D%</th>
+                      <th scope="col" style="width:25%">N%</th>
+                      <th scope="col" style="width:25%">L1%</th>
+                      <th scope="col" style="width:25%">L2%</th>
+                      <th scope="col" style="width:25%">L3%</th>
                     </tr>
                   </thead>
                   <tbody class="table-group-divider">
@@ -240,28 +239,31 @@ require 'inc/header.php';
   function loadFirstPickGraph(team1, team2, avgData) {
     console.log("==> teamCompare: loadFirstPickGraph()");
     let datasets = [];
+    
+    let teamAvg1 = avgData[team1];
+    let teamAvg2 = avgData[team2];
 
     datasets.push({
       label: team1,
       data: [
-        avgData[team1]["autonTotalPoints"].avg,
-        avgData[team1]["teleopFuelEst"].avg,
-        avgData[team1]["endgamePoints"].avg,
-        //avgData[team1]["teleopAlgaeNet"].avg * 4, // Multiply teleopAlgaeNetAvg by 4 to get points.
-        //avgData[team1]["teleopCoralL4"].avg * 5, // Multiply teleopCoralL4Avg by 5 to get points.
-        //avgData[team1]["teleopCoralL3"].avg * 4 // Multiply teleopCoralL3Avg by 4 to get points.
+        teamAvg1["autonFinalFuelEst"].avg,
+        teamAvg1["teleopTotalPoints"].avg,
+        teamAvg1["endgamePoints"].avg,
+        //teamAvg1["teleopAlgaeNet"].avg * 4, // Multiply teleopAlgaeNetAvg by 4 to get points.
+        //teamAvg1["teleopCoralL4"].avg * 5, // Multiply teleopCoralL4Avg by 5 to get points.
+        //teamAvg1["teleopCoralL3"].avg * 4 // Multiply teleopCoralL3Avg by 4 to get points.
       ],
       backgroundColor: '#FF4316'
     });
     datasets.push({
       label: team2,
       data: [
-        avgData[team2]["autonTotalPoints"].avg,
-        avgData[team2]["teleopFuelEst"].avg,
-        avgData[team2]["endgamePoints"].avg,
-        //avgData[team2]["teleopAlgaeNet"].avg * 4, // Multiply teleopAlgaeNetAvg by 4 to get points.
-        //avgData[team2]["teleopCoralL4"].avg * 5, // Multiply teleopCoralL4Avg by 5 to get points.
-        //avgData[team2]["teleopCoralL3"].avg * 4 // Multiply teleopCoralL3Avg by 4 to get points.
+        teamAvg2["autonFinalFuelEst"].avg,
+        teamAvg2["teleopTotalPoints"].avg,
+        teamAvg2["endgamePoints"].avg,
+        //teamAvg2["teleopAlgaeNet"].avg * 4, // Multiply teleopAlgaeNetAvg by 4 to get points.
+        //teamAvg2["teleopCoralL4"].avg * 5, // Multiply teleopCoralL4Avg by 5 to get points.
+        //teamAvg2["teleopCoralL3"].avg * 4 // Multiply teleopCoralL3Avg by 4 to get points.
       ],
       backgroundColor: '#0033FF'
     });
@@ -299,15 +301,15 @@ require 'inc/header.php';
   //
   ///// SECOND PICK GRAPH STARTS HERE /////
   //
-  function loadSecondPickGraph(team1, team2, avgData) {
+  function loadSecondPickGraph(team1, team2, avgData, hopperCapData, tbaMatchData) {
     console.log("==> teamCompare: loadSecondPickGraph()");
     let datasets = [];
 
     datasets.push({
       label: team1,
       data: [
-        avgData[team1]["autonTotalPoints"].avg,
-        avgData[team1]["teleopFuelEst"].avg,
+        avgData[team1]["autonFinalFuelEst"].avg,
+        avgData[team1]["teleopTotalPoints"].avg,
         avgData[team1]["endgamePoints"].avg,
       ],
       backgroundColor: '#FF4316'
@@ -315,8 +317,8 @@ require 'inc/header.php';
     datasets.push({
       label: team2,
       data: [
-        avgData[team2]["autonTotalPoints"].avg,
-        avgData[team2]["teleopFuelEst"].avg,
+        avgData[team2]["autonFinalFuelEst"].avg,
+        avgData[team2]["teleopTotalPoints"].avg,
         avgData[team2]["endgamePoints"].avg,
       ],
       backgroundColor: '#0033FF'
@@ -355,27 +357,27 @@ require 'inc/header.php';
   //
   ///// THIRD PICK GRAPH STARTS HERE /////
   //
-  function loadThirdPickGraph(team1, team2, avgData) {
+  function loadThirdPickGraph(team1, team2, avgData, hopperCapData, tbaMatchData) {
     console.log("==> teamCompare: loadThirdPickGraph()");
     let datasets = [];
 
     datasets.push({
       label: team1,
       data: [
-        avgData[team1]["autonTotalPoints"].avg,
-        avgData[team1]["teleopFuelEst"].avg,
+        avgData[team1]["autonFinalFuelEst"].avg,
+        avgData[team1]["teleopTotalPoints"].avg,
         avgData[team1]["endgamePoints"].avg,
-        avgData[team1]["teleopDefenseLevel"].avg * 25, // Multiply teleopAlgaeNetAvg by 4 to get points.
+        avgData[team1]["teleopDefenseLevel"].avg * 20, // Multiply teleopAlgaeNetAvg by 4 to get points.
       ],
       backgroundColor: '#FF4316'
     });
     datasets.push({
       label: team2,
       data: [
-        avgData[team2]["autonTotalPoints"].avg,
-        avgData[team2]["teleopFuelEst"].avg,
+        avgData[team2]["autonFinalFuelEst"].avg,
+        avgData[team2]["teleopTotalPoints"].avg,
         avgData[team2]["endgamePoints"].avg,
-        avgData[team2]["teleopDefenseLevel"].avg * 25, // Multiply teleopAlgaeNetAvg by 4 to get points.
+        avgData[team2]["teleopDefenseLevel"].avg * 20, // Multiply teleopAlgaeNetAvg by 4 to get points.
       ],
       backgroundColor: '#0033FF'
     });
@@ -457,18 +459,24 @@ require 'inc/header.php';
   // Create a single endgame climb entry row
   //
   function createEndgameEntry(teamNum, avgData) {
-    let endgameCageClimb = getDataValue(avgData[teamNum], "endgameCageClimb");
+    let endgameClimbLevel = getDataValue(avgData[teamNum], "endgameClimbLevel");
     const tdPrefix = "<td>";
+
+    let teamAverages = avgData[teamNum];
+    if (teamAverages !== undefined) {
 
     let rowString = "";
     rowString += tdPrefix + "<a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</a></td>";
-    rowString += tdPrefix + getDataValue(endgameCageClimb.arr, 0).avg + "</td>";
-    rowString += tdPrefix + getDataValue(endgameCageClimb.arr, 2).avg + "</td>";
-    rowString += tdPrefix + getDataValue(endgameCageClimb.arr, 1).avg + "</td>";
-    rowString += tdPrefix + getDataValue(endgameCageClimb.arr, 3).avg + "</td>";
-    rowString += tdPrefix + getDataValue(endgameCageClimb.arr, 4).avg + "</td>";
+    rowString += tdPrefix + getDataValue(endgameClimbLevel.arr, 0).avg + "</td>";
+    rowString += tdPrefix + getDataValue(endgameClimbLevel.arr, 2).avg + "</td>";
+    rowString += tdPrefix + getDataValue(endgameClimbLevel.arr, 1).avg + "</td>";
+    rowString += tdPrefix + getDataValue(endgameClimbLevel.arr, 3).avg + "</td>";
     return rowString;
   }
+  else {
+    console.log("ERROR: No average data found for team " + teamNum);
+  }
+}
 
   function loadEndgameTable(teamNum, teamNum2, avgData) {
     console.log("==> teamCompare: loadEndgameTable()");
@@ -512,6 +520,7 @@ require 'inc/header.php';
   //
   function buildTeamComparePage(teamNum1, teamNum2, aliasList) {
     console.log("==> teamCompare: buildTeamComparePage()");
+    console.log("Team 1: " + teamNum1 + " Team 2: " + teamNum2);
 
     // Get team1 name from TBA
     $.get("api/tbaAPI.php", {
@@ -538,34 +547,49 @@ require 'inc/header.php';
       insertStrategicDataBody("strategicDataTable2", jStratData, aliasList, [teamNum2]);
     });
 
+    let tbaMatchData = null;
+    let hopperCapData = null;
+    let jMatches = null;
+    let pitData = null;
+
+    // In parallel, load the pitTable data
+    $.get("api/dbReadAPI.php", {
+      getAllPitData: true
+    }).done(function(allPitData) {
+      console.log("=> getAllPitData");
+      pitData = JSON.parse(allPitData)["caphopper"];
+      setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList);
+    });
+
+    // In parallel, load the TBA matches data
+    $.get("api/tbaAPI.php", {
+      getEventMatches: true
+    }).done(function(eventMatches) {
+      console.log("=> getTBAData");
+      tbaMatchData = JSON.parse(eventMatches)["response"];
+      setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList);
+    });
+
+    // In parallel, load the hopperCap data
+    $.get("api/dbReadAPI.php", {
+      getEventHopperCaps: true
+    }).done(function(allHopperCaps) {
+      console.log("=> getEventHopperCaps");
+      hopperCapData = JSON.parse(allHopperCaps);
+      setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList);
+    });
+
     // Get team2 match data
     $.get("api/dbReadAPI.php", {
       getAllMatchData: true
     }).done(function(allMatchData) {
       console.log("=> getAllMatchData");
-      let jMatches = JSON.parse(allMatchData);
-      let compareMatches = jMatches.filter(function(el) {
-        return el["teamnumber"] == teamNum1 || el["teamnumber"] == teamNum2;
-      });
-      let mdp = new matchDataProcessor(compareMatches);
-      if (mdp === null) {
-        alert("No match data for this team at this event!");
-      }
-
-      // Get the team1 averages data from matchDataProcessor (mdp)
-      mdp.getSiteFilteredAverages(function(filteredMatches, filteredAvgData) {
-        if (filteredAvgData !== undefined) {
-
-          // Load the graphs
-          loadFirstPickGraph(teamNum1, teamNum2, filteredAvgData);
-          loadSecondPickGraph(teamNum1, teamNum2, filteredAvgData);
-          loadThirdPickGraph(teamNum1, teamNum2, filteredAvgData);
-          loadEndgameTable(teamNum1, teamNum2, filteredAvgData);
-          insertEventAveragesBody("averagesTable", filteredAvgData, [], aliasList, [teamNum1, teamNum2]);
-        } else
-          alert("No averages data for matches at this event!");
-      });
-    });
+      jMatches = JSON.parse(allMatchData);
+      //let compareMatches = jMatches.filter(function(el) {
+        setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList);
+        //return el["teamnumber"] == teamNum1 || el["teamnumber"] == teamNum2;
+      //});
+  });
   }
 
   //
@@ -654,6 +678,45 @@ require 'inc/header.php';
     });
 
   });
+
+  function setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList) {
+    console.log("==> teamCompare: setupMDP()");
+    if (jMatches === null || tbaMatchData === null || pitData === null || hopperCapData === null) {
+      if (jMatches === null) {
+        console.log("==> teamCompare: setupMDP: jMatches not loaded");
+      }
+      if (tbaMatchData === null) {
+        console.log("==> teamCompare: setupMDP: tbaMatchData not loaded");
+      }
+      if (pitData === null) {
+        console.log("==> teamCompare: setupMDP: pitData not loaded");
+      }
+      if (hopperCapData === null) {
+        console.log("==> teamCompare: setupMDP: hopperCapData not loaded");
+      }
+      if (aliasList === null) {
+        console.log("==> teamCompare: setupMDP: aliasList not loaded");
+      }
+      return;
+    }
+
+    console.log("==> teamCompare: all data loaded, creating matchDataProcessor");
+    let mdp = new matchDataProcessor(jMatches, tbaMatchData, pitData, hopperCapData);
+
+    // Get the team1 averages data from matchDataProcessor (mdp)
+    mdp.getSiteFilteredAverages(function(filteredMatches, filteredAvgData) {
+      if (filteredAvgData !== undefined) {
+        console.log("==> teamCompare: got filtered averages data: ");
+
+        // Load the graphs
+        loadFirstPickGraph(teamNum1, teamNum2, filteredAvgData);
+        loadSecondPickGraph(teamNum1, teamNum2, filteredAvgData);
+        loadThirdPickGraph(teamNum1, teamNum2, filteredAvgData);
+        loadEndgameTable(teamNum1, teamNum2, filteredAvgData);
+        insertEventAveragesBody("averagesTable", filteredAvgData, [], aliasList, [], [teamNum1, teamNum2]);
+      } 
+      });
+    };
 </script>
 
 <script src="./scripts/aliasFunctions.js"></script>
