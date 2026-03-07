@@ -318,40 +318,23 @@ require 'inc/header.php';
           </div>
         </div>
 
-        <!-- Pit scouting collapsible table -->
+        <!-- Pit Data collapsible table -->
         <div class="card mb-3">
           <div class="card-header">
             <h5 class="text-center">
               <a href="#collapsePitData" data-bs-toggle="collapse" aria-expanded="false">Pit Scouting</a>
             </h5>
           </div>
-          <!-- Pit Scouting 1st row -->
           <div id="collapsePitData" class="card-body collapse">
-            <table id="pitTable1" class="table table-striped table-sm table-bordered table-hover border-secondary text-center">
-              <thead>
-                <tr>
-                  <th scope="col" class="bg-primary-subtle" style="width:25%">Swerve</th>
-                  <th scope="col" class="bg-primary-subtle" style="width:25%">Motors</th>
-                  <th scope="col" class="bg-primary-subtle" style="width:25%">Spares</th>
-                  <th scope="col" class="bg-primary-subtle" style="width:25%">Language</th>
-                </tr>
-              </thead>
-              <tbody class="table-group-divider"> </tbody>
-            </table>
 
-            <!-- Pit Scouting 2nd row -->
-            <table id="pitTable2" class="table table-striped table-sm table-bordered table-hover border-secondary text-center">
-              <thead>
-                <tr>
-                  <th scope="col" class="bg-primary-subtle" style="width:25%">Vision</th>
-                  <th scope="col" class="bg-primary-subtle" style="width:25%">Pit</th>
-                  <th scope="col" class="bg-primary-subtle" style="width:25%">Prep</th>
-                  <th scope="col" class="bg-primary-subtle" style="width:25%">Batteries</th>
-                </tr>
-              </thead>
-              <tbody class="table-group-divider"> </tbody>
-            </table>
-
+            <!-- <div id="freeze-table-strat" class="freeze-table overflow-auto"> -->
+            <div class="overflow-auto">
+              <table id="pitDataTable"
+                class="table table-striped table-bordered table-hover table-sm border-secondary text-center">
+                <thead> </thead>
+                <tbody class="table-group-divider"> </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -905,47 +888,7 @@ require 'inc/header.php';
   }
 
   //
-  // Create a row in the pit data table
-  //
-  function writePitTableRow(tableID, dict, keys, length) {
-    let tbodyRef = document.getElementById(tableID).querySelector('tbody');
-    let row = "";
-    for (let i = 0; i < length; i++) {
-      row += (i < keys.length) ? "<td>" + dict[keys[i]] + "</td>" : "<td> </td>";
-    }
-    tbodyRef.insertRow().innerHTML = row;
-  }
-
-  //
   // Load the pit data table for this team
-  //
-  function loadPitData(teamNum, pitData) {
-    console.log("==> teamLookup: loadPitData() for team: "+teamNum);
-
-    // Find this teamNum in the pitData and display that.
-    for (let tIndex in pitData) {  
-      console.log("--> looking for team '"+teamNum+"' in pitData["+tIndex+"]");
-      if(tIndex == teamNum) {
-        let teamPitInfo = pitData[tIndex];
-//        console.log("  --> found team in pitData: "+teamNum);
-        // row one    
-        teamPitInfo["swervedrivestring"] = teamPitInfo["swerve"] ? "Yes" : "No";
-        teamPitInfo["drivemotors"];
-        teamPitInfo["sparepartsstring"] = teamPitInfo["spareparts"] ? "Yes" : "No";
-        teamPitInfo["proglanguage"];
-
-        // row two    
-        teamPitInfo["computervisionstring"] = teamPitInfo["computervision"] ? "Yes" : "No";
-        teamPitInfo["pitorg"];
-        teamPitInfo["preparedness"];
-        teamPitInfo["numbatteries"];
-
-        writePitTableRow("pitTable1", teamPitInfo, ["swervedrivestring", "drivemotors", "sparepartsstring", "proglanguage"], 4);
-        writePitTableRow("pitTable2", teamPitInfo, ["computervisionstring", "pitorg", "preparedness", "numbatteries"], 4);
-        break;
-      }
-    }
-  }
 
   //
   // Load the match data table
@@ -987,8 +930,7 @@ require 'inc/header.php';
     document.getElementById("endgameClimbTable").querySelector('tbody').innerHTML = "";
     document.getElementById("endgameStartClimbTable").querySelector('tbody').innerHTML = "";
     document.getElementById("endgameClimbPosTable").querySelector('tbody').innerHTML = "";
-    document.getElementById("pitTable1").querySelector('tbody').innerHTML = "";
-    document.getElementById("pitTable2").querySelector('tbody').innerHTML = "";
+    document.getElementById("pitDataTable").querySelector('tbody').innerHTML = "";
     document.getElementById("strategicDataTable").querySelector('tbody').innerHTML = "";
     document.getElementById("matchDataTable").querySelector('tbody').innerHTML = "";
   }
@@ -1043,8 +985,6 @@ require 'inc/header.php';
           getAllPitData: true
         }).done(function(allPitData) {
           let pitData = JSON.parse(allPitData);
-//          console.log("=> got all pit data");
-          loadPitData(teamNum,pitData);
           $.get("api/tbaAPI.php", {
             getEventMatches: true
           }).done(function(eventMatches) {
@@ -1068,8 +1008,19 @@ require 'inc/header.php';
 //      console.log("=> getTeamStrategicData");
       insertStrategicDataBody("strategicDataTable", JSON.parse(teamStratData), aliasList, [teamNum]);
     });
+
+    // Do the Pit Data Table.
+    $.get("api/dbReadAPI.php", {
+      getAllPitData: teamNum
+    }).done(function(teamPitData) {
+//      console.log("=> getTeamPitData");
+      console.log("==> teamPitData: "+ teamPitData);
+      insertPitTableBody("pitDataTable", JSON.parse(teamPitData));
+    });
   }
 
+
+  
   //
   // Autocorrects alias number in team number entry field
   //
@@ -1107,6 +1058,7 @@ require 'inc/header.php';
     }).done(function(eventAliasNames) {
       jAliasNames = JSON.parse(eventAliasNames);
       insertStrategicDataHeader("strategicDataTable", jAliasNames);
+      insertPitTableHeader("pitDataTable", jAliasNames);
       insertMatchDataHeader("matchDataTable", jAliasNames);
 
       // Check URL for team# to use (we may have gotten here by clicking on a team number link from another page)
@@ -1153,5 +1105,7 @@ require 'inc/header.php';
 <script src="./scripts/strategicDataTable.js"></script>
 <script src="./scripts/validateTeamNumber.js"></script>
 <script src="./scripts/rebuiltFuelEstimates.js"></script>
+<script src="./scripts/pitTable.js"></script>
 
 <script src="./external/charts/chart.umd.js"></script>
+
