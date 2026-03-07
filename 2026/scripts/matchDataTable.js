@@ -51,16 +51,16 @@ function insertMatchDataHeader(tableId, aliasList) {
   }
 
   rowString += thMatch + 'Died</th>';
-  rowString += thAuto + 'Preload</th>';
+  rowString += thAuto + 'Preload Shot</th>';
   rowString += thAuto + 'Preload Acc</th>';
-  rowString += thAuto + 'Hopper</th>';
+  rowString += thAuto + 'Hoppers Used</th>';
   rowString += thAuto + 'Hopper Acc</th>';
   rowString += thAuto + 'Alliance Zone</th>';
   rowString += thAuto + 'Depot</th>';
   rowString += thAuto + 'Outpost</th>';
   rowString += thAuto + 'Neutral Zone</th>';
   rowString += thAuto + 'Climb</th>';
-  rowString += thTeleop + 'Hopper</th>';
+  rowString += thTeleop + 'Hoppers Used</th>';
   rowString += thTeleop + 'Hopper Acc</th>';
   rowString += thTeleop + 'Intake & Shoot</th>';
   rowString += thTeleop + 'Passing Rate</th>';
