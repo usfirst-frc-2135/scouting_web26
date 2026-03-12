@@ -95,11 +95,6 @@ require 'inc/header.php';
           </thead>
           <tbody class="table-group-divider">
             <tr>
-              <td class="text-start table-secondary">Avg Total Points</td>
-              <td id="redTotalFuel" class="table-danger"></td>
-              <td id="blueTotalFuel" class="table-primary"></td>
-            </tr>
-            <tr>
               <td class="text-start table-secondary">Avg Auton Fuel</td>
               <td id="redAvgAutoPoints" class="table-danger"></td>
               <td id="blueAvgAutoPoints" class="table-primary"></td>
@@ -110,7 +105,7 @@ require 'inc/header.php';
               <td id="blueAvgAutoClimb" class="table-primary"></td>
             </tr>
             <tr>
-              <td class="text-start table-secondary">Avg Teleop Points</td>
+              <td class="text-start table-secondary">Avg Teleop Fuel</td>
               <td id="redAvgTeleopPoints" class="table-danger"></td>
               <td id="blueAvgTeleopPoints" class="table-primary"></td>
             </tr>
@@ -118,6 +113,12 @@ require 'inc/header.php';
               <td class="text-start table-secondary">Avg Endgame Points</td>
               <td id="redAvgEndgamePoints" class="table-danger"></td>
               <td id="blueAvgEndgamePoints" class="table-primary"></td>
+            </tr>
+            <tr>
+              <td class="text-start table-secondary">Avg Total Fuel</td>
+              <td id="redTotalFuel" class="table-danger"></td>
+              <td id="blueTotalFuel" class="table-primary"></td>
+            </tr>
             <tr>
               <td class="text-start table-secondary">Predicted Points</td>
               <td id="redPredictedTotalPoints" class="table-danger"></td>
@@ -461,21 +462,21 @@ require 'inc/header.php';
     document.getElementById("matchTitle").innerText = "Match:";
     document.getElementById("matchTime").innerText = "Time:";
 
-    document.getElementById("redTotalFuel").innerText = "";
     document.getElementById("redAvgAutoPoints").innerText = "";
     document.getElementById("redAvgAutoClimb").innerText = "";
     document.getElementById("redAvgTeleopPoints").innerText = "";
     document.getElementById("redAvgEndgamePoints").innerText = "";
+    document.getElementById("redTotalFuel").innerText = "";
     document.getElementById("redPredictedTotalPoints").innerText = "";
     document.getElementById("redActualTotalPoints").innerText = "";
     document.getElementById("redPredictedRP").innerText = "";
     document.getElementById("redActualRP").innerText = "";
 
-    document.getElementById("blueTotalFuel").innerText = "";
     document.getElementById("blueAvgAutoPoints").innerText = "";
     document.getElementById("blueAvgAutoClimb").innerText = "";
     document.getElementById("blueAvgTeleopPoints").innerText = "";
     document.getElementById("blueAvgEndgamePoints").innerText = "";
+    document.getElementById("blueTotalFuel").innerText = "";
     document.getElementById("bluePredictedTotalPoints").innerText = "";
     document.getElementById("blueActualTotalPoints").innerText = "";
     document.getElementById("bluePredictedRP").innerText = "";
@@ -633,10 +634,10 @@ require 'inc/header.php';
       row += "<td>" + ad["autonFinalFuelEst"].avg + "</td>";
       row += "<td>" + ad["autonClimbPoints"].avg + "</td>";
       row += "<td>" + ad["teleopTotalPoints"].avg + "</td>";
-      row += "<td>" + ad["endgameClimbLevel"].arr[4].avg + "</td>";
-      row += "<td>" + ad["endgameClimbLevel"].arr[3].avg + "</td>";
-      row += "<td>" + ad["endgameClimbLevel"].arr[2].avg + "</td>";
+      row += "<td>" + ad["endgameClimbLevel"].arr[0].avg + "</td>";
       row += "<td>" + ad["endgameClimbLevel"].arr[1].avg + "</td>";
+      row += "<td>" + ad["endgameClimbLevel"].arr[2].avg + "</td>";
+      row += "<td>" + ad["endgameClimbLevel"].arr[3].avg + "</td>";
     }
     tbodyRef.insertRow().innerHTML = row;
   }
@@ -645,10 +646,6 @@ require 'inc/header.php';
   // Update the match summary table comparing both alliances
   //
   function updateMatchSummary(matchSpec, averagesData) {
-    let totalPointsAvg = {
-      "red": 0,
-      "blue": 0
-    };
     let avgAutoPoints = {
       "red": 0,
       "blue": 0
@@ -661,7 +658,15 @@ require 'inc/header.php';
       "red": 0,
       "blue": 0
     };
-    let endgamePointsAvg = {
+    let avgTotalFuel = {
+      "red": 0,
+      "blue": 0
+    };
+    let avgEndgamePoints = {
+      "red": 0,
+      "blue": 0
+    };
+    let avgTotalClimbPts = {
       "red": 0,
       "blue": 0
     };
@@ -670,89 +675,89 @@ require 'inc/header.php';
       "blue": 0
     };
     
+    // Go thru the red alliance teams and add its data to the stored arrays 
     for (let i in matchSpec.red) {
       teamNum = matchSpec.red[i];
-      let ad = averagesData[teamNum];
-      if (ad != null) {
-        totalPointsAvg["red"] += ad["totalMatchPoints"].avg;
-        avgAutoPoints["red"] += ad["autonFinalFuelEst"].avg;
-        avgAutoClimbPoints["red"] += ad["autonClimbPoints"].avg;
-        avgTeleopPoints["red"] += ad["teleopTotalPoints"].avg;
-        endgamePointsAvg["red"] += ad["endgamePoints"].avg;
-        predictedPoints["red"] += ad["totalMatchPoints"].avg;
+      let avgDataInfo = averagesData[teamNum];
+      if (avgDataInfo != null) {
+        let fuelTotal = avgDataInfo["autonFinalFuelEst"].avg + avgDataInfo["teleopTotalPoints"].avg;
+        let climbTotal = avgDataInfo["autonClimbPoints"].avg + avgDataInfo["endgamePoints"].avg;
+        avgTotalFuel["red"] += fuelTotal;
+        avgAutoPoints["red"] += avgDataInfo["autonFinalFuelEst"].avg;
+        avgAutoClimbPoints["red"] += avgDataInfo["autonClimbPoints"].avg;
+        avgTeleopPoints["red"] += avgDataInfo["teleopTotalPoints"].avg;
+        avgEndgamePoints["red"] += avgDataInfo["endgamePoints"].avg;
+        avgTotalClimbPts["red"] += climbTotal;
+        predictedPoints["red"] += avgDataInfo["totalMatchPoints"].avg;
       }
-
-      console.log("==> matchSheet: team " + teamNum + " red: totalPointsAvg: " + totalPointsAvg["red"] + " avgAutoPoints: " + avgAutoPoints["red"] + " avgAutoClimbPoints: " + avgAutoClimbPoints["red"] + " avgTeleopPoints: " + avgTeleopPoints["red"] + " endgamePointsAvg: " + endgamePointsAvg["red"] + " predictedPoints: " + predictedPoints["red"]);
     }
+    console.log("==> matchSheet: red teams: avgAutoPoints: " + avgAutoPoints["red"] + ", avgAutoClimbPoints: " + avgAutoClimbPoints["red"] + ", avgTeleopPoints: " + avgTeleopPoints["red"] + ", avgEndgamePoints: " + avgEndgamePoints["red"] + ", avgTotalFuel: " + avgTotalFuel["red"] + "totalClimbPts: " + avgTotalClimbPts["red"] + ", predictedPoints: "+ predictedPoints["red"]);
+
     for (let i in matchSpec.blue) {
       teamNum = matchSpec.blue[i];
-      let ad = averagesData[teamNum];
-      if (ad != null) {
-        totalPointsAvg["blue"] += ad["totalMatchPoints"].avg;
-        avgAutoPoints["blue"] += ad["autonFinalFuelEst"].avg;
-        avgAutoClimbPoints["blue"] += ad["autonClimbPoints"].avg;
-        avgTeleopPoints["blue"] += ad["teleopTotalPoints"].avg;
-        endgamePointsAvg["blue"] += ad["endgamePoints"].avg;
-        predictedPoints["blue"] += ad["totalMatchPoints"].avg;
+      let avgDataInfo = averagesData[teamNum];
+      if (avgDataInfo != null) {
+        let fuelTotal = avgDataInfo["autonFinalFuelEst"].avg + avgDataInfo["teleopTotalPoints"].avg;
+        let climbTotal = avgDataInfo["autonClimbPoints"].avg + avgDataInfo["endgamePoints"].avg;
+        avgTotalFuel["blue"] += fuelTotal;
+        avgAutoPoints["blue"] += avgDataInfo["autonFinalFuelEst"].avg;
+        avgAutoClimbPoints["blue"] += avgDataInfo["autonClimbPoints"].avg;
+        avgTeleopPoints["blue"] += avgDataInfo["teleopTotalPoints"].avg;
+        avgEndgamePoints["blue"] += avgDataInfo["endgamePoints"].avg;
+        avgTotalClimbPts["blue"] += climbTotal;
+        predictedPoints["blue"] += avgDataInfo["totalMatchPoints"].avg;
       }
     }
+    console.log("==> matchSheet: blue teams: avgAutoPoints: " + avgAutoPoints["blue"] + ", avgAutoClimbPoints: " + avgAutoClimbPoints["blue"] + ", avgTeleopPoints: " + avgTeleopPoints["blue"] + ", avgEndgamePoints: " + avgEndgamePoints["blue"] + ", avgTotalFuel: " + avgTotalFuel["blue"] + "totalClimbPts: " + avgTotalClimbPts["blue"] + ", predictedPoints: "+ predictedPoints["blue"]);
 
     //
     // Predict ranking points
-    //    This can be done in two different ways:
-    //    - Sum the averages of the three teams and decide probable outcomes (estimate probable outcome)
-//HERE
-    //      - Sum of AutoLeave averages > 2.5 (two robots 100% and one at 50%)
-    //      - Sum of AutoCoralPieces > 1.0 (at least one coral scored between all three robots)
-    //    - Best case of all robots (highly optimistic)
-    //      - All AutoLeave maximums == 3.0
-    //      - The maximum of all AutoCoralPieces for each robot is at least 1.0
-    //  Code below uses first choice
-    //
-    //      AutoRP -  3 robots leave and one coral scored:
-    //          sum of robot leaves > 2.5 (> 80% success for leaving) AND at least one coral scored in autonomous (> 1.0 coral scored)
+    //    This is done by summing the averages of the 3 teams and estimate the probable outcome.
+    //      Energized RP - Fuel total is >= 100. 
+    //      Supercharged RP - Fuel total is >= 360. 
+    //      Traversal RP - Climb points total is >= 50. 
     let predictedRP = {
       "red": 0,
       "blue": 0
     };
-    predictedRP["red"] += (totalPointsAvg["red"] > 100.0);
-    predictedRP["blue"] += (totalPointsAvg["blue"] > 100.0);
-    console.log("==> matchSheet: (Energized RP): red: " + predictedRP["red"] + " blue: " + predictedRP["blue"]);
+    // Energized RP: increment predictedRP[] for each alliance if avgTotalFuel is >= 100;
+    predictedRP["red"] += (avgTotalFuel["red"] >= 100.0);
+    predictedRP["blue"] += (avgTotalFuel["blue"] >= 100.0);
+    console.log("==> matchSheet: after Engergized RP: predictedRP[red]:  " + predictedRP["red"] + ", blue: " + predictedRP["blue"]);
 
-    //      CoralRP - 5 coral on each of the 4 levels L1-L4 (ignores Co-op):  
-    //          robots can score on levels L1-L4 and average a total of at tleast 18.5 coral
-    predictedRP["red"] += (totalPointsAvg["red"] > 360.0) ? 1 : 0;
-    predictedRP["blue"] += (totalPointsAvg["blue"] > 360.0) ? 1 : 0;
-    console.log("==> matchSheet: (Supercharged RP): red: " + predictedRP["red"] + " blue: " + predictedRP["blue"]);
+    // Superchareged RP: increment predictedRP[] for each alliance if avgTotalFuel is >= 360.  
+    predictedRP["red"] += (avgTotalFuel["red"] >= 360.0) ? 1 : 0;
+    predictedRP["blue"] += (avgTotalFuel["blue"] >= 360.0) ? 1 : 0;
+    console.log("  ==> matchSheet: after Supercharged RP: predictedRP[red]:  " + predictedRP["red"] + ", blue: " + predictedRP["blue"]);
 
-    //      Endgame average points > 10 (indicates at least one deep climb, because one shallow plus 2 parks is == 10)
-    predictedRP["red"] += (endgamePointsAvg["red"] > 50.0) ? 1 : 0;
-    predictedRP["blue"] += (endgamePointsAvg["blue"] > 50.0) ? 1 : 0;
-    console.log("==> matchSheet: (Barge RP): red: " + predictedRP["red"] + " blue: " + predictedRP["blue"]);
+    // Traversal RP: increment predictedRP[] for each alliance if climb points avg >= 50.
+    predictedRP["red"] += (avgTotalClimbPts["red"] >= 50.0) ? 1 : 0;
+    predictedRP["blue"] += (avgTotalClimbPts["blue"] >= 50.0) ? 1 : 0;
+    console.log("    ==> matchSheet: after Traversal RP: predictedRP[red]:  " + predictedRP["red"] + ", blue: " + predictedRP["blue"]);
 
-    //      Win - predicted points for each alliance 2, 1, 0 (ignores ties)
+    // Win - predicted points for each alliance 2, 1, 0 (ignores ties)
     predictedRP["red"] += (predictedPoints["red"] > predictedPoints["blue"]) ? 3 :
       (predictedPoints["red"] == predictedPoints["blue"]) ? 1 : 0;
     predictedRP["blue"] += (predictedPoints["blue"] > predictedPoints["red"]) ? 3 :
       (predictedPoints["blue"] == predictedPoints["red"]) ? 1 : 0;
-    console.log("==> matchSheet: (Win/Lose): red: " + predictedRP["red"] + " blue: " + predictedRP["blue"]);
+    console.log("      ==> matchSheet: after Win/Lose: predicted RP[red]: " + predictedRP["red"] + ", blue: " + predictedRP["blue"]);
 
     // Fill the table
-    document.getElementById("redTotalFuel").innerText = roundTwoPlaces(totalPointsAvg["red"]);
     document.getElementById("redAvgAutoPoints").innerText = roundTwoPlaces(avgAutoPoints["red"]);
     document.getElementById("redAvgAutoClimb").innerText = roundTwoPlaces(avgAutoClimbPoints["red"]);
     document.getElementById("redAvgTeleopPoints").innerText = roundTwoPlaces(avgTeleopPoints["red"]);
-    document.getElementById("redAvgEndgamePoints").innerText = roundTwoPlaces(endgamePointsAvg["red"]);
+    document.getElementById("redAvgEndgamePoints").innerText = roundTwoPlaces(avgEndgamePoints["red"]);
+    document.getElementById("redTotalFuel").innerText = roundTwoPlaces(avgTotalFuel["red"]);
     document.getElementById("redPredictedTotalPoints").innerText = roundTwoPlaces(predictedPoints["red"]);
     document.getElementById("redActualTotalPoints").innerText = roundTwoPlaces(matchSpec["redScore"]);
     document.getElementById("redPredictedRP").innerText = roundTwoPlaces(predictedRP["red"]);
     document.getElementById("redActualRP").innerText = roundTwoPlaces(matchSpec["redRP"]);
 
-    document.getElementById("blueTotalFuel").innerText = roundTwoPlaces(totalPointsAvg["blue"]);
     document.getElementById("blueAvgAutoPoints").innerText = roundTwoPlaces(avgAutoPoints["blue"]);
     document.getElementById("blueAvgAutoClimb").innerText = roundTwoPlaces(avgAutoClimbPoints["blue"]);
     document.getElementById("blueAvgTeleopPoints").innerText = roundTwoPlaces(avgTeleopPoints["blue"]);
-    document.getElementById("blueAvgEndgamePoints").innerText = roundTwoPlaces(endgamePointsAvg["blue"]);
+    document.getElementById("blueAvgEndgamePoints").innerText = roundTwoPlaces(avgEndgamePoints["blue"]);
+    document.getElementById("blueTotalFuel").innerText = roundTwoPlaces(avgTotalFuel["blue"]);
     document.getElementById("bluePredictedTotalPoints").innerText = roundTwoPlaces(predictedPoints["blue"]);
     document.getElementById("blueActualTotalPoints").innerText = roundTwoPlaces(matchSpec["blueScore"]);
     document.getElementById("bluePredictedRP").innerText = roundTwoPlaces(predictedRP["blue"]);

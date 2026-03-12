@@ -31,6 +31,7 @@ require 'inc/header.php';
 
 <script>
   //
+// TODO - add alias handling!!
   // Insert the pit data table header
   //
    function loadPitTableBody(tableId, pitData) {
@@ -38,7 +39,8 @@ require 'inc/header.php';
     if (pitData === null)
       return;
 
-    insertPitDataBody(tableId, pitData);
+    insertPitTableHeader(tableId);   // TODO - add alias handling!!
+    insertPitTableBody(tableId, pitData, []);
     // script instructions say this is needed, but it breaks table header sorting
     // sorttable.makeSortable(document.getElementById(tableId));
     document.getElementById(tableId).click(); // This magic fixes the floating column bug
@@ -104,5 +106,4 @@ require 'inc/header.php';
 <script src="./scripts/compareMatchNumbers.js"></script>
 <script src="./scripts/compareTeamNumbers.js"></script>
 <script src="./scripts/pitTable.js"></script>
-<!-- <script src="./scripts/pitDataTable.js"></script> -->
 <script src="./scripts/sortFrcTables.js"></script>

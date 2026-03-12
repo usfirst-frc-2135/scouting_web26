@@ -1,4 +1,4 @@
-function insertPitTableHeader(tableId, pitData) {
+function insertPitTableHeader(tableId) {
     console.log("==> pitData: insertPitDataHeader()");
     let tbodyRef = document.getElementById(tableId).querySelector('thead');
     let headerRow = tbodyRef.insertRow();
@@ -93,15 +93,15 @@ function insertPitTableHeader(tableId, pitData) {
   function toOrganization(value) {
     switch (String(value)) {
       case "1":
-        return "1-Messy";
+        return "Messy";
       case "2":
-        return "2-Below Average";
+        return "Below Average";
       case "3":
-        return "3-Organized!";
+        return "Organized!";
       case "4":
-        return "4-Above Average";
+        return "Above Average";
       case "5":
-        return "5-Pristine";
+        return "Pristine";
       default:
         return "-";
     }
@@ -113,15 +113,15 @@ function insertPitTableHeader(tableId, pitData) {
   function toPreparedness(value) {
     switch (String(value)) {
       case "1":
-        return "1-Chaos";
+        return "Chaos";
       case "2":
-        return "2-Below Average";
+        return "Below Average";
       case "3":
-        return "3-Prepared!";
+        return "Prepared!";
       case "4":
-        return "4-Above Average";
+        return "Above Average";
       case "5":
-        return "5-Proactive";
+        return "Proactive";
       default:
         return "-";
     }
@@ -131,11 +131,15 @@ function insertPitTableHeader(tableId, pitData) {
   //
   // Insert the pit data table body
   //
-  function insertPitTableBody(tableId, pitData) {
+  function insertPitTableBody(tableId, pitData, teamFilter) {
     console.log("==> pitData: insertPitDataBody()");
     let tbodyRef = document.getElementById(tableId).querySelector('tbody');
 
+    console.log("--->>> insertPitTableBody(): length = "+pitData.length);
     for (let teamNum in pitData) {
+      if (teamFilter.length !== 0 && !teamFilter.includes(teamNum))
+        continue;   // skip this team
+
       let rowString = "";
       rowString += "<td><a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</a>";
       
@@ -148,8 +152,8 @@ function insertPitTableHeader(tableId, pitData) {
       rowString += tdBlue + toYesNo(teamPitData["trenchdrive"]) + "</td>";
       rowString += tdBody + toYesNo(teamPitData["climbable"]) + "</td>";
       rowString += tdBlue + teamPitData["climblevel"] + "</td>";
-      rowString += tdBody  + toYesNo(teamPitData["swerve"]) + "</td>";
-      rowString += tdBlue  + teamPitData["drivemotors"] + "</td>";
+      rowString += tdBody + toYesNo(teamPitData["swerve"]) + "</td>";
+      rowString += tdBlue + teamPitData["drivemotors"] + "</td>";
       rowString += tdBody + toYesNo(teamPitData["spareparts"]) + "</td>";
       rowString += tdBlue + teamPitData["proglanguage"] + "</td>";
       rowString += tdBody + toYesNo(teamPitData["computervision"]) + "</td>";
@@ -158,32 +162,7 @@ function insertPitTableHeader(tableId, pitData) {
       rowString += tdBlue + toPreparedness(teamPitData["preparedness"]) + "</td>";
       rowString += tdBody + teamPitData["scoutname"] + "</td>";
 
-       tbodyRef.insertRow().innerHTML = rowString;
+      tbodyRef.insertRow().innerHTML = rowString;
   }
 }
 
-  //
-  // Acquire match data and build the page
-  //
-  function buildPitDataTable(tableId) {
-    $.get("api/dbReadAPI.php", {
-      getAllPitData: true
-    }).done(function(pitData) {
-      console.log("=> eventAliasNames");
-      let jPitData = JSON.parse(pitData);
-      console.log("YOLO " + JSON.parse(pitData));
-      insertPitTableHeader(tableId, jPitData);
-      insertPitTableBody(tableId, jPitData);
-      // script instructions say this is needed, but it breaks table header sorting
-      sorttable.makeSortable(document.getElementById(tableId));
-      document.getElementById(tableId).click(); // This magic fixes the floating column bug
-    });
-
-  }
-
-  /////////////////////////////////////////////////////////////////////////////
-  //
-  // Process the generated html
-  //    Get all pit data from our database
-  //    When completed, display the web page
-  //

@@ -77,7 +77,6 @@ class matchDataProcessor {
     let hopperCap = 0;
     for (let entry of hopperCapData) {
       let tnum = entry["teamnumber"];
-      console.log( "    HOPPERCAP check---> comparing teamnum " + teamnum + " with tnum " + tnum);
       if (tnum === teamnum) {
         hopperCap = entry["hoppercap"]
         console.log("   !!!-> FOUND HOPPERCAP: teamnum "+teamnum+", hopperCap = " + hopperCap);
@@ -419,7 +418,7 @@ class matchDataProcessor {
   {
     let alliances = match["alliances"];
     let matchnum = match["comp_level"]+match["match_number"];
-//HOLD    console.log("---> calcAllianceFuelEstTBA() matchnum = "+matchnum);
+    console.log("---> calcAllianceFuelEstTBA() matchnum = "+matchnum);
 
     // Get the teams in this alliance
     let teams = [];
@@ -433,7 +432,7 @@ class matchDataProcessor {
         teams[i] = teams[i].substring(3);
       }
     }
-//HOLD    console.log("   ---> "+aColor+" Teams = "+teams[0]+", "+teams[1]+", "+teams[2]);
+    console.log("   ---> "+aColor+" Teams = "+teams[0]+", "+teams[1]+", "+teams[2]);
 
     // Get the 3 teams' current fuel estimates and also get the tbaMatch total fuel counts.
     if(match["score_breakdown"] != null && match["score_breakdown"][aColor] != null && match["score_breakdown"][aColor]["hubScore"] != null && match["score_breakdown"][aColor]["hubScore"]["autoPoints"] != null) 

@@ -329,7 +329,7 @@ require 'inc/header.php';
 
             <!-- <div id="freeze-table-strat" class="freeze-table overflow-auto"> -->
             <div class="overflow-auto">
-              <table id="pitDataTable"
+              <table id="lookupPitDataTable"
                 class="table table-striped table-bordered table-hover table-sm border-secondary text-center">
                 <thead> </thead>
                 <tbody class="table-group-divider"> </tbody>
@@ -888,9 +888,6 @@ require 'inc/header.php';
   }
 
   //
-  // Load the pit data table for this team
-
-  //
   // Load the match data table
   //
   function loadMatchData(team, matchData, aliasList, pitData, tbaMatchData, hopperCapData) {
@@ -930,7 +927,7 @@ require 'inc/header.php';
     document.getElementById("endgameClimbTable").querySelector('tbody').innerHTML = "";
     document.getElementById("endgameStartClimbTable").querySelector('tbody').innerHTML = "";
     document.getElementById("endgameClimbPosTable").querySelector('tbody').innerHTML = "";
-    document.getElementById("pitDataTable").querySelector('tbody').innerHTML = "";
+    document.getElementById("lookupPitDataTable").querySelector('tbody').innerHTML = "";
     document.getElementById("strategicDataTable").querySelector('tbody').innerHTML = "";
     document.getElementById("matchDataTable").querySelector('tbody').innerHTML = "";
   }
@@ -1011,16 +1008,13 @@ require 'inc/header.php';
 
     // Do the Pit Data Table.
     $.get("api/dbReadAPI.php", {
-      getAllPitData: teamNum
-    }).done(function(teamPitData) {
-//      console.log("=> getTeamPitData");
-      console.log("==> teamPitData: "+ teamPitData);
-      insertPitTableBody("pitDataTable", JSON.parse(teamPitData));
+      getAllPitData: true
+    }).done(function(allPitData) {
+      console.log("==> got all pit data "+ allPitData);
+      insertPitTableBody("lookupPitDataTable", JSON.parse(allPitData), [teamNum]);
     });
   }
 
-
-  
   //
   // Autocorrects alias number in team number entry field
   //
@@ -1058,7 +1052,7 @@ require 'inc/header.php';
     }).done(function(eventAliasNames) {
       jAliasNames = JSON.parse(eventAliasNames);
       insertStrategicDataHeader("strategicDataTable", jAliasNames);
-      insertPitTableHeader("pitDataTable", jAliasNames);
+      insertPitTableHeader("lookupPitDataTable");  // TODO - add alias handling
       insertMatchDataHeader("matchDataTable", jAliasNames);
 
       // Check URL for team# to use (we may have gotten here by clicking on a team number link from another page)
