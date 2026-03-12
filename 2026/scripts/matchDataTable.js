@@ -80,11 +80,11 @@ function insertMatchDataHeader(tableId, aliasList) {
 // Converts a given Preload Accuracy Rate number to a string
 function toPreloadAcc(value) {
   switch (String(value)) {
-    case "1": return "1:All";
-    case "2": return "2:Most";
-    case "3": return "3:Half";
-    case "4": return "4:Some";
-    case "5": return "5:None";
+    case "1": return "All";
+    case "2": return "Most";
+    case "3": return "Half";
+    case "4": return "Some";
+    case "5": return "None";
     default: return "-";
   }
 }
@@ -92,12 +92,12 @@ function toPreloadAcc(value) {
 // Converts a given Accuracy Rate number to a string
 function toAccuracyRate(value) {
   switch (String(value)) {
-    case "1": return "1:Most";
-    case "2": return "2:3/4";
-    case "3": return "3:1/2";
-    case "4": return "4:1/4";
-    case "5": return "5:Few";
-    case "6": return "6:None";
+    case "1": return "Most";
+    case "2": return "3/4";
+    case "3": return "1/2";
+    case "4": return "1/4";
+    case "5": return "Few";
+    case "6": return "None";
     default: return "-";
   }
 }
@@ -105,10 +105,10 @@ function toAccuracyRate(value) {
 // Converts a given Passing Rate number to a string
 function toPassingRate(value) {
   switch (String(value)) {
-    case "1": return "1:Low";
-    case "2": return "2:Med";
-    case "3": return "3:Half";
-    case "4": return "4:Tons";
+    case "1": return "Low";
+    case "2": return "Med";
+    case "3": return "Half";
+    case "4": return "Tons";
     default: return "-";
   }
 }
@@ -117,9 +117,9 @@ function toPassingRate(value) {
 // Converts a given tower climb number to a string
 function toClimbLevel(value) {
   switch (String(value)) {
-    case "1": return "1:L1";
-    case "2": return "2:L2";
-    case "3": return "3:L3";
+    case "1": return "L1";
+    case "2": return "L2";
+    case "3": return "L3";
     default: return "-";
   }
 }
@@ -127,10 +127,10 @@ function toClimbLevel(value) {
 // Converts a given Start Climb number to a string
 function toStartClimb(value) {
   switch (String(value)) {
-    case "1": return "1:Before";
-    case "2": return "2:Bell";
-    case "3": return "3:10s";
-    case "4": return "4:<10s";
+    case "1": return "Before";
+    case "2": return "Bell";
+    case "3": return "10s";
+    case "4": return "<10s";
     default: return "-";
   }
 }
@@ -138,10 +138,10 @@ function toStartClimb(value) {
 // Converts a given climb position number to a string
 function toClimbPosition(value) {
   switch (String(value)) {
-    case "1": return "1:Back";
-    case "2": return "2:Left";
-    case "3": return "3:Front";
-    case "4": return "4:Right";
+    case "1": return "Back";
+    case "2": return "Left";
+    case "3": return "Front";
+    case "4": return "Right";
     default: return "-";
   }
 }
@@ -149,11 +149,11 @@ function toClimbPosition(value) {
 // Converts a given driver ability number to a string
 function toDriverAbility(value) {
   switch (String(value)) {
-    case "1": return "1:Slow";
-    case "2": return "2:Jerky";
-    case "3": return "3:Avg";
-    case "4": return "4:Fast";
-    case "5": return "5:Elite";
+    case "1": return "Slow";
+    case "2": return "Jerky";
+    case "3": return "Avg";
+    case "4": return "Fast";
+    case "5": return "Elite";
     default: return "-";
   }
 }
@@ -161,11 +161,11 @@ function toDriverAbility(value) {
 // Converts a given defense rate number to a string
 function toDefenseRate(value) {
   switch (String(value)) {
-    case "1": return "1:Low";
-    case "2": return "2:M Low";
-    case "3": return "3:Med";
-    case "4": return "4:M High";
-    case "5": return "5:High";
+    case "1": return "Low";
+    case "2": return "M Low";
+    case "3": return "Med";
+    case "4": return "M High";
+    case "5": return "High";
     default: return "-";
   }
 }
@@ -173,22 +173,22 @@ function toDefenseRate(value) {
 // Converts a given Driver Ability number to a string
 function toDriverAbility(value) {
   switch (String(value)) {
-    case "1": return "1:Slow";
-    case "2": return "2:Jerky";
-    case "3": return "3:Avg";
-    case "4": return "4:Fast";
-    case "5": return "5:Elite";
+    case "1": return "Slow";
+    case "2": return "Jerky";
+    case "3": return "Avg";
+    case "4": return "Fast";
+    case "5": return "Elite";
     default: return "-";
   }
 }
 
 function toDiedValue(value) {
   switch (String(value)) {
-    case "1": return "1:Most";
-    case "2": return "2:1m+";
-    case "3": return "3:30s+";
-    case "4": return "4:15-30s";
-    case "5": return "5:No Show";
+    case "1": return "Most";
+    case "2": return "1m+";
+    case "3": return "30s+";
+    case "4": return "15-30s";
+    case "5": return "No Show";
     default: return "-";
   }
 }
