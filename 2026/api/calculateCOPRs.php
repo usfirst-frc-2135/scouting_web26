@@ -209,11 +209,11 @@ class CalculateCOPRs
   }
 
   // Main COPR Calculation Function
-  public static function calculateCOPRS($eventCode, $teamCount, $teamList, $teamLookup, $matchData)
+  public static function calculateCOPRS($eventCode, $teamCount, $teamList, $teamLookup, $tbaMatchData)
   {
-    $matchData = self::removeNonQualMatches($matchData);
-    $matchData = self::removeUnplayedMatches($matchData);
-    $matchMatricies = self::createABMatricies($teamCount, $teamLookup, $matchData);
+    $tbaMatchData = self::removeNonQualMatches($tbaMatchData);
+    $tbaMatchData = self::removeUnplayedMatches($tbaMatchData);
+    $matchMatricies = self::createABMatricies($teamCount, $teamLookup, $tbaMatchData);
 
     $A = $matchMatricies["A"];
     $Bs = $matchMatricies["B"];
@@ -241,7 +241,7 @@ class CalculateCOPRs
       }
     }
 
-    return array("eventCode" => $eventCode, "data" => $cData, "keys" => self::getNumericalBreakdownKeys($matchData));
+    return array("eventCode" => $eventCode, "data" => $cData, "keys" => self::getNumericalBreakdownKeys($tbaMatchData));
   }
 
 }
