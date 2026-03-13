@@ -135,8 +135,8 @@ function insertPitTableHeader(tableId) {
     console.log("==> pitData: insertPitDataBody()");
     let tbodyRef = document.getElementById(tableId).querySelector('tbody');
 
-    console.log("--->>> insertPitTableBody(): length = "+pitData.length);
     for (let teamNum in pitData) {
+//      console.log("--->>> insertPitTableBody(): looking at teamNum = "+teamNum);
       if (teamFilter.length !== 0 && !teamFilter.includes(teamNum))
         continue;   // skip this team
 

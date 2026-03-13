@@ -165,7 +165,6 @@ require 'inc/header.php';
                     </tr>
                   </tbody>
                 </table>
-                </table>
               </div>
             </div>
 
@@ -196,7 +195,6 @@ require 'inc/header.php';
                       <td> </td>
                       <td> </td>
                     </tr>
-                  </tbody>
                   </tbody>
                 </table>
               </div>
@@ -327,7 +325,7 @@ require 'inc/header.php';
           </div>
           <div id="collapsePitData" class="card-body collapse">
 
-            <!-- <div id="freeze-table-strat" class="freeze-table overflow-auto"> -->
+            <!-- <div id="freeze-table-pit" class="freeze-table overflow-auto"> -->
             <div class="overflow-auto">
               <table id="lookupPitDataTable"
                 class="table table-striped table-bordered table-hover table-sm border-secondary text-center">
@@ -982,6 +980,7 @@ require 'inc/header.php';
           getAllPitData: true
         }).done(function(allPitData) {
           let pitData = JSON.parse(allPitData);
+          insertPitTableBody("lookupPitDataTable", pitData, [teamNum]);
           $.get("api/tbaAPI.php", {
             getEventMatches: true
           }).done(function(eventMatches) {
@@ -1004,14 +1003,6 @@ require 'inc/header.php';
     }).done(function(teamStratData) {
 //      console.log("=> getTeamStrategicData");
       insertStrategicDataBody("strategicDataTable", JSON.parse(teamStratData), aliasList, [teamNum]);
-    });
-
-    // Do the Pit Data Table.
-    $.get("api/dbReadAPI.php", {
-      getAllPitData: true
-    }).done(function(allPitData) {
-      console.log("==> got all pit data "+ allPitData);
-      insertPitTableBody("lookupPitDataTable", JSON.parse(allPitData), [teamNum]);
     });
   }
 
