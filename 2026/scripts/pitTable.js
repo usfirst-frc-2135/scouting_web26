@@ -1,76 +1,29 @@
 function insertPitTableHeader(tableId) {
     console.log("==> pitData: insertPitDataHeader()");
-    let tbodyRef = document.getElementById(tableId).querySelector('thead');
-    let headerRow = tbodyRef.insertRow();
+    let theadRef = document.getElementById(tableId).querySelector('thead');
+    theadRef.innerHTML = "";   // clear table
+    
+    const thAuton = '<th scope="col" class="bg-success-subtle">';  // Auton color
+    const thTeleop = '<th scope="col" class="bg-primary-subtle">';  // Teleop color
+    const thEndgame = '<th scope="col" class="bg-warning-subtle">';  // Endgame color
 
-    // Static columns
-    let headers = [{
-        text: "Team",
-        class: "table-primary sorttable_numeric"
-        
-      },
-      {
-        text: "Hopper Capacity",
-        class: "table-info"
-      },
-      {
-        text: "Trench",
-        class: "table-info"
-      },
-      {
-        text: "Auton Climb",
-        class: "table-info"
-      },
-      {
-        text: "Climb Level",
-        class: "table-info"
-      },
-      {
-        text: "Swerve",
-        class: "table-success"
-      },
-      {
-        text: "Drive Motors",
-        class: "table-success"
-      },
-      {
-        text: "Spare Mechanism",
-        class: "table-success"
-      },
-      {
-        text: "Prog Language",
-        class: "table-success"
-      },
-      {
-        text: "Auto Align",
-        class: "table-success"
-      },
-      {
-        text: "Num Batteries",
-        class: "table-success"
-      },
-      {
-        text: "Pit Org",
-        class: "table-warning"
-      },
-      {
-        text: "Prep",
-        class: "table-warning"
-      },
-      {
-        text: "Scout",
-        class: "table-warning"
-      }
-    ];
+    let rowString = '';
+    rowString += '<th scope="col" class=bg-body sortable-numeric">' + 'Team' + '</th>';
+    rowString += thAuton + 'Hopper Cap' + '</th>';
+    rowString += thAuton + 'Trench' + '</th>';
+    rowString += thAuton + 'Auton Climb' + '</th>';
+    rowString += thAuton + 'Climb Level' + '</th>';
+    rowString += thTeleop + 'Swerve' + '</th>';
+    rowString += thTeleop + 'Drive Motors' + '</th>';
+    rowString += thTeleop + 'Spare Mechanism' + '</th>';
+    rowString += thTeleop + 'Prog Lang' + '</th>';
+    rowString += thTeleop + 'Auto Align' + '</th>';
+    rowString += thTeleop + 'Num Batteries' + '</th>';
+    rowString += thEndgame + 'Pit Org' + '</th>';
+    rowString += thEndgame + 'Prep' + '</th>';
+    rowString += '<th scope="col"> Scout </th>';
 
-    // Create header cells
-    for (let header of headers) {
-      let th = document.createElement('th');
-      th.scope = 'col';
-      th.className = header.class;
-      th.innerText = header.text;
-      headerRow.appendChild(th);
-    }
+    theadRef.insertRow().innerHTML = rowString;
   }
 
   //
@@ -134,7 +87,9 @@ function insertPitTableHeader(tableId) {
   function insertPitTableBody(tableId, pitData, teamFilter) {
     console.log("==> pitData: insertPitDataBody()");
     let tbodyRef = document.getElementById(tableId).querySelector('tbody');
+    tbodyRef.innerHTML = "";   // clear table
 
+    // Go thru each team and build the HTML string for that row.
     for (let teamNum in pitData) {
 //      console.log("--->>> insertPitTableBody(): looking at teamNum = "+teamNum);
       if (teamFilter.length !== 0 && !teamFilter.includes(teamNum))

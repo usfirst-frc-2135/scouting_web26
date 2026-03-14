@@ -142,7 +142,8 @@ require 'inc/header.php';
                       <td> </td>
                     </tr>
                   </tbody>
-                  <table id="autonClimbTable"
+                </table>
+                <table id="autonClimbTable"
                   class="table table-striped table-bordered table-hover table-sm border-secondary text-center ">
                   <thead>
                     <tr>
@@ -243,7 +244,6 @@ require 'inc/header.php';
                       <td> </td>
                       <td> </td>
                       <td> </td>
-                      <td> </td>
                     </tr>
                   </tbody>
                 </table>
@@ -266,6 +266,7 @@ require 'inc/header.php';
                       <td> </td>
                       <td> </td>
                       <td> </td>
+                      <td> </td>
                     </tr>
                   </tbody>
                 </table>
@@ -284,6 +285,7 @@ require 'inc/header.php';
                   <tbody class="table-group-divider">
                     <tr>
                       <th scope="row" class="text-start">Climb Pos %</th>
+                      <td> </td>
                       <td> </td>
                       <td> </td>
                       <td> </td>
