@@ -341,7 +341,7 @@ require 'inc/header.php';
             ticks: {
               precision: 0
             },
-            max: 200
+            max: 300
           } // Set Y axis maximum value - 4 coral + algae in  auto plus leave
         },
         plugins: {}
