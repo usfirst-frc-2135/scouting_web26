@@ -614,6 +614,7 @@ class matchDataProcessor {
         // For REBUILT: calculate basic teleop fuel est for this team/match and store in mdp pData.
         let teleopFuelEst = calcTeleopTotalFuel(hopperCap, teleopHoppersShot, teleopHopperAcc);
         this.updateMatchFuelDItem(teamItem, matchnum, "teleopFE", teleopFuelEst);
+        this.getMatchArray(teamItem, "driverAbility", 6, match, "driverAbility");
 
         // Endgame
         this.getMatchArray(teamItem, "endgameStartClimb", 5, match, "endgameStartClimb");
@@ -716,6 +717,7 @@ class matchDataProcessor {
       this.calcAverage(teamItem, "teleopDefenseLevel", "totalDefenseMatches");
 
       this.calcArray(teamItem, "died", "totalMatches");
+      this.calcArray(teamItem, "driverAbility", "totalMatches");
 
       // Endgame 
       this.calcArray(teamItem, "endgameStartClimb", "totalMatches");

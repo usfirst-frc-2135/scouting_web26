@@ -57,21 +57,23 @@ require 'inc/header.php';
             <!-- End game card -->
             <div class="card mb-3 bg-warning-subtle">
               <div class="card-header">
-                <h5 class="text-center"> <a href="#collapseEndgame" data-bs-toggle="collapse" aria-expanded="true">Endgame Climb
+                <h5 class="text-center"> <a href="#collapseDriver" data-bs-toggle="collapse" aria-expanded="true">Driver Ability
                     Percentages
                   </a>
                 </h5>
               </div>
-              <div id="collapseEndgame" class="card-body collapse show">
-                <table id="endgameClimbTable"
+              <div id="collapseDriver" class="card-body collapse show">
+                <table id="driverAbilityTable"
                   class="table table-striped table-bordered table-hover table-sm border-secondary text-center ">
                   <thead>
                     <tr>
                       <th>Team</th>
-                      <th scope="col" style="width:25%">N%</th>
-                      <th scope="col" style="width:25%">L1%</th>
-                      <th scope="col" style="width:25%">L2%</th>
-                      <th scope="col" style="width:25%">L3%</th>
+                      <th scope="col" style="width:16.7%">N%</th>
+                      <th scope="col" style="width:16.7%">Slow%</th>
+                      <th scope="col" style="width:16.7%">Jerky%</th>
+                      <th scope="col" style="width:16.7%">Avg%</th>
+                      <th scope="col" style="width:16.7%">Fast%</th>
+                      <th scope="col" style="width:16.7%">Elite%</th>
                     </tr>
                   </thead>
                   <tbody class="table-group-divider">
@@ -458,8 +460,8 @@ require 'inc/header.php';
   //
   // Create a single endgame climb entry row
   //
-  function createEndgameEntry(teamNum, avgData) {
-    let endgameClimbLevel = getDataValue(avgData[teamNum], "endgameClimbLevel");
+  function createDriverEntry(teamNum, avgData) {
+    let driverAbility = getDataValue(avgData[teamNum], "driverAbility");
     const tdPrefix = "<td>";
 
     let teamAverages = avgData[teamNum];
@@ -467,10 +469,12 @@ require 'inc/header.php';
 
     let rowString = "";
     rowString += tdPrefix + "<a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</a></td>";
-    rowString += tdPrefix + getDataValue(endgameClimbLevel.arr, 0).avg + "</td>";
-    rowString += tdPrefix + getDataValue(endgameClimbLevel.arr, 2).avg + "</td>";
-    rowString += tdPrefix + getDataValue(endgameClimbLevel.arr, 1).avg + "</td>";
-    rowString += tdPrefix + getDataValue(endgameClimbLevel.arr, 3).avg + "</td>";
+    rowString += tdPrefix + getDataValue(driverAbility.arr, 0).avg + "</td>";
+    rowString += tdPrefix + getDataValue(driverAbility.arr, 2).avg + "</td>";
+    rowString += tdPrefix + getDataValue(driverAbility.arr, 1).avg + "</td>";
+    rowString += tdPrefix + getDataValue(driverAbility.arr, 3).avg + "</td>";
+    rowString += tdPrefix + getDataValue(driverAbility.arr, 4).avg + "</td>";
+    rowString += tdPrefix + getDataValue(driverAbility.arr, 5).avg + "</td>";
     return rowString;
   }
   else {
@@ -480,11 +484,11 @@ require 'inc/header.php';
 
   function loadEndgameTable(teamNum, teamNum2, avgData) {
     console.log("==> teamCompare: loadEndgameTable()");
-    let tbodyRef = document.getElementById("endgameClimbTable").querySelector('tbody');
+    let tbodyRef = document.getElementById("driverAbilityTable").querySelector('tbody');
     tbodyRef.innerHTML = ""; // Clear Table
 
-    tbodyRef.insertRow().innerHTML = createEndgameEntry(teamNum, avgData);
-    tbodyRef.insertRow().innerHTML = createEndgameEntry(teamNum2, avgData);
+    tbodyRef.insertRow().innerHTML = createDriverEntry(teamNum, avgData);
+    tbodyRef.insertRow().innerHTML = createDriverEntry(teamNum2, avgData);
   }
 
   //
