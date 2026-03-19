@@ -239,7 +239,7 @@ require 'inc/header.php';
   function loadFirstPickGraph(team1, team2, avgData) {
     console.log("==> teamCompare: loadFirstPickGraph()");
     let datasets = [];
-    
+
     let teamAvg1 = avgData[team1];
     let teamAvg2 = avgData[team2];
 
@@ -289,7 +289,7 @@ require 'inc/header.php';
             ticks: {
               precision: 0
             },
-            max: 300
+            max: 200
           } // Set Y axis maximum value - 4 coral + algae in  auto plus leave
         },
         plugins: {}
@@ -345,7 +345,7 @@ require 'inc/header.php';
             ticks: {
               precision: 0
             },
-            max: 300
+            max: 200
           } // Set Y axis maximum value - 4 coral + algae in  auto plus leave
         },
         plugins: {}
@@ -403,7 +403,7 @@ require 'inc/header.php';
             ticks: {
               precision: 0
             },
-            max: 300
+            max: 200
           } // Set Y axis maximum value - 4 coral + algae in  auto plus leave
         },
         plugins: {}
