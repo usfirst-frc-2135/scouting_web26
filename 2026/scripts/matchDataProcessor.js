@@ -559,6 +559,9 @@ class matchDataProcessor {
       teamItem["scoutNames"] = [];
       teamItem["commentList"] = [];
 
+      teamItem["totalPassingN"] = 0;  // incremented each match this team passed from neutral to alliance
+      teamItem["totalPassingA"] = 0;  // incremented each match this team passed from alliance to alliance
+
       // Initialize teamItem processed data
       teamItem["totalDefenseMatches"] = 0;  // incremented each match this team played defense
       teamItem["totalMatches"] = matchList.length;
@@ -604,11 +607,21 @@ class matchDataProcessor {
         this.getMatchItem(teamItem, "teleopIntakeAndShoot", match, "teleopIntakeAndShoot");
         this.getMatchItem(teamItem, "teleopNeutralToAlliance", match, "teleopNeutralToAlliance");
         this.getMatchItem(teamItem, "teleopAllianceToAlliance", match, "teleopAllianceToAlliance");
-        this.getMatchItem(teamItem, "teleopPassingRate", match, "teleopPassingRate");
+        this.getMatchArray(teamItem, "teleopPassingRate", 5, match, "teleopPassingRate");
 
         let matchDefenseLevel = this.getMatchItem(teamItem, "teleopDefenseLevel", match, "teleopDefenseLevel");
         if (matchDefenseLevel != 0) {
+          teamItem["totalPassingN"] += 1;  // increment if this team passes from netural
+        }
+
+        let passingFromN = this.getMatchItem(teamItem, "teleopNeutralToAlliance", match, "teleopNeutralToAlliance");
+        if (passingFromN != 0) {
           teamItem["totalDefenseMatches"] += 1;  // increment if this team played defense
+        }
+
+        let passingFromA = this.getMatchItem(teamItem, "teleopAllianceToAlliance", match, "teleopAllianceToAlliance");
+        if (passingFromA != 0) {
+          teamItem["totalPassingA"] += 1;  // increment if this team passed from alliance to alliance
         }
 
         // For REBUILT: calculate basic teleop fuel est for this team/match and store in mdp pData.
@@ -715,6 +728,7 @@ class matchDataProcessor {
 
       // Defense avg 
       this.calcAverage(teamItem, "teleopDefenseLevel", "totalDefenseMatches");
+      this.calcArray(teamItem, "teleopPassingRate", "totalMatches");
 
       this.calcArray(teamItem, "died", "totalMatches");
       this.calcArray(teamItem, "driverAbility", "totalMatches");

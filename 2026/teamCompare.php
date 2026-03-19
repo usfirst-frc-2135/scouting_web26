@@ -54,7 +54,7 @@ require 'inc/header.php';
         <div class="card mb-3">
           <div class="card-body">
 
-            <!-- End game card -->
+            <!-- Driver Ability card -->
             <div class="card mb-3 bg-warning-subtle">
               <div class="card-header">
                 <h5 class="text-center"> <a href="#collapseDriver" data-bs-toggle="collapse" aria-expanded="true">Driver Ability
@@ -68,12 +68,62 @@ require 'inc/header.php';
                   <thead>
                     <tr>
                       <th>Team</th>
-                      <th scope="col" style="width:16.7%">N%</th>
+                      <th scope="col" style="width:16.7%">N/A%</th>
                       <th scope="col" style="width:16.7%">Slow%</th>
                       <th scope="col" style="width:16.7%">Jerky%</th>
                       <th scope="col" style="width:16.7%">Avg%</th>
                       <th scope="col" style="width:16.7%">Fast%</th>
                       <th scope="col" style="width:16.7%">Elite%</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table-group-divider">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+             <!-- Passing From Zone card -->
+            <div class="card mb-3 bg-warning-subtle">
+              <div class="card-header">
+                <h5 class="text-center"> <a href="#collapsePassing" data-bs-toggle="collapse" aria-expanded="true">Passing From Zones
+                  </a>
+                </h5>
+              </div>
+              <div id="collapsePassing" class="card-body collapse show">
+                <table id="passingFromTable"
+                  class="table table-striped table-bordered table-hover table-sm border-secondary text-center ">
+                  <thead>
+                    <tr>
+                      <th>Team</th>
+                      <th scope="col" style="width:50%">From N</th>
+                      <th scope="col" style="width:50%">From A</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table-group-divider">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Passing Effectiveness card -->
+            <div class="card mb-3 bg-warning-subtle">
+              <div class="card-header">
+                <h5 class="text-center"> <a href="#collapsePassing" data-bs-toggle="collapse" aria-expanded="true">Passing Effectiveness
+                    Percentages
+                  </a>
+                </h5>
+              </div>
+              <div id="collapsePassing" class="card-body collapse show">
+                <table id="passingRateTable"
+                  class="table table-striped table-bordered table-hover table-sm border-secondary text-center ">
+                  <thead>
+                    <tr>
+                      <th>Team</th>
+                      <th scope="col" style="width:20%">N/A%</th>
+                      <th scope="col" style="width:20%">Low%</th>
+                      <th scope="col" style="width:20%">Med%</th>
+                      <th scope="col" style="width:20%">Large%</th>
+                      <th scope="col" style="width:20%">Tons%</th>
                     </tr>
                   </thead>
                   <tbody class="table-group-divider">
@@ -482,13 +532,71 @@ require 'inc/header.php';
   }
 }
 
-  function loadEndgameTable(teamNum, teamNum2, avgData) {
-    console.log("==> teamCompare: loadEndgameTable()");
+function createPassingEntry(teamNum, avgData) {
+    let passingRate = getDataValue(avgData[teamNum], "teleopPassingRate");
+    const tdPrefix = "<td>";
+
+    let teamAverages = avgData[teamNum];
+    if (teamAverages !== undefined) {
+
+    let rowString = "";
+    rowString += tdPrefix + "<a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</a></td>";
+    rowString += tdPrefix + getDataValue(passingRate.arr, 0).avg + "</td>";
+    rowString += tdPrefix + getDataValue(passingRate.arr, 2).avg + "</td>";
+    rowString += tdPrefix + getDataValue(passingRate.arr, 1).avg + "</td>";
+    rowString += tdPrefix + getDataValue(passingRate.arr, 3).avg + "</td>";
+    rowString += tdPrefix + getDataValue(passingRate.arr, 4).avg + "</td>";
+    return rowString;
+  }
+  else {
+    console.log("ERROR: No average data found for team " + teamNum);
+  }
+}
+
+function createPassingFromEntry(teamNum, avgData) {
+    let passingNRate = getDataValue(avgData[teamNum], "totalPassingN");
+    let passingARate = getDataValue(avgData[teamNum], "totalPassingA");
+    const tdPrefix = "<td>";
+
+    let teamAverages = avgData[teamNum];
+    if (teamAverages !== undefined) {
+
+    let rowString = "";
+    rowString += tdPrefix + "<a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</a></td>";
+    rowString += tdPrefix + passingNRate + "</td>";
+    rowString += tdPrefix + passingARate + "</td>";
+    return rowString;
+  }
+  else {
+    console.log("ERROR: No average data found for team " + teamNum);
+  }
+}
+
+  function loadDriverTable(teamNum, teamNum2, avgData) {
+    console.log("==> teamCompare: loadDriverTable()");
     let tbodyRef = document.getElementById("driverAbilityTable").querySelector('tbody');
     tbodyRef.innerHTML = ""; // Clear Table
 
     tbodyRef.insertRow().innerHTML = createDriverEntry(teamNum, avgData);
     tbodyRef.insertRow().innerHTML = createDriverEntry(teamNum2, avgData);
+  }
+
+  function loadPassingTable(teamNum, teamNum2, avgData) {
+    console.log("==> teamCompare: loadPassingTable()");
+    let tbodyRef = document.getElementById("passingRateTable").querySelector('tbody');
+    tbodyRef.innerHTML = ""; // Clear Table
+
+    tbodyRef.insertRow().innerHTML = createPassingEntry(teamNum, avgData);
+    tbodyRef.insertRow().innerHTML = createPassingEntry(teamNum2, avgData);
+  }
+
+  function loadPassingFromTable(teamNum, teamNum2, avgData) {
+    console.log("==> teamCompare: loadPassingFromTable()");
+    let tbodyRef = document.getElementById("passingFromTable").querySelector('tbody');
+    tbodyRef.innerHTML = ""; // Clear Table
+
+    tbodyRef.insertRow().innerHTML = createPassingFromEntry(teamNum, avgData);
+    tbodyRef.insertRow().innerHTML = createPassingFromEntry(teamNum2, avgData);
   }
 
   //
@@ -716,7 +824,9 @@ require 'inc/header.php';
         loadFirstPickGraph(teamNum1, teamNum2, filteredAvgData);
         loadSecondPickGraph(teamNum1, teamNum2, filteredAvgData);
         loadThirdPickGraph(teamNum1, teamNum2, filteredAvgData);
-        loadEndgameTable(teamNum1, teamNum2, filteredAvgData);
+        loadDriverTable(teamNum1, teamNum2, filteredAvgData);
+        loadPassingTable(teamNum1, teamNum2, filteredAvgData);
+        loadPassingFromTable(teamNum1, teamNum2, filteredAvgData);
         insertEventAveragesBody("averagesTable", filteredAvgData, [], aliasList, [], [teamNum1, teamNum2]);
       } 
       });
