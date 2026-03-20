@@ -68,7 +68,7 @@ function insertStrategicDataHeader(tableId, aliasList) {
   rowString2 += thInactive + 'Played Defense Against Shooter' + '</th>';
   rowString2 += thInactive + 'Played Defense At Bump' + '</th>';
   rowString2 += thInactive + 'Played Defense At Trench' + '</th>';
-  rowString2 += thBody + 'Effectiveness' + '</th>';
+  rowString2 += thBody + 'Effective Rating' + '</th>';
   rowString2 += thBump + 'Tipped Over' + '</th>';
   rowString2 += thBump + 'Bottomed Out' + '</th>';
   rowString2 += thBump + 'Avoided Defender' + '</th>';

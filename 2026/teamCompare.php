@@ -179,24 +179,6 @@ HOLD-->
       </div>
     </div>
 
-    <div class="card mb-3">
-      <div id="strategicLink2" class="card-header">
-        <h5 class="text-center">
-          <a href="#collapseStrategicData2" data-bs-toggle="collapse" aria-expanded="false">Team 2 - Strategic Data</a>
-        </h5>
-      </div>
-
-      <div id="collapseStrategicData2" class="card-body collapse">
-        <div class="overflow-auto">
-          <table id="strategicDataTable2"
-            class="table table-striped table-bordered table-hover table-sm border-secondary text-center">
-            <thead> </thead>
-            <tbody class="table-group-divider"> </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
     <!-- Event Averages section -->
     <div class="column card-lg-12 col-sm-12 col-xs-12" id="content">
 
@@ -300,10 +282,6 @@ HOLD-->
       data: [
         teamAvg1["autonFinalFuelEst"].avg,
         teamAvg1["teleopTotalPoints"].avg,
-        teamAvg1["endgamePoints"].avg,
-        //teamAvg1["teleopAlgaeNet"].avg * 4, // Multiply teleopAlgaeNetAvg by 4 to get points.
-        //teamAvg1["teleopCoralL4"].avg * 5, // Multiply teleopCoralL4Avg by 5 to get points.
-        //teamAvg1["teleopCoralL3"].avg * 4 // Multiply teleopCoralL3Avg by 4 to get points.
       ],
       backgroundColor: '#FF4316'
     });
@@ -312,10 +290,6 @@ HOLD-->
       data: [
         teamAvg2["autonFinalFuelEst"].avg,
         teamAvg2["teleopTotalPoints"].avg,
-        teamAvg2["endgamePoints"].avg,
-        //teamAvg2["teleopAlgaeNet"].avg * 4, // Multiply teleopAlgaeNetAvg by 4 to get points.
-        //teamAvg2["teleopCoralL4"].avg * 5, // Multiply teleopCoralL4Avg by 5 to get points.
-        //teamAvg2["teleopCoralL3"].avg * 4 // Multiply teleopCoralL3Avg by 4 to get points.
       ],
       backgroundColor: '#0033FF'
     });
@@ -330,7 +304,7 @@ HOLD-->
     firstPickChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: ["Auton Avg Pts", "Teleop Avg Pts", "Endgame Avg Pts"],
+        labels: ["Auton Avg Pts", "Teleop Avg Pts"],
         datasets: datasets
       },
       options: {
@@ -489,7 +463,6 @@ HOLD-->
     document.getElementById("secondPickChart").querySelector('tbody').innerHTML = "";
     document.getElementById("thirdPickChart").querySelector('tbody').innerHTML = "";
     document.getElementById("strategicDataTable1").querySelector('tbody').innerHTML = "";
-    document.getElementById("strategicDataTable2").querySelector('tbody').innerHTML = "";
     document.getElementById("averagesTable").querySelector('body').innerHTML = "";
   }
 
@@ -653,10 +626,7 @@ function createPassingFromEntry(teamNum, avgData) {
     }).done(function(allStrategicData) {
       let jStratData = JSON.parse(allStrategicData);
       console.log("=> getAllStrategicData");
-      document.getElementById("strategicLink1").querySelector('a').text = teamNum1 + " - Strategic Data";
-      insertStrategicDataBody("strategicDataTable1", jStratData, aliasList, [teamNum1]);
-      document.getElementById("strategicLink2").querySelector('a').text = teamNum2 + " - Strategic Data";
-      insertStrategicDataBody("strategicDataTable2", jStratData, aliasList, [teamNum2]);
+      insertStrategicDataBody("strategicDataTable1", jStratData, aliasList, [teamNum1,teamNum2]);
     });
 
     let tbaMatchData = null;
@@ -739,7 +709,6 @@ function createPassingFromEntry(teamNum, avgData) {
       console.log("=> eventAliasNames");
       jAliasNames = JSON.parse(eventAliasNames);
       insertStrategicDataHeader("strategicDataTable1", jAliasNames);
-      insertStrategicDataHeader("strategicDataTable2", jAliasNames);
       insertEventAveragesHeader("averagesTable", jAliasNames);
     });
 

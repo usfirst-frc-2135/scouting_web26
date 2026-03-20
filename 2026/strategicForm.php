@@ -164,11 +164,12 @@ require 'inc/header.php';
                   <div class="input-group mb-3">
                     <select id="againstDefenseEffectiveness" class="form-select">
                       <option selected value="-1">Choose ...</option>
-                      <option value="0">0-Low</option>
-                      <option value="1">1-Med Low</option>
-                      <option value="2">2-Avg</option>
-                      <option value="3">3-Med High</option>
-                      <option value="4">4-High</option>
+                      <option value="0">0-N/A</option>
+                      <option value="1">1-Low</option>
+                      <option value="2">2-Med Low</option>
+                      <option value="3">3-Avg</option>
+                      <option value="4">4-Med High</option>
+                      <option value="5">5-High</option>
                     </select>
                   </div>
                 </div>
@@ -402,8 +403,11 @@ require 'inc/header.php';
     dataToSave["inactiveShiftDefenseAtBump"] = (document.getElementById("inactiveShiftDefenseAtBump").checked) ? 1 : 0;
     dataToSave["inactiveShiftDefenseAtTrench"] = (document.getElementById("inactiveShiftDefenseAtTrench").checked) ? 1 : 0;
 
-    // Evading Defense scouting
-    dataToSave["againstDefenseEffectiveness"] = document.getElementById("againstDefenseEffectiveness").value;
+    // Evading Defense scouting (note value may not be set)
+    let ade = document.getElementById("againstDefenseEffectiveness").value;
+    if(ade == -1)
+      ade = 0;
+    dataToSave["againstDefenseEffectiveness"] = ade;
 
     // Bump scouting
     dataToSave["bumpTippedOver"] = (document.getElementById("bumpTippedOver").checked) ? 1 : 0;
