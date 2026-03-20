@@ -119,11 +119,12 @@ function insertStrategicDataBody(tableId, stratData, aliasList, teamFilter) {
 
     let defEffectiveness = "";
     switch (String(stratItem["againstDefenseEffectiveness"])) {
-      case "0": defEffectiveness = "Low"; break;
-      case "1": defEffectiveness = "Med Low"; break;
-      case "2": defEffectiveness = "Average"; break;
-      case "3": defEffectiveness = "Med High"; break;
-      case "4": defEffectiveness = "High"; break;
+      case "0": defEffectiveness = "N/A"; break;
+      case "1": defEffectiveness = "Low"; break;
+      case "2": defEffectiveness = "Med Low"; break;
+      case "3": defEffectiveness = "Average"; break;
+      case "4": defEffectiveness = "Med High"; break;
+      case "5": defEffectiveness = "High"; break;
     }
 
     let rowString = "";
