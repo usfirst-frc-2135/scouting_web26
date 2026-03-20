@@ -57,9 +57,7 @@ require 'inc/header.php';
             <!-- Driver Ability card -->
             <div class="card mb-3 bg-warning-subtle">
               <div class="card-header">
-                <h5 class="text-center"> <a href="#collapseDriver" data-bs-toggle="collapse" aria-expanded="true">Driver Ability
-                    Percentages
-                  </a>
+                <h5 class="text-center"> <a href="#collapseDriver" data-bs-toggle="collapse" aria-expanded="true">Driver Ability %</a>
                 </h5>
               </div>
               <div id="collapseDriver" class="card-body collapse show">
@@ -95,8 +93,8 @@ require 'inc/header.php';
                   <thead>
                     <tr>
                       <th>Team</th>
-                      <th scope="col" style="width:50%">From N</th>
-                      <th scope="col" style="width:50%">From A</th>
+                      <th scope="col" style="width:50%">Neutral Z</th>
+                      <th scope="col" style="width:50%">Alliance Z</th>
                     </tr>
                   </thead>
                   <tbody class="table-group-divider">
@@ -108,9 +106,7 @@ require 'inc/header.php';
             <!-- Passing Effectiveness card -->
             <div class="card mb-3 bg-warning-subtle">
               <div class="card-header">
-                <h5 class="text-center"> <a href="#collapsePassing" data-bs-toggle="collapse" aria-expanded="true">Passing Effectiveness
-                    Percentages
-                  </a>
+                <h5 class="text-center"> <a href="#collapsePassing" data-bs-toggle="collapse" aria-expanded="true">Passing Effectiveness %</a>
                 </h5>
               </div>
               <div id="collapsePassing" class="card-body collapse show">
@@ -133,6 +129,7 @@ require 'inc/header.php';
             </div>
 
             <!-- Second Pick collapsible graph -->
+<!-- HOLD FORNOW
             <div class="card mb-3 bg-success-subtle">
               <div class="card-header">
                 <h5 class="text-center">
@@ -143,8 +140,10 @@ require 'inc/header.php';
                 <canvas id="secondPickChart" width="400" height="360"></canvas>
               </div>
             </div>
+HOLD-->
 
             <!-- Third Pick collapsible graph -->
+<!-- HOLD FORNOW
             <div class="card mb-3 bg-success-subtle">
               <div class="card-header">
                 <h5 class="text-center">
@@ -155,6 +154,7 @@ require 'inc/header.php';
                 <canvas id="ThirdPickChart" width="400" height="360"></canvas>
               </div>
             </div>
+HOLD-->
 
           </div>
         </div>
@@ -164,7 +164,7 @@ require 'inc/header.php';
     <div class="card mb-3">
       <div id="strategicLink1" class="card-header">
         <h5 class="text-center">
-          <a href="#collapseStrategicData1" data-bs-toggle="collapse" aria-expanded="false">Team 1 - Strategic Data</a>
+          <a href="#collapseStrategicData1" data-bs-toggle="collapse" aria-expanded="false">Strategic Data</a>
         </h5>
       </div>
 
@@ -325,7 +325,7 @@ require 'inc/header.php';
       firstPickChart.destroy();
     }
 
-    // Create the Auton graph
+    // Create the First Pick graph
     const ctx = document.getElementById('firstPickChart').getContext('2d');
     firstPickChart = new Chart(ctx, {
       type: 'bar',
@@ -341,7 +341,7 @@ require 'inc/header.php';
             ticks: {
               precision: 0
             },
-            max: 300
+            max: 200
           } // Set Y axis maximum value - 4 coral + algae in  auto plus leave
         },
         plugins: {}
@@ -822,8 +822,8 @@ function createPassingFromEntry(teamNum, avgData) {
 
         // Load the graphs
         loadFirstPickGraph(teamNum1, teamNum2, filteredAvgData);
-        loadSecondPickGraph(teamNum1, teamNum2, filteredAvgData);
-        loadThirdPickGraph(teamNum1, teamNum2, filteredAvgData);
+//HOLD        loadSecondPickGraph(teamNum1, teamNum2, filteredAvgData);
+//HOLD        loadThirdPickGraph(teamNum1, teamNum2, filteredAvgData);
         loadDriverTable(teamNum1, teamNum2, filteredAvgData);
         loadPassingTable(teamNum1, teamNum2, filteredAvgData);
         loadPassingFromTable(teamNum1, teamNum2, filteredAvgData);
