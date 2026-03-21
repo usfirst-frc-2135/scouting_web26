@@ -472,9 +472,15 @@ class matchDataProcessor {
       let autoSum = Number(autoFuel1 + autoFuel2 + autoFuel3).toFixed(2);
       console.log("    ---->> autoSum = "+autoSum);
 
-      let autoRatio1 = Number(autoFuel1 / autoSum).toFixed(2);
-      let autoRatio2 = Number(autoFuel2 / autoSum).toFixed(2);
-      let autoRatio3 = Number(autoFuel3 / autoSum).toFixed(2);
+      // If autoSum is 0, then don't do the ratios.
+      let autoRatio1 = 0;
+      let autoRatio2 = 0;
+      let autoRatio3 = 0;
+      if(autoSum != 0) {
+        autoRatio1 = Number(autoFuel1 / autoSum).toFixed(2);
+        autoRatio2 = Number(autoFuel2 / autoSum).toFixed(2);
+        autoRatio3 = Number(autoFuel3 / autoSum).toFixed(2);
+      }
       console.log("    ---->> autoRatios = "+autoRatio1+", "+autoRatio2+", "+autoRatio3);
 
       // Now use the ratios to calc each team's contribution to the actual (tba) auton fuel count.
@@ -492,9 +498,16 @@ class matchDataProcessor {
       console.log("  ---->>> basic teleopFuel = "+teleopFuel1+", "+teleopFuel2+", "+teleopFuel3);
       let teleSum = Number(teleopFuel1 + teleopFuel2 + teleopFuel3).toFixed(2);
       console.log("    ---->>> teleSum = "+teleSum);
-      let teleRatio1 = Number(teleopFuel1 / teleSum).toFixed(2);
-      let teleRatio2 = Number(teleopFuel2 / teleSum).toFixed(2);
-      let teleRatio3 = Number(teleopFuel3 / teleSum).toFixed(2);
+
+      // If teleSum is 0, then don't do the ratios.
+      let teleRatio1 = 0;
+      let teleRatio2 = 0;
+      let teleRatio3 = 0;
+      if(teleSum != 0) {
+        teleRatio1 = Number(teleopFuel1 / teleSum).toFixed(2);
+        teleRatio2 = Number(teleopFuel2 / teleSum).toFixed(2);
+        teleRatio3 = Number(teleopFuel3 / teleSum).toFixed(2);
+      }
       console.log("    ---->> teleopRatios = "+teleRatio1+", "+teleRatio2+", "+teleRatio3);
 
       // Use the ratios to calc each team's contribution to the actual (tba) teleop fuel count.
