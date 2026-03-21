@@ -829,11 +829,11 @@ require 'inc/header.php';
 
       newMatch["red_teams"] = match["alliances"]["red"]["team_keys"];
       newMatch["redScore"] = match["alliances"]["red"]["score"];
-      newMatch["redRP"] = match["score_breakdown"]["red"]["rp"];
+//HOLD      newMatch["redRP"] = match["score_breakdown"]["red"]["rp"];
 
       newMatch["blue_teams"] = match["alliances"]["blue"]["team_keys"];
       newMatch["blueScore"] = match["alliances"]["blue"]["score"];
-      newMatch["blueRP"] = match["score_breakdown"]["blue"]["rp"];
+//HOLD      newMatch["blueRP"] = match["score_breakdown"]["blue"]["rp"];
 
       newMatch["time"] = null;
       if (match["predicted_time"] != null) {
