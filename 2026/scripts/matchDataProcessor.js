@@ -624,12 +624,12 @@ class matchDataProcessor {
 
         let matchDefenseLevel = this.getMatchItem(teamItem, "teleopDefenseLevel", match, "teleopDefenseLevel");
         if (matchDefenseLevel != 0) {
-          teamItem["totalPassingN"] += 1;  // increment if this team passes from netural
+          teamItem["totalDefenseMatches"] += 1;  // increment if this team played defense
         }
 
         let passingFromN = this.getMatchItem(teamItem, "teleopNeutralToAlliance", match, "teleopNeutralToAlliance");
         if (passingFromN != 0) {
-          teamItem["totalDefenseMatches"] += 1;  // increment if this team played defense
+          teamItem["totalPassingN"] += 1;  // increment if this team passes from netural
         }
 
         let passingFromA = this.getMatchItem(teamItem, "teleopAllianceToAlliance", match, "teleopAllianceToAlliance");
