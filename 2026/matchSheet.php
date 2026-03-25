@@ -749,9 +749,13 @@ require 'inc/header.php';
     document.getElementById("redAvgEndgamePoints").innerText = roundTwoPlaces(avgEndgamePoints["red"]);
     document.getElementById("redTotalFuel").innerText = roundTwoPlaces(avgTotalFuel["red"]);
     document.getElementById("redPredictedTotalPoints").innerText = roundTwoPlaces(predictedPoints["red"]);
-    document.getElementById("redActualTotalPoints").innerText = roundTwoPlaces(matchSpec["redScore"]);
+    if(matchSpec["redScore"] != "-")
+      document.getElementById("redActualTotalPoints").innerText = roundTwoPlaces(matchSpec["redScore"]);
+    else document.getElementById("redActualTotalPoints").innerText = "-";
     document.getElementById("redPredictedRP").innerText = roundTwoPlaces(predictedRP["red"]);
-    document.getElementById("redActualRP").innerText = roundTwoPlaces(matchSpec["redRP"]);
+    if(matchSpec["redRP"] != "-")
+      document.getElementById("redActualRP").innerText = roundTwoPlaces(matchSpec["redRP"]);
+    else document.getElementById("redActualRP").innerText = "-";
 
     document.getElementById("blueAvgAutoPoints").innerText = roundTwoPlaces(avgAutoPoints["blue"]);
     document.getElementById("blueAvgAutoClimb").innerText = roundTwoPlaces(avgAutoClimbPoints["blue"]);
@@ -827,17 +831,24 @@ require 'inc/header.php';
         newMatch["match_number"] = match["set_number"];
       }
 
+      console.log("  ==> buildMatchList(): looking at match "+newMatch["match_number"]);
       newMatch["red_teams"] = match["alliances"]["red"]["team_keys"];
       newMatch["redScore"] = "-";
       newMatch["redRP"] = "-";
-//HOLD      newMatch["redScore"] = match["alliances"]["red"]["score"];
-//HOLD      newMatch["redRP"] = match["score_breakdown"]["red"]["rp"];
+      if(match["alliances"] != null && match["alliances"]["red"] != null && match["alliances"]["red"]["score"] != null)
+        newMatch["redScore"] = match["alliances"]["red"]["score"];
+      if(match["score_breakdown"] != null && match["score_breakdown"]["red"] != null && match["score_breakdown"]["red"]["rp"] != null)
+        newMatch["redRP"] = match["score_breakdown"]["red"]["rp"];
+      console.log("    ==> redScore = "+newMatch["redScore"]+", redRP = "+newMatch["redRP"]);
 
       newMatch["blue_teams"] = match["alliances"]["blue"]["team_keys"];
       newMatch["blueScore"] = "-";
       newMatch["blueRP"] = "-";
-//HOLD      newMatch["blueScore"] = match["alliances"]["blue"]["score"];
-//HOLD      newMatch["blueRP"] = match["score_breakdown"]["blue"]["rp"];
+      if(match["alliances"] != null && match["alliances"]["blue"] != null && match["alliances"]["blue"]["score"] != null)
+        newMatch["blueScore"] = match["alliances"]["blue"]["score"];
+      if(match["score_breakdown"] != null && match["score_breakdown"]["blue"] != null && match["score_breakdown"]["blue"]["rp"] != null)
+        newMatch["blueRP"] = match["score_breakdown"]["blue"]["rp"];
+      console.log("    ==> blueScore = "+newMatch["blueScore"]+", blueRP = "+newMatch["blueRP"]);
 
       newMatch["time"] = null;
       if (match["predicted_time"] != null) {
@@ -846,7 +857,7 @@ require 'inc/header.php';
         newMatch["time"] = match["actual_time"];
       }
 
-      // if (newMatch["time"] === null && match["time"] != null){ newMatch["time"] = match["time"]; }
+//HOLD      if (newMatch["time"] === null && match["time"] != null){ newMatch["time"] = match["time"]; }
       eventMatchList[idToKey(newMatch["comp_level"] + newMatch["match_number"])] = newMatch;
 
       // Create list of matches for our team

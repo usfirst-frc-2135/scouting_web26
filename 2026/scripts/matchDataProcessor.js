@@ -685,7 +685,7 @@ class matchDataProcessor {
         }
 //HOLD        else console.log("    --> match "+matchnum+" - ttl auto pts is using basic value: "+autonFinalFuelEst);
 
-        // Get automn climb points.
+        // Get auton climb points.
         let autonClimbPoints = 0;
         let autonClimb = match["autonClimb"];
         switch (String(autonClimb)) {
@@ -712,7 +712,7 @@ class matchDataProcessor {
         this.updateItem(teamItem, "teleopTotalPoints", teleopFinalFuelEst);
 
         let endgameClimbPoints = 0;
-        switch (String(teamItem["endgameClimbLevel"].val)) {
+        switch (String(match["endgameClimbLevel"])) {
           case "1": endgameClimbPoints = 10; break;  // L1
           case "2": endgameClimbPoints = 20; break;  // L2
           case "3": endgameClimbPoints = 30; break;  // L3
