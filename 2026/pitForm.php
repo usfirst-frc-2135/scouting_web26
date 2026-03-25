@@ -162,8 +162,21 @@ require 'inc/header.php';
                     </div>
                   </div> 
 
-                <div class="mb-3">
-                    <span>What levels can your robot climb?</span>
+                  <div class="mb-3">
+                    <span>Can your robot climb in auton?</span>
+                    <div class="col-8">
+                      <div class="input-group mb-3">
+                        <select id="climbAble" class="form-select">
+                          <option selected value="-1">Choose ...</option>
+                          <option value="1">Yes</option>
+                          <option value="0">No</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>   
+
+                  <div class="mb-3">
+                    <span>What levels can your robot climb in Endgame?</span>
                     <div class="col-8">
                       <div class="input-group mb-3">
                         <select id="climbLevel" class="form-select">
@@ -177,21 +190,8 @@ require 'inc/header.php';
                     </div>
                   </div>   
                   
-                  <div class="mb-3">
-                    <span>Can your robot climb in auton?</span>
-                    <div class="col-8">
-                      <div class="input-group mb-3">
-                        <select id="climbAble" class="form-select">
-                          <option selected value="-1">Choose ...</option>
-                          <option value="1">Yes</option>
-                          <option value="0">No</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>   
               </div>
             </div>     
-            
 
             <div class="card col-md-12 mx-auto bg-warning-subtle">
               <div class="card-header">
@@ -337,46 +337,55 @@ require 'inc/header.php';
     if (document.getElementById("computerVision").value === "-1") {
       if (isError)
         errMsg += ",";
-      errMsg += " Computer Vision";
+      errMsg += " Auto Align";
       isError = true;
     }
 
-    if (!document.getElementById("pitOrganization").value === "-1") {
+    let batval = document.getElementById("numBatteries").value;
+    if(isNumeric(batval)) {
+      // Verify number is within acceptable range
+      let numBatteries = parseInt(batval);
+      if ((numBatteries < 1) || (numBatteries > 25)) {
+        if (isError)
+          errMsg += ",";
+        errMsg += " Batteries [1..25]";
+        isError = true;
+      }
+    } else {
       if (isError)
         errMsg += ",";
-      errMsg += " Pit Organization";
+      errMsg += " Batteries [1..25]";
       isError = true;
     }
 
-    if (!document.getElementById("preparednessScore").value === "-1") {
+    let hopval = document.getElementById("capHopper").value;
+    if(isNumeric(hopval)) {
+      // Verify number is within acceptable range
+      let capHopper = parseInt(hopval);
+      if ((capHopper < 1) || (capHopper > 80)) {
+        if (isError)
+          errMsg += ",";
+        errMsg += " Hopper [1..80]";
+        isError = true;
+      }
+    } else {
       if (isError)
         errMsg += ",";
-      errMsg += " Preparedness";
-      isError = true;
-    }
-
-    let numBatteries = parseInt(document.getElementById("numBatteries").value);
-    if ((numBatteries < 1) || (numBatteries > 20)) {
-      if (isError)
-        errMsg += ",";
-      errMsg += " Batteries [1..20]";
-      isError = true;
-    }
-
-    let capHopper = parseInt(document.getElementById("capHopper").value);
-    console.log("CAP " + capHopper);
-    if ((capHopper < 1) || (capHopper > 70)) {
-      if (isError)
-        errMsg += ",";
-      errMsg += " Hopper [1..70]";
-      isError = true;
+        errMsg += " Hopper [1..80]";
+        isError = true;
     }
 
     if (document.getElementById("trenchDrive").value === "-1") {
-       console.log("TRNEHC " + trenchDrive);
       if (isError)
         errMsg += ",";
       errMsg += " Trench Drive";
+      isError = true;
+    }
+
+    if (document.getElementById("climbAble").value === "-1") {
+      if (isError)
+        errMsg += ",";
+      errMsg += " Climb in Auton";
       isError = true;
     }
 
@@ -387,10 +396,17 @@ require 'inc/header.php';
       isError = true;
     }
 
-    if (document.getElementById("climbAble").value === "-1") {
+    if (document.getElementById("pitOrganization").value === "-1") {
       if (isError)
         errMsg += ",";
-      errMsg += " Climb Able";
+      errMsg += " Pit Organization";
+      isError = true;
+    }
+
+    if (document.getElementById("preparednessScore").value === "-1") {
+      if (isError)
+        errMsg += ",";
+      errMsg += " Preparedness";
       isError = true;
     }
 
@@ -438,14 +454,13 @@ require 'inc/header.php';
     dataToSave["spareparts"] = document.getElementById("spareParts").value;
     dataToSave["proglanguage"] = document.getElementById("progLanguage").value;
     dataToSave["computervision"] = document.getElementById("computerVision").value;
-    console.log("HEREERE " + document.getElementById("capHopper").value);
     dataToSave["pitorg"] = document.getElementById("pitOrganization").value;
     dataToSave["preparedness"] = document.getElementById("preparednessScore").value;
     dataToSave["numbatteries"] = document.getElementById("numBatteries").value;
     dataToSave["caphopper"] = document.getElementById("capHopper").value;
     dataToSave["trenchdrive"] = document.getElementById("trenchDrive").value;
     dataToSave["climbable"] = document.getElementById("climbAble").value;
-     dataToSave["climblevel"] = document.getElementById("climbLevel").value;
+    dataToSave["climblevel"] = document.getElementById("climbLevel").value;
 
     return dataToSave;
   }
@@ -463,7 +478,7 @@ require 'inc/header.php';
       console.log("RESPONSE " + response.indexOf('success'));
       if (response.indexOf('success') > -1) { // A loose compare, because success word may have a newline
         clearPitForm();
-        alert("Success in submitting Pit data! - Clearning form");
+        alert("Success in submitting Pit data! - Clearing form");
       } else {
         alert("Failure in submitting Pit Form! Is this a duplicate?");
       }
