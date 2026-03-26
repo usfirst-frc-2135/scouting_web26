@@ -1,3 +1,16 @@
+
+//
+//  Provide pit data table utilities that:
+//    1) insert a header row for a pit data table
+//    2) insert a body row for pit data table
+//
+
+//
+//  Insert a pit data table header (all rows)
+//    Params
+//      tableId     - the HTML ID where the table header is inserted
+// TODO - add alias handling
+//
 function insertPitTableHeader(tableId) {
     console.log("==> pitData: insertPitDataHeader()");
     let theadRef = document.getElementById(tableId).querySelector('thead');
@@ -8,20 +21,20 @@ function insertPitTableHeader(tableId) {
     const thEndgame = '<th scope="col" class="bg-warning-subtle">';  // Endgame color
 
     let rowString = '';
-    rowString += '<th scope="col" class=bg-body sortable-numeric">' + 'Team' + '</th>';
-    rowString += thAuton + 'Hopper Cap' + '</th>';
-    rowString += thAuton + 'Trench' + '</th>';
-    rowString += thAuton + 'Auton Climb' + '</th>';
-    rowString += thAuton + 'Climb Level' + '</th>';
-    rowString += thTeleop + 'Swerve' + '</th>';
-    rowString += thTeleop + 'Drive Motors' + '</th>';
-    rowString += thTeleop + 'Spare Mechanism' + '</th>';
-    rowString += thTeleop + 'Prog Lang' + '</th>';
-    rowString += thTeleop + 'Auto Align' + '</th>';
-    rowString += thTeleop + 'Num Batteries' + '</th>';
-    rowString += thEndgame + 'Pit Org' + '</th>';
-    rowString += thEndgame + 'Prep' + '</th>';
-    rowString += '<th scope="col"> Scout </th>';
+    rowString += '<th scope="col" class="bg-body sorttable_numeric">Team</th>';
+    rowString += thAuton + 'Hopper Cap</th>';
+    rowString += thAuton + 'Trench</th>';
+    rowString += thAuton + 'Auton Climb</th>';
+    rowString += thAuton + 'Climb Level</th>';
+    rowString += thTeleop + 'Swerve</th>';
+    rowString += thTeleop + 'Drive Motors</th>';
+    rowString += thTeleop + 'Spare Mechanism</th>';
+    rowString += thTeleop + 'Prog Lang</th>';
+    rowString += thTeleop + 'Auto Align</th>';
+    rowString += thTeleop + 'Num Batteries</th>';
+    rowString += thEndgame + 'Pit Org</th>';
+    rowString += thEndgame + 'Prep</th>';
+    rowString += '<th scope="col" class="bg-body"> Scout </th>';
 
     theadRef.insertRow().innerHTML = rowString;
   }
@@ -118,6 +131,7 @@ function insertPitTableHeader(tableId) {
       rowString += tdBody + teamPitData["scoutname"] + "</td>";
 
       tbodyRef.insertRow().innerHTML = rowString;
+    }
+    sorttable.makeSortable(document.getElementById(tableId));
   }
-}
 
