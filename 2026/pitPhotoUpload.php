@@ -205,6 +205,8 @@ require 'inc/header.php';
     document.getElementById("closeMessage").addEventListener('click', function() {
       document.getElementById("uploadMessage").style.display = "none";
       document.getElementById("replacePic").checked = false;
+      document.getElementById('photoPreview').innerHTML = ""; // clear photoPreview image
+      document.getElementById('photoPrevious').innerHTML = ""; // clear previous photos
     });
   }
 
