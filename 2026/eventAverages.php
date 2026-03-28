@@ -90,14 +90,14 @@ require 'inc/header.php';
     let csv = [];
 
     // This CSV header must match the order in eventAveragesTable.js insertEventAveragesBody()
-    let hdrStr = "Team,Alias,COPRs,Matches" +
+    let hdrStr = "Team,COPRs,Matches,Died," +
       "Total Pts Avg,Total Pts Max," +
       "Auto Pts Avg,Auto Pts Max,Tel Pts Avg,Tel Pts Max,End Pts Avg,End Pts Max," +
       "Auto Est Fuel Pts Avg,Auto Est Fuel Pts Max,Auto Climb Pts Avg,Auto Climb Pts Max," +
       "Tel Est Fuel Pts Avg, Tel Est Fuel Pts Max, Def Avg," +
       "Start N/A,Start Before,Start At,Start10,Less10," +
       "End N/A,End L1,End L2,End L3," +
-      "Total Died, Note";
+      "Note";
     csv.push(hdrStr);
 
     const rows = table.querySelectorAll("tr");
