@@ -35,8 +35,8 @@ function insertStrategicDataHeader(tableId, aliasList) {
     rowString1 += '<th colspan="1" class="bg-body"> </th>';
   }
   rowString1 += '<th colspan="1" class="bg-body"> </th>';
-  rowString1 += '<th colspan="7" class="bg-success-subtle">' + 'Active Shift' + '</th>';
-  rowString1 += '<th colspan="7" class="bg-primary-subtle">' + 'Inactive Shift' + '</th>';
+  rowString1 += '<th colspan="8" class="bg-success-subtle">' + 'Active Shift' + '</th>';
+  rowString1 += '<th colspan="8" class="bg-primary-subtle">' + 'Inactive Shift' + '</th>';
   rowString1 += '<th colspan="1" class="bg-body">' + 'Evading Defense' + '</th>';
   rowString1 += '<th colspan="4" class="bg-warning-subtle">' + 'Bump' + '</th>';
   rowString1 += '<th colspan="1" class="bg-body">' + 'Fouls' + '</th>';
@@ -58,6 +58,7 @@ function insertStrategicDataHeader(tableId, aliasList) {
   rowString2 += thActive + 'Shot Hopper</th>';
   rowString2 += thActive + 'Passed Fuel From Other Alliance</th>';
   rowString2 += thActive + 'Passed Fuel From Neutral Zone</th>';
+  rowString2 += thActive + 'Shoveled Fuel</th>';
   rowString2 += thActive + 'Played Defense Against Shooter</th>';
   rowString2 += thActive + 'Played Defense At Bump</th>';
   rowString2 += thActive + 'Played Defense At Trench</th>';
@@ -65,6 +66,7 @@ function insertStrategicDataHeader(tableId, aliasList) {
   rowString2 += thInactive + 'Shot Hopper</th>';
   rowString2 += thInactive + 'Passed Fuel From Other Alliance</th>';
   rowString2 += thInactive + 'Passed Fuel From Neutral Zone</th>';
+  rowString2 += thInactive + 'Shoveled Fuel</th>';
   rowString2 += thInactive + 'Played Defense Against Shooter</th>';
   rowString2 += thInactive + 'Played Defense At Bump</th>';
   rowString2 += thInactive + 'Played Defense At Trench</th>';
@@ -138,13 +140,15 @@ function insertStrategicDataBody(tableId, stratData, aliasList, teamFilter) {
     rowString += tdPrefix1 + toYesNo(stratItem["activeShiftShotHopper"]) + "</td>";
     rowString += tdPrefix0 + toYesNo(stratItem["activeShiftPassingFromAlliance"]) + "</td>";
     rowString += tdPrefix1 + toYesNo(stratItem["activeShiftPassingFromNeutral"]) + "</td>";
-    rowString += tdPrefix0 + toYesNo(stratItem["activeShiftDefenseAgainstShooter"]) + "</td>";
-    rowString += tdPrefix1 + toYesNo(stratItem["activeShiftDefenseAtBump"]) + "</td>";
-    rowString += tdPrefix0 + toYesNo(stratItem["activeShiftDefenseAtTrench"]) + "</td>";
-    rowString += tdPrefix1 + toYesNo(stratItem["inactiveShiftLoadedHopper"]) + "</td>";
-    rowString += tdPrefix0 + toYesNo(stratItem["inactiveShiftShotHopper"]) + "</td>";
-    rowString += tdPrefix1 + toYesNo(stratItem["inactiveShiftPassingFromAlliance"]) + "</td>";
-    rowString += tdPrefix0 + toYesNo(stratItem["inactiveShiftPassingFromNeutral"]) + "</td>";
+    rowString += tdPrefix0 + toYesNo(stratItem["activeShiftShoveledFuel"]) + "</td>";
+    rowString += tdPrefix1 + toYesNo(stratItem["activeShiftDefenseAgainstShooter"]) + "</td>";
+    rowString += tdPrefix0 + toYesNo(stratItem["activeShiftDefenseAtBump"]) + "</td>";
+    rowString += tdPrefix1 + toYesNo(stratItem["activeShiftDefenseAtTrench"]) + "</td>";
+    rowString += tdPrefix0 + toYesNo(stratItem["inactiveShiftLoadedHopper"]) + "</td>";
+    rowString += tdPrefix1 + toYesNo(stratItem["inactiveShiftShotHopper"]) + "</td>";
+    rowString += tdPrefix0 + toYesNo(stratItem["inactiveShiftPassingFromAlliance"]) + "</td>";
+    rowString += tdPrefix1 + toYesNo(stratItem["inactiveShiftPassingFromNeutral"]) + "</td>";
+    rowString += tdPrefix0 + toYesNo(stratItem["inactiveShiftShoveledFuel"]) + "</td>";
     rowString += tdPrefix1 + toYesNo(stratItem["inactiveShiftDefenseAgainstShooter"]) + "</td>";
     rowString += tdPrefix0 + toYesNo(stratItem["inactiveShiftDefenseAtBump"]) + "</td>";
     rowString += tdPrefix1 + toYesNo(stratItem["inactiveShiftDefenseAtTrench"]) + "</td>";

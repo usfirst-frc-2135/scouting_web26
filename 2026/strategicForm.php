@@ -83,6 +83,10 @@ require 'inc/header.php';
                   <label for="activeShiftPassingFromNeutral" class="form-label">Passed fuel from Neutral Zone</label>
                   <input id="activeShiftPassingFromNeutral" class="form-check-input" type="checkbox">
                 </div>
+                <div class="form-check form-check-inline">
+                  <label for="activeShiftShoveledFuel" class="form-label">Shoveled a lot of fuel</label>
+                  <input id="activeShiftShoveledFuel" class="form-check-input" type="checkbox">
+                </div>
 
                 <!-- Auton - Committed fouls section -->
                 <div>
@@ -128,6 +132,10 @@ require 'inc/header.php';
                 <div class="form-check form-check-inline">
                   <label for="inactiveShiftPassingFromNeutral" class="form-label">Passed fuel from Neutral Zone</label>
                   <input id="inactiveShiftPassingFromNeutral" class="form-check-input" type="checkbox">
+                </div>
+                <div class="form-check form-check-inline">
+                  <label for="inactiveShiftShoveledFuel" class="form-label">Shoveled a lot of fuel</label>
+                  <input id="inactiveShiftShoveledFuel" class="form-check-input" type="checkbox">
                 </div>
 
                 <!-- Auton - Committed fouls section -->
@@ -341,6 +349,7 @@ require 'inc/header.php';
     document.getElementById("activeShiftShotHopper").checked = false;
     document.getElementById("activeShiftPassingFromAlliance").checked = false;
     document.getElementById("activeShiftPassingFromNeutral").checked = false;
+    document.getElementById("activeShiftShoveledFuel").checked = false;
     document.getElementById("activeShiftDefenseAgainstShooter").checked = false;
     document.getElementById("activeShiftDefenseAtBump").checked = false;
     document.getElementById("activeShiftDefenseAtTrench").checked = false;
@@ -350,6 +359,7 @@ require 'inc/header.php';
     document.getElementById("inactiveShiftShotHopper").checked = false;
     document.getElementById("inactiveShiftPassingFromAlliance").checked = false;
     document.getElementById("inactiveShiftPassingFromNeutral").checked = false;
+    document.getElementById("inactiveShiftShoveledFuel").checked = false;
     document.getElementById("inactiveShiftDefenseAgainstShooter").checked = false;
     document.getElementById("inactiveShiftDefenseAtBump").checked = false;
     document.getElementById("inactiveShiftDefenseAtTrench").checked = false;
@@ -390,6 +400,7 @@ require 'inc/header.php';
     dataToSave["activeShiftShotHopper"] = (document.getElementById("activeShiftShotHopper").checked) ? 1 : 0;
     dataToSave["activeShiftPassingFromAlliance"] = (document.getElementById("activeShiftPassingFromAlliance").checked) ? 1 : 0;
     dataToSave["activeShiftPassingFromNeutral"] = (document.getElementById("activeShiftPassingFromNeutral").checked) ? 1 : 0;
+    dataToSave["activeShiftShoveledFuel"] = (document.getElementById("activeShiftShoveledFuel").checked) ? 1 : 0;
     dataToSave["activeShiftDefenseAgainstShooter"] = (document.getElementById("activeShiftDefenseAgainstShooter").checked) ? 1 : 0;
     dataToSave["activeShiftDefenseAtBump"] = (document.getElementById("activeShiftDefenseAtBump").checked) ? 1 : 0;
     dataToSave["activeShiftDefenseAtTrench"] = (document.getElementById("activeShiftDefenseAtTrench").checked) ? 1 : 0;
@@ -399,6 +410,7 @@ require 'inc/header.php';
     dataToSave["inactiveShiftShotHopper"] = (document.getElementById("inactiveShiftShotHopper").checked) ? 1 : 0;
     dataToSave["inactiveShiftPassingFromAlliance"] = (document.getElementById("inactiveShiftPassingFromAlliance").checked) ? 1 : 0;
     dataToSave["inactiveShiftPassingFromNeutral"] = (document.getElementById("inactiveShiftPassingFromNeutral").checked) ? 1 : 0;
+    dataToSave["inactiveShiftShoveledFuel"] = (document.getElementById("inactiveShiftShoveledFuel").checked) ? 1 : 0;
     dataToSave["inactiveShiftDefenseAgainstShooter"] = (document.getElementById("inactiveShiftDefenseAgainstShooter").checked) ? 1 : 0;
     dataToSave["inactiveShiftDefenseAtBump"] = (document.getElementById("inactiveShiftDefenseAtBump").checked) ? 1 : 0;
     dataToSave["inactiveShiftDefenseAtTrench"] = (document.getElementById("inactiveShiftDefenseAtTrench").checked) ? 1 : 0;
