@@ -37,7 +37,7 @@ function insertMatchDataHeader(tableId, aliasList) {
   else rowString1 += '<th colspan="2" ' + thMatch + ' </th>';
   rowString1 += '<th colspan="1" ' + thMatch + ' </th>';
   rowString1 += '<th colspan="9" ' + thAuto + 'Auton' + '</th>';
-  rowString1 += '<th colspan="8" ' + thTeleop + 'Teleop' + '</th>';
+  rowString1 += '<th colspan="9" ' + thTeleop + 'Teleop' + '</th>';
   rowString1 += '<th colspan="3" ' + thEndgame + 'Endgame' + '</th>';
   rowString1 += '<th colspan="2" ' + thMatch + ' </th>';
   theadRef.insertRow().innerHTML = rowString1;
@@ -64,10 +64,11 @@ function insertMatchDataHeader(tableId, aliasList) {
   rowString += thTeleop + 'Hopper Acc</th>';
   rowString += thTeleop + 'Intake & Shoot</th>';
   rowString += thTeleop + 'Passing Rate</th>';
-  rowString += thTeleop + 'Defense Rate</th>';
-  rowString += thTeleop + 'Driver Ability</th>';
   rowString += thTeleop + 'Pass From NeutralZ</th>';
   rowString += thTeleop + 'Pass From AllianceZ</th>';
+  rowString += thTeleop + 'Shovel Fuel</th>';
+  rowString += thTeleop + 'Defense Rate</th>';
+  rowString += thTeleop + 'Driver Ability</th>';
   rowString += thEndgame + 'Start Climb</th>';
   rowString += thEndgame + 'Climb Level</th>';
   rowString += thEndgame + 'Climb Position</th>';
@@ -239,15 +240,16 @@ function insertMatchDataBody(tableId, matchData, aliasList, teamFilter) {
     rowString += tdBody + toAccuracyRate(matchItem["teleopHopperAccuracy"]) + "</td>";
     rowString += tdBlue + matchItem["teleopIntakeAndShoot"] + "</td>";
     rowString += tdBody + toPassingRate(matchItem["teleopPassingRate"]) + "</td>";
-    rowString += tdBlue + toDefenseRate(matchItem["teleopDefenseLevel"]) + "</td>";
-    rowString += tdBody + toDriverAbility(matchItem["driverAbility"]) + "</td>";
     rowString += tdBlue + matchItem["teleopNeutralToAlliance"] + "</td>";
     rowString += tdBody + matchItem["teleopAllianceToAlliance"] + "</td>";
-    rowString += tdBlue + toStartClimb(matchItem["endgameStartClimb"]) + "</td>";
-    rowString += tdBody + toClimbLevel(matchItem["endgameClimbLevel"]) + "</td>";
-    rowString += tdBlue + toClimbPosition(matchItem["endgameClimbPosition"]) + "</td>";
-    rowString += tdBody + matchItem["comment"] + "</td>";
-    rowString += tdBlue + matchItem["scoutname"] + "</td>";
+    rowString += tdBlue + matchItem["other1"] + "</td>";
+    rowString += tdBody + toDefenseRate(matchItem["teleopDefenseLevel"]) + "</td>";
+    rowString += tdBlue + toDriverAbility(matchItem["driverAbility"]) + "</td>";
+    rowString += tdBody + toStartClimb(matchItem["endgameStartClimb"]) + "</td>";
+    rowString += tdBlue + toClimbLevel(matchItem["endgameClimbLevel"]) + "</td>";
+    rowString += tdBody + toClimbPosition(matchItem["endgameClimbPosition"]) + "</td>";
+    rowString += tdBlue + matchItem["comment"] + "</td>";
+    rowString += tdBody + matchItem["scoutname"] + "</td>";
 
     tbodyRef.insertRow().innerHTML = rowString;
   }

@@ -132,7 +132,8 @@ require 'inc/header.php';
     // Overall
     matchData["comment"] = qrList[27];
 
-    matchData["other1"] = qrList[28];    // extra spots
+    // Extra spots
+    matchData["other1"] = qrList[28];    // used for shovelFuel
     matchData["other2"] = qrList[29];
     matchData["other3"] = qrList[30];
     matchData["other4"] = qrList[31];
