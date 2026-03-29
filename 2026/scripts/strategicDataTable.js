@@ -58,7 +58,7 @@ function insertStrategicDataHeader(tableId, aliasList) {
   rowString2 += thActive + 'Shot Hopper</th>';
   rowString2 += thActive + 'Passed Fuel From Other Alliance</th>';
   rowString2 += thActive + 'Passed Fuel From Neutral Zone</th>';
-  rowString2 += thActive + 'Shoveled Fuel</th>';
+  rowString2 += thActive + 'Herded Fuel</th>';
   rowString2 += thActive + 'Played Defense Against Shooter</th>';
   rowString2 += thActive + 'Played Defense At Bump</th>';
   rowString2 += thActive + 'Played Defense At Trench</th>';
@@ -66,7 +66,7 @@ function insertStrategicDataHeader(tableId, aliasList) {
   rowString2 += thInactive + 'Shot Hopper</th>';
   rowString2 += thInactive + 'Passed Fuel From Other Alliance</th>';
   rowString2 += thInactive + 'Passed Fuel From Neutral Zone</th>';
-  rowString2 += thInactive + 'Shoveled Fuel</th>';
+  rowString2 += thInactive + 'Herded Fuel</th>';
   rowString2 += thInactive + 'Played Defense Against Shooter</th>';
   rowString2 += thInactive + 'Played Defense At Bump</th>';
   rowString2 += thInactive + 'Played Defense At Trench</th>';
