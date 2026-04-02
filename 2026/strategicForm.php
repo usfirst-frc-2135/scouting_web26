@@ -84,7 +84,7 @@ require 'inc/header.php';
                   <input id="activeShiftPassingFromNeutral" class="form-check-input" type="checkbox">
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="activeShiftShoveledFuel" class="form-label">Shoveled a lot of fuel</label>
+                  <label for="activeShiftShoveledFuel" class="form-label">Herded a lot of fuel</label>
                   <input id="activeShiftShoveledFuel" class="form-check-input" type="checkbox">
                 </div>
 
@@ -134,7 +134,7 @@ require 'inc/header.php';
                   <input id="inactiveShiftPassingFromNeutral" class="form-check-input" type="checkbox">
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="inactiveShiftShoveledFuel" class="form-label">Shoveled a lot of fuel</label>
+                  <label for="inactiveShiftShoveledFuel" class="form-label">Herded a lot of fuel</label>
                   <input id="inactiveShiftShoveledFuel" class="form-check-input" type="checkbox">
                 </div>
 
