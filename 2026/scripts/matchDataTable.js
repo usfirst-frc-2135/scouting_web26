@@ -66,7 +66,7 @@ function insertMatchDataHeader(tableId, aliasList) {
   rowString += thTeleop + 'Passing Rate</th>';
   rowString += thTeleop + 'Pass From NeutralZ</th>';
   rowString += thTeleop + 'Pass From AllianceZ</th>';
-  rowString += thTeleop + 'Shovel Fuel</th>';
+  rowString += thTeleop + 'Herded Fuel</th>';
   rowString += thTeleop + 'Defense Rate</th>';
   rowString += thTeleop + 'Driver Ability</th>';
   rowString += thEndgame + 'Start Climb</th>';
