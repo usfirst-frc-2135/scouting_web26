@@ -18,7 +18,8 @@
 //      tableId     - the HTML ID where the table header is inserted
 //      aliasList   - list of aliases at the event
 //
-function insertMatchDataHeader(tableId, aliasList) {
+function insertMatchDataHeader(tableId, aliasList)
+{
   console.log("==> insertMatchDataHeader: tableId " + tableId + " aliases " + aliasList.length);
 
   let theadRef = document.getElementById(tableId).querySelector('thead');
@@ -32,7 +33,7 @@ function insertMatchDataHeader(tableId, aliasList) {
   const thTeleop = '<th scope="col" class="bg-primary-subtle">';      // Teleop color
   const thEndgame = '<th scope="col" class="bg-warning-subtle">';     // Endgame color
 
-  if (aliasList.length > 0) 
+  if (aliasList.length > 0)
     rowString1 += '<th colspan="3" ' + thMatch + ' </th>';
   else rowString1 += '<th colspan="2" ' + thMatch + ' </th>';
   rowString1 += '<th colspan="1" ' + thMatch + ' </th>';
@@ -46,7 +47,8 @@ function insertMatchDataHeader(tableId, aliasList) {
   rowString += '<th scope="col" class="bg-body sorttable_numeric">Team</th>';
 
   // Insert column if the aliasList is not empty
-  if (aliasList.length > 0) {
+  if (aliasList.length > 0)
+  {
     rowString += thMatch + 'Alias</th>';
   }
 
@@ -79,8 +81,10 @@ function insertMatchDataHeader(tableId, aliasList) {
 };
 
 // Converts a given Preload Accuracy Rate number to a string
-function toPreloadAcc(value) {
-  switch (String(value)) {
+function toPreloadAcc(value)
+{
+  switch (String(value))
+  {
     case "1": return "All";
     case "2": return "Most";
     case "3": return "Half";
@@ -91,8 +95,10 @@ function toPreloadAcc(value) {
 }
 
 // Converts a given Accuracy Rate number to a string
-function toAccuracyRate(value) {
-  switch (String(value)) {
+function toAccuracyRate(value)
+{
+  switch (String(value))
+  {
     case "1": return "Most";
     case "2": return "3/4";
     case "3": return "1/2";
@@ -104,8 +110,10 @@ function toAccuracyRate(value) {
 }
 
 // Converts a given Passing Rate number to a string
-function toPassingRate(value) {
-  switch (String(value)) {
+function toPassingRate(value)
+{
+  switch (String(value))
+  {
     case "1": return "Low";
     case "2": return "Med";
     case "3": return "Half";
@@ -116,8 +124,10 @@ function toPassingRate(value) {
 
 // Converts a given Accuracy Rate number to a string
 // Converts a given tower climb number to a string
-function toClimbLevel(value) {
-  switch (String(value)) {
+function toClimbLevel(value)
+{
+  switch (String(value))
+  {
     case "1": return "L1";
     case "2": return "L2";
     case "3": return "L3";
@@ -126,8 +136,10 @@ function toClimbLevel(value) {
 }
 
 // Converts a given Start Climb number to a string
-function toStartClimb(value) {
-  switch (String(value)) {
+function toStartClimb(value)
+{
+  switch (String(value))
+  {
     case "1": return "Before";
     case "2": return "Bell";
     case "3": return "10s";
@@ -137,8 +149,10 @@ function toStartClimb(value) {
 }
 
 // Converts a given climb position number to a string
-function toClimbPosition(value) {
-  switch (String(value)) {
+function toClimbPosition(value)
+{
+  switch (String(value))
+  {
     case "1": return "Back";
     case "2": return "Left";
     case "3": return "Front";
@@ -148,8 +162,10 @@ function toClimbPosition(value) {
 }
 
 // Converts a given driver ability number to a string
-function toDriverAbility(value) {
-  switch (String(value)) {
+function toDriverAbility(value)
+{
+  switch (String(value))
+  {
     case "1": return "Slow";
     case "2": return "Jerky";
     case "3": return "Avg";
@@ -160,8 +176,10 @@ function toDriverAbility(value) {
 }
 
 // Converts a given defense rate number to a string
-function toDefenseRate(value) {
-  switch (String(value)) {
+function toDefenseRate(value)
+{
+  switch (String(value))
+  {
     case "1": return "Low";
     case "2": return "M Low";
     case "3": return "Med";
@@ -172,8 +190,10 @@ function toDefenseRate(value) {
 }
 
 // Converts a given Driver Ability number to a string
-function toDriverAbility(value) {
-  switch (String(value)) {
+function toDriverAbility(value)
+{
+  switch (String(value))
+  {
     case "1": return "Slow";
     case "2": return "Jerky";
     case "3": return "Avg";
@@ -183,8 +203,10 @@ function toDriverAbility(value) {
   }
 }
 
-function toDiedValue(value) {
-  switch (String(value)) {
+function toDiedValue(value)
+{
+  switch (String(value))
+  {
     case "1": return "Most";
     case "2": return "1m+";
     case "3": return "30s+";
@@ -202,14 +224,16 @@ function toDiedValue(value) {
 //      aliasList   - list of aliases at the event (length 0 if none)
 //      teamFilter  - list of teams to include in table (length 0 if all)
 //
-function insertMatchDataBody(tableId, matchData, aliasList, teamFilter) {
+function insertMatchDataBody(tableId, matchData, aliasList, teamFilter)
+{
   console.log("==> insertMatchDataTable: tableId " + tableId + ", matches " + matchData.length + ", aliases " + aliasList.length + ", teams " + teamFilter.length);
 
   let tbodyRef = document.getElementById(tableId).querySelector('tbody');;
   tbodyRef.innerHTML = ""; // Clear Table
 
   // Go thru each match and build the HTML string for that row.
-  for (let i = 0; i < matchData.length; i++) {
+  for (let i = 0; i < matchData.length; i++)
+  {
     let matchItem = matchData[i];
     let teamNum = matchItem["teamnumber"];
     if (teamFilter.length !== 0 && !teamFilter.includes(teamNum))
@@ -222,7 +246,8 @@ function insertMatchDataBody(tableId, matchData, aliasList, teamFilter) {
 
     rowString += tdBody + "<a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</td>";
     // Insert column if the aliasList is not empty
-    if (aliasList.length > 0) {
+    if (aliasList.length > 0)
+    {
       rowString += tdBody + getAliasFromTeamNum(teamNum, aliasList) + "</td>";
     }
 

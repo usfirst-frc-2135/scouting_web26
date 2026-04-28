@@ -25,7 +25,8 @@ const thMatch = 'class="bg-danger-subtle"';
 //      tableId     - the HTML ID where the table header is inserted
 //      aliasList   - list of aliases at the event
 //
-function insertEventAveragesHeader(tableId, aliasList) {
+function insertEventAveragesHeader(tableId, aliasList)
+{
   console.log("==> insertEventAveragesHeader: tableId " + tableId + " aliases " + aliasList.length);
 
   let theadRef = document.getElementById(tableId).querySelector('thead');;
@@ -34,7 +35,8 @@ function insertEventAveragesHeader(tableId, aliasList) {
   let rowString1 = '';
   rowString1 += '<th colspan="1 ' + thBody + '> </th>';
   // Insert column if the aliasList is not empty
-  if (aliasList.length > 0) {
+  if (aliasList.length > 0)
+  {
     rowString1 += '<th colspan="1" ' + thBody + '> </th>';
   }
   rowString1 += '<th colspan="1" ' + thMatch + '> </th>';
@@ -53,7 +55,8 @@ function insertEventAveragesHeader(tableId, aliasList) {
   // team number
   rowString2 += '<th colspan="1" ' + thBodySort + '> </th>';
   // Insert column if the aliasList is not empty
-  if (aliasList.length > 0) {
+  if (aliasList.length > 0)
+  {
     rowString2 += '<th colspan="1" ' + thBody + '> </th>';
   }
   rowString2 += '<th colspan="1" ' + thMatch + '> </th>';
@@ -83,14 +86,15 @@ function insertEventAveragesHeader(tableId, aliasList) {
   theadRef.insertRow().innerHTML = rowString2;
 
   let rowString3 = '';
- 
+
   // Cell colors (thPrefix0 = clear, thPrefix1 = blue) constants
   const thPrefix0 = '<th scope="col" ' + thBodySort + '>';
   const thPrefix1 = '<th scope="col" ' + thBlueSort + '>';
 
   // team number
   rowString3 += thPrefix0 + 'Team' + '</th>';
-  if (aliasList.length > 0) {
+  if (aliasList.length > 0)
+  {
     rowString3 += thPrefix0 + 'Alias' + '</th>';
   }
   rowString3 += thPrefix0 + 'COPRs' + '</th>';
@@ -137,10 +141,12 @@ function insertEventAveragesHeader(tableId, aliasList) {
 };
 
 // Return a list of the pData item for all teams found in avgData
-function getTeamListFromData(avgData) {
+function getTeamListFromData(avgData)
+{
   console.log("==> eventAverages: getTeamListFromData()");
   let keyList = [];
-  for (let teamNum in avgData) {
+  for (let teamNum in avgData)
+  {
     keyList.push(teamNum);
   }
   return keyList;
@@ -149,17 +155,21 @@ function getTeamListFromData(avgData) {
 //
 // Lookup value for a key in the passed dictionary - team in match data
 //
-function getDataValue(dict, key, field) {
-  if (!dict) {
+function getDataValue(dict, key, field)
+{
+  if (!dict)
+  {
     console.warn("getDataValue: Dict not found! " + dict);
   }
-  else if (key in dict) {
+  else if (key in dict)
+  {
     if (field != undefined)
       return dict[key][field];
     else
       return dict[key];
   }
-  else {
+  else
+  {
     console.warn("!!- getDataValue: Key not found in dict! " + key);
   }
   return "-";
@@ -175,7 +185,8 @@ function getDataValue(dict, key, field) {
 //      aliasList     - list of aliases at the event (length 0 if none)
 //      teamFilter    - list of teams to include in table (length 0 if all)
 //
-function insertEventAveragesBody(tableId, avgData, coprData, aliasList, pitData, teamFilter) {
+function insertEventAveragesBody(tableId, avgData, coprData, aliasList, pitData, teamFilter)
+{
 
   console.log("==> insertEventAveragesBody: tableId " + tableId + " avgData " + Object.keys(avgData).length + " aliases " + aliasList.length + " teams " + teamFilter.length);
 
@@ -185,34 +196,38 @@ function insertEventAveragesBody(tableId, avgData, coprData, aliasList, pitData,
   let teamList = getTeamListFromData(avgData);
 
   // Go thru each strategic and build the HTML string for that row.
-  for (let teamNum of teamList) {
+  for (let teamNum of teamList)
+  {
     let avgItem = avgData[teamNum];
     if (teamFilter.length !== 0 && !teamFilter.includes(teamNum))
       continue;
 
-    console.log("==>>> Averages Table: doing team: "+teamNum);
+    console.log("==>>> Averages Table: doing team: " + teamNum);
     const tdPrefix0 = '<td ' + thBody + '>';          // clear cell color
     const tdPrefix1 = '<td ' + thBlueSort + '>';      // blue cell color
     let rowString = "";
     rowString += tdPrefix0 + "<a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</td>";
 
     // Insert column if the aliasList is not empty
-    if (aliasList.length > 0) {
+    if (aliasList.length > 0)
+    {
       rowString += tdPrefix0 + getAliasFromTeamNum(teamNum, aliasList) + "</td>";
     }
 
     // Getting hopperCapacity from pitData so we know if default was used.
     // TODO - also check hopperCap table!!!
     let hopperCap = 0;
-    if (pitData != null) {
-      if (pitData[teamNum] != null) {
+    if (pitData != null)
+    {
+      if (pitData[teamNum] != null)
+      {
         hopperCap = pitData[teamNum]["caphopper"];
       }
     }
 
     let coprEntry = "-"; // default
-    if(coprData.length !== 0  && coprData[teamNum] != null) 
-      coprEntry = (coprData.length !== 0) ? getDataValue(coprData[teamNum], "totalPoints") : ""; 
+    if (coprData.length !== 0 && coprData[teamNum] != null)
+      coprEntry = (coprData.length !== 0) ? getDataValue(coprData[teamNum], "totalPoints") : "";
 
     rowString += tdPrefix0 + coprEntry + "</td>";
     rowString += tdPrefix0 + getDataValue(avgItem, "totalMatches") + "</td>";
@@ -221,9 +236,9 @@ function insertEventAveragesBody(tableId, avgData, coprData, aliasList, pitData,
     let didDie = "No";  // default 
     let diedPercentage = getDataValue(avgItem, "died", "arr");
     let notDiedAvg = getDataValue(diedPercentage, 0, "avg");
-    console.log("---> notDiedAvg = "+notDiedAvg);
-    if(notDiedAvg != 100)
-      didDie = "Yes"; 
+    console.log("---> notDiedAvg = " + notDiedAvg);
+    if (notDiedAvg != 100)
+      didDie = "Yes";
     rowString += tdPrefix0 + didDie + "</td>";
 
     // points by game phase

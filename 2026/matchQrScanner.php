@@ -50,18 +50,18 @@ require 'inc/header.php';
 
 <script>
   const qrValidLength = 32; // This is determined by game requirements and adjusted each year
- //REMOVE const qrPadLength = 1; // TODO: no explanation why this is padded--did we delete something? Remove for 2026
+  //REMOVE const qrPadLength = 1; // TODO: no explanation why this is padded--did we delete something? Remove for 2026
 
   //
   // update this data list length whenever more data is added to the table
   //
-//REMOVE  function padList(qrList) {
-//REMOVE    if (qrList.length === qrValidLength - qrPadLength) {
-//REMOVE    if (qrList.length === qrValidLength ) {
-//REMOVE      qrList.push("");
-//REMOVE    }
-//REMOVE    return qrList;
-//REMOVE  }
+  //REMOVE  function padList(qrList) {
+  //REMOVE    if (qrList.length === qrValidLength - qrPadLength) {
+  //REMOVE    if (qrList.length === qrValidLength ) {
+  //REMOVE      qrList.push("");
+  //REMOVE    }
+  //REMOVE    return qrList;
+  //REMOVE  }
 
   // Validate the scanned QR string
   function validateQrList(qrList) {
@@ -92,11 +92,11 @@ require 'inc/header.php';
 
     // Perennial fields that always occur
     matchData["appVersion"] = qrList[0]; //
-    matchData["eventcode"] = qrList[1]; 
-    matchData["matchnumber"] = qrList[2]; 
-    matchData["teamnumber"] = qrList[3]; 
-    matchData["teamalias"] = qrList[4]; 
-    matchData["scoutname"] = qrList[5]; 
+    matchData["eventcode"] = qrList[1];
+    matchData["matchnumber"] = qrList[2];
+    matchData["teamnumber"] = qrList[3];
+    matchData["teamalias"] = qrList[4];
+    matchData["scoutname"] = qrList[5];
 
     // Recurring (and overall) data
     matchData["died"] = qrList[6];
@@ -133,7 +133,7 @@ require 'inc/header.php';
     matchData["comment"] = qrList[27];
 
     // Extra spots
-    matchData["other1"] = qrList[28];    // used for shovelFuel
+    matchData["other1"] = qrList[28]; // used for shovelFuel
     matchData["other2"] = qrList[29];
     matchData["other3"] = qrList[30];
     matchData["other4"] = qrList[31];
@@ -238,7 +238,7 @@ require 'inc/header.php';
     scanner.decodeFromInputVideoDeviceContinuously(camId, 'camera', function(result, err) {
       if (result) {
         let qrList = qrStringToList(result.text);
-//REMOVE        qrList = padList(qrList);
+        //REMOVE        qrList = padList(qrList);
         console.log("addCameraScanner: qrList = " + qrList);
         if (validateQrList(qrList)) {
           indicateScanSuccess();

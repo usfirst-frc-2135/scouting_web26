@@ -182,13 +182,13 @@ require 'inc/header.php';
                   </div>
                 </div>
               </div>
-              </div>
+            </div>
 
-                <!-- Against defensive robot section -->
+            <!-- Against defensive robot section -->
 
             <!-- end Playing Defense Section -->
 
-           <!-- Bump Mode -->
+            <!-- Bump Mode -->
             <div class="card mb-3 bg-success-subtle">
               <div class="card-header fw-bold">
                 Bump
@@ -210,7 +210,7 @@ require 'inc/header.php';
                   <label for="bumpGotStuckOnFuel" class="form-label">Got Stuck on Fuel</label>
                   <input id="bumpGotStuckOnFuel" class="form-check-input" type="checkbox">
                 </div>
-              </div>  
+              </div>
             </div>
             <!-- end bump -->
 
@@ -224,7 +224,7 @@ require 'inc/header.php';
                   <label for="fouls" class="form-label">Caused a foul</label>
                   <input id="fouls" class="form-check-input" type="checkbox">
                 </div>
-              </div>  
+              </div>
             </div>
             <!-- end fouls -->
 
@@ -417,7 +417,7 @@ require 'inc/header.php';
 
     // Evading Defense scouting (note value may not be set)
     let ade = document.getElementById("againstDefenseEffectiveness").value;
-    if(ade == -1)
+    if (ade == -1)
       ade = 0;
     dataToSave["againstDefenseEffectiveness"] = ade;
 

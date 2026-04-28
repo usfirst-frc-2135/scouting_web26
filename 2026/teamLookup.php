@@ -402,33 +402,33 @@ require 'inc/header.php';
     let mydata = [];
 
     // Note: matchData contains scouted data for all teams, so find each match for this team.
-    for (let i=0; i<matchData.length; i++) {
+    for (let i = 0; i < matchData.length; i++) {
       let matchItem = matchData[i];
       let matchnum = matchItem["matchnumber"];
       let teamnumber = matchItem["teamnumber"];
-      if(teamnumber == teamNum) {
-//        console.log("    ==> teamLookup: match "+matchnum+": found team "+teamNum);
+      if (teamnumber == teamNum) {
+        //        console.log("    ==> teamLookup: match "+matchnum+": found team "+teamNum);
 
         // Get the auton fuel estimate for this team / match from the avgsData
         let autonFuelEst = 0; // default
         let pDataTeamItem = avgsData[teamNum];
-        if(pDataTeamItem !== undefined) {
-          if(pDataTeamItem["fuelD"][matchnum]["autonFE"] !== undefined) {
+        if (pDataTeamItem !== undefined) {
+          if (pDataTeamItem["fuelD"][matchnum]["autonFE"] !== undefined) {
             autonFuelEst = pDataTeamItem["fuelD"][matchnum]["autonFE"];
-//            console.log("        ==> basic autonFE = "+autonFuelEst);
+            //            console.log("        ==> basic autonFE = "+autonFuelEst);
           }
-          if(pDataTeamItem["fuelD"][matchnum]["tbaAutonFE"] !== undefined) {
+          if (pDataTeamItem["fuelD"][matchnum]["tbaAutonFE"] !== undefined) {
             autonFuelEst = pDataTeamItem["fuelD"][matchnum]["tbaAutonFE"];
-//            console.log("        ==> tba autonFE = "+autonFuelEst);
+            //            console.log("        ==> tba autonFE = "+autonFuelEst);
           }
         }
 
         let autonClimb = 0;
         if (matchItem["autonClimb"] == 0) {
           autonClimb = 0;
-        }; 
+        };
         if (matchItem["autonClimb"] == 1 || matchItem["autonClimb"] == 2 || matchItem["autonClimb"] == 3 || matchItem["autonClimb"] == 4) {
-          autonClimb = 15;   
+          autonClimb = 15;
         };
 
         mydata.push({
@@ -437,7 +437,7 @@ require 'inc/header.php';
           climb: autonClimb,
         });
       }
-    }  // done with matchData for loop
+    } // done with matchData for loop
 
     mydata.sort(function(rowA, rowB) {
       return (compareMatchNumbers(rowA["matchnum"], rowB["matchnum"]));
@@ -494,14 +494,12 @@ require 'inc/header.php';
             ticks: {
               precision: 0
             },
-            max:160
-          } 
+            max: 160
+          }
         },
-        plugins: 
-        {
+        plugins: {
           tooltip: {
-            callbacks: 
-            { // Special tooltip handling
+            callbacks: { // Special tooltip handling
               label: function(tooltipItem, ddata) {
 
                 function getTip(matchno, tipList) {
@@ -527,7 +525,7 @@ require 'inc/header.php';
         }
       }
     });
-  } 
+  }
   ///// AUTON GRAPH ENDS HERE /////
 
   //
@@ -557,28 +555,28 @@ require 'inc/header.php';
       let matchItem = matchData[i];
       let matchnum = matchItem["matchnumber"];
       let teamnumber = matchItem["teamnumber"];
-      if(teamnumber == teamNum) {
-//        console.log("    ==> loadTeleopGraph: match "+matchnum+": found team "+teamNum);
+      if (teamnumber == teamNum) {
+        //        console.log("    ==> loadTeleopGraph: match "+matchnum+": found team "+teamNum);
 
         // Get the teleop fuel estimate for this team / match from the avgsData
         let teleopFuelEst = 0; // default
         let pDataTeamItem = avgsData[teamNum];
-        if(pDataTeamItem !== undefined) {
-          if(pDataTeamItem["fuelD"][matchnum]["teleopFE"] !== undefined) {
+        if (pDataTeamItem !== undefined) {
+          if (pDataTeamItem["fuelD"][matchnum]["teleopFE"] !== undefined) {
             teleopFuelEst = pDataTeamItem["fuelD"][matchnum]["teleopFE"];
-//            console.log("        ==> basic teleopFE = "+teleopFuelEst);
+            //            console.log("        ==> basic teleopFE = "+teleopFuelEst);
           }
-          if(pDataTeamItem["fuelD"][matchnum]["tbaTeleopFE"] !== undefined) {
+          if (pDataTeamItem["fuelD"][matchnum]["tbaTeleopFE"] !== undefined) {
             teleopFuelEst = pDataTeamItem["fuelD"][matchnum]["tbaTeleopFE"];
-//            console.log("        ==> tba teleopFE = "+teleopFuelEst);
+            //            console.log("        ==> tba teleopFE = "+teleopFuelEst);
           }
         }
- 
+
         // Note: defense level is 0-5, so multiply by 10 to get a value that will show on the graph.
         // IF THIS MULT value changes from 10, you must update the toDefenseLevel() function.
         mydata.push({
           matchnum: matchItem["matchnumber"],
-          defense: matchItem["teleopDefenseLevel"] * 10, 
+          defense: matchItem["teleopDefenseLevel"] * 10,
           fuel: teleopFuelEst,
         });
       }
@@ -589,9 +587,9 @@ require 'inc/header.php';
     });
 
     // Build data sets; go thru each mydata row and populate the graph datasets.
-    let matchList = [];          // List of matches to use as x lables
-    let teleopDefenseTips = [];  // holds custom tooltips for teleop defense level
-    let teleopFuelTips = [];     //holds custom tooltips for teleop fuel estimate
+    let matchList = []; // List of matches to use as x lables
+    let teleopDefenseTips = []; // holds custom tooltips for teleop defense level
+    let teleopFuelTips = []; //holds custom tooltips for teleop fuel estimate
 
     for (let i = 0; i < mydata.length; i++) {
       let mNum = mydata[i]["matchnum"];
@@ -611,7 +609,7 @@ require 'inc/header.php';
       });
       teleopFuelTips.push({
         xlabel: mNum,
-        tip: storeAndGetTip(mydata[i]["fuel"], "Fuel=", datasets[1]["data"],false)
+        tip: storeAndGetTip(mydata[i]["fuel"], "Fuel=", datasets[1]["data"], false)
       });
     }
 
@@ -676,7 +674,7 @@ require 'inc/header.php';
   //
   ///// ENDGAME GRAPH STARTS HERE /////
   //
-  function loadEndgameGraph(teamNum,matchData) {
+  function loadEndgameGraph(teamNum, matchData) {
     console.log("==> teamLookup: loadEndgameGraph()");
 
     // Retrieve the data for each match
@@ -686,7 +684,7 @@ require 'inc/header.php';
       label: "Climb Level",
       data: [],
       backgroundColor: '#2CA9DE'
-    }); 
+    });
 
     // Go thru each matchData QR code string and build up a table of the data, so we can
     // later sort it so the matches are listed in the right order. 
@@ -695,8 +693,8 @@ require 'inc/header.php';
       let matchItem = matchData[i];
       let matchnum = matchItem["matchnumber"];
       let teamnumber = matchItem["teamnumber"];
-      if(teamnumber == teamNum) {
-//        console.log("    ==> loadEndgameGraph: match "+matchnum+": found team "+teamNum);
+      if (teamnumber == teamNum) {
+        //        console.log("    ==> loadEndgameGraph: match "+matchnum+": found team "+teamNum);
         mydata.push({
           matchnum: matchItem["matchnumber"],
           climblevel: matchItem["endgameClimbLevel"],
@@ -951,7 +949,7 @@ require 'inc/header.php';
     $.get("api/tbaAPI.php", {
       getTeamInfo: evtTeam
     }).done(function(teamInfo) {
-//      console.log("=> getTeamInfo:\n" + teamInfo);
+      //      console.log("=> getTeamInfo:\n" + teamInfo);
       if (teamInfo === null) {
         return alert("Can't load teamName from TBA; check if TBA Key was set in db_config");
       }
@@ -976,24 +974,24 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getAllMatchData: true
     }).done(function(allMatches) {
-        let matchData = JSON.parse(allMatches);
-//        console.log("=> got all Match data");
-        $.get("api/dbReadAPI.php", {
-          getAllPitData: true
-        }).done(function(allPitData) {
-          let pitData = JSON.parse(allPitData);
-          insertPitTableBody("lookupPitDataTable", pitData, [teamNum]);
-          $.get("api/tbaAPI.php", {
-            getEventMatches: true
-          }).done(function(eventMatches) {
-            tbaMatchData = JSON.parse(eventMatches)["response"];
-//            console.log("=> got TBA event matches");
-            $.get("api/dbReadAPI.php", {
-              getEventHopperCaps: true
-            }).done(function(allHopperCaps) {
-              hopperCapData = JSON.parse(allHopperCaps);
-//              console.log("=> got Hopper Cap data ");
-              loadMatchData(teamNum, matchData, aliasList, pitData, tbaMatchData, hopperCapData);
+      let matchData = JSON.parse(allMatches);
+      //        console.log("=> got all Match data");
+      $.get("api/dbReadAPI.php", {
+        getAllPitData: true
+      }).done(function(allPitData) {
+        let pitData = JSON.parse(allPitData);
+        insertPitTableBody("lookupPitDataTable", pitData, [teamNum]);
+        $.get("api/tbaAPI.php", {
+          getEventMatches: true
+        }).done(function(eventMatches) {
+          tbaMatchData = JSON.parse(eventMatches)["response"];
+          //            console.log("=> got TBA event matches");
+          $.get("api/dbReadAPI.php", {
+            getEventHopperCaps: true
+          }).done(function(allHopperCaps) {
+            hopperCapData = JSON.parse(allHopperCaps);
+            //              console.log("=> got Hopper Cap data ");
+            loadMatchData(teamNum, matchData, aliasList, pitData, tbaMatchData, hopperCapData);
           });
         });
       });
@@ -1003,7 +1001,7 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getTeamStrategicData: teamNum
     }).done(function(teamStratData) {
-//      console.log("=> getTeamStrategicData");
+      //      console.log("=> getTeamStrategicData");
       insertStrategicDataBody("strategicDataTable", JSON.parse(teamStratData), aliasList, [teamNum]);
     });
   }
@@ -1012,7 +1010,7 @@ require 'inc/header.php';
   // Autocorrects alias number in team number entry field
   //
   function validateEnteredTeamNumber(event, aliasList) {
-//    console.log("enterTeamNumber: focus out");
+    //    console.log("enterTeamNumber: focus out");
     let enteredNum = event.target.value.toUpperCase().trim();
     if (isAliasNumber(enteredNum) && aliasList !== null) {
       let teamNum = getTeamNumFromAlias(enteredNum, aliasList);
@@ -1045,7 +1043,7 @@ require 'inc/header.php';
     }).done(function(eventAliasNames) {
       jAliasNames = JSON.parse(eventAliasNames);
       insertStrategicDataHeader("strategicDataTable", jAliasNames);
-      insertPitTableHeader("lookupPitDataTable");  // TODO - add alias handling
+      insertPitTableHeader("lookupPitDataTable"); // TODO - add alias handling
       insertMatchDataHeader("matchDataTable", jAliasNames);
 
       // Check URL for team# to use (we may have gotten here by clicking on a team number link from another page)
@@ -1069,7 +1067,7 @@ require 'inc/header.php';
 
     // Attach enterTeamNumber listener when losing focus to check for alias numbers
     document.getElementById('enterTeamNumber').addEventListener('focusout', function() {
-//      console.log("enterTeamNumber: focus out");
+      //      console.log("enterTeamNumber: focus out");
       validateEnteredTeamNumber(event, jAliasNames);
     });
 
@@ -1095,4 +1093,3 @@ require 'inc/header.php';
 <script src="./scripts/pitTable.js"></script>
 
 <script src="./external/charts/chart.umd.js"></script>
-

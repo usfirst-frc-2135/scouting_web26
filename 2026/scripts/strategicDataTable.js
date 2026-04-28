@@ -18,7 +18,8 @@
 //      tableId     - the HTML ID where the table header is inserted
 //      aliasList   - list of aliases at the event
 //
-function insertStrategicDataHeader(tableId, aliasList) {
+function insertStrategicDataHeader(tableId, aliasList)
+{
   console.log("==> insertStrategicDataHeader: tableId " + tableId + " aliases " + aliasList.length);
 
   let theadRef = document.getElementById(tableId).querySelector('thead');;
@@ -31,7 +32,8 @@ function insertStrategicDataHeader(tableId, aliasList) {
   let rowString1 = '';
   rowString1 += '<th colspan="1" class="bg-body"> </th>';
   // Insert column if the aliasList is not empty
-  if (aliasList.length > 0) {
+  if (aliasList.length > 0)
+  {
     rowString1 += '<th colspan="1" class="bg-body"> </th>';
   }
   rowString1 += '<th colspan="1" class="bg-body"> </th>';
@@ -50,7 +52,8 @@ function insertStrategicDataHeader(tableId, aliasList) {
   const thBlue = '<th scope="col" class="bg-primary-subtle">';
   rowString2 += '<th scope="col" class="bg-body sorttable_numeric">' + 'Team' + '</th>';
   // Insert column if the aliasList is not empty
-  if (aliasList.length > 0) {
+  if (aliasList.length > 0)
+  {
     rowString2 += thBody + 'Alias' + '</th>';
   }
   rowString2 += thBody + 'Match</th>';
@@ -86,8 +89,10 @@ function insertStrategicDataHeader(tableId, aliasList) {
 //
 // Converts a given "1" to yes, "2" to no, anything else to a dash.
 //
-function toYesNo(value) {
-  switch (String(value)) {
+function toYesNo(value)
+{
+  switch (String(value))
+  {
     case "1": return "Yes";
     case "2": return "No";
     default: return "-";
@@ -102,14 +107,16 @@ function toYesNo(value) {
 //      aliasList   - list of aliases at the event (length 0 if none)
 //      teamFilter  - list of teams to include in table (length 0 if all)
 //
-function insertStrategicDataBody(tableId, stratData, aliasList, teamFilter) {
+function insertStrategicDataBody(tableId, stratData, aliasList, teamFilter)
+{
   console.log("==> insertStrategicDataBody: tableId " + tableId + " stratMatches " + stratData.length + " aliases " + aliasList.length + " teams " + teamFilter.length);
 
   let tbodyRef = document.getElementById(tableId).querySelector('tbody');;
   tbodyRef.innerHTML = ""; // Clear Table
 
   // Go thru each strategic and build the HTML string for that row.
-  for (let i = 0; i < stratData.length; i++) {
+  for (let i = 0; i < stratData.length; i++)
+  {
     let stratItem = stratData[i];
     let teamNum = stratItem["teamnumber"];
     if (teamFilter.length !== 0 && !teamFilter.includes(teamNum))
@@ -120,7 +127,8 @@ function insertStrategicDataBody(tableId, stratData, aliasList, teamFilter) {
     const tdPrefix1 = "<td class='bg-primary-subtle'>";
 
     let defEffectiveness = "";
-    switch (String(stratItem["againstDefenseEffectiveness"])) {
+    switch (String(stratItem["againstDefenseEffectiveness"]))
+    {
       case "0": defEffectiveness = "N/A"; break;
       case "1": defEffectiveness = "Low"; break;
       case "2": defEffectiveness = "Med Low"; break;
@@ -132,7 +140,8 @@ function insertStrategicDataBody(tableId, stratData, aliasList, teamFilter) {
     let rowString = "";
     rowString += tdPrefix0 + "<a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</td>";
     // Insert column if the aliasList is not empty
-    if (aliasList.length > 0) {
+    if (aliasList.length > 0)
+    {
       rowString += tdPrefix0 + getAliasFromTeamNum(teamNum, aliasList) + "</td>";
     }
     rowString += tdPrefix0Bold + stratItem["matchnumber"] + "</td>";

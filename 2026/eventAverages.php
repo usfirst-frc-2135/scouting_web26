@@ -83,7 +83,7 @@ require 'inc/header.php';
   // Scrape table and write CSV file
   //
   function downloadTableAsCSV(tableId, csvName) {
-// TODO - update this for REBUILT  
+    // TODO - update this for REBUILT  
     csvName = csvName + ".csv";
     console.log("==> eventAverages: downloadTableAsCSV(): " + csvName);
     const table = document.getElementById(tableId).querySelector('tbody');
@@ -171,7 +171,7 @@ require 'inc/header.php';
       console.log("=> eventAliasNames");
       jAliasNames = JSON.parse(eventAliasNames);
       buildAveragesHeader(tableId, jAliasNames);
-      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, hopperCapData, null, null); 
+      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, hopperCapData, null, null);
     });
 
     // Get OPR data from TBA
@@ -211,7 +211,7 @@ require 'inc/header.php';
       buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, hopperCapData, null, null);
     });
 
-   // In parallel, load the TBA matches data
+    // In parallel, load the TBA matches data
     $.get("api/tbaAPI.php", {
       getEventMatches: true
     }).done(function(eventMatches) {

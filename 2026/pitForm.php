@@ -126,19 +126,19 @@ require 'inc/header.php';
                         <input id="numBatteries" class="form-control" type="number" placeholder="Battery count">
                       </div>
                     </div>
-                  </div> 
-                </div> 
-              </div>   
-            </div>      
-            
-            
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
             <div class="card col-md-12 mx-auto bg-info-subtle">
               <div class="card-header">
                 <h6>Rebuilt Questions</h6>
               </div>
 
               <div class="card-body">
-              <div class="mb-3">
+                <div class="mb-3">
                   <div>
                     <label for="capHopper" class="form-label">What is your hopper capacity?</label>
                     <div class="col-8">
@@ -146,52 +146,52 @@ require 'inc/header.php';
                         <input id="capHopper" class="form-control" type="number" placeholder="Hopper capacity">
                       </div>
                     </div>
-                  </div> 
-                </div>      
-          
-              <div class="mb-3">
-                    <span>Can your robot drive under the trench?</span>
-                    <div class="col-8">
-                      <div class="input-group mb-3">
-                        <select id="trenchDrive" class="form-select">
-                          <option selected value="-1">Choose ...</option>
-                          <option value="1">Yes</option>
-                          <option value="0">No</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div> 
+                  </div>
+                </div>
 
-                  <div class="mb-3">
-                    <span>Can your robot climb in auton?</span>
-                    <div class="col-8">
-                      <div class="input-group mb-3">
-                        <select id="climbAble" class="form-select">
-                          <option selected value="-1">Choose ...</option>
-                          <option value="1">Yes</option>
-                          <option value="0">No</option>
-                        </select>
-                      </div>
+                <div class="mb-3">
+                  <span>Can your robot drive under the trench?</span>
+                  <div class="col-8">
+                    <div class="input-group mb-3">
+                      <select id="trenchDrive" class="form-select">
+                        <option selected value="-1">Choose ...</option>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                      </select>
                     </div>
-                  </div>   
+                  </div>
+                </div>
 
-                  <div class="mb-3">
-                    <span>What levels can your robot climb in Endgame?</span>
-                    <div class="col-8">
-                      <div class="input-group mb-3">
-                        <select id="climbLevel" class="form-select">
-                          <option selected value="-1">Choose ...</option>
-                          <option value="1">L1</option>
-                          <option value="2">L2</option>
-                          <option value="3">L3</option>
-                          <option value="0">Can't climb</option>
-                        </select>
-                      </div>
+                <div class="mb-3">
+                  <span>Can your robot climb in auton?</span>
+                  <div class="col-8">
+                    <div class="input-group mb-3">
+                      <select id="climbAble" class="form-select">
+                        <option selected value="-1">Choose ...</option>
+                        <option value="1">Yes</option>
+                        <option value="0">No</option>
+                      </select>
                     </div>
-                  </div>   
-                  
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <span>What levels can your robot climb in Endgame?</span>
+                  <div class="col-8">
+                    <div class="input-group mb-3">
+                      <select id="climbLevel" class="form-select">
+                        <option selected value="-1">Choose ...</option>
+                        <option value="1">L1</option>
+                        <option value="2">L2</option>
+                        <option value="3">L3</option>
+                        <option value="0">Can't climb</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
               </div>
-            </div>     
+            </div>
 
             <div class="card col-md-12 mx-auto bg-warning-subtle">
               <div class="card-header">
@@ -199,40 +199,40 @@ require 'inc/header.php';
                 <h9><span class="text-danger">(observe only, do not ask)</span></h9>
               </div>
 
-            <div class="card-body">
-              <div class="mb-3">
-                <span>Pit Organization</span>
-                <div class="col-8">
-                  <div class="input-group mb-3">
-                    <select id="pitOrganization" class="form-select">
-                      <option selected value="-1">Choose ...</option>
-                      <option value="1">1-Messy</option>
-                      <option value="2">2-Below average</option>
-                      <option value="3">3-Organized!</option>
-                      <option value="4">4-Above average</option>
-                      <option value="5">5-Pristine</option>
-                    </select>
+              <div class="card-body">
+                <div class="mb-3">
+                  <span>Pit Organization</span>
+                  <div class="col-8">
+                    <div class="input-group mb-3">
+                      <select id="pitOrganization" class="form-select">
+                        <option selected value="-1">Choose ...</option>
+                        <option value="1">1-Messy</option>
+                        <option value="2">2-Below average</option>
+                        <option value="3">3-Organized!</option>
+                        <option value="4">4-Above average</option>
+                        <option value="5">5-Pristine</option>
+                      </select>
+                    </div>
                   </div>
-                 </div>
-              </div>
+                </div>
 
-              <div class="mb-3">
-                <span>Preparedness/Professionalism</span>
-                <div class="col-8">
-                  <div class="input-group mb-3">
-                    <select id="preparednessScore" class="form-select">
-                       <option selected value="-1">Choose ...</option>
-                       <option value="1">1-Utter chaos</option>
-                       <option value="2">2-Below average</option>
-                       <option value="3">3-Prepared!</option>
-                       <option value="4">4-Above average</option>
-                       <option value="5">5-Proactive</option>
-                    </select>
+                <div class="mb-3">
+                  <span>Preparedness/Professionalism</span>
+                  <div class="col-8">
+                    <div class="input-group mb-3">
+                      <select id="preparednessScore" class="form-select">
+                        <option selected value="-1">Choose ...</option>
+                        <option value="1">1-Utter chaos</option>
+                        <option value="2">2-Below average</option>
+                        <option value="3">3-Prepared!</option>
+                        <option value="4">4-Above average</option>
+                        <option value="5">5-Proactive</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
 
             <p> </p>
@@ -342,7 +342,7 @@ require 'inc/header.php';
     }
 
     let batval = document.getElementById("numBatteries").value;
-    if(isNumeric(batval)) {
+    if (isNumeric(batval)) {
       // Verify number is within acceptable range
       let numBatteries = parseInt(batval);
       if ((numBatteries < 1) || (numBatteries > 25)) {
@@ -359,7 +359,7 @@ require 'inc/header.php';
     }
 
     let hopval = document.getElementById("capHopper").value;
-    if(isNumeric(hopval)) {
+    if (isNumeric(hopval)) {
       // Verify number is within acceptable range
       let capHopper = parseInt(hopval);
       if ((capHopper < 1) || (capHopper > 80)) {
@@ -371,8 +371,8 @@ require 'inc/header.php';
     } else {
       if (isError)
         errMsg += ",";
-        errMsg += " Hopper [1..80]";
-        isError = true;
+      errMsg += " Hopper [1..80]";
+      isError = true;
     }
 
     if (document.getElementById("trenchDrive").value === "-1") {

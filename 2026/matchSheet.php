@@ -161,7 +161,7 @@ require 'inc/header.php';
           </div>
 
           <div id="R0TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#R0TeamBox">
-            <div id="R0PicsCarousel" class="carousel slide" data-interval="false">
+            <div id="R0PicsCarousel" class="carousel slide" data-bs-interval="false">
               <div id="R0RobotPics" class="carousel-inner"> </div>
               <button class="carousel-control-prev" type="button" data-bs-target="#R0PicsCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -198,7 +198,7 @@ require 'inc/header.php';
           </div>
 
           <div id="R1TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#R1TeamBox">
-            <div id="R1PicsCarousel" class="carousel slide" data-interval="false">
+            <div id="R1PicsCarousel" class="carousel slide" data-bs-interval="false">
               <div id="R1RobotPics" class="carousel-inner"> </div>
               <button class="carousel-control-prev" type="button" data-bs-target="#R1PicsCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -235,7 +235,7 @@ require 'inc/header.php';
           </div>
 
           <div id="R2TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#R2TeamBox">
-            <div id="R2PicsCarousel" class="carousel slide" data-interval="false">
+            <div id="R2PicsCarousel" class="carousel slide" data-bs-interval="false">
               <div id="R2RobotPics" class="carousel-inner"> </div>
               <button class="carousel-control-prev" type="button" data-bs-target="#R2PicsCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -276,7 +276,7 @@ require 'inc/header.php';
           </div>
 
           <div id="B0TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#B0TeamBox">
-            <div id="B0PicsCarousel" class="carousel slide" data-interval="false">
+            <div id="B0PicsCarousel" class="carousel slide" data-bs-interval="false">
               <div id="B0RobotPics" class="carousel-inner"> </div>
               <button class="carousel-control-prev" type="button" data-bs-target="#B0PicsCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -313,7 +313,7 @@ require 'inc/header.php';
           </div>
 
           <div id="B1TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#B1TeamBox">
-            <div id="B1PicsCarousel" class="carousel slide" data-interval="false">
+            <div id="B1PicsCarousel" class="carousel slide" data-bs-interval="false">
               <div id="B1RobotPics" class="carousel-inner"> </div>
               <button class="carousel-control-prev" type="button" data-bs-target="#B1PicsCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -350,7 +350,7 @@ require 'inc/header.php';
           </div>
 
           <div id="B2TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#B2TeamBox">
-            <div id="B2PicsCarousel" class="carousel slide" data-interval="false">
+            <div id="B2PicsCarousel" class="carousel slide" data-bs-interval="false">
               <div id="B2RobotPics" class="carousel-inner"> </div>
               <button class="carousel-control-prev" type="button" data-bs-target="#B2PicsCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -674,7 +674,7 @@ require 'inc/header.php';
       "red": 0,
       "blue": 0
     };
-    
+
     // Go thru the red alliance teams and add its data to the stored arrays 
     for (let i in matchSpec.red) {
       teamNum = matchSpec.red[i];
@@ -691,7 +691,7 @@ require 'inc/header.php';
         predictedPoints["red"] += avgDataInfo["totalMatchPoints"].avg;
       }
     }
-    console.log("==> matchSheet: red teams: avgAutoPoints: " + avgAutoPoints["red"] + ", avgAutoClimbPoints: " + avgAutoClimbPoints["red"] + ", avgTeleopPoints: " + avgTeleopPoints["red"] + ", avgEndgamePoints: " + avgEndgamePoints["red"] + ", avgTotalFuel: " + avgTotalFuel["red"] + "totalClimbPts: " + avgTotalClimbPts["red"] + ", predictedPoints: "+ predictedPoints["red"]);
+    console.log("==> matchSheet: red teams: avgAutoPoints: " + avgAutoPoints["red"] + ", avgAutoClimbPoints: " + avgAutoClimbPoints["red"] + ", avgTeleopPoints: " + avgTeleopPoints["red"] + ", avgEndgamePoints: " + avgEndgamePoints["red"] + ", avgTotalFuel: " + avgTotalFuel["red"] + "totalClimbPts: " + avgTotalClimbPts["red"] + ", predictedPoints: " + predictedPoints["red"]);
 
     for (let i in matchSpec.blue) {
       teamNum = matchSpec.blue[i];
@@ -708,7 +708,7 @@ require 'inc/header.php';
         predictedPoints["blue"] += avgDataInfo["totalMatchPoints"].avg;
       }
     }
-    console.log("==> matchSheet: blue teams: avgAutoPoints: " + avgAutoPoints["blue"] + ", avgAutoClimbPoints: " + avgAutoClimbPoints["blue"] + ", avgTeleopPoints: " + avgTeleopPoints["blue"] + ", avgEndgamePoints: " + avgEndgamePoints["blue"] + ", avgTotalFuel: " + avgTotalFuel["blue"] + "totalClimbPts: " + avgTotalClimbPts["blue"] + ", predictedPoints: "+ predictedPoints["blue"]);
+    console.log("==> matchSheet: blue teams: avgAutoPoints: " + avgAutoPoints["blue"] + ", avgAutoClimbPoints: " + avgAutoClimbPoints["blue"] + ", avgTeleopPoints: " + avgTeleopPoints["blue"] + ", avgEndgamePoints: " + avgEndgamePoints["blue"] + ", avgTotalFuel: " + avgTotalFuel["blue"] + "totalClimbPts: " + avgTotalClimbPts["blue"] + ", predictedPoints: " + predictedPoints["blue"]);
 
     //
     // Predict ranking points
@@ -749,11 +749,11 @@ require 'inc/header.php';
     document.getElementById("redAvgEndgamePoints").innerText = roundTwoPlaces(avgEndgamePoints["red"]);
     document.getElementById("redTotalFuel").innerText = roundTwoPlaces(avgTotalFuel["red"]);
     document.getElementById("redPredictedTotalPoints").innerText = roundTwoPlaces(predictedPoints["red"]);
-    if(matchSpec["redScore"] != "-")
+    if (matchSpec["redScore"] != "-")
       document.getElementById("redActualTotalPoints").innerText = roundTwoPlaces(matchSpec["redScore"]);
     else document.getElementById("redActualTotalPoints").innerText = "-";
     document.getElementById("redPredictedRP").innerText = roundTwoPlaces(predictedRP["red"]);
-    if(matchSpec["redRP"] != "-")
+    if (matchSpec["redRP"] != "-")
       document.getElementById("redActualRP").innerText = roundTwoPlaces(matchSpec["redRP"]);
     else document.getElementById("redActualRP").innerText = "-";
 
@@ -831,24 +831,24 @@ require 'inc/header.php';
         newMatch["match_number"] = match["set_number"];
       }
 
-      console.log("  ==> buildMatchList(): looking at match "+newMatch["match_number"]);
+      console.log("  ==> buildMatchList(): looking at match " + newMatch["match_number"]);
       newMatch["red_teams"] = match["alliances"]["red"]["team_keys"];
       newMatch["redScore"] = "-";
       newMatch["redRP"] = "-";
-      if(match["alliances"] != null && match["alliances"]["red"] != null && match["alliances"]["red"]["score"] != null)
+      if (match["alliances"] != null && match["alliances"]["red"] != null && match["alliances"]["red"]["score"] != null)
         newMatch["redScore"] = match["alliances"]["red"]["score"];
-      if(match["score_breakdown"] != null && match["score_breakdown"]["red"] != null && match["score_breakdown"]["red"]["rp"] != null)
+      if (match["score_breakdown"] != null && match["score_breakdown"]["red"] != null && match["score_breakdown"]["red"]["rp"] != null)
         newMatch["redRP"] = match["score_breakdown"]["red"]["rp"];
-      console.log("    ==> redScore = "+newMatch["redScore"]+", redRP = "+newMatch["redRP"]);
+      console.log("    ==> redScore = " + newMatch["redScore"] + ", redRP = " + newMatch["redRP"]);
 
       newMatch["blue_teams"] = match["alliances"]["blue"]["team_keys"];
       newMatch["blueScore"] = "-";
       newMatch["blueRP"] = "-";
-      if(match["alliances"] != null && match["alliances"]["blue"] != null && match["alliances"]["blue"]["score"] != null)
+      if (match["alliances"] != null && match["alliances"]["blue"] != null && match["alliances"]["blue"]["score"] != null)
         newMatch["blueScore"] = match["alliances"]["blue"]["score"];
-      if(match["score_breakdown"] != null && match["score_breakdown"]["blue"] != null && match["score_breakdown"]["blue"]["rp"] != null)
+      if (match["score_breakdown"] != null && match["score_breakdown"]["blue"] != null && match["score_breakdown"]["blue"]["rp"] != null)
         newMatch["blueRP"] = match["score_breakdown"]["blue"]["rp"];
-      console.log("    ==> blueScore = "+newMatch["blueScore"]+", blueRP = "+newMatch["blueRP"]);
+      console.log("    ==> blueScore = " + newMatch["blueScore"] + ", blueRP = " + newMatch["blueRP"]);
 
       newMatch["time"] = null;
       if (match["predicted_time"] != null) {
@@ -857,7 +857,7 @@ require 'inc/header.php';
         newMatch["time"] = match["actual_time"];
       }
 
-//HOLD      if (newMatch["time"] === null && match["time"] != null){ newMatch["time"] = match["time"]; }
+      //HOLD      if (newMatch["time"] === null && match["time"] != null){ newMatch["time"] = match["time"]; }
       eventMatchList[idToKey(newMatch["comp_level"] + newMatch["match_number"])] = newMatch;
 
       // Create list of matches for our team
@@ -952,7 +952,7 @@ require 'inc/header.php';
     console.log("==> matchSheet: setupMatchSheet()");
     let averagesData = null;
 
-    if(matchSpec !== null) {
+    if (matchSpec !== null) {
       let mdp = new matchDataProcessor(jMatchData, tbaMatchData, pitData, hopperCapData);
       mdp.getSiteFilteredAverages(function(filteredMatchData, filteredAvgData) {
         averagesData = filteredAvgData;

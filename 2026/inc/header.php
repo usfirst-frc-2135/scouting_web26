@@ -54,40 +54,40 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-white-50 text-end text-sm-start" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Teams</a>
             <ul class="dropdown-menu bg-dark">
-              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./pitStatus.php">Pit Status</a></li>
-              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./teamLookup.php">Team Lookup</a></li>
-              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./pitPhotoUpload.php">Photo Upload</a></li>
-              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./pitForm.php">Pit Scouting</a></li>
-              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./pitData.php">Pit Data</a></li>
+              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-bs-toggle="pill" href="./pitStatus.php">Pit Status</a></li>
+              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-bs-toggle="pill" href="./teamLookup.php">Team Lookup</a></li>
+              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-bs-toggle="pill" href="./pitPhotoUpload.php">Photo Upload</a></li>
+              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-bs-toggle="pill" href="./pitForm.php">Pit Scouting</a></li>
+              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-bs-toggle="pill" href="./pitData.php">Pit Data</a></li>
             </ul>
           </li>
 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-white-50 text-end text-sm-start" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Matches</a>
             <ul class="dropdown-menu bg-dark">
-              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./matchQrScanner.php">QR Scanner</a></li>
-              <!-- <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./matchFormReefscape.php">Match Form</a></li> -->
-              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./matchData.php">Match Data</a></li>
-              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./rebuiltFuelEstimates.php">Fuel Estimates</a></li>
+              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-bs-toggle="pill" href="./matchQrScanner.php">QR Scanner</a></li>
+              <!-- <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-bs-toggle="pill" href="./matchFormReefscape.php">Match Form</a></li> -->
+              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-bs-toggle="pill" href="./matchData.php">Match Data</a></li>
+              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-bs-toggle="pill" href="./rebuiltFuelEstimates.php">Fuel Estimates</a></li>
             </ul>
           </li>
 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-white-50 text-end text-sm-start" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Strategy</a>
             <ul class="dropdown-menu bg-dark">
-              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./strategicSchedule.php">Strategic Schedule</a></li>
-              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./strategicForm.php">Strategic Scouting</a></li>
-              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./strategicData.php">Strategic Data</a></li>
+              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-bs-toggle="pill" href="./strategicSchedule.php">Strategic Schedule</a></li>
+              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-bs-toggle="pill" href="./strategicForm.php">Strategic Scouting</a></li>
+              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-bs-toggle="pill" href="./strategicData.php">Strategic Data</a></li>
             </ul>
           </li>
 
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-white-50 text-end text-sm-start" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Event</a>
             <ul class="dropdown-menu bg-dark">
-              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./matchSheet.php">Match Sheet</a></li>
-              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./eventAverages.php">Event Averages</a></li>
-              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./eventCoprData.php">Event COPRs</a></li>
-              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-toggle="pill" href="./teamCompare.php">Team Compare </a></li>
+              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-bs-toggle="pill" href="./matchSheet.php">Match Sheet</a></li>
+              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-bs-toggle="pill" href="./eventAverages.php">Event Averages</a></li>
+              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-bs-toggle="pill" href="./eventCoprData.php">Event COPRs</a></li>
+              <li><a class="dropdown-item text-white-50 text-end text-sm-start" data-bs-toggle="pill" href="./teamCompare.php">Team Compare </a></li>
             </ul>
           </li>
 

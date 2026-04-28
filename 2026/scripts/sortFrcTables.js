@@ -17,27 +17,33 @@
 //  Return:
 //    tableId is sorted in place per the request
 //
-function sortFrcTables(tableId, teamCol, matchCol) {
+function sortFrcTables(tableId, teamCol, matchCol)
+{
 
   let tableRef = document.getElementById(tableId);
   let rows = Array.prototype.slice.call(tableRef.querySelectorAll("tbody > tr")); // All "tr" in <tbody>
 
   // Sort the rows based on column 1 match number
-  if (matchCol !== -1) {
-    rows.sort(function (rowA, rowB) {
+  if (matchCol !== -1)
+  {
+    rows.sort(function (rowA, rowB)
+    {
       return (compareMatchNumbers(rowA.cells[matchCol].textContent, rowB.cells[matchCol].textContent));
     });
   }
 
   // Sort the rows based on column 1 match number
-  if (teamCol !== -1) {
-    rows.sort(function (rowA, rowB) {
+  if (teamCol !== -1)
+  {
+    rows.sort(function (rowA, rowB)
+    {
       return (compareTeamNumbers(rowA.cells[teamCol].textContent, rowB.cells[teamCol].textContent));
     });
   }
 
   // Update the table body with the sorted rows.
-  rows.forEach(function (row) {
+  rows.forEach(function (row)
+  {
     tableRef.querySelector("tbody").appendChild(row);
   });
 }
@@ -50,7 +56,8 @@ function sortFrcTables(tableId, teamCol, matchCol) {
 //  Return:
 //    tableId is sorted in place by team number
 //
-function sortTableByTeam(tableId, teamCol) {
+function sortTableByTeam(tableId, teamCol)
+{
   sortFrcTables(tableId, teamCol, -1);
 }
 
@@ -62,7 +69,8 @@ function sortTableByTeam(tableId, teamCol) {
 //  Return:
 //    tableId is sorted in place by match number
 //
-function sortTableByMatch(tableId, matchCol) {
+function sortTableByMatch(tableId, matchCol)
+{
   sortFrcTables(tableId, -1, matchCol);
 }
 
@@ -75,6 +83,7 @@ function sortTableByMatch(tableId, matchCol) {
 //  Return:
 //    tableId is sorted in place by match number and team number
 //
-function sortTableByMatchAndTeam(tableId, teamCol, matchCol) {
+function sortTableByMatchAndTeam(tableId, teamCol, matchCol)
+{
   sortFrcTables(tableId, teamCol, matchCol);
 }

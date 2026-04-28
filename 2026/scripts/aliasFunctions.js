@@ -6,13 +6,16 @@
 //
 // Returns corresponding alias value ("99xx" number) for the given teamnum ("254B")
 //
-function getAliasFromTeamNum(teamnum, teamAliasList) {
+function getAliasFromTeamNum(teamnum, teamAliasList)
+{
   let rtnAliasNum = "";
-  for (let entry of teamAliasList) {
+  for (let entry of teamAliasList)
+  {
     let tnum = entry["teamnumber"].trim();
     //HOLD    console.log( "---> comparing teamnum " + teamnum + " with tnum " + tnum);
-    if (tnum === teamnum) {
-      rtnAliasNum = entry["aliasnumber"]
+    if (tnum === teamnum)
+    {
+      rtnAliasNum = entry["aliasnumber"].trim();
       //HOLD      console.log("   ---> FOUND teamnum, got alias = " + rtnAliasNum);
       break;
     }
@@ -23,13 +26,16 @@ function getAliasFromTeamNum(teamnum, teamAliasList) {
 //
 // Return the team number for a given alias number
 //
-function getTeamNumFromAlias(aliasNum, teamAliasList) {
+function getTeamNumFromAlias(aliasNum, teamAliasList)
+{
   let rtnTeamNum = "";
-  for (let entry of teamAliasList) {
+  for (let entry of teamAliasList)
+  {
     let anum = entry["aliasnumber"].trim();
     //HOLD    console.log( "---> comparing aliasNum " + aliasNum + " with " + anum);
-    if (anum == aliasNum) {
-      rtnTeamNum = entry["teamnumber"]
+    if (anum === aliasNum)
+    {
+      rtnTeamNum = entry["teamnumber"].trim();
       //HOLD       console.log("   ---> FOUND aliasNum, got teamnum = " + rtnTeamNum);
       break;
     }
@@ -40,15 +46,17 @@ function getTeamNumFromAlias(aliasNum, teamAliasList) {
 //
 // Test if a team number string is in the alias number range (9970 to 9999 defined by FRC)
 //
-function isAliasNumber(teamStr) {
-  let teamInt = parseInt(teamStr);
+function isAliasNumber(teamStr)
+{
+  let teamInt = parseInt(teamStr, 10);
 
   return (teamInt >= 9970 && teamInt <= 9999);
 }
 
 //
-// Test if a team number string has an alaphabetic character at the end (indicating BCD number)
+// Test if a team number string has an alphabetic character at the end (indicating BCD number)
 //
-function isBCDNumber(teamStr) {
+function isBCDNumber(teamStr)
+{
   return /^[a-zA-Z]+$/.test(teamStr.charAt(teamStr.length - 1));
 }

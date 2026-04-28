@@ -32,15 +32,15 @@ require 'inc/header.php';
 
 <script>
   //
-// TODO - add alias handling!!
+  // TODO - add alias handling!!
   // Insert the pit data table header
   //
-   function loadPitTableBody(tableId, pitData) {
+  function loadPitTableBody(tableId, pitData) {
     console.log("=> loadPitTableBody");
     if (pitData === null)
       return;
 
-    insertPitTableHeader(tableId);   // TODO - add alias handling!!
+    insertPitTableHeader(tableId); // TODO - add alias handling!!
     insertPitTableBody(tableId, pitData, []);
     document.getElementById('spinner').style.display = 'none';
 

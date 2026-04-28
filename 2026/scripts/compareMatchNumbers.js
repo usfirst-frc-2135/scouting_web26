@@ -17,7 +17,8 @@
 //    0     if matches are equal
 //    > 0   if matchB is before matchA
 //
-function compareMatchNumbers(matchA, matchB) {
+function compareMatchNumbers(matchA, matchB)
+{
   // console.log("==> compareMatchNumbers: " + matchA + " <-> " + matchB);
 
   // Normalize input parameters
@@ -29,46 +30,57 @@ function compareMatchNumbers(matchA, matchB) {
   matchB = matchB.trim().toLowerCase();
 
   // Pull apart prefix and number from matchnum (ie, "p", "qm", "sf")
-  if (matchA.charAt(0) === "p") {
+  if (matchA.charAt(0) === "p")
+  {
     numA = matchA.substring(1);
     prefixA = "p";
   }
-  else if (matchA.charAt(0) === "q") {   // "qm"
+  else if (matchA.charAt(0) === "q")   // "qm"
+  {
     numA = matchA.substring(2);
     prefixA = "qm";
   }
-  else if (matchA.charAt(0) === "s") {   // "sf"
+  else if (matchA.charAt(0) === "s")   // "sf"
+  {
     numA = matchA.substring(2);
     prefixA = "sf";
   }
-  else if (matchA.charAt(0) === "f") {   // "qm"
+  else if (matchA.charAt(0) === "f")   // "qm"
+  {
     numA = matchA.substring(1);
     prefixA = "f";
   }
-  if (prefixA === "") {
+
+  if (prefixA === "")
+  {
     console.warn("compareMatchNumbers: matchA is missing comp_level! - " + matchA);
     prefixA = "qm";
     numA = matchA;
     matchA = prefixA + matchA;
   }
 
-  if (matchB.charAt(0) === "p") {
+  if (matchB.charAt(0) === "p")
+  {
     numB = matchB.substring(1);
     prefixB = "p";
   }
-  else if (matchB.charAt(0) === "q") {   // "qm"
+  else if (matchB.charAt(0) === "q")   // "qm"
+  {
     numB = matchB.substring(2);
     prefixB = "qm";
   }
-  else if (matchB.charAt(0) === "s") {   // "sf"
+  else if (matchB.charAt(0) === "s")   // "sf"
+  {
     numB = matchB.substring(2);
     prefixB = "sf";
   }
-  else if (matchB.charAt(0) === "f") {   // "qm"
+  else if (matchB.charAt(0) === "f")   // "qm"
+  {
     numB = matchB.substring(1);
     prefixB = "f";
   }
-  if (prefixB === "") {
+  if (prefixB === "")
+  {
     console.warn("compareMatchNumbers: matchB is missing comp_level! - " + matchB);
     prefixB = "qm";
     numB = matchB;

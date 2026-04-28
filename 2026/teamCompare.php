@@ -80,7 +80,7 @@ require 'inc/header.php';
               </div>
             </div>
 
-             <!-- Passing From Zone card -->
+            <!-- Passing From Zone card -->
             <div class="card mb-3 bg-warning-subtle">
               <div class="card-header">
                 <h5 class="text-center"> <a href="#collapsePassing" data-bs-toggle="collapse" aria-expanded="true">Passing From Zones
@@ -129,7 +129,7 @@ require 'inc/header.php';
             </div>
 
             <!-- Second Pick collapsible graph -->
-<!-- HOLD FORNOW
+            <!-- HOLD FORNOW
             <div class="card mb-3 bg-success-subtle">
               <div class="card-header">
                 <h5 class="text-center">
@@ -143,7 +143,7 @@ require 'inc/header.php';
 HOLD-->
 
             <!-- Third Pick collapsible graph -->
-<!-- HOLD FORNOW
+            <!-- HOLD FORNOW
             <div class="card mb-3 bg-success-subtle">
               <div class="card-header">
                 <h5 class="text-center">
@@ -490,43 +490,41 @@ HOLD-->
     let teamAverages = avgData[teamNum];
     if (teamAverages !== undefined) {
 
-    let rowString = "";
-    rowString += tdPrefix + "<a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</a></td>";
-    rowString += tdPrefix + getDataValue(driverAbility.arr, 0).avg + "</td>";
-    rowString += tdPrefix + getDataValue(driverAbility.arr, 2).avg + "</td>";
-    rowString += tdPrefix + getDataValue(driverAbility.arr, 1).avg + "</td>";
-    rowString += tdPrefix + getDataValue(driverAbility.arr, 3).avg + "</td>";
-    rowString += tdPrefix + getDataValue(driverAbility.arr, 4).avg + "</td>";
-    rowString += tdPrefix + getDataValue(driverAbility.arr, 5).avg + "</td>";
-    return rowString;
+      let rowString = "";
+      rowString += tdPrefix + "<a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</a></td>";
+      rowString += tdPrefix + getDataValue(driverAbility.arr, 0).avg + "</td>";
+      rowString += tdPrefix + getDataValue(driverAbility.arr, 2).avg + "</td>";
+      rowString += tdPrefix + getDataValue(driverAbility.arr, 1).avg + "</td>";
+      rowString += tdPrefix + getDataValue(driverAbility.arr, 3).avg + "</td>";
+      rowString += tdPrefix + getDataValue(driverAbility.arr, 4).avg + "</td>";
+      rowString += tdPrefix + getDataValue(driverAbility.arr, 5).avg + "</td>";
+      return rowString;
+    } else {
+      console.log("ERROR: No average data found for team " + teamNum);
+    }
   }
-  else {
-    console.log("ERROR: No average data found for team " + teamNum);
-  }
-}
 
-function createPassingEntry(teamNum, avgData) {
+  function createPassingEntry(teamNum, avgData) {
     let passingRate = getDataValue(avgData[teamNum], "teleopPassingRate");
     const tdPrefix = "<td>";
 
     let teamAverages = avgData[teamNum];
     if (teamAverages !== undefined) {
 
-    let rowString = "";
-    rowString += tdPrefix + "<a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</a></td>";
-    rowString += tdPrefix + getDataValue(passingRate.arr, 0).avg + "</td>";
-    rowString += tdPrefix + getDataValue(passingRate.arr, 2).avg + "</td>";
-    rowString += tdPrefix + getDataValue(passingRate.arr, 1).avg + "</td>";
-    rowString += tdPrefix + getDataValue(passingRate.arr, 3).avg + "</td>";
-    rowString += tdPrefix + getDataValue(passingRate.arr, 4).avg + "</td>";
-    return rowString;
+      let rowString = "";
+      rowString += tdPrefix + "<a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</a></td>";
+      rowString += tdPrefix + getDataValue(passingRate.arr, 0).avg + "</td>";
+      rowString += tdPrefix + getDataValue(passingRate.arr, 2).avg + "</td>";
+      rowString += tdPrefix + getDataValue(passingRate.arr, 1).avg + "</td>";
+      rowString += tdPrefix + getDataValue(passingRate.arr, 3).avg + "</td>";
+      rowString += tdPrefix + getDataValue(passingRate.arr, 4).avg + "</td>";
+      return rowString;
+    } else {
+      console.log("ERROR: No average data found for team " + teamNum);
+    }
   }
-  else {
-    console.log("ERROR: No average data found for team " + teamNum);
-  }
-}
 
-function createPassingFromEntry(teamNum, avgData) {
+  function createPassingFromEntry(teamNum, avgData) {
     let passingNRate = getDataValue(avgData[teamNum], "totalPassingN");
     let passingARate = getDataValue(avgData[teamNum], "totalPassingA");
     const tdPrefix = "<td>";
@@ -534,16 +532,15 @@ function createPassingFromEntry(teamNum, avgData) {
     let teamAverages = avgData[teamNum];
     if (teamAverages !== undefined) {
 
-    let rowString = "";
-    rowString += tdPrefix + "<a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</a></td>";
-    rowString += tdPrefix + passingNRate + "</td>";
-    rowString += tdPrefix + passingARate + "</td>";
-    return rowString;
+      let rowString = "";
+      rowString += tdPrefix + "<a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</a></td>";
+      rowString += tdPrefix + passingNRate + "</td>";
+      rowString += tdPrefix + passingARate + "</td>";
+      return rowString;
+    } else {
+      console.log("ERROR: No average data found for team " + teamNum);
+    }
   }
-  else {
-    console.log("ERROR: No average data found for team " + teamNum);
-  }
-}
 
   function loadDriverTable(teamNum, teamNum2, avgData) {
     console.log("==> teamCompare: loadDriverTable()");
@@ -626,7 +623,7 @@ function createPassingFromEntry(teamNum, avgData) {
     }).done(function(allStrategicData) {
       let jStratData = JSON.parse(allStrategicData);
       console.log("=> getAllStrategicData");
-      insertStrategicDataBody("strategicDataTable1", jStratData, aliasList, [teamNum1,teamNum2]);
+      insertStrategicDataBody("strategicDataTable1", jStratData, aliasList, [teamNum1, teamNum2]);
     });
 
     let tbaMatchData = null;
@@ -668,10 +665,10 @@ function createPassingFromEntry(teamNum, avgData) {
       console.log("=> getAllMatchData");
       jMatches = JSON.parse(allMatchData);
       //let compareMatches = jMatches.filter(function(el) {
-        setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList);
-        //return el["teamnumber"] == teamNum1 || el["teamnumber"] == teamNum2;
+      setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList);
+      //return el["teamnumber"] == teamNum1 || el["teamnumber"] == teamNum2;
       //});
-  });
+    });
   }
 
   //
@@ -791,15 +788,15 @@ function createPassingFromEntry(teamNum, avgData) {
 
         // Load the graphs
         loadFirstPickGraph(teamNum1, teamNum2, filteredAvgData);
-//HOLD        loadSecondPickGraph(teamNum1, teamNum2, filteredAvgData);
-//HOLD        loadThirdPickGraph(teamNum1, teamNum2, filteredAvgData);
+        //HOLD        loadSecondPickGraph(teamNum1, teamNum2, filteredAvgData);
+        //HOLD        loadThirdPickGraph(teamNum1, teamNum2, filteredAvgData);
         loadDriverTable(teamNum1, teamNum2, filteredAvgData);
         loadPassingTable(teamNum1, teamNum2, filteredAvgData);
         loadPassingFromTable(teamNum1, teamNum2, filteredAvgData);
         insertEventAveragesBody("averagesTable", filteredAvgData, [], aliasList, [], [teamNum1, teamNum2]);
-      } 
-      });
-    };
+      }
+    });
+  };
 </script>
 
 <script src="./scripts/aliasFunctions.js"></script>
