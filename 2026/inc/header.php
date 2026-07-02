@@ -34,7 +34,7 @@
 
 <body>
   <!-- Create collapsible navbar and navigation buttons -->
-  <nav class="navbar navbar-expand-sm navbar-dark bg-dark sticky-top">
+  <nav class="navbar navbar-expand-sm bg-dark sticky-top" data-bs-theme="dark">
     <a class="navbar-brand text-white" href="./index.php">
       <img src="./images/favicon-32x32.png" alt="Logo" width="24" height="24" class="d-inline-block align-text-top">
       <span id="navbarEventCode"> ????</span>
@@ -42,13 +42,13 @@
     <div class="nav-item nav-item-dark align-left me-auto">
       <img id="modeSwitch" src="./images/icons8-moon-50.png" alt="Mode Switch" width="24" height="24">
     </div>
-    <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+    <button class="navbar-toggler" type="button" data-bs-theme="dark" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
       aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbarCollapse" class="collapse navbar-collapse">
-      <ul class="navbar-nav navbar-dark mr-auto">
+      <ul class="navbar-nav mr-auto" data-bs-theme="dark">
         <ul class="nav nav-pills flex-column flex-sm-row">
 
           <li class="nav-item dropdown">
