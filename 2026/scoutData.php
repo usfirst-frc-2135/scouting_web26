@@ -138,7 +138,7 @@ require 'inc/header.php';
     console.log("==> scoutData: writeScoutNameFile() - " + fileName);
     jsonTable = tableToJSON(tableId);
     jsonTable.forEach(function(row) {
-      row["scoutname"] = row["Scout Name"]; // Make a new scout name field with correct tag
+      row["scoutName"] = row["Scout Name"]; // Make a new scout name field with correct tag
       delete row["Scout Name"]; // Remove the undesired tag
       delete row.Delete; // Remove the "Delete" field from each row
     });
