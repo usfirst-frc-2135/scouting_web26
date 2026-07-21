@@ -50,18 +50,6 @@ require 'inc/header.php';
 
 <script>
   const qrValidLength = 32; // This is determined by game requirements and adjusted each year
-  //REMOVE const qrPadLength = 1; // TODO: no explanation why this is padded--did we delete something? Remove for 2026
-
-  //
-  // update this data list length whenever more data is added to the table
-  //
-  //REMOVE  function padList(qrList) {
-  //REMOVE    if (qrList.length === qrValidLength - qrPadLength) {
-  //REMOVE    if (qrList.length === qrValidLength ) {
-  //REMOVE      qrList.push("");
-  //REMOVE    }
-  //REMOVE    return qrList;
-  //REMOVE  }
 
   // Validate the scanned QR string
   function validateQrList(qrList) {
