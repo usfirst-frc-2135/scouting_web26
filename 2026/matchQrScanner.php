@@ -51,6 +51,111 @@ require 'inc/header.php';
 <script>
   const qrValidLength = 32; // This is determined by game requirements and adjusted each year
 
+  // Validate the scanned QR string as an associative array
+  function validateQrObject(qrObject) {
+    if (!qrObject || typeof qrObject !== 'object' || Array.isArray(qrObject)) {
+      console.warn("validateQrObject: expected an object as an associative array");
+      return false;
+    }
+
+    const requiredFields = [
+      "appVersion",
+      "eventcode",
+      "matchnumber",
+      "teamnumber",
+      "teamalias",
+      "scoutname",
+
+      "died",
+
+      // Autonomous
+      "autonShootPreload",
+      "autonPreloadAccuracy",
+      "autonHoppersShot",
+      "autonHopperAccuracy",
+      "autonAllianceZone",
+      "autonDepot",
+      "autonOutpost",
+      "autonNeutralZone",
+      "autonClimb",
+
+      // Teleop
+      "teleopHoppersUsed",
+      "teleopHopperAccuracy",
+      "teleopIntakeAndShoot",
+      "teleopPassingRate",
+      "teleopDefenseLevel",
+      "driverAbility",
+      "teleopAllianceToAlliance",
+      "teleopNeutralToAlliance",
+
+
+      // Endgame
+      "endgameStartClimb",
+      "endgameClimbLevel",
+      "endgameClimbPosition",
+
+      // Overall
+      "comment",
+
+      // Future expansion fields
+      "other1", // used for shovelFuel
+      "other2",
+      "other3",
+      "other4"
+    ];
+
+    for (let field of requiredFields) {
+      const value = String(qrObject[field] ?? "").trim();
+      if (!value) {
+        console.warn("validateQrObject: missing required value for " + field);
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  // Normalize the scanned QR string as an associative array
+  function normalizeQrObject(qrObject) {
+    const normalized = {
+      appVersion: String(qrObject.appVersion ?? "").trim(),
+      eventcode: String(qrObject.eventcode ?? "").trim(),
+      matchnumber: String(qrObject.matchnumber ?? "").trim(),
+      teamnumber: String(qrObject.teamnumber ?? "").trim(),
+      teamalias: String(qrObject.teamalias ?? "").trim(),
+      scoutname: String(qrObject.scoutname ?? "").trim(),
+      died: String(qrObject.died ?? "").trim(),
+      autonShootPreload: String(qrObject.autonShootPreload ?? "").trim(),
+      autonPreloadAccuracy: String(qrObject.autonPreloadAccuracy ?? "").trim(),
+      autonHoppersShot: String(qrObject.autonHoppersShot ?? "").trim(),
+      autonHopperAccuracy: String(qrObject.autonHopperAccuracy ?? "").trim(),
+      autonAllianceZone: String(qrObject.autonAllianceZone ?? "").trim(),
+      autonDepot: String(qrObject.autonDepot ?? "").trim(),
+      autonOutpost: String(qrObject.autonOutpost ?? "").trim(),
+      autonNeutralZone: String(qrObject.autonNeutralZone ?? "").trim(),
+      autonClimb: String(qrObject.autonClimb ?? "").trim(),
+      teleopHoppersUsed: String(qrObject.teleopHoppersUsed ?? "").trim(),
+      teleopHopperAccuracy: String(qrObject.teleopHopperAccuracy ?? "").trim(),
+      teleopIntakeAndShoot: String(qrObject.teleopIntakeAndShoot ?? "").trim(),
+      teleopPassingRate: String(qrObject.teleopPassingRate ?? "").trim(),
+      teleopDefenseLevel: String(qrObject.teleopDefenseLevel ?? "").trim(),
+      driverAbility: String(qrObject.driverAbility ?? "").trim(),
+      teleopAllianceToAlliance: String(qrObject.teleopAllianceToAlliance ?? "").trim(),
+      teleopNeutralToAlliance: String(qrObject.teleopNeutralToAlliance ?? "").trim(),
+      endgameStartClimb: String(qrObject.endgameStartClimb ?? "").trim(),
+      endgameClimbLevel: String(qrObject.endgameClimbLevel ?? "").trim(),
+      endgameClimbPosition: String(qrObject.endgameClimbPosition ?? "").trim(),
+      comment: String(qrObject.comment ?? "").trim(),
+      other1: String(qrObject.other1 ?? "").trim(),
+      other2: String(qrObject.other2 ?? "").trim(),
+      other3: String(qrObject.other3 ?? "").trim(),
+      other4: String(qrObject.other4 ?? "").trim()
+    };
+
+    return normalized;
+  }
+
   // Validate the scanned QR string
   function validateQrList(qrList) {
     console.log("==> validateQrList: qrList.length = " + qrList.length + " (valid " + qrValidLength + ")");
@@ -66,7 +171,13 @@ require 'inc/header.php';
   // Convert the scanned QR string to a list
   //
   function qrStringToList(dataString) {
-    let out = dataString.trim().split("\t");
+    let out = [];
+    if (dataString.includes('\t')) {
+      out = dataString.trim().split("\t");
+    } else if (dataString.includes(',')) {
+      out = dataString.trim().split(",");
+    }
+
     for (let i = 0; i < out.length; ++i) {
       out[i] = out[i].trim();
     }
@@ -78,8 +189,11 @@ require 'inc/header.php';
   function qrListToMatchData(qrList) {
     let matchData = {};
 
+    // TODO: Fix these for 2027!
+    // TODO: Make case names consistent. Database fields are historically all lowercase, but QR code fields are camelCase. This is confusing and should be fixed.
+
     // Perennial fields that always occur
-    matchData["appVersion"] = qrList[0]; //
+    matchData["appVersion"] = qrList[0]; // TODO: This is a QR code version number, NOT the app version number. It is used to determine how to parse the QR code data.
     matchData["eventcode"] = qrList[1];
     matchData["matchnumber"] = qrList[2];
     matchData["teamnumber"] = qrList[3];
@@ -192,7 +306,7 @@ require 'inc/header.php';
     if (canVibrate) { // iOS does not support vibrate and crashes, so test if it's available
       try {
         window.navigator.vibrate(200); // MacOS Chrome throws an "intervention" if window is not clicked first!
-      } catch (exception) {
+      } catch (e) {
         console.warn("indicateScanSuccess: Vibrate notification request failed! - " + e);
         alert("Vibrate notification request failed!");
       }
@@ -225,15 +339,28 @@ require 'inc/header.php';
   function addCameraScanner(camId, scanner, tableId, scannedMatches) {
     scanner.decodeFromInputVideoDeviceContinuously(camId, 'camera', function(result, err) {
       if (result) {
-        let qrList = qrStringToList(result.text);
-        //REMOVE        qrList = padList(qrList);
-        console.log("addCameraScanner: qrList = " + qrList);
-        if (validateQrList(qrList)) {
-          indicateScanSuccess();
-          addMatchDataToTable(tableId, qrListToMatchData(qrList), scannedMatches);
-        } else {
-          console.warn("addCameraScanner: QR scan content failed validation!");
-          alert("QR scan content failed validation!");
+        console.log("addCameraScanner: qrList = " + result.text);
+        try {
+          let qrObject = JSON.parse(result.text);
+          console.log("addCameraScanner: qrObject = ", qrObject);
+          if (validateQrObject(qrObject)) {
+            indicateScanSuccess();
+            addMatchDataToTable(tableId, normalizeQrObject(qrObject), scannedMatches);
+          } else {
+            console.warn("addCameraScanner: QR scan content failed validation as associative array!");
+            alert("QR scan content failed validation as associative array!");
+          }
+        } catch (e) {
+          console.warn("addCameraScanner: QR scan content is not valid JSON! - " + e);
+          let qrList = qrStringToList(result.text);
+          console.log("addCameraScanner: qrList = " + qrList);
+          if (validateQrList(qrList)) {
+            indicateScanSuccess();
+            addMatchDataToTable(tableId, qrListToMatchData(qrList), scannedMatches);
+          } else {
+            console.warn("addCameraScanner: QR scan content failed validation!");
+            alert("QR scan content failed validation!");
+          }
         }
       }
     });
