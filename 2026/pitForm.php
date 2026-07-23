@@ -274,9 +274,9 @@ require 'inc/header.php';
   function getScoutName() {
     let scoutName = document.getElementById("selectScoutName").value.trim();
 
-    if (scoutName === "Choose ...")
+    if (scoutName === "Choose ...") {
       scoutName = "";
-    else if (scoutName === "Other") {
+    } else if (scoutName === "Other") {
       scoutName = document.getElementById("otherScoutName").value.trim();
       scoutName.replace(' ', '_');
     }
@@ -526,27 +526,29 @@ require 'inc/header.php';
       scoutSelect.appendChild(other);
     });
 
-    // Submit the match data form
+    // Submit the pit data form
     document.getElementById("submitButton").addEventListener('click', function() {
       if (!validatePitForm()) {
-        pitFormData = getPitFormData();
+        const pitFormData = getPitFormData();
         submitPitFormData(pitFormData);
       }
     });
 
     // Attach enterTeamNumber listener when losing focus to check for alias numbers
-    document.getElementById('enterTeamNumber').addEventListener('focusout', function() {
+    document.getElementById('enterTeamNumber').addEventListener('focusout', function(event) {
       console.log("enterTeamNumber: focus out");
       let enteredNum = event.target.value.toUpperCase().trim();
       if (isAliasNumber(enteredNum)) {
         let teamNum = getTeamNumFromAlias(enteredNum, jAliasNames);
-        if (teamNum === "")
+        if (teamNum === "") {
           document.getElementById("aliasNumber").innerText = "Alias number " + enteredNum + " is NOT valid!";
-        else
+        } else {
           document.getElementById("aliasNumber").innerText = "Alias number " + enteredNum + " is Team " + teamNum;
-        document.getElementById("enterTeamNumber").value = teamNum;
-      } else
+          document.getElementById("enterTeamNumber").value = teamNum;
+        }
+      } else {
         document.getElementById("aliasNumber").innerText = "";
+      }
     });
   });
 </script>

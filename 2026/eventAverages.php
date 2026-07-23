@@ -224,7 +224,7 @@ require 'inc/header.php';
       let startMatch = document.getElementById("startCompLevel").value + document.getElementById("startMatchNum").value.trim();
       let endMatch = document.getElementById("endCompLevel").value + document.getElementById("endMatchNum").value.trim();
       console.log("==> eventAverages: filterMatchRange: " + startMatch + " to " + endMatch);
-      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, startMatch, endMatch);
+      buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, hopperCapData, startMatch, endMatch);
     });
   }
 

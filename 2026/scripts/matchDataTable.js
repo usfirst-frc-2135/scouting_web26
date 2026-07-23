@@ -161,20 +161,6 @@ function toClimbPosition(value)
   }
 }
 
-// Converts a given driver ability number to a string
-function toDriverAbility(value)
-{
-  switch (String(value))
-  {
-    case "1": return "Slow";
-    case "2": return "Jerky";
-    case "3": return "Avg";
-    case "4": return "Fast";
-    case "5": return "Elite";
-    default: return "-";
-  }
-}
-
 // Converts a given defense rate number to a string
 function toDefenseRate(value)
 {

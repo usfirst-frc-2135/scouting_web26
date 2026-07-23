@@ -451,12 +451,12 @@ require 'inc/header.php';
     console.log("==> matchSheet: clearMatchSheet()");
 
     // Clear out custom match entries
-    document.getElementById("enterRed1").innerText = "";
-    document.getElementById("enterRed2").innerText = "";
-    document.getElementById("enterRed3").innerText = "";
-    document.getElementById("enterBlue1").innerText = "";
-    document.getElementById("enterBlue2").innerText = "";
-    document.getElementById("enterBlue3").innerText = "";
+    document.getElementById("enterRed1").value = "";
+    document.getElementById("enterRed2").value = "";
+    document.getElementById("enterRed3").value = "";
+    document.getElementById("enterBlue1").value = "";
+    document.getElementById("enterBlue2").value = "";
+    document.getElementById("enterBlue3").value = "";
 
     // Clear match summary
     document.getElementById("matchTitle").innerText = "Match:";
@@ -1022,6 +1022,7 @@ require 'inc/header.php';
     let matchList = null;
     let tbaMatchData = null;
     let matchSpec = null;
+    let hasLoadedInitialMatch = false;
 
     buildTeamBoxTableHeader("R0DataTable");
     buildTeamBoxTableHeader("R1DataTable");
@@ -1040,10 +1041,13 @@ require 'inc/header.php';
       } else {
         tbaMatchData = JSON.parse(eventMatches)["response"];
         matchList = buildMatchList(tbaMatchData);
-        if (matchId !== null)
+        if (matchId !== null) {
           matchSpec = getEventMatchSpec(matchId, matchList);
-        if ((matchSpec !== null) && (tbaMatchData !== null))
+        }
+        if ((matchSpec !== null) && (tbaMatchData !== null)) {
           loadRequiredData(matchSpec, tbaMatchData);
+          hasLoadedInitialMatch = true;
+        }
       }
     });
 
@@ -1052,8 +1056,9 @@ require 'inc/header.php';
       getAllMatchData: true
     }).done(function(allMatchData) {
       console.log("=> get scouted matchData");
-      if (matchSpec !== null && tbaMatchData !== null)
+      if (matchSpec !== null && tbaMatchData !== null && !hasLoadedInitialMatch) {
         loadRequiredData(matchSpec, tbaMatchData);
+      }
     });
 
     // Check URL for match ID to load
@@ -1061,8 +1066,10 @@ require 'inc/header.php';
     if (matchId !== null) {
       console.log("==> matchsheet: building from URL match ID! " + matchId);
       matchSpec = getEventMatchSpec(matchId, matchList);
-      if ((matchSpec !== null) && (tbaMatchData !== null))
+      if ((matchSpec !== null) && (tbaMatchData !== null)) {
         loadRequiredData(matchSpec, tbaMatchData);
+        hasLoadedInitialMatch = true;
+      }
     }
 
     // Load the match sheet from the match number entries
@@ -1070,8 +1077,10 @@ require 'inc/header.php';
       console.log("=> matchsheet: load event match!");
       matchId = document.getElementById("enterCompLevel").value + document.getElementById("enterMatchNumber").value.trim();
       matchSpec = getEventMatchSpec(matchId, matchList);
-      if ((matchSpec !== null) && (tbaMatchData !== null))
+      if ((matchSpec !== null) && (tbaMatchData !== null)) {
         loadRequiredData(matchSpec, tbaMatchData);
+        hasLoadedInitialMatch = true;
+      }
     });
 
     // Load the custom match using the custom team numbers entries
@@ -1089,8 +1098,10 @@ require 'inc/header.php';
         return alert("Please fill in Red Team Number 1 and Blue Team Number 1!");
       } else {
         matchSpec = newSpec;
-        if ((matchSpec !== null) && (tbaMatchData !== null))
+        if ((matchSpec !== null) && (tbaMatchData !== null)) {
           loadRequiredData(matchSpec, tbaMatchData);
+          hasLoadedInitialMatch = true;
+        }
       }
     });
 

@@ -250,13 +250,12 @@ require 'inc/header.php';
               </div>
 
             </div>
-          </form>
-          <!-- End Comments section -->
+            <!-- End Comments section -->
 
-          <!-- Submit button -->
-          <div class="d-grid gap-2 col-6 mx-auto">
-            <button id="submitForm" class="btn btn-primary" type="button" style="width:100%">Submit</button>
-          </div>
+            <!-- Submit button -->
+            <div class="d-grid gap-2 col-6 mx-auto">
+              <button id="submitForm" class="btn btn-primary" type="button" style="width:100%">Submit</button>
+            </div>
           </form>
         </div>
       </div>
@@ -310,7 +309,7 @@ require 'inc/header.php';
 
     document.getElementById("endGameClimbNA").selected = true;
     document.getElementById("robotDied").checked = false;
-    document.getElementById("generalComment").innerText = "";
+    document.getElementById("generalComment").value = "";
   }
 
   //
@@ -328,7 +327,7 @@ require 'inc/header.php';
       scoutName = "";
     else if (scoutName === "Other") {
       scoutName = document.getElementById("otherScoutName").value.trim();
-      scoutName.replace(' ', '_');
+      scoutName = scoutName.replace(' ', '_');
     }
     return scoutName;
   }
@@ -402,7 +401,7 @@ require 'inc/header.php';
 
     dataToSave["endgameCageClimb"] = document.getElementById("endGameClimb").value;
     dataToSave["died"] = document.getElementById("robotDied").checked ? 1 : 0;
-    dataToSave["comment"] = document.getElementById("generalComment").innerText;
+    dataToSave["comment"] = document.getElementById("generalComment").value;
     return dataToSave;
   }
 
@@ -611,7 +610,7 @@ require 'inc/header.php';
     document.getElementById("submitForm").addEventListener('click', function() {
       if (!validateMatchForm(auton, teleop)) {
         matchFormData = getMatchFormData(auton, teleop);
-        alert("This match form is NOT yet tested to save data for the 2025 game!");
+        alert("This match form is NOT yet tested to save data for the 2026 game!");
         //    submitMatchFormData(matchFormData);
       }
     });

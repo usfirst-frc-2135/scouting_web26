@@ -29,7 +29,7 @@ class matchDataProcessor
     else if (hopperCapData.length == 0)   // TEST
       console.log("   ===>>> matchDataProcessor constructor hopperCapData is empty");
 
-    this.mData = jMatchData;
+    this.mData = Array.isArray(jMatchData) ? jMatchData : [];
     this.tbaMatchData = tbaMatchData;   // For REBUILT
     this.pitData = pitData;             // For REBUILT
     this.hopperCapData = hopperCapData; // For REBUILT
@@ -207,8 +207,7 @@ class matchDataProcessor
   sortMatches(newData)
   {
     console.log("matchDataProcessor: sortMatches:");
-    newData.sort(function (a, b)
-    {
+    newData.sort((a, b) => {
       let compare = this.isMatchLessThanOrEqual(a["matchnumber"], b["matchnumber"]);
       return (compare) ? -1 : 1;
     });
@@ -297,7 +296,8 @@ class matchDataProcessor
     // Saves the (raw) value for this keyword from this match in .val
     // Adds the value to the stored sum of all the matches' values for this keyword in .sum
     // Updates the max value if this value is the new max) in .max
-    let value = parseInt(match[mtKeyword]);
+    let rawValue = match[mtKeyword];
+    let value = (rawValue === null || rawValue === undefined || rawValue === "") ? 0 : parseInt(rawValue, 10);
     item[mdpKeyword].val = value;
     item[mdpKeyword].sum += value;
     item[mdpKeyword].max = Math.max(item[mdpKeyword].max, value);
@@ -338,7 +338,8 @@ class matchDataProcessor
     }
 
     // Saves the (raw) value for this keyword from this match in .val
-    let value = parseFloat(match[mtKeyword]);
+    let rawValue = match[mtKeyword];
+    let value = (rawValue === null || rawValue === undefined || rawValue === "") ? 0 : parseFloat(rawValue);
     item[mdpKeyword].val = value;
 
     // If the value (radio button value) is greater than the array size, that's BAD so exit!
@@ -436,10 +437,15 @@ class matchDataProcessor
   // Find this team entry in pData.
   findPDataTeamItem(pData, teamnum)
   {
+    if (!pData || typeof pData !== "object")
+    {
+      return null;
+    }
+
     for (const i in pData)
     {
-      let teamItem = this.pData[i];
-      let teamNum = teamItem["teamNum"];
+      let teamItem = pData[i];
+      let teamNum = teamItem && teamItem["teamNum"];
       if (teamNum == teamnum)
         return teamItem;
     }

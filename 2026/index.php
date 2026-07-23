@@ -227,8 +227,8 @@ require 'inc/header.php';
 
     // Loop through handling all fields
     for (const id in idToConfigKey) {
-      fieldWriteMap[id] = false;
       let elementRef = document.getElementById(id);
+      fieldWriteMap[id] = (elementRef.value.trim() !== "");
       elementRef.addEventListener("change", function(evt) {
         if (elementRef.value === "") {
           elementRef.classList.add("text-bg-warning");

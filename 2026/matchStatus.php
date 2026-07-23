@@ -64,6 +64,12 @@ require 'inc/header.php';
     console.log("==> insertMatchStatusBody: tableId " + tableId);
 
     let tbodyRef = document.getElementById(tableId).querySelector('tbody');
+    if (!tbodyRef) {
+      console.warn("insertMatchStatusBody: tbody not found for " + tableId);
+      return;
+    }
+
+    const allMatchDataArray = Array.isArray(allMatchData) ? allMatchData : [];
     for (let emi in eventMatches) {
       let match = eventMatches[emi];
       let matchNum = match["match_number"];
@@ -79,12 +85,19 @@ require 'inc/header.php';
       rowString += "<td class='fw-bold'>" + matchId + "</td>";
 
       // Red teams in this match
-      for (team in alliances["red"]["team_keys"]) {
-        let cellString = "<td class='table-danger'>" + alliances["red"]["team_keys"][team].substring(3) + "</td>";
-        for (let ami in allMatchData) {
-          if ((allMatchData[ami]["matchnumber"] === matchId) && allMatchData[ami]["teamnumber"] === alliances["red"]["team_keys"][team].substring(3)) {
-            cellString = "<td class='table-" + ((!scouts.includes(allMatchData[ami]["scoutname"])) ? "success'>" : "warning'>") + allMatchData[ami]["scoutname"] + "</td>";
-            scouts.push(allMatchData[ami]["scoutname"]);
+      for (let teamIndex in alliances["red"]["team_keys"]) {
+        let teamKey = alliances["red"]["team_keys"][teamIndex];
+        let teamNumber = teamKey.substring(3);
+        let cellString = "<td class='table-danger'>" + teamNumber + "</td>";
+        for (let ami = 0; ami < allMatchDataArray.length; ami++) {
+          let matchEntry = allMatchDataArray[ami];
+          if ((matchEntry["matchnumber"] === matchId) && matchEntry["teamnumber"] === teamNumber) {
+            let scoutName = matchEntry["scoutname"] || "";
+            let rowClass = (!scouts.includes(scoutName) && scoutName !== "") ? "success" : "warning";
+            cellString = "<td class='table-" + rowClass + "'>" + scoutName + "</td>";
+            if (scoutName !== "") {
+              scouts.push(scoutName);
+            }
             break;
           }
         }
@@ -92,12 +105,19 @@ require 'inc/header.php';
       }
 
       // Blue teams in this match
-      for (team in alliances["blue"]["team_keys"]) {
-        let cellString = "<td class='table-primary'>" + alliances["blue"]["team_keys"][team].substring(3) + "</td>";
-        for (let ami in allMatchData) {
-          if ((allMatchData[ami]["matchnumber"] === matchId) && allMatchData[ami]["teamnumber"] === alliances["blue"]["team_keys"][team].substring(3)) {
-            cellString = "<td class='table-" + ((!scouts.includes(allMatchData[ami]["scoutname"])) ? "success'>" : "warning'>") + allMatchData[ami]["scoutname"] + "</td>";
-            scouts.push(allMatchData[ami]["scoutname"]);
+      for (let teamIndex in alliances["blue"]["team_keys"]) {
+        let teamKey = alliances["blue"]["team_keys"][teamIndex];
+        let teamNumber = teamKey.substring(3);
+        let cellString = "<td class='table-primary'>" + teamNumber + "</td>";
+        for (let ami = 0; ami < allMatchDataArray.length; ami++) {
+          let matchEntry = allMatchDataArray[ami];
+          if ((matchEntry["matchnumber"] === matchId) && matchEntry["teamnumber"] === teamNumber) {
+            let scoutName = matchEntry["scoutname"] || "";
+            let rowClass = (!scouts.includes(scoutName) && scoutName !== "") ? "success" : "warning";
+            cellString = "<td class='table-" + rowClass + "'>" + scoutName + "</td>";
+            if (scoutName !== "") {
+              scouts.push(scoutName);
+            }
             break;
           }
         }
@@ -117,8 +137,9 @@ require 'inc/header.php';
   function loadMatchStatusTable(tableId, eventMatches, allMatchData) {
     console.log("==> matchStatus: loadMatchStatusTable()");
 
-    if ((eventMatches === null) || (allMatchData === null))
+    if ((eventMatches === null) || (allMatchData === null)) {
       return;
+    }
 
     console.log("=> loadMatchStatusTable");
     insertMatchStatusHeader(tableId);
@@ -139,16 +160,30 @@ require 'inc/header.php';
       getEventMatches: true
     }).done(function(eventMatches) {
       console.log("=> getEventMatches");
-      jEventMatches = JSON.parse(eventMatches)["response"];
-      loadMatchStatusTable(tableId, jEventMatches, jAllMatchData);
+      try {
+        jEventMatches = JSON.parse(eventMatches)["response"];
+      } catch (e) {
+        console.warn("buildMatchStatusTable: invalid TBA match data", e);
+        jEventMatches = [];
+      }
+      if (jEventMatches !== null && jAllMatchData !== null) {
+        loadMatchStatusTable(tableId, jEventMatches, jAllMatchData);
+      }
     });
 
     $.get("api/dbReadAPI.php", {
       getAllMatchData: true
     }).done(function(matchData) {
       console.log("=> getAllMatchData");
-      jAllMatchData = JSON.parse(matchData);
-      loadMatchStatusTable(tableId, jEventMatches, jAllMatchData);
+      try {
+        jAllMatchData = JSON.parse(matchData);
+      } catch (e) {
+        console.warn("buildMatchStatusTable: invalid match data", e);
+        jAllMatchData = [];
+      }
+      if (jEventMatches !== null && jAllMatchData !== null) {
+        loadMatchStatusTable(tableId, jEventMatches, jAllMatchData);
+      }
     });
 
   }

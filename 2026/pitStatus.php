@@ -47,15 +47,14 @@ require 'inc/header.php';
   //
   function loadPitStatusTable(tableId, teams, names, images, pitInfo) {
     console.log("==> pitStatus: loadPitStatusTable()");
-    if (teams === [] || names === [] || images === null || pitInfo === null) {
-      // console.warn("loadPitStatusTable: teams, names, images, or pit data are missing -- still waiting for gets!");
+    if (!Array.isArray(teams) || teams.length === 0 || !names || images === null || pitInfo === null) {
       return;
     }
 
     let tbodyRef = document.getElementById(tableId).querySelector('tbody');
     tbodyRef.innerHTML = "";
     for (let teamNum of teams) {
-      let teamName = names[teamNum];
+      let teamName = names[teamNum] || "";
       let row = "";
       row += "<td class='text-start'>" + "<a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</a>";
       row += " - " + teamName;
@@ -64,13 +63,13 @@ require 'inc/header.php';
       if (pitInfo[teamNum] != null) {
         row += " <td class='table-success'>Yes</td>";
       } else {
-        row += "<td><a href='pitForm.php?teamNum=" + teamNum + "'>No</td>"
+        row += "<td><a href='pitForm.php?teamNum=" + teamNum + "'>No</a></td>";
       }
 
       if ((images[teamNum] != null) && (images[teamNum].length > 0)) {
-        row += "<td class='table-success'><a href='pitPhotoUpload.php?teamNum=" + teamNum + "'>Yes</td>";
+        row += "<td class='table-success'><a href='pitPhotoUpload.php?teamNum=" + teamNum + "'>Yes</a></td>";
       } else {
-        row += "<td><a href='pitPhotoUpload.php?teamNum=" + teamNum + "'>No</td>"
+        row += "<td><a href='pitPhotoUpload.php?teamNum=" + teamNum + "'>No</a></td>";
       }
       tbodyRef.insertRow().innerHTML = row;
     }
@@ -91,8 +90,15 @@ require 'inc/header.php';
     let namesList = [];
     let jTeamImages = null;
     let jPitData = null;
+    let teamNamesReady = false;
 
-    // Get alias table data
+    function renderTableIfReady() {
+      if (teamNamesReady && jTeamImages !== null && jPitData !== null) {
+        loadPitStatusTable(tableId, teamList, namesList, jTeamImages, jPitData);
+      }
+    }
+
+    // Get alias table data first so team names can be resolved correctly.
     $.get("api/dbReadAPI.php", {
       getEventAliasNames: true
     }).done(function(eventAliasNames) {
@@ -101,43 +107,44 @@ require 'inc/header.php';
       if (jAliasNames.length > 0) {
         console.log("pitStatus: aliases used");
       }
-    });
 
-    // Get the list of teams and add the team names 
-    $.get("api/tbaAPI.php", {
-      getEventTeamNames: true
-    }).done(function(eventTeamNames) {
-      console.log("=> getEventTeamNames");
-      if (eventTeamNames === null) {
-        return alert("Can't load eventTeamNames from TBA; check if TBA Key was set in db_config");
-      }
-      let jEventTeams = JSON.parse(eventTeamNames);
-      console.log("pitStatus: jEventTeams length = " + jEventTeams.length);
-      for (let evtTeam in jEventTeams) {
-        let evtTeamNum = jEventTeams[evtTeam]["teamnum"];
-        let evtTeamName = jEventTeams[evtTeam]["teamname"];
-
-        // Checking if alias is being used and adjust team name accordingly.
-        // At this point, the teamNum could be the 99-number.
-        if (jAliasNames.length > 0) {
-          let bcdNum = getTeamNumFromAlias(evtTeamNum, jAliasNames);
-          if (bcdNum !== "") {
-            // This entry is an alias, so create a new entry with the bcdNum with the alias as evtTeamName.
-            evtTeamName = evtTeamNum;
-            evtTeamNum = bcdNum;
-          }
+      // Get the list of teams and add the team names
+      $.get("api/tbaAPI.php", {
+        getEventTeamNames: true
+      }).done(function(eventTeamNames) {
+        console.log("=> getEventTeamNames");
+        if (eventTeamNames === null) {
+          return alert("Can't load eventTeamNames from TBA; check if TBA Key was set in db_config");
         }
-        teamList.push(evtTeamNum);
-        namesList[evtTeamNum] = evtTeamName;
-      }
+        let jEventTeams = JSON.parse(eventTeamNames);
+        console.log("pitStatus: jEventTeams length = " + jEventTeams.length);
+        for (let evtTeam in jEventTeams) {
+          let evtTeamNum = jEventTeams[evtTeam]["teamnum"];
+          let evtTeamName = jEventTeams[evtTeam]["teamname"];
 
-      // Get all the team images for the list of teams
-      $.get("api/dbReadAPI.php", {
-        getAllTeamImages: JSON.stringify(teamList)
-      }).done(function(teamImages) {
-        console.log("=> pitStatus: getAllTeamImages");
-        jTeamImages = JSON.parse(teamImages);
-        loadPitStatusTable(tableId, teamList, namesList, jTeamImages, jPitData);
+          // Checking if alias is being used and adjust team name accordingly.
+          // At this point, the teamNum could be the 99-number.
+          if (jAliasNames.length > 0) {
+            let bcdNum = getTeamNumFromAlias(evtTeamNum, jAliasNames);
+            if (bcdNum !== "") {
+              // This entry is an alias, so create a new entry with the bcdNum with the alias as evtTeamName.
+              evtTeamName = evtTeamNum;
+              evtTeamNum = bcdNum;
+            }
+          }
+          teamList.push(evtTeamNum);
+          namesList[evtTeamNum] = evtTeamName;
+        }
+        teamNamesReady = true;
+
+        // Get all the team images for the list of teams
+        $.get("api/dbReadAPI.php", {
+          getAllTeamImages: JSON.stringify(teamList)
+        }).done(function(teamImages) {
+          console.log("=> pitStatus: getAllTeamImages");
+          jTeamImages = JSON.parse(teamImages);
+          renderTableIfReady();
+        });
       });
     });
 
@@ -147,7 +154,7 @@ require 'inc/header.php';
     }).done(function(allPitData) {
       console.log("=> getAllPitData");
       jPitData = JSON.parse(allPitData);
-      loadPitStatusTable(tableId, teamList, namesList, jTeamImages, jPitData);
+      renderTableIfReady();
     });
   }
 

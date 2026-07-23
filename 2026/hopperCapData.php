@@ -61,7 +61,7 @@ require 'inc/header.php';
   //
   function loadHopperCapTable(tableId, hopperCapList) {
     console.log("==> hopperCapData: loadHopperCapTable()");
-    if (hopperCapList === []) {
+    if (hopperCapList == null || hopperCapList.length == 0) {
       // console.warn("loadHopperCapTable: hopperCapList is missing!");
       return;
     }

@@ -66,7 +66,7 @@ require 'inc/header.php';
   //
   function loadAliasDataTable(tableId, teamAliasList) {
     console.log("==> aliasData: loadAliasDataTable()");
-    if (teamAliasList === []) {
+    if (teamAliasList == null || teamAliasList.length == 0) {
       // console.warn("loadAliasDataTable: teamAliasList is missing!");
       return;
     }

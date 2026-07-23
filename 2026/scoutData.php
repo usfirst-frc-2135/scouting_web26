@@ -65,19 +65,23 @@ require 'inc/header.php';
   //
   function loadScoutDataTable(tableId, scoutNameList) {
     console.log("==> scoutData: loadScoutDataTable()");
-    if (scoutNameList === []) {
-      // console.warn("loadScoutDataTable: scoutNameList is missing!");
+    if (!Array.isArray(scoutNameList)) {
       return;
     }
 
     let tbodyRef = document.getElementById(tableId).querySelector('tbody');
     tbodyRef.innerHTML = "";
     for (let entry of scoutNameList) {
-      let key = entry["scoutname"].replace(' ', '_');
+      let scoutName = entry && entry["scoutname"] ? entry["scoutname"] : "";
+      if (!scoutName) {
+        continue;
+      }
+
+      let key = scoutName.replace(' ', '_');
       let row = tbodyRef.insertRow();
       row.id = key + "_row";
       row.innerHTML = "";
-      row.innerHTML += "<td class='text-start'>" + entry["scoutname"] + "</td>";
+      row.innerHTML += "<td class='text-start'>" + scoutName + "</td>";
       row.innerHTML += "<td> <button id='" + key + "_delete' value='" + key + "' class='btn btn-danger' type='button'>Delete</button></td>";
 
       // Add delete button

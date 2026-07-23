@@ -1066,7 +1066,7 @@ require 'inc/header.php';
     });
 
     // Attach enterTeamNumber listener when losing focus to check for alias numbers
-    document.getElementById('enterTeamNumber').addEventListener('focusout', function() {
+    document.getElementById('enterTeamNumber').addEventListener('focusout', function(event) {
       //      console.log("enterTeamNumber: focus out");
       validateEnteredTeamNumber(event, jAliasNames);
     });

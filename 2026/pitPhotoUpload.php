@@ -121,7 +121,7 @@ require 'inc/header.php';
   //
   function uploadSuccess(msg) {
     console.log("==> pitPhotoUpload: uploadSuccess: " + msg);
-    loadingSpinner.style.visibility = 'hidden';
+    document.getElementById("loadingSpinner").style.visibility = 'hidden';
     let jMsg = JSON.parse(msg);
     if (jMsg["success"]) {
       showSuccessMessage("Upload successful, clearing form!");
@@ -138,7 +138,7 @@ require 'inc/header.php';
     let teamNum = document.getElementById("enterTeamNumber").value.toUpperCase().trim();
     if (document.getElementById("robotPic").value != "") {
       if (validateTeamNumber(teamNum, null) > 0) {
-        loadingSpinner.style.visibility = 'visible';
+        document.getElementById("loadingSpinner").style.visibility = 'visible';
 
         // Replace checkbox is ticked
         if (document.getElementById("replacePic").checked) {
@@ -194,11 +194,11 @@ require 'inc/header.php';
           });
         }, 500);
       } else {
-        loadingSpinner.style.visibility = 'hidden';
+        document.getElementById("loadingSpinner").style.visibility = 'hidden';
         alert("Team Number is invalid - must be integer with optional last alpha!");
       }
     } else {
-      loadingSpinner.style.visibility = 'hidden';
+      document.getElementById("loadingSpinner").style.visibility = 'hidden';
       alert("Please fill in robot photo!");
     }
 
@@ -282,9 +282,9 @@ require 'inc/header.php';
     }
 
     // Attach enterTeamNumber listener when losing focus to check for alias numbers
-    document.getElementById('enterTeamNumber').addEventListener('focusout', function() {
+    document.getElementById('enterTeamNumber').addEventListener('focusout', function(evt) {
       console.log("enterTeamNumber: focus out");
-      let enteredNum = event.target.value.toUpperCase().trim();
+      let enteredNum = (evt.target.value || '').toUpperCase().trim();
       if (isAliasNumber(enteredNum)) {
         let teamNum = getTeamNumFromAlias(enteredNum, jAliasNames);
         if (teamNum === "")
