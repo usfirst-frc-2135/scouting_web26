@@ -4,14 +4,21 @@
 <html lang="en" data-bs-theme="light">
 
 <head>
-  <title><?php echo $title; ?></title>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <title><?php echo $title; ?></title>
+
   <meta name="description" content="Scouting Data Web">
   <meta name="author" content="FRC 2135">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="icon" href="./images/favicon.ico">
-  <link rel="icon" href="./images/favicon-32x32.png" type="image/png" sizes="32x32">
-  <link href="./external/bootstrap-5.3.6-dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <!-- 2135 Customizations -->
 
   <style type="text/css" media="screen">
     .form-check-input {
