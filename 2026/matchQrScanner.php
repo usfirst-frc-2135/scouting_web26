@@ -279,8 +279,10 @@ require 'inc/header.php';
       document.getElementById(key + "_delete").addEventListener('click', function() {
         removeQrScanEntry(this.value, scannedMatches);
       });
+      return true;
     } else {
       console.log("addMatchDataToTable: scannedMatches already has that key!");
+      return false;
     }
   }
 
@@ -328,79 +330,96 @@ require 'inc/header.php';
   //
   //  Reads default camera ID from localStorage, or returns original ID
   //
-  function getDefaultDeviceID(id) {
-    let defaultId = localStorage.getItem("cameraDefaultID");
-    return (defaultId !== null) ? defaultId : id;
+  function getDefaultDeviceID(id, availableIds = []) {
+    const defaultId = localStorage.getItem("cameraDefaultID");
+    if (defaultId && availableIds.includes(defaultId)) {
+      return defaultId;
+    }
+    return id;
   }
 
   //
   // Responsible for handling actions that occur when camera is scanning
   //
-  function addCameraScanner(camId, reader, tableId, scannedMatches, fallbackIds = []) {
-    const cameraIds = [camId, ...fallbackIds.filter(id => id !== camId)].filter(Boolean);
-    let attemptIndex = 0;
+  function addCameraScanner(camId, reader, tableId, scannedMatches) {
 
-    function tryNextCamera() {
-      if (attemptIndex >= cameraIds.length) {
-        console.warn("addCameraScanner: unable to access any camera device");
-        alert("Unable to access a camera. Please allow camera access and try again.");
+    if (typeof reader.reset === 'function') {
+      reader.reset();
+    }
+
+    reader.decodeFromVideoDevice(camId, 'camera', function(result, err) {
+      // QR reader detected a QR code
+      if (result) {
+        console.log("addCameraScanner: result =\n" + result.text);
+        try {
+          let qrObject = JSON.parse(result.text);
+          console.log("addCameraScanner: qrObject =\n", qrObject);
+          if (validateQrObject(qrObject)) {
+            indicateScanSuccess();
+            if (addMatchDataToTable(tableId, normalizeQrObject(qrObject), scannedMatches)) {
+              console.info("addCameraScanner: QR scan content added to table successfully!");
+            } else {
+              console.warn("addCameraScanner: QR scan content already exists in table!");
+            }
+          } else {
+            console.warn("addCameraScanner: QR scan content failed validation as associative array!");
+            alert("QR scan content failed validation as associative array!");
+          }
+        } catch (e) {
+          if (e instanceof SyntaxError) {
+            console.info("addCameraScanner: SyntaxError: QR scan content is not valid JSON, trying TSV\n" + e);
+            let qrList = qrStringToList(result.text);
+            console.log("addCameraScanner: qrList =\n" + qrList);
+            if (validateQrList(qrList)) {
+              indicateScanSuccess();
+              if (addMatchDataToTable(tableId, qrListToMatchData(qrList), scannedMatches)) {
+                console.info("addCameraScanner: TSV/CSV QR scan content added to table successfully!");
+              } else {
+                console.warn("addCameraScanner: TSV/CSV QR scan content already exists in table!");
+              }
+            } else {
+              console.warn("addCameraScanner: TSV/CSV QR scan content failed validation!");
+              alert("QR scan content failed TSV/CSV validation!");
+            }
+          } else {
+            console.error("addCameraScanner: Unexpected error while parsing QR scan content\n" + e);
+            alert("Unexpected error while parsing QR scan content!");
+          }
+        }
         return;
       }
 
-      const currentCamId = cameraIds[attemptIndex];
-      attemptIndex += 1;
-
-      if (typeof reader.reset === 'function') {
-        reader.reset();
+      // QR reader did not detect a QR code, but there was an error
+      if (err) {
+        if (err instanceof ZXing.NotFoundException) {
+          return;
+        } else if (err instanceof ZXing.FormatException) {
+          console.warn("addCameraScanner: QR code format error");
+          return;
+        } else if (err instanceof ZXing.ChecksumException) {
+          console.warn("addCameraScanner: QR code checksum error");
+          return;
+        } else {
+          console.error("addCameraScanner: Unexpected error while parsing QR scan content");
+          alert("Unexpected error while parsing QR scan content!");
+          return;
+        }
       }
-
-      reader.decodeFromVideoDevice(currentCamId, 'camera', function(result, err) {
-        if (result) {
-          console.log("addCameraScanner: qrList = " + result.text);
-          try {
-            let qrObject = JSON.parse(result.text);
-            console.log("addCameraScanner: qrObject = ", qrObject);
-            if (validateQrObject(qrObject)) {
-              indicateScanSuccess();
-              addMatchDataToTable(tableId, normalizeQrObject(qrObject), scannedMatches);
-            } else {
-              console.warn("addCameraScanner: QR scan content failed validation as associative array!");
-              alert("QR scan content failed validation as associative array!");
-            }
-          } catch (e) {
-            console.log("addCameraScanner: QR scan content is not valid JSON, trying TSV - " + e);
-            let qrList = qrStringToList(result.text);
-            console.log("addCameraScanner: qrList = " + qrList);
-            if (validateQrList(qrList)) {
-              indicateScanSuccess();
-              addMatchDataToTable(tableId, qrListToMatchData(qrList), scannedMatches);
-            } else {
-              console.warn("addCameraScanner: QR scan content failed validation!");
-              alert("QR scan content failed validation!");
-            }
-          }
-          return;
-        }
-
-        if (err && !(err instanceof ZXing.NotFoundException)) {
-          console.warn("addCameraScanner: camera failed for " + currentCamId + " - " + (err.message || err));
-          tryNextCamera();
-          return;
-        }
-      });
-    }
-
-    tryNextCamera();
+    });
   }
 
   //
   // Build the camera selection dropdown and connect the QR code reader passed in
   //
-  function createCameraSelector(camTagId, reader, tableId, scannedMatches) {
-    // Look for cameras, enumerate them, and connect the reader
-    reader.getVideoInputDevices().then(function(videoInputDevices) {
-      let camDeviceId = null;
+  function createCameraSelector(camTagId, tableId, scannedMatches) {
+    // Create a new instance of the ZXing QR code reader
+    // Original ZXing source:  https://github.com/zxing-js/browser/blob/a254f65c770423a1638253f86c12c19937f32f4c/src/readers/BrowserQRCodeReader.ts
+    const qrReader = new ZXing.BrowserQRCodeReader();
+
+    // Look for cameras, enumerate them, and connect to the reader
+    qrReader.getVideoInputDevices().then(function(videoInputDevices) {
       let camSelector = document.getElementById(camTagId);
+      let camDeviceId = null;
       const cameraDeviceIds = [];
       console.log("createCameraSelector: Camera count: " + videoInputDevices.length);
       if (videoInputDevices.length >= 1) {
@@ -423,15 +442,16 @@ require 'inc/header.php';
         return;
       }
 
-      const preferredCamId = getDefaultDeviceID(camDeviceId);
+      const preferredCamId = getDefaultDeviceID(camDeviceId, cameraDeviceIds);
 
       // Creates reader on default camera based on saved data
-      addCameraScanner(preferredCamId, reader, tableId, scannedMatches, cameraDeviceIds);
+      console.log("createCameraSelector: preferredCamId = " + preferredCamId);
+      addCameraScanner(preferredCamId, qrReader, tableId, scannedMatches);
 
       // Handle drop down changes to select another camera when necessary
       document.getElementById(camTagId).addEventListener('change', function() {
         let newCamId = document.getElementById(camTagId).value;
-        addCameraScanner(newCamId, reader, tableId, scannedMatches, cameraDeviceIds);
+        addCameraScanner(newCamId, qrReader, tableId, scannedMatches);
         setDefaultDeviceID(newCamId);
       });
     });
@@ -496,9 +516,8 @@ require 'inc/header.php';
     // Initialze the page
     updateScannedMatchCount(scannedMatches);
 
-    // Attach the ZXing QR reader/decoder to the camera and load camera choices
-    const reader = new ZXing.BrowserQRCodeReader();
-    createCameraSelector("cameraSelector", reader, tableId, scannedMatches);
+    // Set up the camera selector and choose the default
+    createCameraSelector("cameraSelector", tableId, scannedMatches);
 
     // Submit the scanned data
     document.getElementById("submitData").addEventListener('click', function() {
