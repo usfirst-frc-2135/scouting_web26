@@ -3,8 +3,8 @@ $title = 'Pit Scouting Status';
 require 'inc/header.php';
 ?>
 
-<div class="container row-offcanvas row-offcanvas-left">
-  <div id="content" class="column card-lg-12  col-sm-12 col-xs-12">
+<div class="container-fluid row-offcanvas row-offcanvas-left">
+  <div id="content" class="column card-lg-12 col-sm-12 col-xs-12">
 
     <!-- Page Title -->
     <div class="row pt-3 mb-3">
@@ -12,7 +12,7 @@ require 'inc/header.php';
     </div>
 
     <!-- Main row to hold the table -->
-    <div class="row mb-3">
+    <div class="row col-12 m-3">
 
       <style type="text/css" media="screen">
         thead {
@@ -30,7 +30,7 @@ require 'inc/header.php';
             <th scope='col'>Photo Uploaded?</th>
           </tr>
         </thead>
-        <tbody class=" table-group-divider">
+        <tbody class="table-group-divider">
         </tbody>
       </table>
     </div>

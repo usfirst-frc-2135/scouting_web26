@@ -3,7 +3,7 @@ $title = 'Match Scouting Form - REEFSCAPE';
 require 'inc/header.php';
 ?>
 
-<div class="container row-offcanvas row-offcanvas-left">
+<div class="container-fluid row-offcanvas row-offcanvas-left">
   <div id="content" class="column card-lg-12 col-sm-12 col-xs-12">
 
     <!-- Page Title -->
@@ -68,7 +68,7 @@ require 'inc/header.php';
                 <!-- Checkboxes -->
                 <div class="form-check form-check-inline mb-3">
                   <input id="leaveStartLine" class="form-check-input" type="checkbox" name="leaveStartLine">
-                  <label for=" leaveStartLine" class=" form-check-label">Leave Start Line?</label>
+                  <label for="leaveStartLine" class="form-check-label">Leave Start Line?</label>
                 </div>
 
                 <!-- Coral -->

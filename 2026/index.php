@@ -3,7 +3,7 @@ $title = 'Database Status';
 require 'inc/header.php';
 ?>
 
-<div class="container row-offcanvas row-offcanvas-left">
+<div class="container-fluid row-offcanvas row-offcanvas-left">
   <div id="content" class="column card-lg-12 col-sm-12 col-xs-12">
 
     <!-- Page Title -->
@@ -112,13 +112,13 @@ require 'inc/header.php';
                 placeholder="FRC event code (ex. 2024camb)" aria-describedby="tbaEventCode">
             </div>
 
-            <div class="row mb-3 mx-auto" style=" width: 200px;">
+            <div class="row mb-3 mx-auto" style="width: 200px;">
               <button id="writeConfig" class="btn btn-primary">Write Config File</button>
             </div>
-            <div class="row mb-3 mx-auto" style=" width: 200px;">
+            <div class="row mb-3 mx-auto" style="width: 200px;">
               <button id="createDB" class="btn btn-primary">Create DB</button>
             </div>
-            <div class="row mb-3 mx-auto" style=" width: 200px;">
+            <div class="row mb-3 mx-auto" style="width: 200px;">
               <button id="createTables" class="btn btn-primary">Create Tables</button>
             </div>
           </div>
@@ -133,19 +133,19 @@ require 'inc/header.php';
             Table Config/Status
           </div>
           <div class="card-body">
-            <div class="row mb-3 mx-auto" style=" width: 200px;">
+            <div class="row mb-3 mx-auto" style="width: 200px;">
               <a class="btn btn-primary" href="./scoutData.php" role="button">Configure Scout Names</a>
             </div>
-            <div class="row mb-3 mx-auto" style=" width: 200px;">
+            <div class="row mb-3 mx-auto" style="width: 200px;">
               <a class="btn btn-primary" href="./aliasData.php" role="button">Configure Team Aliases</a>
             </div>
-            <div class="row mb-3 mx-auto" style=" width: 200px;">
+            <div class="row mb-3 mx-auto" style="width: 200px;">
               <a class="btn btn-primary" href="./hopperCapData.php" role="button">Configure Hopper Caps</a>
             </div>
-            <div class="row mb-3 mx-auto" style=" width: 200px;">
+            <div class="row mb-3 mx-auto" style="width: 200px;">
               <a class="btn btn-primary" href="./matchStatus.php" role="button">Match Data Status</a>
             </div>
-            <div class="row mb-3 mx-auto" style=" width: 200px;">
+            <div class="row mb-3 mx-auto" style="width: 200px;">
               <a class="btn btn-primary" href="./matchCheck.php" role="button">Match Data Check</a>
             </div>
           </div>

@@ -3,7 +3,7 @@ $title = 'Strategic Schedule';
 require 'inc/header.php';
 ?>
 
-<div class="container row-offcanvas row-offcanvas-left">
+<div class="container-fluid row-offcanvas row-offcanvas-left">
   <div id="content" class="column card-lg-12 col-sm-12 col-xs-12">
 
     <!-- Page Title -->
@@ -74,7 +74,7 @@ require 'inc/header.php';
               <th scope="col">Delete</th>
             </tr>
           </thead>
-          <tbody class=" table-group-divider">
+          <tbody class="table-group-divider">
           </tbody>
         </table>
       </div>

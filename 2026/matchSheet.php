@@ -3,7 +3,7 @@ $title = 'Match Sheet';
 require 'inc/header.php';
 ?>
 
-<div class="container row-offcanvas row-offcanvas-left">
+<div class="container-fluid row-offcanvas row-offcanvas-left">
   <div id="content" class="column card-lg-12 col-sm-12 col-xs-12">
 
     <!-- Page Title -->

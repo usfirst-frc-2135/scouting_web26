@@ -3,7 +3,7 @@ $title = 'Strategic Data';
 require 'inc/header.php';
 ?>
 
-<div class="container row-offcanvas row-offcanvas-left">
+<div class="container-fluid row-offcanvas row-offcanvas-left">
   <div id="content" class="column card-lg-12 col-sm-12 col-xs-12">
 
     <!-- Page Title -->
@@ -13,7 +13,7 @@ require 'inc/header.php';
     </div>
 
     <!-- Main row to hold the strategic table -->
-    <div class=" row col-12 mb-3">
+    <div class="row col-12 mb-3">
 
       <div id="freeze-table" class="freeze-table overflow-auto">
         <table id="strategicTable" class="table table-striped table-bordered table-hover table-sm border-secondary text-center">
