@@ -19,7 +19,7 @@ require 'inc/header.php';
         <div class="card mb-3">
 
           <!-- Our team matches list -->
-          <h5 class="pt-3">2135 Match Links</h5>
+          <h5 class="ms-3 pt-3">2135 Match Links</h5>
           <div class="row mb-3">
             <div id="ourMatches"></div>
           </div>
