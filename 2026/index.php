@@ -4,7 +4,7 @@ require 'inc/header.php';
 ?>
 
 <div class="container-fluid row-offcanvas row-offcanvas-left">
-  <div id="content" class="column card-lg-12 col-sm-12 col-xs-12">
+  <div id="content" class="column col-lg-12 col-sm-12 col-xs-12">
 
     <!-- Page Title -->
     <div class="row pt-3 mb-3">
@@ -15,7 +15,7 @@ require 'inc/header.php';
       <div class="col-lg-6 col-sm-6 col-xs-6 gx-3">
 
         <!-- Status Card -->
-        <div class="card">
+        <div class="card mb-3">
           <div class="card-header">
             Database Status
           </div>
@@ -41,7 +41,7 @@ require 'inc/header.php';
 
         <!-- Match filter button card -->
         <div class="overflow-auto">
-          <div class="card">
+          <div class="card mb-3">
             <div class="card-header">
               Select Match Data to Use
             </div>
@@ -76,7 +76,7 @@ require 'inc/header.php';
 
       <!-- DB Config text entry card -->
       <div class="col-lg-6 col-sm-6 col-xs-6 gx-3">
-        <div class="card">
+        <div class="card mb-3">
           <div class="card-header">
             Database Config
           </div>
@@ -128,7 +128,7 @@ require 'inc/header.php';
 
       <!-- DB Config text entry card -->
       <div class="col-lg-6 col-sm-6 col-xs-6 gx-3">
-        <div class="card">
+        <div class="card mb-3">
           <div class="card-header">
             Table Config/Status
           </div>

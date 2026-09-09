@@ -4,7 +4,7 @@ require 'inc/header.php';
 ?>
 
 <div class="container-fluid row-offcanvas row-offcanvas-left">
-  <div id="content" class="column card-lg-12 col-sm-12 col-xs-12">
+  <div id="content" class="column col-lg-12 col-sm-12 col-xs-12">
 
     <!-- Page Title -->
     <div class="row pt-3 mb-3">

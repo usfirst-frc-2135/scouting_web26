@@ -4,27 +4,28 @@ require 'inc/header.php';
 ?>
 
 <div class="container-fluid row-offcanvas row-offcanvas-left">
-  <div id="content" class="column card-lg-12 col-sm-12 col-xs-12">
+  <div id="content" class="column col-lg-12 col-sm-12 col-xs-12">
 
     <!-- Page Title -->
     <div class="row pt-3 mb-3">
-      <div class="row">
-        <h2 class="col-md-6 mb-3 me-3"><?php echo $title; ?> </h2>
-      </div>
+      <h2 class="col-md-6 mb-3 me-3"><?php echo $title; ?> </h2>
+    </div>
+
+    <!-- Main row to hold the match selection and overview -->
+    <div class="row">
 
       <!-- Main card to hold the match selection -->
-      <div class="card col-md-6 mx-auto mb-3">
-
-        <!-- Our team matches list -->
-        <h5 class="pt-3">2135 Match Links</h5>
-        <div class="row mb-3">
-          <div id="ourMatches">
-          </div>
-        </div>
-
-        <!-- Load Match buttons -->
+      <div class="col-md-6">
         <div class="card mb-3">
-          <div class="input-group">
+
+          <!-- Our team matches list -->
+          <h5 class="pt-3">2135 Match Links</h5>
+          <div class="row mb-3">
+            <div id="ourMatches"></div>
+          </div>
+
+          <!-- Load Match buttons -->
+          <div class="input-group mb-3">
             <div class="input-group-prepend">
               <select id="enterCompLevel" class="form-select" aria-label="Comp Level Select">
                 <option value="qm">QM</option>
@@ -37,12 +38,10 @@ require 'inc/header.php';
               <button id="loadMatchButton" class="btn btn-primary" type="button">Load Match</button>
             </div>
           </div>
-        </div>
 
-        <!-- Custom match button (collapsible section) -->
-        <div class="card mb-3">
+          <!-- Custom match button (collapsible section) -->
 
-          <div id="customMatch" class="accordion accordion-flush">
+          <div id="customMatch" class="accordion accordion-flush mb-3">
             <div class="accordion-item bg-secondary-subtle">
               <h2 class="accordion-header">
                 <button class="accordion-button text-light bg-secondary" type="button" data-bs-toggle="collapse"
@@ -77,301 +76,305 @@ require 'inc/header.php';
                 </div>
               </div>
             </div>
+
           </div>
+
         </div>
       </div>
 
       <!-- Match overview card -->
-      <div class="card col-md-6 mx-auto mb-3 p-3">
-        <h5 id="matchTitle">Match:</h5>
-        <h5 id="matchTime">Time:</h5>
-        <table class="table table-bordered table-sm border-secondary text-center">
-          <thead>
-            <tr>
-              <th></th>
-              <th class="text-bg-danger">Red</th>
-              <th class="text-bg-primary">Blue</th>
-            </tr>
-          </thead>
-          <tbody class="table-group-divider">
-            <tr>
-              <td class="text-start table-secondary">Avg Auton Fuel</td>
-              <td id="redAvgAutoPoints" class="table-danger"></td>
-              <td id="blueAvgAutoPoints" class="table-primary"></td>
-            </tr>
-            <tr>
-              <td class="text-start table-secondary">Avg Auton Climb Pts</td>
-              <td id="redAvgAutoClimb" class="table-danger"></td>
-              <td id="blueAvgAutoClimb" class="table-primary"></td>
-            </tr>
-            <tr>
-              <td class="text-start table-secondary">Avg Teleop Fuel</td>
-              <td id="redAvgTeleopPoints" class="table-danger"></td>
-              <td id="blueAvgTeleopPoints" class="table-primary"></td>
-            </tr>
-            <tr>
-              <td class="text-start table-secondary">Avg Endgame Points</td>
-              <td id="redAvgEndgamePoints" class="table-danger"></td>
-              <td id="blueAvgEndgamePoints" class="table-primary"></td>
-            </tr>
-            <tr>
-              <td class="text-start table-secondary">Avg Total Fuel</td>
-              <td id="redTotalFuel" class="table-danger"></td>
-              <td id="blueTotalFuel" class="table-primary"></td>
-            </tr>
-            <tr>
-              <td class="text-start table-secondary">Predicted Points</td>
-              <td id="redPredictedTotalPoints" class="table-danger"></td>
-              <td id="bluePredictedTotalPoints" class="table-primary"></td>
-            </tr>
-            <tr>
-              <td class="text-start table-secondary">Actual Points</td>
-              <td id="redActualTotalPoints" class="table-danger"></td>
-              <td id="blueActualTotalPoints" class="table-primary"></td>
-            <tr>
-              <td class="text-start table-secondary">Predicted RP</td>
-              <td id="redPredictedRP" class="table-danger"></td>
-              <td id="bluePredictedRP" class="table-primary"></td>
-            </tr>
-            <tr>
-              <td class="text-start table-secondary">Actual RP</td>
-              <td id="redActualRP" class="table-danger"></td>
-              <td id="blueActualRP" class="table-primary"></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Red Team cards -->
-  <div class="row mb-3 gx-3">
-
-    <!-- Red0 - Red Team 1 -->
-    <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
-      <div id="R0TeamBox" class="accordion accordion-flush mb-3">
-        <div class="accordion-item bg-danger">
-
-          <div id="R0TeamHeader" class="accordion-header d-flex align-items-center bg-danger">
-            <a class="text-start text-nowrap link-light fw-bold ms-3">Team #</a>
-            <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#R0TeamCollapse" aria-expanded="false" aria-controls="R0TeamCollapse">
-            </button>
-          </div>
-
-          <div id="R0TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#R0TeamBox">
-            <div id="R0PicsCarousel" class="carousel slide" data-bs-interval="false">
-              <div id="R0RobotPics" class="carousel-inner"> </div>
-              <button class="carousel-control-prev" type="button" data-bs-target="#R0PicsCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#R0PicsCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="overflow-auto">
-            <table id="R0DataTable" class="table table-bordered table-danger table-sm text-center">
-              <thead> </thead>
-              <tbody class="table-group-divider"> </tbody>
-            </table>
-          </div>
-
+      <div class="col col-md-6">
+        <div class="card mb-3 p-3">
+          <h5 id="matchTitle">Match:</h5>
+          <h5 id="matchTime">Time:</h5>
+          <table class="table table-bordered table-sm border-secondary text-center">
+            <thead>
+              <tr>
+                <th></th>
+                <th class="text-bg-danger">Red</th>
+                <th class="text-bg-primary">Blue</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider">
+              <tr>
+                <td class="text-start table-secondary">Avg Auton Fuel</td>
+                <td id="redAvgAutoPoints" class="table-danger"></td>
+                <td id="blueAvgAutoPoints" class="table-primary"></td>
+              </tr>
+              <tr>
+                <td class="text-start table-secondary">Avg Auton Climb Pts</td>
+                <td id="redAvgAutoClimb" class="table-danger"></td>
+                <td id="blueAvgAutoClimb" class="table-primary"></td>
+              </tr>
+              <tr>
+                <td class="text-start table-secondary">Avg Teleop Fuel</td>
+                <td id="redAvgTeleopPoints" class="table-danger"></td>
+                <td id="blueAvgTeleopPoints" class="table-primary"></td>
+              </tr>
+              <tr>
+                <td class="text-start table-secondary">Avg Endgame Points</td>
+                <td id="redAvgEndgamePoints" class="table-danger"></td>
+                <td id="blueAvgEndgamePoints" class="table-primary"></td>
+              </tr>
+              <tr>
+                <td class="text-start table-secondary">Avg Total Fuel</td>
+                <td id="redTotalFuel" class="table-danger"></td>
+                <td id="blueTotalFuel" class="table-primary"></td>
+              </tr>
+              <tr>
+                <td class="text-start table-secondary">Predicted Points</td>
+                <td id="redPredictedTotalPoints" class="table-danger"></td>
+                <td id="bluePredictedTotalPoints" class="table-primary"></td>
+              </tr>
+              <tr>
+                <td class="text-start table-secondary">Actual Points</td>
+                <td id="redActualTotalPoints" class="table-danger"></td>
+                <td id="blueActualTotalPoints" class="table-primary"></td>
+              <tr>
+                <td class="text-start table-secondary">Predicted RP</td>
+                <td id="redPredictedRP" class="table-danger"></td>
+                <td id="bluePredictedRP" class="table-primary"></td>
+              </tr>
+              <tr>
+                <td class="text-start table-secondary">Actual RP</td>
+                <td id="redActualRP" class="table-danger"></td>
+                <td id="blueActualRP" class="table-primary"></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
 
-    <!-- Red1 - Red Team 2 -->
-    <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
-      <div id="R1TeamBox" class="accordion accordion-flush mb-3">
-        <div class="accordion-item bg-danger">
+    <!-- Red Team cards -->
+    <div class="row mb-3 gx-3">
 
-          <div id="R1TeamHeader" class="accordion-header d-flex align-items-center bg-danger">
-            <a class="text-start text-nowrap link-light fw-bold ms-3">Team #</a>
-            <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#R1TeamCollapse" aria-expanded="false" aria-controls="R1TeamCollapse">
-            </button>
-          </div>
+      <!-- Red0 - Red Team 1 -->
+      <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
+        <div id="R0TeamBox" class="accordion accordion-flush mb-3">
+          <div class="accordion-item bg-danger">
 
-          <div id="R1TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#R1TeamBox">
-            <div id="R1PicsCarousel" class="carousel slide" data-bs-interval="false">
-              <div id="R1RobotPics" class="carousel-inner"> </div>
-              <button class="carousel-control-prev" type="button" data-bs-target="#R1PicsCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#R1PicsCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
+            <div id="R0TeamHeader" class="accordion-header d-flex align-items-center bg-danger">
+              <a class="text-start text-nowrap link-light fw-bold ms-3">Team #</a>
+              <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#R0TeamCollapse" aria-expanded="false" aria-controls="R0TeamCollapse">
               </button>
             </div>
-          </div>
 
-          <div class="overflow-auto">
-            <table id="R1DataTable" class="table table-bordered table-danger table-sm text-center">
-              <thead> </thead>
-              <tbody class="table-group-divider"> </tbody>
-            </table>
-          </div>
+            <div id="R0TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#R0TeamBox">
+              <div id="R0PicsCarousel" class="carousel slide" data-bs-interval="false">
+                <div id="R0RobotPics" class="carousel-inner"> </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#R0PicsCarousel" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#R0PicsCarousel" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+            </div>
 
+            <div class="overflow-auto">
+              <table id="R0DataTable" class="table table-bordered table-danger table-sm text-center">
+                <thead> </thead>
+                <tbody class="table-group-divider"> </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Red1 - Red Team 2 -->
+      <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
+        <div id="R1TeamBox" class="accordion accordion-flush mb-3">
+          <div class="accordion-item bg-danger">
+
+            <div id="R1TeamHeader" class="accordion-header d-flex align-items-center bg-danger">
+              <a class="text-start text-nowrap link-light fw-bold ms-3">Team #</a>
+              <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#R1TeamCollapse" aria-expanded="false" aria-controls="R1TeamCollapse">
+              </button>
+            </div>
+
+            <div id="R1TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#R1TeamBox">
+              <div id="R1PicsCarousel" class="carousel slide" data-bs-interval="false">
+                <div id="R1RobotPics" class="carousel-inner"> </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#R1PicsCarousel" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#R1PicsCarousel" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="overflow-auto">
+              <table id="R1DataTable" class="table table-bordered table-danger table-sm text-center">
+                <thead> </thead>
+                <tbody class="table-group-divider"> </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Red2 - Red Team 3 -->
+      <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
+        <div id="R2TeamBox" class="accordion accordion-flush mb-3">
+          <div class="accordion-item bg-danger">
+
+            <div id="R2TeamHeader" class="accordion-header d-flex align-items-center bg-danger">
+              <a class="text-start text-nowrap link-light fw-bold ms-3">Team #</a>
+              <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#R2TeamCollapse" aria-expanded="false" aria-controls="R2TeamCollapse">
+              </button>
+            </div>
+
+            <div id="R2TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#R2TeamBox">
+              <div id="R2PicsCarousel" class="carousel slide" data-bs-interval="false">
+                <div id="R2RobotPics" class="carousel-inner"> </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#R2PicsCarousel" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#R2PicsCarousel" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="overflow-auto">
+              <table id="R2DataTable" class="table table-bordered table-danger table-sm text-center">
+                <thead> </thead>
+                <tbody class="table-group-divider"> </tbody>
+              </table>
+            </div>
+
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Red2 - Red Team 3 -->
-    <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
-      <div id="R2TeamBox" class="accordion accordion-flush mb-3">
-        <div class="accordion-item bg-danger">
+    <!-- Blue Team cards -->
+    <div class="row mb-3 gx-3">
 
-          <div id="R2TeamHeader" class="accordion-header d-flex align-items-center bg-danger">
-            <a class="text-start text-nowrap link-light fw-bold ms-3">Team #</a>
-            <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#R2TeamCollapse" aria-expanded="false" aria-controls="R2TeamCollapse">
-            </button>
-          </div>
+      <!-- Blue0 - Blue Team 1 -->
+      <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
+        <div id="B0TeamBox" class="accordion accordion-flush mb-3">
+          <div class="accordion-item bg-primary">
 
-          <div id="R2TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#R2TeamBox">
-            <div id="R2PicsCarousel" class="carousel slide" data-bs-interval="false">
-              <div id="R2RobotPics" class="carousel-inner"> </div>
-              <button class="carousel-control-prev" type="button" data-bs-target="#R2PicsCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#R2PicsCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
+            <div id="B0TeamHeader" class="accordion-header d-flex align-items-center bg-primary">
+              <a class="text-start text-nowrap link-light fw-bold ms-3">Team #</a>
+              <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#B0TeamCollapse" aria-expanded="false" aria-controls="B0TeamCollapse">
               </button>
             </div>
-          </div>
 
-          <div class="overflow-auto">
-            <table id="R2DataTable" class="table table-bordered table-danger table-sm text-center">
-              <thead> </thead>
-              <tbody class="table-group-divider"> </tbody>
-            </table>
-          </div>
+            <div id="B0TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#B0TeamBox">
+              <div id="B0PicsCarousel" class="carousel slide" data-bs-interval="false">
+                <div id="B0RobotPics" class="carousel-inner"> </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#B0PicsCarousel" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#B0PicsCarousel" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+            </div>
 
+            <div class="overflow-auto">
+              <table id="B0DataTable" class="table table-bordered table-primary table-sm text-center">
+                <thead> </thead>
+                <tbody class="table-group-divider"> </tbody>
+              </table>
+            </div>
+
+          </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Blue Team cards -->
-  <div class="row mb-3 gx-3">
+      <!-- Blue1 - Blue Team 2 -->
+      <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
+        <div id="B1TeamBox" class="accordion accordion-flush mb-3">
+          <div class="accordion-item bg-primary">
 
-    <!-- Blue0 - Blue Team 1 -->
-    <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
-      <div id="B0TeamBox" class="accordion accordion-flush mb-3">
-        <div class="accordion-item bg-primary">
-
-          <div id="B0TeamHeader" class="accordion-header d-flex align-items-center bg-primary">
-            <a class="text-start text-nowrap link-light fw-bold ms-3">Team #</a>
-            <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#B0TeamCollapse" aria-expanded="false" aria-controls="B0TeamCollapse">
-            </button>
-          </div>
-
-          <div id="B0TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#B0TeamBox">
-            <div id="B0PicsCarousel" class="carousel slide" data-bs-interval="false">
-              <div id="B0RobotPics" class="carousel-inner"> </div>
-              <button class="carousel-control-prev" type="button" data-bs-target="#B0PicsCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#B0PicsCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
+            <div id="B1TeamHeader" class="accordion-header d-flex align-items-center bg-primary">
+              <a class="text-start text-nowrap link-light fw-bold ms-3">Team #</a>
+              <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#B1TeamCollapse" aria-expanded="false" aria-controls="B1TeamCollapse">
               </button>
             </div>
-          </div>
 
-          <div class="overflow-auto">
-            <table id="B0DataTable" class="table table-bordered table-primary table-sm text-center">
-              <thead> </thead>
-              <tbody class="table-group-divider"> </tbody>
-            </table>
-          </div>
+            <div id="B1TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#B1TeamBox">
+              <div id="B1PicsCarousel" class="carousel slide" data-bs-interval="false">
+                <div id="B1RobotPics" class="carousel-inner"> </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#B1PicsCarousel" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#B1PicsCarousel" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+            </div>
 
+            <div class="overflow-auto">
+              <table id="B1DataTable" class="table table-bordered table-primary table-sm text-center">
+                <thead> </thead>
+                <tbody class="table-group-divider"> </tbody>
+              </table>
+            </div>
+
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Blue1 - Blue Team 2 -->
-    <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
-      <div id="B1TeamBox" class="accordion accordion-flush mb-3">
-        <div class="accordion-item bg-primary">
+      <!-- Blue2 - Blue Team 3 -->
+      <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
+        <div id="B2TeamBox" class="accordion accordion-flush mb-3">
+          <div class="accordion-item bg-primary">
 
-          <div id="B1TeamHeader" class="accordion-header d-flex align-items-center bg-primary">
-            <a class="text-start text-nowrap link-light fw-bold ms-3">Team #</a>
-            <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#B1TeamCollapse" aria-expanded="false" aria-controls="B1TeamCollapse">
-            </button>
-          </div>
-
-          <div id="B1TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#B1TeamBox">
-            <div id="B1PicsCarousel" class="carousel slide" data-bs-interval="false">
-              <div id="B1RobotPics" class="carousel-inner"> </div>
-              <button class="carousel-control-prev" type="button" data-bs-target="#B1PicsCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#B1PicsCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
+            <div id="B2TeamHeader" class="accordion-header d-flex align-items-center bg-primary">
+              <a class="text-start text-nowrap link-light fw-bold ms-3">Team #</a>
+              <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#B2TeamCollapse" aria-expanded="false" aria-controls="B2TeamCollapse">
               </button>
             </div>
-          </div>
 
-          <div class="overflow-auto">
-            <table id="B1DataTable" class="table table-bordered table-primary table-sm text-center">
-              <thead> </thead>
-              <tbody class="table-group-divider"> </tbody>
-            </table>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- Blue2 - Blue Team 3 -->
-    <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
-      <div id="B2TeamBox" class="accordion accordion-flush mb-3">
-        <div class="accordion-item bg-primary">
-
-          <div id="B2TeamHeader" class="accordion-header d-flex align-items-center bg-primary">
-            <a class="text-start text-nowrap link-light fw-bold ms-3">Team #</a>
-            <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#B2TeamCollapse" aria-expanded="false" aria-controls="B2TeamCollapse">
-            </button>
-          </div>
-
-          <div id="B2TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#B2TeamBox">
-            <div id="B2PicsCarousel" class="carousel slide" data-bs-interval="false">
-              <div id="B2RobotPics" class="carousel-inner"> </div>
-              <button class="carousel-control-prev" type="button" data-bs-target="#B2PicsCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#B2PicsCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-              </button>
+            <div id="B2TeamCollapse" class="accordion-collapse collapse" data-bs-parent="#B2TeamBox">
+              <div id="B2PicsCarousel" class="carousel slide" data-bs-interval="false">
+                <div id="B2RobotPics" class="carousel-inner"> </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#B2PicsCarousel" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#B2PicsCarousel" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
             </div>
-          </div>
 
-          <div class="overflow-auto">
-            <table id="B2DataTable" class="table table-bordered table-primary table-sm text-center">
-              <thead> </thead>
-              <tbody class="table-group-divider"> </tbody>
-            </table>
-          </div>
+            <div class="overflow-auto">
+              <table id="B2DataTable" class="table table-bordered table-primary table-sm text-center">
+                <thead> </thead>
+                <tbody class="table-group-divider"> </tbody>
+              </table>
+            </div>
 
+          </div>
         </div>
       </div>
+
     </div>
 
   </div>
