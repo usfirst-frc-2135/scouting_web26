@@ -50,14 +50,8 @@ require 'inc/header.php';
 
     // This CSV header must match the order in eventAveragesTable.js insertEventAveragesBody()
     let hdrStr = "Match,Count," +
-      "RedTotalPts,RedAutonPts,RedTeleopPts,RedFoulsPts," +
-      "RedLeave,RedAutonL4,RedAutonL3,RedAutonL2,RedAutoL1," +
-      "RedTeleopL4,RedTeleopL3,RedTeleopL2,RedTelopL1,RedNet,RedProc," +
-      "RedEnd1,RedEnd2,RedEnd3,RedFouls," +
-      "BlueTotalPts,BlueAutonPts,BlueTeleopPts,BlueFoulsPts," +
-      "BlueLeave,BlueAutonL4,BlueAutonL3,BlueAutonL2,BlueAutoL1," +
-      "BlueTeleopL4,BlueTeleopL3,BlueTeleopL2,BlueTelopL1,BlueNet,BlueProc," +
-      "BlueEnd1,BlueEnd2,BlueEnd3,BlueFouls";
+      "RedTotalPts,RedAutonHubPts,RedAutonClimbPts,RedTeleopPts,RedEndgameClimbPts,RedFouls," +
+      "BlueTotalPts,BlueAutonHubPts,BlueAutonClimbPts,BlueTeleopPts,BlueEndgameClimbPts,BlueFouls";
     csv.push(hdrStr);
 
     const rows = table.querySelectorAll("tr");
@@ -97,12 +91,10 @@ require 'inc/header.php';
     theadRef.innerHTML = ""; // Clear Table
 
     ///// ROW 1 /////
-
     let rowString1 = '';
-
     rowString1 += '<th colspan="2" ' + thBody + '> </th>'; // Match no, match count
-    rowString1 += '<th colspan="19" ' + thRedPrefix + '>Red</th>'; // Match data count
-    rowString1 += '<th colspan="19" ' + thBluePrefix + '>Blue</th>'; // Match data count
+    rowString1 += '<th colspan="4" ' + thRedPrefix + '>Red</th>'; // Match data count
+    rowString1 += '<th colspan="4" ' + thBluePrefix + '>Blue</th>'; // Match data count
 
     theadRef.insertRow().innerHTML = rowString1;
 
@@ -111,30 +103,23 @@ require 'inc/header.php';
     const thBodyTable = 'class="bg-body"';
     const thRedPrefixTable = 'class="table-danger"';
     const thBluePrefixTable = 'class="table-primary"';
-
     let rowString2 = '';
 
-    rowString2 += '<th colspan="2" ' + thBodyTable + '> </th>'; // Match no, match count
-    rowString2 += '<th colspan="4" ' + thRedPrefixTable + '>Points</th>'; // Match data count
-    rowString2 += '<th colspan="5" ' + thRedPrefixTable + '>Auto</th>'; // Match data count
-    rowString2 += '<th colspan="6" ' + thRedPrefixTable + '>Teleop</th>'; // Match data count
-    rowString2 += '<th colspan="3" ' + thRedPrefixTable + '>Endgame</th>'; // Match data count
-    rowString2 += '<th colspan="1" ' + thRedPrefixTable + '></th>'; // Match data count
+    rowString2 += '<th colspan="2" ' + thBodyTable + '> </th>';            // empty
+    rowString2 += '<th colspan="2" ' + thRedPrefixTable + '>Auto</th>';    // Red Auto 
+    rowString2 += '<th colspan="1" ' + thRedPrefixTable + '>Teleop</th>' ; // Red Teleop 
+    rowString2 += '<th colspan="1" ' + thRedPrefixTable + '>Endgame</th>'; // Red Endgame 
 
-    rowString2 += '<th colspan="4" ' + thBluePrefixTable + '>Points</th>'; // Match data count
-    rowString2 += '<th colspan="5" ' + thBluePrefixTable + '>Auto</th>'; // Match data count
-    rowString2 += '<th colspan="6" ' + thBluePrefixTable + '>Teleop</th>'; // Match data count
-    rowString2 += '<th colspan="3" ' + thBluePrefixTable + '>Endgame</th>'; // Match data count
-    rowString2 += '<th colspan="1" ' + thBluePrefixTable + '></th>'; // Match data count
+    rowString2 += '<th colspan="2" ' + thBluePrefixTable + '>Auto</th>';    // Blue Auto
+    rowString2 += '<th colspan="1" ' + thBluePrefixTable + '>Teleop</th>';  // Blue Teleop 
+    rowString2 += '<th colspan="1" ' + thBluePrefixTable + '>Endgame</th>'; // Blue Endgame 
 
     theadRef.insertRow().innerHTML = rowString2;
 
     ///// ROW 3 /////
-
     const thBody3 = '<th class="bg-body">';
     const thBlue3Prefix = '<th class="table-primary">';
     const thRed3Prefix = '<th class="table-danger">';
-
     let rowString3 = '';
 
     // match info
@@ -142,60 +127,16 @@ require 'inc/header.php';
     rowString3 += thBody3 + '#' + '</th>';
 
     // red alliance
-    // points by game phase
-    rowString3 += thRed3Prefix + 'Total Pts' + '</th>';
-    rowString3 += thRed3Prefix + 'Auto Pts' + '</th>';
-    rowString3 += thRed3Prefix + 'Teleop Pts' + '</th>';
-    rowString3 += thRed3Prefix + 'Foul Pts' + '</th>';
-
-    // auton pieces an leave
-    rowString3 += thRed3Prefix + 'Leave' + '</th>';
-    rowString3 += thRed3Prefix + 'L4' + '</th>';
-    rowString3 += thRed3Prefix + 'L3' + '</th>';
-    rowString3 += thRed3Prefix + 'L2' + '</th>';
-    rowString3 += thRed3Prefix + 'L1' + '</th>';
-
-    // teleop pieces and endgame
-    rowString3 += thRed3Prefix + 'L4' + '</th>';
-    rowString3 += thRed3Prefix + 'L3' + '</th>';
-    rowString3 += thRed3Prefix + 'L2' + '</th>';
-    rowString3 += thRed3Prefix + 'L1' + '</th>';
-    rowString3 += thRed3Prefix + 'Net' + '</th>';
-    rowString3 += thRed3Prefix + 'Proc' + '</th>';
-    rowString3 += thRed3Prefix + 'End 1' + '</th>';
-    rowString3 += thRed3Prefix + 'End 2' + '</th>';
-    rowString3 += thRed3Prefix + 'End 3' + '</th>';
-
-    // fouls
-    rowString3 += thRed3Prefix + 'Fouls' + '</th>';
+    rowString3 += thRed3Prefix + 'Hub Pts' + '</th>';
+    rowString3 += thRed3Prefix + 'Climb Pts' + '</th>';
+    rowString3 += thRed3Prefix + 'Hub Pts' + '</th>';
+    rowString3 += thRed3Prefix + 'Climb Pts' + '</th>';
 
     // blue alliance
-    // points by game phase
-    rowString3 += thBlue3Prefix + 'Total Pts' + '</th>';
-    rowString3 += thBlue3Prefix + 'Auto Pts' + '</th>';
-    rowString3 += thBlue3Prefix + 'Teleop Pts' + '</th>';
-    rowString3 += thBlue3Prefix + 'Foul Pts' + '</th>';
-
-    // auton pieces an leave
-    rowString3 += thBlue3Prefix + 'Leave' + '</th>';
-    rowString3 += thBlue3Prefix + 'L4' + '</th>';
-    rowString3 += thBlue3Prefix + 'L3' + '</th>';
-    rowString3 += thBlue3Prefix + 'L2' + '</th>';
-    rowString3 += thBlue3Prefix + 'L1' + '</th>';
-
-    // teleop pieces and endgame
-    rowString3 += thBlue3Prefix + 'L4' + '</th>';
-    rowString3 += thBlue3Prefix + 'L3' + '</th>';
-    rowString3 += thBlue3Prefix + 'L2' + '</th>';
-    rowString3 += thBlue3Prefix + 'L1' + '</th>';
-    rowString3 += thBlue3Prefix + 'Net' + '</th>';
-    rowString3 += thBlue3Prefix + 'Proc' + '</th>';
-    rowString3 += thBlue3Prefix + 'End 1' + '</th>';
-    rowString3 += thBlue3Prefix + 'End 2' + '</th>';
-    rowString3 += thBlue3Prefix + 'End 3' + '</th>';
-
-    // fouls
-    rowString3 += thBlue3Prefix + 'Fouls' + '</th>';
+    rowString3 += thBlue3Prefix + 'Hub Pts' + '</th>';
+    rowString3 += thBlue3Prefix + 'Climb Pts' + '</th>';
+    rowString3 += thBlue3Prefix + 'Hub Pts' + '</th>';
+    rowString3 += thBlue3Prefix + 'Climb Pts' + '</th>';
 
     theadRef.insertRow().innerHTML = rowString3;
   };
@@ -205,23 +146,23 @@ require 'inc/header.php';
   //
   function resetMatchScore() {
     return {
-      autonLeave: 0,
-      autonCoralL4: 0,
-      autonCoralL3: 0,
-      autonCoralL2: 0,
-      autonCoralL1: 0,
-      teleopCoralL4: 0,
-      teleopCoralL3: 0,
-      teleopCoralL2: 0,
-      teleopCoralL1: 0,
-      allNet: 0,
-      allProc: 0,
-      endgameCageClimb: ["", "", ""],
-      fouls: 0,
-      totalPoints: 0,
-      autonPoints: 0,
+//REMOVE      autonLeave: 0,
+//REMOVE      autonCoralL4: 0,
+//REMOVE      autonCoralL3: 0,
+//REMOVE      autonCoralL2: 0,
+//REMOVE      autonCoralL1: 0,
+//REMOVE      teleopCoralL4: 0,
+//REMOVE      teleopCoralL3: 0,
+//REMOVE      teleopCoralL2: 0,
+//REMOVE      teleopCoralL1: 0,
+//REMOVE      allNet: 0,
+//REMOVE      allProc: 0,
+//REMOVE      endgameCageClimb: ["", "", ""],
+//REMOVE      fouls: 0,
+      autonHubPoints: 0,
+      autonClimbPoints: 0,
       teleopPoints: 0,
-      foulPoints: 0,
+      endgameClimbPoints: 0,
     };
   }
 
@@ -232,25 +173,10 @@ require 'inc/header.php';
   //
   buildMatchDataSubstring = function(matchScore) {
     let cellString = "";
-    cellString += "<td class='table-danger'>" + matchScore.totalPoints + "</td>";
-    cellString += "<td class='table-success'>" + matchScore.autonPoints + "</td>";
+    cellString += "<td class='table-success'>" + matchScore.autonHubPoints + "</td>";
+    cellString += "<td class='table-success'>" + matchScore.autonClimbPoints + "</td>";
     cellString += "<td class='table-primary'>" + matchScore.teleopPoints + "</td>";
-    cellString += "<td class='table-light'>" + matchScore.foulPoints + "</td>";
-    cellString += "<td class='table-danger'>" + matchScore.autonLeave + "</td>";
-    cellString += "<td class='table-danger'>" + matchScore.autonCoralL4 + "</td>";
-    cellString += "<td class='table-danger'>" + matchScore.autonCoralL3 + "</td>";
-    cellString += "<td class='table-danger'>" + matchScore.autonCoralL2 + "</td>";
-    cellString += "<td class='table-danger'>" + matchScore.autonCoralL1 + "</td>";
-    cellString += "<td class='table-primary'>" + matchScore.teleopCoralL4 + "</td>";
-    cellString += "<td class='table-primary'>" + matchScore.teleopCoralL3 + "</td>";
-    cellString += "<td class='table-primary'>" + matchScore.teleopCoralL2 + "</td>";
-    cellString += "<td class='table-primary'>" + matchScore.teleopCoralL1 + "</td>";
-    cellString += "<td class='table-primary'>" + matchScore.allNet + "</td>";
-    cellString += "<td class='table-primary'>" + matchScore.allProc + "</td>";
-    cellString += "<td class='table-warning'>" + matchScore.endgameCageClimb[0] + "</td>";
-    cellString += "<td class='table-warning'>" + matchScore.endgameCageClimb[1] + "</td>";
-    cellString += "<td class='table-warning'>" + matchScore.endgameCageClimb[2] + "</td>";
-    cellString += "<td class='table-light'>" + matchScore.fouls + "</td>";
+    cellString += "<td class='table-warning'>" + matchScore.endgameClimbPoints + "</td>";
 
     return cellString;
   }
@@ -264,11 +190,12 @@ require 'inc/header.php';
   function decodeTBABreakdown(tbaBreakdown, alliance) {
     let tbaScore = resetMatchScore();
 
-    tbaScore.totalPoints = tbaBreakdown[alliance]["totalPoints"];
-    tbaScore.autonPoints = tbaBreakdown[alliance]["autoPoints"];
-    tbaScore.teleopPoints = tbaBreakdown[alliance]["teleopPoints"];
-    tbaScore.foulPoints = tbaBreakdown[alliance]["foulPoints"];
+    tbaScore.autonHubPoints = tbaBreakdown[alliance]["hubScore"]["autoPoints"];
+    tbaScore.autonClimbPoints = tbaBreakdown[alliance]["autoTowerPoints"];
+    tbaScore.teleopPoints = tbaBreakdown[alliance]["hubScore"]["teleopPoints"];
+    tbaScore.endgameClimbPoints = tbaBreakdown[alliance]["endGameTowerPoints"];
 
+/*REMOVE->
     let redLeaveCount = 0;
     if (tbaBreakdown[alliance]["autoLineRobot1"] === "Yes") redLeaveCount++;
     if (tbaBreakdown[alliance]["autoLineRobot2"] === "Yes") redLeaveCount++;
@@ -289,6 +216,7 @@ require 'inc/header.php';
     tbaScore.endgameCageClimb[1] = tbaBreakdown[alliance]["endGameRobot2"];
     tbaScore.endgameCageClimb[2] = tbaBreakdown[alliance]["endGameRobot3"];
     tbaScore.fouls = tbaBreakdown[alliance]["foulCount"];
+<-REMOVE*/
 
     return tbaScore;
   }
@@ -298,10 +226,9 @@ require 'inc/header.php';
   // Params:
   //   matchData  - our match data for a team in a match
   //   matchScore - the match score object to accumulate into
-  //   leaveCount - which robot (0,1,2) is this for leave tracking
   //
-  function accumulateMatchScore(matchData, matchScore, leaveCount) {
-    matchScore.autonLeave += parseInt(matchData["autonLeave"]);
+  function accumulateMatchScore(matchData, matchScore) {
+/*REMOVE->    matchScore.autonLeave += parseInt(matchData["autonLeave"]);
     matchScore.autonCoralL4 += parseInt(matchData["autonCoralL4"]);
     matchScore.autonCoralL3 += parseInt(matchData["autonCoralL3"]);
     matchScore.autonCoralL2 += parseInt(matchData["autonCoralL2"]);
@@ -315,7 +242,7 @@ require 'inc/header.php';
     matchScore.endgameCageClimb[leaveCount] = matchData["endgameCageClimb"];
     // matchScore.fouls += parseInt(matchData["fouls"]); // We don't track fouls
 
-    let autonPoints =
+    let autonbPoints =
       parseInt(matchData["autonLeave"] * 3) +
       parseInt(matchData["autonCoralL4"] * 7) +
       parseInt(matchData["autonCoralL3"] * 6) +
@@ -336,15 +263,32 @@ require 'inc/header.php';
         parseInt(matchData["endgameCageClimb"]) === 3 ? 6 :
         parseInt(matchData["endgameCageClimb"]) === 4 ? 12 : 0);
     let foulPoints = 0 * 2; // We don't track fouls
+<-REMOVE*/
 
-    matchScore.autonPoints += autonPoints;
-    matchScore.teleopPoints += teleopPoints;
-    matchScore.foulPoints += foulPoints;
-    matchScore.totalPoints += autonPoints + teleopPoints + foulPoints;
+    let autonHubPts = 0; // FORNOW
+    matchScore.autonHubPoints = autonHubPts;
+
+    let autonClimbPts = 0;
+    if (parseInt(matchData["autonClimb"]) != 0)
+      autonClimbPts = 15;
+    matchScore.autonClimbPoints = autonClimbPts;
+
+    let teleopPts = 0; // FORNOW
+    matchScore.teleopPoints = teleopPts;
+
+    let endgameClimbPts = 0;
+    if (parseInt(matchData["endgameClimbLevel"]) == 1)
+      endgameClimbPts = 10;
+    else if (parseInt(matchData["endgameClimbLevel"]) == 2)
+      endgameClimbPts = 20;
+    else if (parseInt(matchData["endgameClimbLevel"]) == 3)
+      endgameClimbPts = 30;
+    matchScore.endgameClimbPoints = endgameClimbPts;
 
     return matchScore;
   }
 
+/*REMOVE->
   //
   // These utilities convert TBA climb values to our match data values for comparison
   //
@@ -372,6 +316,7 @@ require 'inc/header.php';
       matchValue = 1;
     return matchValue;
   }
+<-REMOVE*/
 
   //
   // Build the diff row between TBA and our match data
@@ -385,10 +330,13 @@ require 'inc/header.php';
     let diffRowString = "";
 
     // Red alliance diff
-    diffRowString += "<td class='table-danger'>" + (matchScoreRed.totalPoints - tbaScoreRed.totalPoints) + "</td>";
-    diffRowString += "<td class='table-success'>" + (matchScoreRed.autonPoints - tbaScoreRed.autonPoints) + "</td>";
+//REMOVE    diffRowString += "<td class='table-danger'>" + (matchScoreRed.totalPoints - tbaScoreRed.totalPoints) + "</td>";
+    diffRowString += "<td class='table-success'>" + (matchScoreRed.autonHubPoints - tbaScoreRed.autonHubPoints) + "</td>";
+    diffRowString += "<td class='table-success'>" + (matchScoreRed.autonClimbPoints - tbaScoreRed.autonClimbPoints) + "</td>";
     diffRowString += "<td class='table-primary'>" + (matchScoreRed.teleopPoints - tbaScoreRed.teleopPoints) + "</td>";
-    diffRowString += "<td class='table-light'>" + (matchScoreRed.foulPoints - tbaScoreRed.foulPoints) + "</td>";
+    diffRowString += "<td class='table-light'>" + (matchScoreRed.endgameClimbPoints - tbaScoreRed.endgameClimbPoints) + "</td>";
+
+/*REMOVE->
     diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonLeave - tbaScoreRed.autonLeave) + "</td>";
     diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonCoralL4 - tbaScoreRed.autonCoralL4) + "</td>";
     diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonCoralL3 - tbaScoreRed.autonCoralL3) + "</td>";
@@ -404,12 +352,16 @@ require 'inc/header.php';
     diffRowString += "<td class='table-warning'>" + (matchToClimbValue(matchScoreRed.endgameCageClimb[1]) - stringToClimbValue(tbaScoreRed.endgameCageClimb[1])) + "</td>";
     diffRowString += "<td class='table-warning'>" + (matchToClimbValue(matchScoreRed.endgameCageClimb[2]) - stringToClimbValue(tbaScoreRed.endgameCageClimb[2])) + "</td>";
     diffRowString += "<td class='table-light'>" + (matchScoreRed.fouls - tbaScoreRed.fouls) + "</td>";
+<-REMOVE*/
 
     // Blue alliance diff
-    diffRowString += "<td class='table-danger'>" + (matchScoreBlue.totalPoints - tbaScoreBlue.totalPoints) + "</td>";
-    diffRowString += "<td class='table-success'>" + (matchScoreBlue.autonPoints - tbaScoreBlue.autonPoints) + "</td>";
+//REMOVE    diffRowString += "<td class='table-danger'>" + (matchScoreBlue.totalPoints - tbaScoreBlue.totalPoints) + "</td>";
+    diffRowString += "<td class='table-success'>" + (matchScoreBlue.autonHubPoints - tbaScoreBlue.autonHubPoints) + "</td>";
+    diffRowString += "<td class='table-success'>" + (matchScoreBlue.autonClimbPoints - tbaScoreBlue.autonClimbPoints) + "</td>";
     diffRowString += "<td class='table-primary'>" + (matchScoreBlue.teleopPoints - tbaScoreBlue.teleopPoints) + "</td>";
-    diffRowString += "<td class='table-light'>" + (matchScoreBlue.foulPoints - tbaScoreBlue.foulPoints) + "</td>";
+    diffRowString += "<td class='table-light'>" + (matchScoreBlue.endgameClimbPoints - tbaScoreBlue.endgameClimbPoints) + "</td>";
+
+/*REMOVE->
     diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonLeave - tbaScoreBlue.autonLeave) + "</td>";
     diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonCoralL4 - tbaScoreBlue.autonCoralL4) + "</td>";
     diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonCoralL3 - tbaScoreBlue.autonCoralL3) + "</td>";
@@ -425,6 +377,7 @@ require 'inc/header.php';
     diffRowString += "<td class='table-warning'>" + (matchScoreBlue.endgameCageClimb[1] - stringToClimbValue(tbaScoreBlue.endgameCageClimb[1])) + "</td>";
     diffRowString += "<td class='table-warning'>" + (matchScoreBlue.endgameCageClimb[2] - stringToClimbValue(tbaScoreBlue.endgameCageClimb[2])) + "</td>";
     diffRowString += "<td class='table-light'>" + (matchScoreBlue.fouls - tbaScoreBlue.fouls) + "</td>";
+<-REMOVE*/
 
     return diffRowString;
   }
@@ -454,15 +407,12 @@ require 'inc/header.php';
 
       let matchScoreRed = resetMatchScore();
       let matchScoreBlue = resetMatchScore();
-      let redClimbCount = 0;
-      let blueClimbCount = 0;
 
       // Red teams in this match
       for (team in alliances["red"]["team_keys"]) {
         for (let ami in allMatchData) {
           if ((allMatchData[ami]["matchnumber"] === matchId) && allMatchData[ami]["teamnumber"] === alliances["red"]["team_keys"][team].substring(3)) {
-            matchScoreRed = accumulateMatchScore(allMatchData[ami], matchScoreRed, redClimbCount);
-            redClimbCount++;
+            matchScoreRed = accumulateMatchScore(allMatchData[ami], matchScoreRed);
             matchDataCount++;
             break;
           }
@@ -473,8 +423,7 @@ require 'inc/header.php';
       for (team in alliances["blue"]["team_keys"]) {
         for (let ami in allMatchData) {
           if ((allMatchData[ami]["matchnumber"] === matchId) && allMatchData[ami]["teamnumber"] === alliances["blue"]["team_keys"][team].substring(3)) {
-            matchScoreBlue = accumulateMatchScore(allMatchData[ami], matchScoreBlue, blueClimbCount);
-            blueClimbCount++;
+            matchScoreBlue = accumulateMatchScore(allMatchData[ami], matchScoreBlue);
             matchDataCount++;
             break;
           }
