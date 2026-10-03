@@ -46,7 +46,7 @@ function insertFuelEstimatesHeader(tableId, aliasList)
 
   if (aliasList.length > 0)
   {
-    rowString1 += '<th colspan="1" ' + thBody + '> </th>';
+    rowString1 += '<th colspan="1" ' + thMatch + '> </th>';
   }
 
   rowString1 += '<th colspan="1" ' + thMatch + ' </th>';
