@@ -21,7 +21,6 @@ const TELEOP_MOST_ACC_RATE = 0.9;
 const TELEOP_HALF_ACC_RATE = 0.5;
 const TELEOP_FEW_ACC_RATE = 0.1;
 const TELEOP_NONE_ACC_RATE = 0;
-const TELEOP_IDK_ACC_RATE = 0.5;
 const TELEOP_3_4_ACC_RATE = 0.75;
 const TELEOP_QUARTER_ACC_RATE = 0.25;
 
@@ -203,33 +202,33 @@ function calcAutonTotalFuel(hopperCap, preloadShot, hoppersShot, preloadAcc, hop
   }
   //HOLD  console.log(" --> For auton fuel est: hopperCap = " + hopperCap);
 
-  //HOLD  console.log("   --> preloadAcc (radio button data) = " + preloadAcc);
-  // Convert the scouted preloadAcc data (radio button number) to the appropriate percentage.
+  //HOLD  console.log("   --> preloadAcc (slider data) = " + preloadAcc);
+  // Convert the scouted preloadAcc data (slider number) to the appropriate percentage.
   switch (preloadAcc)
   {
     case 0: preloadAcc = AUTON_NONE_ACC_RATE; break;     // N/A
-    case 1: preloadAcc = AUTON_ALL_ACC_RATE; break;      // All
-    case 2: preloadAcc = AUTON_MOST_ACC_RATE_PRE; break; // Most
+    case 5: preloadAcc = AUTON_ALL_ACC_RATE; break;      // All
+    case 4: preloadAcc = AUTON_MOST_ACC_RATE_PRE; break; // Most
     case 3: preloadAcc = AUTON_HALF_ACC_RATE; break;     // Half
-    case 4: preloadAcc = AUTON_SOME_ACC_RATE_PRE; break; // Some
-    case 5: preloadAcc = AUTON_NONE_ACC_RATE; break;     // None
+    case 2: preloadAcc = AUTON_SOME_ACC_RATE_PRE; break; // Some
+    case 1: preloadAcc = AUTON_NONE_ACC_RATE; break;     // None
     default: preloadAcc = AUTON_NONE_ACC_RATE; break;
   }
   //HOLD  console.log("   --> preloadAcc (converted to percentage) = " + preloadAcc);
   let autonPreloadTotal = preloadShot * preloadAcc * 8;
   autonPreloadTotal = Number(autonPreloadTotal).toFixed(2);
 
-  // Convert the scouted hopperAcc data (radio button number) to the appropriate percentage.
-  //HOLD  console.log("   --> auto hopperAcc (radio button data) = " + hopperAcc);
+  // Convert the scouted hopperAcc data (slider number) to the appropriate percentage.
+  //HOLD  console.log("   --> auto hopperAcc (slider data) = " + hopperAcc);
   switch (hopperAcc)
   {
     case 0: hopperAcc = AUTON_NONE_ACC_RATE; break;        // N/A
-    case 1: hopperAcc = AUTON_MOST_ACC_RATE_EXTRA; break;  // Most
-    case 2: hopperAcc = AUTON_3_4_ACC_RATE; break;         // 3/4
-    case 3: hopperAcc = AUTON_HALF_ACC_RATE; break;        // Half
-    case 4: hopperAcc = AUTON_QUARTER_ACC_RATE; break;     // 1/4
-    case 5: hopperAcc = AUTON_FEW_ACC_RATE; break;         // Few
-    case 6: hopperAcc = AUTON_NONE_ACC_RATE; break;        // None
+    case 6: hopperAcc = AUTON_MOST_ACC_RATE_EXTRA; break;  // Most
+    case 5: hopperAcc = AUTON_3_4_ACC_RATE; break;         // 3/4
+    case 4: hopperAcc = AUTON_HALF_ACC_RATE; break;        // Half
+    case 3: hopperAcc = AUTON_QUARTER_ACC_RATE; break;     // 1/4
+    case 2: hopperAcc = AUTON_FEW_ACC_RATE; break;         // Few
+    case 1: hopperAcc = AUTON_NONE_ACC_RATE; break;        // None
     default: hopperAcc = AUTON_NONE_ACC_RATE; break;
   }
   //HOLD  console.log("     --> auto hopperAcc (percentage) = " + hopperAcc);
@@ -251,18 +250,18 @@ function calcTeleopTotalFuel(hopperCap, hoppersShot, hopperAcc)
 
   //HOLD  console.log(" --> For teleop fuel est: hopperCap = " + hopperCap);
 
-  // Convert the scouted teleop hopperAcc data (radio button) to the appropriate percentage.
-  //HOLD  console.log("   --> teleop hopperAcc (radio button) = " + hopperAcc);
+  // Convert the scouted teleop hopperAcc data (slider data) to the appropriate percentage.
+  //HOLD  console.log("   --> teleop hopperAcc (slider data) = " + hopperAcc);
   switch (hopperAcc)
   {
     case 0: hopperAcc = TELEOP_NONE_ACC_RATE; break;    // N/A
-    case 1: hopperAcc = TELEOP_MOST_ACC_RATE; break;    // Most
-    case 2: hopperAcc = TELEOP_3_4_ACC_RATE; break;     // 3/4
-    case 3: hopperAcc = TELEOP_HALF_ACC_RATE; break;    // Half
-    case 4: hopperAcc = TELEOP_QUARTER_ACC_RATE; break; // 1/4
-    case 5: hopperAcc = TELEOP_FEW_ACC_RATE; break;     // Few
-    case 6: hopperAcc = TELEOP_NONE_ACC_RATE; break;    // None
-    default: hopperAcc = TELEOP_IDK_ACC_RATE; break;    // IDK
+    case 6: hopperAcc = TELEOP_MOST_ACC_RATE; break;    // Most
+    case 5: hopperAcc = TELEOP_3_4_ACC_RATE; break;     // 3/4
+    case 4: hopperAcc = TELEOP_HALF_ACC_RATE; break;    // Half
+    case 3: hopperAcc = TELEOP_QUARTER_ACC_RATE; break; // 1/4
+    case 2: hopperAcc = TELEOP_FEW_ACC_RATE; break;     // Few
+    case 1: hopperAcc = TELEOP_NONE_ACC_RATE; break;    // None
+    default: hopperAcc = TELEOP_NONE_ACC_RATE; break;    
   }
   //HOLD  console.log("   --> teleop hopperAcc (percentage) = " + hopperAcc);
 
