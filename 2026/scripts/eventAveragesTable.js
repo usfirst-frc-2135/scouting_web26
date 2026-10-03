@@ -232,14 +232,17 @@ function insertEventAveragesBody(tableId, avgData, coprData, aliasList, pitData,
     rowString += tdPrefix0 + coprEntry + "</td>";
     rowString += tdPrefix0 + getDataValue(avgItem, "totalMatches") + "</td>";
 
-    // For died, we just want to show Yes if they ever died, and No if they didn't die.
-    let didDie = "No";  // default 
-    let diedPercentage = getDataValue(avgItem, "died", "arr");
-    let notDiedAvg = getDataValue(diedPercentage, 0, "avg");
-    console.log("---> notDiedAvg = " + notDiedAvg);
-    if (notDiedAvg != 100)
-      didDie = "Yes";
-    rowString += tdPrefix0 + didDie + "</td>";
+    // For died, we just want to show the number of times they died.
+    // Go thru the array of slider values (in the died array) and add up the "sum" fields to 
+    // get the total number of times it died. But skip the 0th ctr, as that is "N/A".
+    let diedArray = getDataValue(avgItem, "died", "arr");
+    let diedTotal = 0;
+    for (let ctr=1; ctr<diedArray.length; ctr++) {
+      diedTotal += getDataValue(diedArray, ctr, "sum");
+//HOLD      console.log("---> for index= "+ctr+", died sum=" + getDataValue(diedArray,ctr,"sum"));
+    }
+//HOLD    console.log("   ---> for team "+teamNum+", getting died total =" + diedTotal);
+    rowString += tdPrefix0 + diedTotal + "</td>";
 
     // points by game phase
     rowString += tdPrefix1 + Math.round(getDataValue(avgItem, "totalMatchPoints", "avg")) + "</td>";
