@@ -69,7 +69,7 @@ require 'inc/header.php';
             </div>
 
             <!-- Endgame collapsible graph -->
-            <div class="card mb-3 bg-warning-subtle">
+            <!-- REMOVE<div class="card mb-3 bg-warning-subtle">
               <div class="card-header">
                 <h5 class="text-center">
                   <a href="#collapseEndgameGraph" data-bs-toggle="collapse" aria-expanded="false">Endgame Scoring</a>
@@ -78,7 +78,7 @@ require 'inc/header.php';
               <div id="collapseEndgameGraph" class="card-body collapse">
                 <canvas id="endgameChart" width="400" height="360"></canvas>
               </div>
-            </div>
+            </div> REMOVE-->
 
           </div>
         </div>
@@ -202,7 +202,7 @@ require 'inc/header.php';
             </div>
 
             <!-- Endgame Points section -->
-            <div class="card mb-3 bg-warning-subtle">
+            <!-- REMOVE <div class="card mb-3 bg-warning-subtle">
               <div class="card-header">
                 <h5 class="text-center"> <a href="#collapseEndgame" data-bs-toggle="collapse" aria-expanded="false">Endgame
                   </a>
@@ -294,7 +294,7 @@ require 'inc/header.php';
                   </tbody>
                 </table>
               </div>
-            </div>
+            </div> REMOVE-->
           </div>
         </div>
 
@@ -372,7 +372,7 @@ require 'inc/header.php';
 <script>
   let autoChart;
   let teleopChart;
-  let endgameChart;
+  //REMOVE let endgameChart;
 
   //
   // Round data to no more than two decimal digits
@@ -674,7 +674,7 @@ require 'inc/header.php';
   //
   ///// ENDGAME GRAPH STARTS HERE /////
   //
-  function loadEndgameGraph(teamNum, matchData) {
+  /*REMOVE function loadEndgameGraph(teamNum, matchData) {
     console.log("==> teamLookup: loadEndgameGraph()");
 
     // Retrieve the data for each match
@@ -700,7 +700,7 @@ require 'inc/header.php';
           climblevel: matchItem["endgameClimbLevel"],
         });
       }
-    }
+    } 
 
     mydata.sort(function(rowA, rowB) {
       return (compareMatchNumbers(rowA["matchnum"], rowB["matchnum"]));
@@ -783,7 +783,7 @@ require 'inc/header.php';
         }
       }
     });
-  }
+  }REMOVE*/
 
   ///// ENDGAME GRAPH END HERE /////
 
@@ -818,10 +818,10 @@ require 'inc/header.php';
     writeAverageTableRow("teleopTable", ["Defense", avgs["teleopDefenseLevel"].avg, avgs["teleopDefenseLevel"].max], 3);
 
     /////// Endgame Table
-    writeAverageTableRow("endgameTotalPtsTable", ["Endgame Points", avgs["endgamePoints"].avg, avgs["endgamePoints"].max], 3);
+    /*writeAverageTableRow("endgameTotalPtsTable", ["Endgame Points", avgs["endgamePoints"].avg, avgs["endgamePoints"].max], 3);
     writeAverageTableRow("endgameClimbTable", ["Climb %", avgs["endgameClimbLevel"].arr[0].avg, avgs["endgameClimbLevel"].arr[1].avg, avgs["endgameClimbLevel"].arr[2].avg, avgs["endgameClimbLevel"].arr[3].avg], 5);
     writeAverageTableRow("endgameStartClimbTable", ["Start Climb %", avgs["endgameStartClimb"].arr[0].avg, avgs["endgameStartClimb"].arr[1].avg, avgs["endgameStartClimb"].arr[2].avg, avgs["endgameStartClimb"].arr[3].avg, avgs["endgameStartClimb"].arr[4].avg], 6);
-    writeAverageTableRow("endgameClimbPosTable", ["Climb Pos %", avgs["endgameClimbPosition"].arr[0].avg, avgs["endgameClimbPosition"].arr[1].avg, avgs["endgameClimbPosition"].arr[2].avg, avgs["endgameClimbPosition"].arr[3].avg, avgs["endgameClimbPosition"].arr[4].avg], 6);
+    writeAverageTableRow("endgameClimbPosTable", ["Climb Pos %", avgs["endgameClimbPosition"].arr[0].avg, avgs["endgameClimbPosition"].arr[1].avg, avgs["endgameClimbPosition"].arr[2].avg, avgs["endgameClimbPosition"].arr[3].avg, avgs["endgameClimbPosition"].arr[4].avg], 6);*/
   }
 
   // MAIN PAGE PROCESSORS HERE
@@ -896,7 +896,7 @@ require 'inc/header.php';
         console.log("   ==> loadMatchData: got MDP");
         loadAutonGraph(team, filteredMatches, filteredAvgData);
         loadTeleopGraph(team, filteredMatches, filteredAvgData);
-        loadEndgameGraph(team, filteredMatches);
+        //loadEndgameGraph(team, filteredMatches);
         insertMatchDataBody("matchDataTable", filteredMatches, aliasList, [team]);
 
         let teamAverages = filteredAvgData[team];
@@ -921,10 +921,10 @@ require 'inc/header.php';
     document.getElementById("autonTable").querySelector('tbody').innerHTML = "";
     document.getElementById("autonClimbTable").querySelector('tbody').innerHTML = "";
     document.getElementById("teleopTable").querySelector('tbody').innerHTML = "";
-    document.getElementById("endgameTotalPtsTable").querySelector('tbody').innerHTML = "";
+    /*document.getElementById("endgameTotalPtsTable").querySelector('tbody').innerHTML = "";
     document.getElementById("endgameClimbTable").querySelector('tbody').innerHTML = "";
     document.getElementById("endgameStartClimbTable").querySelector('tbody').innerHTML = "";
-    document.getElementById("endgameClimbPosTable").querySelector('tbody').innerHTML = "";
+    document.getElementById("endgameClimbPosTable").querySelector('tbody').innerHTML = "";*/
     document.getElementById("lookupPitDataTable").querySelector('tbody').innerHTML = "";
     document.getElementById("strategicDataTable").querySelector('tbody').innerHTML = "";
     document.getElementById("matchDataTable").querySelector('tbody').innerHTML = "";
