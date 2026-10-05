@@ -85,11 +85,11 @@ function toPreloadAcc(value)
 {
   switch (String(value))
   {
-    case "1": return "All";
-    case "2": return "Most";
+    case "1": return "None";
+    case "2": return "Some";
     case "3": return "Half";
-    case "4": return "Some";
-    case "5": return "None";
+    case "4": return "Most";
+    case "5": return "All";
     default: return "-";
   }
 }
@@ -99,12 +99,12 @@ function toAccuracyRate(value)
 {
   switch (String(value))
   {
-    case "1": return "Most";
-    case "2": return "3/4";
-    case "3": return "1/2";
-    case "4": return "1/4";
-    case "5": return "Few";
-    case "6": return "None";
+    case "1": return "None";
+    case "2": return "Few";
+    case "3": return "25%";
+    case "4": return "50%";
+    case "5": return "75%";
+    case "6": return "Most";
     default: return "-";
   }
 }
