@@ -725,6 +725,7 @@ class matchDataProcessor
         this.getMatchArray(teamItem, "endgameClimbPosition", 5, match, "endgameClimbPosition");
 
         this.getMatchArray(teamItem, "died", 5, match, "died");
+        this.getMatchItem(teamItem, "noShow", match, "noShow");
 
         // Append text data for matches
         teamItem["scoutNames"].push(match["matchnumber"] + " - " + match["scoutname"]);

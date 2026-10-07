@@ -53,6 +53,7 @@ function insertMatchDataHeader(tableId, aliasList)
   }
 
   rowString += thMatch + 'Died</th>';
+  rowString += thMatch + 'No Show</th>';
   rowString += thAuto + 'Preload Shot</th>';
   rowString += thAuto + 'Preload Acc</th>';
   rowString += thAuto + 'Hoppers Used</th>';
@@ -238,6 +239,7 @@ function insertMatchDataBody(tableId, matchData, aliasList, teamFilter)
     }
 
     rowString += tdBlue + toDiedValue(matchItem["died"]) + "</td>";
+    rowString += tdBlue + toDiedValue(matchItem["noShow"]) + "</td>";
     rowString += tdBody + matchItem["autonShootPreload"] + "</td>";
     rowString += tdBlue + toPreloadAcc(matchItem["autonPreloadAccuracy"]) + "</td>";
     rowString += tdBody + matchItem["autonHoppersShot"] + "</td>";
@@ -250,6 +252,7 @@ function insertMatchDataBody(tableId, matchData, aliasList, teamFilter)
     rowString += tdBlue + matchItem["teleopHoppersUsed"] + "</td>";
     rowString += tdBody + toAccuracyRate(matchItem["teleopHopperAccuracy"]) + "</td>";
     rowString += tdBlue + matchItem["teleopIntakeAndShoot"] + "</td>";
+    rowString += tdBlue + matchItem["noShow"] + "</td>";
     rowString += tdBody + toPassingRate(matchItem["teleopPassingRate"]) + "</td>";
     rowString += tdBlue + matchItem["teleopNeutralToAlliance"] + "</td>";
     rowString += tdBody + matchItem["teleopAllianceToAlliance"] + "</td>";
