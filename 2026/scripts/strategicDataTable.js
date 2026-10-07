@@ -28,20 +28,22 @@ function insertStrategicDataHeader(tableId, aliasList)
   const thActive = '<th scope="col" class="bg-success-subtle">';        // Auton color
   const thInactive = '<th scope="col" class="bg-primary-subtle">';      // Teleop color
   const thBump = '<th scope="col" class="bg-warning-subtle">';     // Endgame color
+  const thSteal = '<th scope="col" class="bg-danger-subtle">';     // red color
 
   let rowString1 = '';
   rowString1 += '<th colspan="1" class="bg-body"> </th>';
+
   // Insert column if the aliasList is not empty
   if (aliasList.length > 0)
   {
     rowString1 += '<th colspan="1" class="bg-body"> </th>';
   }
   rowString1 += '<th colspan="1" class="bg-body"> </th>';
-  rowString1 += '<th colspan="8" class="bg-success-subtle">' + 'Active Shift' + '</th>';
-  rowString1 += '<th colspan="8" class="bg-primary-subtle">' + 'Inactive Shift' + '</th>';
+  rowString1 += '<th colspan="1" class="bg-success-subtle">' + 'Auto' + '</th>';
+  rowString1 += '<th colspan="3" class="bg-primary-subtle">' + 'Defense' + '</th>';
   rowString1 += '<th colspan="1" class="bg-body">' + 'Evading Defense' + '</th>';
-  rowString1 += '<th colspan="4" class="bg-warning-subtle">' + 'Bump' + '</th>';
-  rowString1 += '<th colspan="1" class="bg-body">' + 'Fouls' + '</th>';
+  rowString1 += '<th colspan="3" class="bg-warning-subtle">' + 'Bump' + '</th>';
+  rowString1 += '<th colspan="1" class="bg-danger-subtle">' + 'Stealing' + '</th>';
   rowString1 += '<th colspan="2" class="bg-body">Notes' + '</th>';
   rowString1 += '<th colspan="1" class="bg-body"> </th>';
 
@@ -51,36 +53,24 @@ function insertStrategicDataHeader(tableId, aliasList)
   const thBody = '<th scope="col" class="bg-body">';
   const thBlue = '<th scope="col" class="bg-primary-subtle">';
   rowString2 += '<th scope="col" class="bg-body sorttable_numeric">' + 'Team' + '</th>';
+
   // Insert column if the aliasList is not empty
   if (aliasList.length > 0)
   {
     rowString2 += thBody + 'Alias' + '</th>';
   }
   rowString2 += thBody + 'Match</th>';
-  rowString2 += thActive + 'Loaded Hopper</th>';
-  rowString2 += thActive + 'Shot Hopper</th>';
-  rowString2 += thActive + 'Passed Fuel From Other Alliance</th>';
-  rowString2 += thActive + 'Passed Fuel From Neutral Zone</th>';
-  rowString2 += thActive + 'Herded Fuel</th>';
-  rowString2 += thActive + 'Played Defense Against Shooter</th>';
-  rowString2 += thActive + 'Played Defense At Bump</th>';
-  rowString2 += thActive + 'Played Defense At Trench</th>';
-  rowString2 += thInactive + 'Loaded Hopper</th>';
-  rowString2 += thInactive + 'Shot Hopper</th>';
-  rowString2 += thInactive + 'Passed Fuel From Other Alliance</th>';
-  rowString2 += thInactive + 'Passed Fuel From Neutral Zone</th>';
-  rowString2 += thInactive + 'Herded Fuel</th>';
-  rowString2 += thInactive + 'Played Defense Against Shooter</th>';
-  rowString2 += thInactive + 'Played Defense At Bump</th>';
-  rowString2 += thInactive + 'Played Defense At Trench</th>';
+  rowString2 += thActive + 'Disrupt Fuel</th>';
+  rowString2 += thInactive + 'At Bump</th>';
+  rowString2 += thInactive + 'At Trench</th>';
+  rowString2 += thInactive + 'At Shooter</th>';
   rowString2 += thBody + 'Effective Rating</th>';
-  rowString2 += thBump + 'Tipped Over</th>';
   rowString2 += thBump + 'Bottomed Out</th>';
-  rowString2 += thBump + 'Avoided Defender</th>';
+  rowString2 += thBump + 'Tipped Over</th>';
   rowString2 += thBump + 'Got Stuck on Fuel</th>';
-  rowString2 += thBody + 'Fouls</th>';
-  rowString2 += thBlue + 'Problem Note</th>';
-  rowString2 += thBody + 'General Note</th>';
+  rowString2 += thSteal + 'Stole Fuel</th>';
+  rowString2 += '<th style="width:400px" scope="col" class="bg-primary-subtle">Problem Note</th>';
+  rowString2 += '<th style="width:400px" scope="col" class="bg-body">General Note</th>';
   rowString2 += thBlue + 'Scout Name</th>';
 
   theadRef.insertRow().innerHTML = rowString2;
@@ -146,30 +136,17 @@ function insertStrategicDataBody(tableId, stratData, aliasList, teamFilter)
     }
     rowString += tdPrefix0Bold + stratItem["matchnumber"] + "</td>";
     rowString += tdPrefix0 + toYesNo(stratItem["activeShiftLoadedHopper"]) + "</td>";
-    rowString += tdPrefix1 + toYesNo(stratItem["activeShiftShotHopper"]) + "</td>";
-    rowString += tdPrefix0 + toYesNo(stratItem["activeShiftPassingFromAlliance"]) + "</td>";
-    rowString += tdPrefix1 + toYesNo(stratItem["activeShiftPassingFromNeutral"]) + "</td>";
-    rowString += tdPrefix0 + toYesNo(stratItem["activeShiftShoveledFuel"]) + "</td>";
+    rowString += tdPrefix1 + toYesNo(stratItem["activeShiftDefenseAtBump"]) + "</td>";
+    rowString += tdPrefix0 + toYesNo(stratItem["activeShiftDefenseAtTrench"]) + "</td>";
     rowString += tdPrefix1 + toYesNo(stratItem["activeShiftDefenseAgainstShooter"]) + "</td>";
-    rowString += tdPrefix0 + toYesNo(stratItem["activeShiftDefenseAtBump"]) + "</td>";
-    rowString += tdPrefix1 + toYesNo(stratItem["activeShiftDefenseAtTrench"]) + "</td>";
-    rowString += tdPrefix0 + toYesNo(stratItem["inactiveShiftLoadedHopper"]) + "</td>";
-    rowString += tdPrefix1 + toYesNo(stratItem["inactiveShiftShotHopper"]) + "</td>";
-    rowString += tdPrefix0 + toYesNo(stratItem["inactiveShiftPassingFromAlliance"]) + "</td>";
-    rowString += tdPrefix1 + toYesNo(stratItem["inactiveShiftPassingFromNeutral"]) + "</td>";
-    rowString += tdPrefix0 + toYesNo(stratItem["inactiveShiftShoveledFuel"]) + "</td>";
-    rowString += tdPrefix1 + toYesNo(stratItem["inactiveShiftDefenseAgainstShooter"]) + "</td>";
-    rowString += tdPrefix0 + toYesNo(stratItem["inactiveShiftDefenseAtBump"]) + "</td>";
-    rowString += tdPrefix1 + toYesNo(stratItem["inactiveShiftDefenseAtTrench"]) + "</td>";
     rowString += tdPrefix0 + defEffectiveness + "</td>";
-    rowString += tdPrefix1 + toYesNo(stratItem["bumpTippedOver"]) + "</td>";
-    rowString += tdPrefix0 + toYesNo(stratItem["bumpBottomedOut"]) + "</td>";
-    rowString += tdPrefix1 + toYesNo(stratItem["bumpAvoidedDefender"]) + "</td>";
-    rowString += tdPrefix0 + toYesNo(stratItem["bumpGotStuckOnFuel"]) + "</td>";
-    rowString += tdPrefix1 + toYesNo(stratItem["fouls"]) + "</td>";
-    rowString += tdPrefix0 + stratItem["problem_comment"] + "</td>";
-    rowString += tdPrefix1 + stratItem["general_comment"] + "</td>";
-    rowString += tdPrefix0 + stratItem["scoutname"] + "</td>";
+    rowString += tdPrefix1 + toYesNo(stratItem["bumpBottomedOut"]) + "</td>";
+    rowString += tdPrefix0 + toYesNo(stratItem["bumpTippedOver"]) + "</td>";
+    rowString += tdPrefix1 + toYesNo(stratItem["bumpGotStuckOnFuel"]) + "</td>";
+    rowString += tdPrefix0 + toYesNo(stratItem["fouls"]) + "</td>";
+    rowString += tdPrefix1 + stratItem["problem_comment"] + "</td>";
+    rowString += tdPrefix0 + stratItem["general_comment"] + "</td>";
+    rowString += tdPrefix1 + stratItem["scoutname"] + "</td>";
 
     tbodyRef.insertRow().innerHTML = rowString;
   }

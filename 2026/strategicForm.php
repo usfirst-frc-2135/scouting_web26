@@ -58,175 +58,100 @@ require 'inc/header.php';
               </div>
             </div>
 
-            <!-- Active Shift Actions -->
+            <!-- Autonomous -->
             <div class="card mb-3 bg-success-subtle">
-              <div class="card-header fw-bold">
-                Active Shift Actions
-              </div>
               <div class="card-body">
-                <div class="form-check form-check-inline">
-                  <label for="activeShiftLoadedHopper" class="form-label">Loaded Hopper</label>
-                  <input id="activeShiftLoadedHopper" class="form-check-input" type="checkbox">
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="activeShiftShotHopper" class="form-label">Shot Hopper</label>
-                  <input id="activeShiftShotHopper" class="form-check-input" type="checkbox">
-                </div>
                 <div>
-                  <span class="fw-bold">Active Shift - Passing:</span>
+                  <span class="fw-bold">Autonomous Neutral Zone Action</span>
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="activeShiftPassingFromAlliance" class="form-label">Passed fuel from other Alliance Zone</label>
-                  <input id="activeShiftPassingFromAlliance" class="form-check-input" type="checkbox">
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="activeShiftPassingFromNeutral" class="form-label">Passed fuel from Neutral Zone</label>
-                  <input id="activeShiftPassingFromNeutral" class="form-check-input" type="checkbox">
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="activeShiftShoveledFuel" class="form-label">Herded a lot of fuel</label>
-                  <input id="activeShiftShoveledFuel" class="form-check-input" type="checkbox">
-                </div>
-
-                <!-- Auton - Committed fouls section -->
-                <div>
-                  <span class="fw-bold">Active Shift - Defense:</span>
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="activeShiftDefenseAgainstShooter" class="form-label">Played defense against shooter</label>
-                  <input id="activeShiftDefenseAgainstShooter" class="form-check-input" type="checkbox">
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="activeShiftDefenseAtBump" class="form-label">Played defense at bump</label>
-                  <input id="activeShiftDefenseAtBump" class="form-check-input" type="checkbox">
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="activeShiftDefenseAtTrench" class="form-label">Played defense at trench</label>
-                  <input id="activeShiftDefenseAtTrench" class="form-check-input" type="checkbox">
+                  <label for="autonFuelDisrupt" class="form-label">Significantly disrupted other side's Neutral Zone fuel</label>
+                  <input id="autonFuelDisrupt" class="form-check-input" type="checkbox">
                 </div>
               </div>
             </div>
-            <!-- end Active Shift Mode -->
+            <!-- end Autonomous -->
 
-            <!-- Inactive Shift Mode -->
+            <!-- Played Defense -->
             <div class="card mb-3 bg-primary-subtle">
-              <div class="card-header fw-bold">
-                Inactive Shift Actions
-              </div>
               <div class="card-body">
-                <div class="form-check form-check-inline">
-                  <label for="inactiveShiftLoadedHopper" class="form-label">Loaded Hopper</label>
-                  <input id="inactiveShiftLoadedHopper" class="form-check-input" type="checkbox">
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="inactiveShiftShotHopper" class="form-label">Shot Hopper</label>
-                  <input id="inactiveShiftShotHopper" class="form-check-input" type="checkbox">
-                </div>
                 <div>
-                  <span class="fw-bold">Inactive Shift - Passing:</span>
+                  <span class="fw-bold">Played Defense</span>
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="inactiveShiftPassingFromAlliance" class="form-label">Passed fuel from other Alliance Zone</label>
-                  <input id="inactiveShiftPassingFromAlliance" class="form-check-input" type="checkbox">
+                  <label for="defenseAgainstShooter" class="form-label">Against shooter</label>
+                  <input id="defenseAgainstShooter" class="form-check-input" type="checkbox">
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="inactiveShiftPassingFromNeutral" class="form-label">Passed fuel from Neutral Zone</label>
-                  <input id="inactiveShiftPassingFromNeutral" class="form-check-input" type="checkbox">
+                  <label for="defenseAtBump" class="form-label">At bump</label>
+                  <input id="defenseAtBump" class="form-check-input" type="checkbox">
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="inactiveShiftShoveledFuel" class="form-label">Herded a lot of fuel</label>
-                  <input id="inactiveShiftShoveledFuel" class="form-check-input" type="checkbox">
-                </div>
-
-                <!-- Auton - Committed fouls section -->
-                <div>
-                  <span class="fw-bold">Active Shift - Defense:</span>
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="inactiveShiftDefenseAgainstShooter" class="form-label">Played defense against shooter</label>
-                  <input id="inactiveShiftDefenseAgainstShooter" class="form-check-input" type="checkbox">
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="inactiveShiftDefenseAtBump" class="form-label">Played defense at bump</label>
-                  <input id="inactiveShiftDefenseAtBump" class="form-check-input" type="checkbox">
-                </div>
-                <div class="form-check form-check-inline">
-                  <label for="inactiveShiftDefenseAtTrench" class="form-label">Played defense at trench</label>
-                  <input id="inactiveShiftDefenseAtTrench" class="form-check-input" type="checkbox">
+                  <label for="defenseAtTrench" class="form-label">At trench</label>
+                  <input id="defenseAtTrench" class="form-check-input" type="checkbox">
                 </div>
               </div>
             </div>
-            <!-- end Inactive Shift Mode -->
+            <!-- end Played Defense -->
 
-            <!-- Playing Defense Section -->
+            <!-- Evaded Defense Section -->
             <div class="card mb-3 bg-warning-subtle">
-              <div class="card-header fw-bold">
-                Evading Defense
-              </div>
               <div class="card-body">
-                <!-- Defense tactics section -->
-                <div class="mb-2">
-                  <span class="fw-bold">Effectiveness:</span>
+                <div>
+                  <span class="fw-bold">Evaded Defense Effectiveness</span>
                 </div>
                 <div class="col-6">
                   <div class="input-group mb-3">
                     <select id="againstDefenseEffectiveness" class="form-select">
                       <option selected value="-1">Choose ...</option>
-                      <option value="0">0-N/A</option>
-                      <option value="1">1-Low</option>
-                      <option value="2">2-Med Low</option>
-                      <option value="3">3-Avg</option>
-                      <option value="4">4-Med High</option>
-                      <option value="5">5-High</option>
+                      <option value="0">0 - N/A</option>
+                      <option value="1">1 - Low</option>
+                      <option value="2">2 - Med Low</option>
+                      <option value="3">3 - Avg</option>
+                      <option value="4">4 - Med High</option>
+                      <option value="5">5 - High</option>
                     </select>
                   </div>
                 </div>
               </div>
             </div>
+            <!-- end Evaded Defense section -->
 
-            <!-- Against defensive robot section -->
-
-            <!-- end Playing Defense Section -->
-
-            <!-- Bump Mode -->
-            <div class="card mb-3 bg-success-subtle">
-              <div class="card-header fw-bold">
-                Bump
-              </div>
+            <!-- Bump Issues-->
+            <div class="card mb-3 bg-danger-subtle">
               <div class="card-body">
-                <div class="form-check form-check-inline">
-                  <label for="bumpTippedOver" class="form-label">Tipped Over</label>
-                  <input id="bumpTippedOver" class="form-check-input" type="checkbox">
+                <div>
+                  <span class="fw-bold">Bump Issues </span>
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="bumpBottomedOut" class="form-label">Bottomed Out</label>
+                  <label for="bumpBottomedOut" class="form-label">Bottomed out</label>
                   <input id="bumpBottomedOut" class="form-check-input" type="checkbox">
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="bumpAvoidedDefender" class="form-label">Avoided Defender</label>
-                  <input id="bumpAvoidedDefender" class="form-check-input" type="checkbox">
+                  <label for="bumpTippedOver" class="form-label">Tipped over</label>
+                  <input id="bumpTippedOver" class="form-check-input" type="checkbox">
                 </div>
                 <div class="form-check form-check-inline">
-                  <label for="bumpGotStuckOnFuel" class="form-label">Got Stuck on Fuel</label>
+                  <label for="bumpGotStuckOnFuel" class="form-label">Stuck on fuel > 5s</label>
                   <input id="bumpGotStuckOnFuel" class="form-check-input" type="checkbox">
                 </div>
               </div>
             </div>
             <!-- end bump -->
 
-            <!-- Fouls Mode -->
-            <div class="card mb-3 bg-primary-subtle">
-              <div class="card-header fw-bold">
-                Fouls
-              </div>
+            <!-- Stealing Fuel -->
+            <div class="card mb-3 bg-success-subtle">
               <div class="card-body">
+                <div>
+                  <span class="fw-bold">Stealing Fuel from Alliance Zone</span>
+                </div>
                 <div class="form-check form-check-inline">
-                  <label for="fouls" class="form-label">Caused a foul</label>
-                  <input id="fouls" class="form-check-input" type="checkbox">
+                  <label for="stealingFuel" class="form-label">Got a significant amount of fuel by passing, herding or outtaking</label>
+                  <input id="stealingFuel" class="form-check-input" type="checkbox">
                 </div>
               </div>
             </div>
-            <!-- end fouls -->
+            <!-- end Stealing Fuel -->
 
             <!-- Comments section -->
             <div class="card bg-body-subtle mb-3">
@@ -344,39 +269,32 @@ require 'inc/header.php';
     document.getElementById("selectScoutName").value = "Choose ...";
     document.getElementById("otherScoutName").value = "";
 
-    // Active Shift Scouting
-    document.getElementById("activeShiftLoadedHopper").checked = false;
-    document.getElementById("activeShiftShotHopper").checked = false;
-    document.getElementById("activeShiftPassingFromAlliance").checked = false;
-    document.getElementById("activeShiftPassingFromNeutral").checked = false;
-    document.getElementById("activeShiftShoveledFuel").checked = false;
-    document.getElementById("activeShiftDefenseAgainstShooter").checked = false;
-    document.getElementById("activeShiftDefenseAtBump").checked = false;
-    document.getElementById("activeShiftDefenseAtTrench").checked = false;
+    console.log("  ==> clearing autonFuelDistrup checkbox");
+    // Autonomous Neutral Zone fuel disruption 
+    document.getElementById("autonFuelDisrupt").checked = false;
 
-    // Inactive Shift Scouting
-    document.getElementById("inactiveShiftLoadedHopper").checked = false;
-    document.getElementById("inactiveShiftShotHopper").checked = false;
-    document.getElementById("inactiveShiftPassingFromAlliance").checked = false;
-    document.getElementById("inactiveShiftPassingFromNeutral").checked = false;
-    document.getElementById("inactiveShiftShoveledFuel").checked = false;
-    document.getElementById("inactiveShiftDefenseAgainstShooter").checked = false;
-    document.getElementById("inactiveShiftDefenseAtBump").checked = false;
-    document.getElementById("inactiveShiftDefenseAtTrench").checked = false;
+    // Defense Scouting
+    console.log("  ==> clearing defense checkboxes");
+    document.getElementById("defenseAgainstShooter").checked = false;
+    document.getElementById("defenseAtBump").checked = false;
+    document.getElementById("defenseAtTrench").checked = false;
 
     // Evading Defense Scouting
+    console.log("  ==> clearing against-defense list");
     document.getElementById("againstDefenseEffectiveness").value = "";
 
     // Bump Scouting
+    console.log("  ==> clearing bump checkboxes");
     document.getElementById("bumpTippedOver").checked = false;
     document.getElementById("bumpBottomedOut").checked = false;
-    document.getElementById("bumpAvoidedDefender").checked = false;
     document.getElementById("bumpGotStuckOnFuel").checked = false;
 
-    // Bump Scouting
-    document.getElementById("fouls").checked = false;
+    // Stealing Fuel 
+    console.log("  ==> clearing stealing checkbox");
+    document.getElementById("stealingFuel").checked = false;
 
     // Comment boxes
+    console.log("  ==> clearing commenst ");
     document.getElementById("problemComment").value = "";
     document.getElementById("generalComment").value = "";
   }
@@ -395,25 +313,13 @@ require 'inc/header.php';
     dataToSave["teamnumber"] = document.getElementById("enterTeamNumber").value.toUpperCase().trim();
     dataToSave["scoutname"] = getScoutName();
 
-    // Active Shift scouting
-    dataToSave["activeShiftLoadedHopper"] = (document.getElementById("activeShiftLoadedHopper").checked) ? 1 : 0;
-    dataToSave["activeShiftShotHopper"] = (document.getElementById("activeShiftShotHopper").checked) ? 1 : 0;
-    dataToSave["activeShiftPassingFromAlliance"] = (document.getElementById("activeShiftPassingFromAlliance").checked) ? 1 : 0;
-    dataToSave["activeShiftPassingFromNeutral"] = (document.getElementById("activeShiftPassingFromNeutral").checked) ? 1 : 0;
-    dataToSave["activeShiftShoveledFuel"] = (document.getElementById("activeShiftShoveledFuel").checked) ? 1 : 0;
-    dataToSave["activeShiftDefenseAgainstShooter"] = (document.getElementById("activeShiftDefenseAgainstShooter").checked) ? 1 : 0;
-    dataToSave["activeShiftDefenseAtBump"] = (document.getElementById("activeShiftDefenseAtBump").checked) ? 1 : 0;
-    dataToSave["activeShiftDefenseAtTrench"] = (document.getElementById("activeShiftDefenseAtTrench").checked) ? 1 : 0;
+    // Autonomous scouting (stored under "activeShiftLoadedHopper" keyword)
+    dataToSave["activeShiftLoadedHopper"] = (document.getElementById("autonFuelDisrupt").checked) ? 1 : 0;
 
-    // Inactive Shift scouting
-    dataToSave["inactiveShiftLoadedHopper"] = (document.getElementById("inactiveShiftLoadedHopper").checked) ? 1 : 0;
-    dataToSave["inactiveShiftShotHopper"] = (document.getElementById("inactiveShiftShotHopper").checked) ? 1 : 0;
-    dataToSave["inactiveShiftPassingFromAlliance"] = (document.getElementById("inactiveShiftPassingFromAlliance").checked) ? 1 : 0;
-    dataToSave["inactiveShiftPassingFromNeutral"] = (document.getElementById("inactiveShiftPassingFromNeutral").checked) ? 1 : 0;
-    dataToSave["inactiveShiftShoveledFuel"] = (document.getElementById("inactiveShiftShoveledFuel").checked) ? 1 : 0;
-    dataToSave["inactiveShiftDefenseAgainstShooter"] = (document.getElementById("inactiveShiftDefenseAgainstShooter").checked) ? 1 : 0;
-    dataToSave["inactiveShiftDefenseAtBump"] = (document.getElementById("inactiveShiftDefenseAtBump").checked) ? 1 : 0;
-    dataToSave["inactiveShiftDefenseAtTrench"] = (document.getElementById("inactiveShiftDefenseAtTrench").checked) ? 1 : 0;
+    // Defense scouting (storing data with old "activeShift.." keywords)
+    dataToSave["activeShiftDefenseAgainstShooter"] = (document.getElementById("defenseAgainstShooter").checked) ? 1 : 0;
+    dataToSave["activeShiftDefenseAtBump"] = (document.getElementById("defenseAtBump").checked) ? 1 : 0;
+    dataToSave["activeShiftDefenseAtTrench"] = (document.getElementById("defenseAtTrench").checked) ? 1 : 0;
 
     // Evading Defense scouting (note value may not be set)
     let ade = document.getElementById("againstDefenseEffectiveness").value;
@@ -424,15 +330,29 @@ require 'inc/header.php';
     // Bump scouting
     dataToSave["bumpTippedOver"] = (document.getElementById("bumpTippedOver").checked) ? 1 : 0;
     dataToSave["bumpBottomedOut"] = (document.getElementById("bumpBottomedOut").checked) ? 1 : 0;
-    dataToSave["bumpAvoidedDefender"] = (document.getElementById("bumpAvoidedDefender").checked) ? 1 : 0;
     dataToSave["bumpGotStuckOnFuel"] = (document.getElementById("bumpGotStuckOnFuel").checked) ? 1 : 0;
 
-    // Fouls scouting
-    dataToSave["fouls"] = (document.getElementById("fouls").checked) ? 1 : 0;
+    // Stealing fuel scouting (saved under old "fouls" keyword)
+    dataToSave["fouls"] = (document.getElementById("stealingFuel").checked) ? 1 : 0;
 
     // Comment boxes
     dataToSave["problem_comment"] = document.getElementById("problemComment").value;
     dataToSave["general_comment"] = document.getElementById("generalComment").value;
+
+    // Save dummy data to unused data spots.
+    dataToSave["activeShiftShotHopper"] = 0;
+    dataToSave["activeShiftPassingFromAlliance"] = 0;
+    dataToSave["activeShiftPassingFromNeutral"] = 0;
+    dataToSave["activeShiftShoveledFuel"] = 0;
+    dataToSave["inactiveShiftLoadedHopper"] = 0;
+    dataToSave["inactiveShiftShotHopper"] = 0;
+    dataToSave["inactiveShiftPassingFromAlliance"] = 0;
+    dataToSave["inactiveShiftPassingFromNeutral"] = 0;
+    dataToSave["inactiveShiftShoveledFuel"] = 0;
+    dataToSave["inactiveShiftDefenseAgainstShooter"] = 0;
+    dataToSave["inactiveShiftDefenseAtBump"] = 0;
+    dataToSave["inactiveShiftDefenseAtTrench"] = 0;
+    dataToSave["bumpAvoidedDefender"] = 0;
 
     return dataToSave;
   }
