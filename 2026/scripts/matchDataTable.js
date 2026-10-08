@@ -190,15 +190,23 @@ function toDriverAbility(value)
   }
 }
 
+function toYes(value)
+{
+  switch (String(value))
+  {
+    case "1": return "Yes";
+    default: return "-";
+  }
+}
+
 function toDiedValue(value)
 {
   switch (String(value))
   {
-    case "1": return "Most";
-    case "2": return "1m+";
-    case "3": return "30s+";
-    case "4": return "15-30s";
-    case "5": return "No Show";
+    case "1": return "15-30s";
+    case "2": return "30-60s";
+    case "3": return "60-90s";
+    case "4": return "Most";
     default: return "-";
   }
 }
@@ -239,7 +247,7 @@ function insertMatchDataBody(tableId, matchData, aliasList, teamFilter)
     }
 
     rowString += tdBlue + toDiedValue(matchItem["died"]) + "</td>";
-    rowString += tdBlue + toDiedValue(matchItem["noShow"]) + "</td>";
+    rowString += tdBlue + toYes(matchItem["other2"]) + "</td>"; // No Show is stored in "other2"
     rowString += tdBody + matchItem["autonShootPreload"] + "</td>";
     rowString += tdBlue + toPreloadAcc(matchItem["autonPreloadAccuracy"]) + "</td>";
     rowString += tdBody + matchItem["autonHoppersShot"] + "</td>";
@@ -252,7 +260,7 @@ function insertMatchDataBody(tableId, matchData, aliasList, teamFilter)
     rowString += tdBlue + matchItem["teleopHoppersUsed"] + "</td>";
     rowString += tdBody + toAccuracyRate(matchItem["teleopHopperAccuracy"]) + "</td>";
     rowString += tdBlue + matchItem["teleopIntakeAndShoot"] + "</td>";
-    rowString += tdBlue + matchItem["noShow"] + "</td>";
+    rowString += tdBlue + matchItem["other2"] + "</td>";   // No Show is stored in "other2"
     rowString += tdBody + toPassingRate(matchItem["teleopPassingRate"]) + "</td>";
     rowString += tdBlue + matchItem["teleopNeutralToAlliance"] + "</td>";
     rowString += tdBody + matchItem["teleopAllianceToAlliance"] + "</td>";

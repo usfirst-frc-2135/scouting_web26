@@ -42,6 +42,7 @@ function insertEventAveragesHeader(tableId, aliasList)
   rowString1 += '<th colspan="1" ' + thMatch + '> </th>';
   rowString1 += '<th colspan="1" ' + thMatch + '> </th>';
   rowString1 += '<th colspan="1" ' + thMatch + '>' + '</th>';
+  rowString1 += '<th colspan="1" ' + thMatch + '>' + '</th>';
 
   // points by game phase
   rowString1 += '<th colspan="8" ' + thMatch + '>Match Points' + '</th>';
@@ -64,6 +65,9 @@ function insertEventAveragesHeader(tableId, aliasList)
 
   // died 
   rowString2 += '<th colspan="1" ' + thMatch + '>Died' + '</th>';
+
+  // No Show 
+  rowString2 += '<th colspan="1" ' + thMatch + '>No Show' + '</th>';
 
   // points by game phase
   rowString2 += '<th colspan="2" ' + thMatch + '>Total Pts' + '</th>';
@@ -101,6 +105,9 @@ function insertEventAveragesHeader(tableId, aliasList)
   rowString3 += thPrefix0 + '#' + '</th>';
 
   // died 
+  rowString3 += thPrefix0 + '#' + '</th>';
+
+  // No Show
   rowString3 += thPrefix0 + '#' + '</th>';
 
   // points by game phase
@@ -243,6 +250,10 @@ function insertEventAveragesBody(tableId, avgData, coprData, aliasList, pitData,
     }
 //HOLD    console.log("   ---> for team "+teamNum+", getting died total =" + diedTotal);
     rowString += tdPrefix0 + diedTotal + "</td>";
+
+    // For NoShow, we just want to show the number of times they were NoShow.
+    let noShowTotal = getDataValue(avgItem, "other2", "sum");
+    rowString += tdPrefix0 + noShowTotal + "</td>";
 
     // points by game phase
     rowString += tdPrefix1 + Math.round(getDataValue(avgItem, "totalMatchPoints", "avg")) + "</td>";
