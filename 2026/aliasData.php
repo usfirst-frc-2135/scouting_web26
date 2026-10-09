@@ -141,13 +141,16 @@ require 'inc/header.php';
   //
   // Retrieve team aliases and write out file
   //
+  const teamNumJsonKey = "teamNum";
+  const aliasNumJsonKey = "aliasNum";
+
   function writeTeamAliasFile(tableId, fileName) {
     console.log("==> aliasData: writeTeamAliasFile() - " + fileName);
     let jsonTable = tableToJSON(tableId); // Convert the HTML table into a JSON object
     jsonTable.forEach(function(row) {
-      row["teamnum"] = row["Team Number"]; // Make a new team number field with correct tag
+      row[teamNumJsonKey] = row["Team Number"]; // Make a new team number field with correct tag
       delete row["Team Number"]; // Remove the undesired tag
-      row["aliasnum"] = row["Team Alias"]; // Make a new alias number field with correct tag
+      row[aliasNumJsonKey] = row["Team Alias"]; // Make a new alias number field with correct tag
       delete row["Team Alias"]; // Remove the undesired tag
       delete row.Delete; // Remove the "Delete" field from each row
     });
