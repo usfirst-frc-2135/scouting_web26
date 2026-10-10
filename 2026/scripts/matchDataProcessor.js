@@ -682,7 +682,8 @@ class matchDataProcessor
         this.getMatchItem(teamItem, "autonDepot", match, "autonDepot");
         this.getMatchItem(teamItem, "autonOutpost", match, "autonOutpost");
         this.getMatchItem(teamItem, "autonNeutralZone", match, "autonNeutralZone");
-        this.getMatchArray(teamItem, "autonClimb", 5, match, "autonClimb");
+        this.getMatchItem(teamItem, "autonClimb", match, "Climb"); //NEW
+//REMOVE        this.getMatchArray(teamItem, "autonClimb", 5, match, "autonClimb");
 
         // For REBUILT: calc basic auton fuel estimate for this team/match, store in pData:fuelD
         let autonEst = calcAutonTotalFuel(hopperCap, preloadShot, autonHopperShot, preloadAcc, autonHopperAcc);
@@ -771,10 +772,7 @@ class matchDataProcessor
         let autonClimb = match["autonClimb"];
         switch (String(autonClimb))
         {
-          case "1": autonClimbPoints = 15; break;  // Back
-          case "2": autonClimbPoints = 15; break;  // Left
-          case "3": autonClimbPoints = 15; break;  // Front
-          case "4": autonClimbPoints = 15; break; // Right
+          case "1": autonClimbPoints = 15; break; 
           default: autonClimbPoints = 0; break;   // No climb
         }
         let autonTotalPoints = parseInt(autonFinalFuelEst) + parseInt(autonClimbPoints);
@@ -814,7 +812,7 @@ class matchDataProcessor
       console.log(">>>>> Calculating averages for team: " + teamNum);
       this.calcAverage(teamItem, "autonFinalFuelEst", "totalMatches");
       this.calcAverage(teamItem, "autonClimbPoints", "totalMatches");
-      this.calcArray(teamItem, "autonClimb", "totalMatches");
+      this.calcAverage(teamItem, "autonClimb", "totalMatches");
 
       // Teleop mode
       this.calcAverage(teamItem, "teleopTotalPoints", "totalMatches");

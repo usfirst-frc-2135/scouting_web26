@@ -28,6 +28,7 @@ function insertMatchDataHeader(tableId, aliasList)
 
   let rowString = '';
   let rowString1 = '';
+  const thGen = '<th scope="col" class="bg-warning-subtle">';       // General color
   const thMatch = '<th scope="col" class="bg-body">';               // No color
   const thAuto = '<th scope="col" class="bg-success-subtle">';        // Auton color
   const thTeleop = '<th scope="col" class="bg-primary-subtle">';      // Teleop color
@@ -36,10 +37,10 @@ function insertMatchDataHeader(tableId, aliasList)
   if (aliasList.length > 0)
     rowString1 += '<th colspan="3" ' + thMatch + ' </th>';
   else rowString1 += '<th colspan="2" ' + thMatch + ' </th>';
-  rowString1 += '<th colspan="1" ' + thMatch + ' </th>';
+  rowString1 += '<th colspan="1" ' + thGen + ' </th>';    // Died
+  rowString1 += '<th colspan="1" ' + thGen + ' </th>';    // No Show
   rowString1 += '<th colspan="9" ' + thAuto + 'Auton' + '</th>';
   rowString1 += '<th colspan="9" ' + thTeleop + 'Teleop' + '</th>';
-  rowString1 += '<th colspan="3" ' + thEndgame + 'Endgame' + '</th>';
   rowString1 += '<th colspan="2" ' + thMatch + ' </th>';
   theadRef.insertRow().innerHTML = rowString1;
 
@@ -52,8 +53,8 @@ function insertMatchDataHeader(tableId, aliasList)
     rowString += thMatch + 'Alias</th>';
   }
 
-  rowString += thMatch + 'Died</th>';
-  rowString += thMatch + 'No Show</th>';
+  rowString += thGen + 'Died</th>';
+  rowString += thGen + 'No Show</th>';
   rowString += thAuto + 'Preload Shot</th>';
   rowString += thAuto + 'Preload Acc</th>';
   rowString += thAuto + 'Hoppers Used</th>';
@@ -72,9 +73,6 @@ function insertMatchDataHeader(tableId, aliasList)
   rowString += thTeleop + 'Herded Fuel</th>';
   rowString += thTeleop + 'Defense Rate</th>';
   rowString += thTeleop + 'Driver Ability</th>';
-  rowString += thEndgame + 'Start Climb</th>';
-  rowString += thEndgame + 'Climb Level</th>';
-  rowString += thEndgame + 'Climb Position</th>';
   rowString += thMatch + 'Comment</th>';
   rowString += thMatch + 'Scout Name</th>';
 
@@ -247,29 +245,25 @@ function insertMatchDataBody(tableId, matchData, aliasList, teamFilter)
     }
 
     rowString += tdBlue + toDiedValue(matchItem["died"]) + "</td>";
-    rowString += tdBlue + toYes(matchItem["other2"]) + "</td>"; // No Show is stored in "other2"
-    rowString += tdBody + matchItem["autonShootPreload"] + "</td>";
-    rowString += tdBlue + toPreloadAcc(matchItem["autonPreloadAccuracy"]) + "</td>";
-    rowString += tdBody + matchItem["autonHoppersShot"] + "</td>";
-    rowString += tdBlue + toAccuracyRate(matchItem["autonHopperAccuracy"]) + "</td>";
-    rowString += tdBody + matchItem["autonAllianceZone"] + "</td>";
-    rowString += tdBlue + matchItem["autonDepot"] + "</td>";
-    rowString += tdBody + matchItem["autonOutpost"] + "</td>";
-    rowString += tdBlue + matchItem["autonNeutralZone"] + "</td>";
-    rowString += tdBody + toClimbPosition(matchItem["autonClimb"]) + "</td>";
-    rowString += tdBlue + matchItem["teleopHoppersUsed"] + "</td>";
-    rowString += tdBody + toAccuracyRate(matchItem["teleopHopperAccuracy"]) + "</td>";
-    rowString += tdBlue + matchItem["teleopIntakeAndShoot"] + "</td>";
-    rowString += tdBlue + matchItem["other2"] + "</td>";   // No Show is stored in "other2"
-    rowString += tdBody + toPassingRate(matchItem["teleopPassingRate"]) + "</td>";
-    rowString += tdBlue + matchItem["teleopNeutralToAlliance"] + "</td>";
-    rowString += tdBody + matchItem["teleopAllianceToAlliance"] + "</td>";
-    rowString += tdBlue + matchItem["other1"] + "</td>";
-    rowString += tdBody + toDefenseRate(matchItem["teleopDefenseLevel"]) + "</td>";
-    rowString += tdBlue + toDriverAbility(matchItem["driverAbility"]) + "</td>";
-    rowString += tdBody + toStartClimb(matchItem["endgameStartClimb"]) + "</td>";
-    rowString += tdBlue + toClimbLevel(matchItem["endgameClimbLevel"]) + "</td>";
-    rowString += tdBody + toClimbPosition(matchItem["endgameClimbPosition"]) + "</td>";
+    rowString += tdBody + toYes(matchItem["other2"]) + "</td>"; // No Show is stored in "other2"
+    rowString += tdBlue + matchItem["autonShootPreload"] + "</td>";
+    rowString += tdBody + toPreloadAcc(matchItem["autonPreloadAccuracy"]) + "</td>";
+    rowString += tdBlue + matchItem["autonHoppersShot"] + "</td>";
+    rowString += tdBody + toAccuracyRate(matchItem["autonHopperAccuracy"]) + "</td>";
+    rowString += tdBlue + matchItem["autonAllianceZone"] + "</td>";
+    rowString += tdBody + matchItem["autonDepot"] + "</td>";
+    rowString += tdBlue + matchItem["autonOutpost"] + "</td>";
+    rowString += tdBody + matchItem["autonNeutralZone"] + "</td>";
+    rowString += tdBlue + toYes(matchItem["autonClimb"]) + "</td>";
+    rowString += tdBody + matchItem["teleopHoppersUsed"] + "</td>";
+    rowString += tdBlue + toAccuracyRate(matchItem["teleopHopperAccuracy"]) + "</td>";
+    rowString += tdBody + matchItem["teleopIntakeAndShoot"] + "</td>";
+    rowString += tdBlue + toPassingRate(matchItem["teleopPassingRate"]) + "</td>";
+    rowString += tdBody + matchItem["teleopNeutralToAlliance"] + "</td>";
+    rowString += tdBlue + matchItem["teleopAllianceToAlliance"] + "</td>";
+    rowString += tdBody + matchItem["other1"] + "</td>";
+    rowString += tdBlue + toDefenseRate(matchItem["teleopDefenseLevel"]) + "</td>";
+    rowString += tdBody + toDriverAbility(matchItem["driverAbility"]) + "</td>";
     rowString += tdBlue + matchItem["comment"] + "</td>";
     rowString += tdBody + matchItem["scoutname"] + "</td>";
 
