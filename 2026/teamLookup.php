@@ -67,19 +67,6 @@ require 'inc/header.php';
                 <canvas id="teleopChart" width="400" height="360"></canvas>
               </div>
             </div>
-
-            <!-- Endgame collapsible graph -->
-            <!-- REMOVE<div class="card mb-3 bg-warning-subtle">
-              <div class="card-header">
-                <h5 class="text-center">
-                  <a href="#collapseEndgameGraph" data-bs-toggle="collapse" aria-expanded="false">Endgame Scoring</a>
-                </h5>
-              </div>
-              <div id="collapseEndgameGraph" class="card-body collapse">
-                <canvas id="endgameChart" width="400" height="360"></canvas>
-              </div>
-            </div> REMOVE-->
-
           </div>
         </div>
 
@@ -148,20 +135,12 @@ require 'inc/header.php';
                   <thead>
                     <tr>
                       <th scope="col" class="text-start"></th>
-                      <th scope="col" style="width:12%">NA</th>
-                      <th scope="col" style="width:12%">B</th>
-                      <th scope="col" style="width:12%">L</th>
-                      <th scope="col" style="width:12%">F</th>
-                      <th scope="col" style="width:12%">R</th>
+                      <th scope="col">#</th>
                     </tr>
                   </thead>
                   <tbody class="table-group-divider">
                     <tr>
-                      <th scope="row" class="text-start">Climb %</th>
-                      <td> </td>
-                      <td> </td>
-                      <td> </td>
-                      <td> </td>
+                      <th scope="row" class="text-start">Climb #</th>
                       <td> </td>
                     </tr>
                   </tbody>
@@ -200,101 +179,6 @@ require 'inc/header.php';
                 </table>
               </div>
             </div>
-
-            <!-- Endgame Points section -->
-            <!-- REMOVE <div class="card mb-3 bg-warning-subtle">
-              <div class="card-header">
-                <h5 class="text-center"> <a href="#collapseEndgame" data-bs-toggle="collapse" aria-expanded="false">Endgame
-                  </a>
-                </h5>
-              </div>
-              <div id="collapseEndgame" class="card-body collapse">
-                <table id="endgameTotalPtsTable"
-                  class="table table-striped table-bordered table-hover table-sm border-secondary text-center ">
-                  <thead>
-                    <tr>
-                      <th scope="col" class="text-start"></th>
-                      <th scope="col">AVG</th>
-                      <th scope="col">MAX</th>
-                    </tr>
-                  </thead>
-                  <tbody class="table-group-divider">
-                    <tr>
-                      <th scope="row" class="text-start">Endgame Points</th>
-                      <td> </td>
-                      <td> </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <table id="endgameClimbTable"
-                  class="table table-striped table-bordered table-hover table-sm border-secondary text-center ">
-                  <thead>
-                    <tr>
-                      <th scope="col" class="text-start"></th>
-                      <th scope="col" style="width:12%">NA</th>
-                      <th scope="col" style="width:12%">L1</th>
-                      <th scope="col" style="width:12%">L2</th>
-                      <th scope="col" style="width:12%">L3</th>
-                    </tr>
-                  </thead>
-                  <tbody class="table-group-divider">
-                    <tr>
-                      <th scope="row" class="text-start">Climb %</th>
-                      <td> </td>
-                      <td> </td>
-                      <td> </td>
-                      <td> </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <table id="endgameStartClimbTable"
-                  class="table table-striped table-bordered table-hover table-sm border-secondary text-center ">
-                  <thead>
-                    <tr>
-                      <th scope="col" class="text-start"></th>
-                      <th scope="col" style="width:12%">NA</th>
-                      <th scope="col" style="width:12%">B4</th>
-                      <th scope="col" style="width:12%">Bell</th>
-                      <th scope="col" style="width:12%">10s</th>
-                      <th scope="col" style="width:12%">lt10s</th>
-                    </tr>
-                  </thead>
-                  <tbody class="table-group-divider">
-                    <tr>
-                      <th scope="row" class="text-start">Start Climb %</th>
-                      <td> </td>
-                      <td> </td>
-                      <td> </td>
-                      <td> </td>
-                      <td> </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <table id="endgameClimbPosTable"
-                  class="table table-striped table-bordered table-hover table-sm border-secondary text-center ">
-                  <thead>
-                    <tr>
-                      <th scope="col" class="text-start"></th>
-                      <th scope="col" style="width:12%">NA</th>
-                      <th scope="col" style="width:12%">B</th>
-                      <th scope="col" style="width:12%">L</th>
-                      <th scope="col" style="width:12%">F</th>
-                      <th scope="col" style="width:12%">R</th>
-                    </tr>
-                  </thead>
-                  <tbody class="table-group-divider">
-                    <tr>
-                      <th scope="row" class="text-start">Climb Pos %</th>
-                      <td> </td>
-                      <td> </td>
-                      <td> </td>
-                      <td> </td>
-                      <td> </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div> REMOVE-->
           </div>
         </div>
 
@@ -372,7 +256,6 @@ require 'inc/header.php';
 <script>
   let autoChart;
   let teleopChart;
-  //REMOVE let endgameChart;
 
   //
   // Round data to no more than two decimal digits
@@ -407,7 +290,7 @@ require 'inc/header.php';
       let matchnum = matchItem["matchnumber"];
       let teamnumber = matchItem["teamnumber"];
       if (teamnumber == teamNum) {
-        //        console.log("    ==> teamLookup: match "+matchnum+": found team "+teamNum);
+        console.log("    ==> teamLookup: match "+matchnum+": found team "+teamNum);
 
         // Get the auton fuel estimate for this team / match from the avgsData
         let autonFuelEst = 0; // default
@@ -415,26 +298,26 @@ require 'inc/header.php';
         if (pDataTeamItem !== undefined) {
           if (pDataTeamItem["fuelD"][matchnum]["autonFE"] !== undefined) {
             autonFuelEst = pDataTeamItem["fuelD"][matchnum]["autonFE"];
-            //            console.log("        ==> basic autonFE = "+autonFuelEst);
+            console.log("        ==> basic autonFE = "+autonFuelEst);
           }
           if (pDataTeamItem["fuelD"][matchnum]["tbaAutonFE"] !== undefined) {
             autonFuelEst = pDataTeamItem["fuelD"][matchnum]["tbaAutonFE"];
-            //            console.log("        ==> tba autonFE = "+autonFuelEst);
+            console.log("        ==> tba autonFE = "+autonFuelEst);
           }
         }
 
-        let autonClimb = 0;
+        let autonClimbPts = 0;
         if (matchItem["autonClimb"] == 0) {
-          autonClimb = 0;
+          autonClimbPts = 0;
         };
-        if (matchItem["autonClimb"] == 1 || matchItem["autonClimb"] == 2 || matchItem["autonClimb"] == 3 || matchItem["autonClimb"] == 4) {
-          autonClimb = 15;
+        if (matchItem["autonClimb"] == 1) {
+          autonClimbPts = 15;
         };
 
         mydata.push({
           matchnum: matchnum,
           fuel: autonFuelEst,
-          climb: autonClimb,
+          climb: autonClimbPts,
         });
       }
     } // done with matchData for loop
@@ -462,7 +345,7 @@ require 'inc/header.php';
 
       autonClimbTips.push({
         xlabel: matchnum,
-        tip: storeAndGetTip(mydata[i]["climb"], "Climb=", datasets[0]["data"], true)
+        tip: storeAndGetTip(mydata[i]["climb"], "Climb=", datasets[0]["data"], false)
       });
       autonFuelTips.push({
         xlabel: matchnum,
@@ -556,7 +439,7 @@ require 'inc/header.php';
       let matchnum = matchItem["matchnumber"];
       let teamnumber = matchItem["teamnumber"];
       if (teamnumber == teamNum) {
-        //        console.log("    ==> loadTeleopGraph: match "+matchnum+": found team "+teamNum);
+        console.log("    ==> loadTeleopGraph: match "+matchnum+": found team "+teamNum);
 
         // Get the teleop fuel estimate for this team / match from the avgsData
         let teleopFuelEst = 0; // default
@@ -564,11 +447,11 @@ require 'inc/header.php';
         if (pDataTeamItem !== undefined) {
           if (pDataTeamItem["fuelD"][matchnum]["teleopFE"] !== undefined) {
             teleopFuelEst = pDataTeamItem["fuelD"][matchnum]["teleopFE"];
-            //            console.log("        ==> basic teleopFE = "+teleopFuelEst);
+            console.log("        ==> basic teleopFE = "+teleopFuelEst);
           }
           if (pDataTeamItem["fuelD"][matchnum]["tbaTeleopFE"] !== undefined) {
             teleopFuelEst = pDataTeamItem["fuelD"][matchnum]["tbaTeleopFE"];
-            //            console.log("        ==> tba teleopFE = "+teleopFuelEst);
+            console.log("        ==> tba teleopFE = "+teleopFuelEst);
           }
         }
 
@@ -672,122 +555,6 @@ require 'inc/header.php';
   ///// TELEOP GRAPH ENDS HERE /////
 
   //
-  ///// ENDGAME GRAPH STARTS HERE /////
-  //
-  /*REMOVE function loadEndgameGraph(teamNum, matchData) {
-    console.log("==> teamLookup: loadEndgameGraph()");
-
-    // Retrieve the data for each match
-    let datasets = [];
-
-    datasets.push({
-      label: "Climb Level",
-      data: [],
-      backgroundColor: '#2CA9DE'
-    });
-
-    // Go thru each matchData QR code string and build up a table of the data, so we can
-    // later sort it so the matches are listed in the right order. 
-    let mydata = [];
-    for (let i = 0; i < matchData.length; i++) {
-      let matchItem = matchData[i];
-      let matchnum = matchItem["matchnumber"];
-      let teamnumber = matchItem["teamnumber"];
-      if (teamnumber == teamNum) {
-        //        console.log("    ==> loadEndgameGraph: match "+matchnum+": found team "+teamNum);
-        mydata.push({
-          matchnum: matchItem["matchnumber"],
-          climblevel: matchItem["endgameClimbLevel"],
-        });
-      }
-    } 
-
-    mydata.sort(function(rowA, rowB) {
-      return (compareMatchNumbers(rowA["matchnum"], rowB["matchnum"]));
-    });
-
-
-    // Build data sets; go thru each mydata row and populate the graph datasets.
-    let matchList = [];
-    let climbLevelTips = [];
-
-    for (let i = 0; i < mydata.length; i++) {
-      let matchnum = mydata[i]["matchnum"];
-      matchList.push(matchnum);
-
-      value = {
-        0: "N/A",
-        1: "L1",
-        2: "L2",
-        3: "L3"
-      };
-
-      // Get endgame climb level
-      let endgameClimbLevel = mydata[i]["climblevel"];
-      datasets[0]["data"].push(endgameClimbLevel);
-      climbLevelTips.push({
-        xlabel: matchnum,
-        tip: "Climb Level =" + value[endgameClimbLevel]
-      });
-    }
-
-    if (endgameChart !== undefined) {
-      endgameChart.destroy();
-    }
-
-    // Create the Endgame graph
-    const ctx = document.getElementById('endgameChart').getContext('2d');
-    endgameChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: matchList,
-        datasets: datasets
-      },
-      options: {
-        scales: {
-          x: {
-            stacked: true
-          },
-          y: {
-            stacked: true,
-            min: 0,
-            ticks: {
-              precision: 0
-            },
-            max: 4
-          } // Set Y axis maximum value - deep climb
-        },
-        plugins: {
-          tooltip: {
-            callbacks: { // Special tooltip handling
-              label: function(tooltipItem, ddata) {
-
-                function getTip(matchno, tipList) {
-                  for (let i = 0; i < tipList.length; i++)
-                    if (tipList[i].xlabel === matchno)
-                      return tipList[i].tip;
-                }
-
-                let matchnum = tooltipItem.label;
-                let tipStr = datasets[tooltipItem.datasetIndex].label;
-                switch (tooltipItem.datasetIndex) {
-                  case 0:
-                    return getTip(matchnum, climbLevelTips);
-                  default:
-                    return "missing tip string!"
-                }
-                return tipStr;
-              }
-            }
-          }
-        }
-      }
-    });
-  }REMOVE*/
-
-  ///// ENDGAME GRAPH END HERE /////
-
-  //
   // Create an html table row with tr and td cells
   //
   function writeAverageTableRow(tableID, values, length) {
@@ -809,19 +576,16 @@ require 'inc/header.php';
     writeAverageTableRow("matchSheetTable", ["Total Match Points", avgs["totalMatchPoints"].avg, avgs["totalMatchPoints"].max], 3);
 
     //Auton Table  
+    console.log("  ==> writing Auton Table()");
     writeAverageTableRow("autonTable", ["Auton Points", avgs["autonTotalPoints"].avg, avgs["autonTotalPoints"].max], 3);
     writeAverageTableRow("autonTable", ["Fuel Est", avgs["autonFinalFuelEst"].avg, avgs["autonFinalFuelEst"].max], 3);
-    writeAverageTableRow("autonClimbTable", ["Climb %", avgs["autonClimb"].arr[0].avg, avgs["autonClimb"].arr[1].avg, avgs["autonClimb"].arr[2].avg, avgs["autonClimb"].arr[3].avg, avgs["autonClimb"].arr[4].avg], 6);
+    console.log("  ==> writing Auton Table() climb table");
+    writeAverageTableRow("autonClimbTable", ["Number of Auton Climbs", avgs["autonClimb"].sum],2);
 
     // Teleop Table
+    console.log("  ==> writing Teleop Table()");
     writeAverageTableRow("teleopTable", ["Fuel Est", avgs["teleopTotalPoints"].avg, avgs["teleopTotalPoints"].max], 3);
     writeAverageTableRow("teleopTable", ["Defense", avgs["teleopDefenseLevel"].avg, avgs["teleopDefenseLevel"].max], 3);
-
-    /////// Endgame Table
-    /*writeAverageTableRow("endgameTotalPtsTable", ["Endgame Points", avgs["endgamePoints"].avg, avgs["endgamePoints"].max], 3);
-    writeAverageTableRow("endgameClimbTable", ["Climb %", avgs["endgameClimbLevel"].arr[0].avg, avgs["endgameClimbLevel"].arr[1].avg, avgs["endgameClimbLevel"].arr[2].avg, avgs["endgameClimbLevel"].arr[3].avg], 5);
-    writeAverageTableRow("endgameStartClimbTable", ["Start Climb %", avgs["endgameStartClimb"].arr[0].avg, avgs["endgameStartClimb"].arr[1].avg, avgs["endgameStartClimb"].arr[2].avg, avgs["endgameStartClimb"].arr[3].avg, avgs["endgameStartClimb"].arr[4].avg], 6);
-    writeAverageTableRow("endgameClimbPosTable", ["Climb Pos %", avgs["endgameClimbPosition"].arr[0].avg, avgs["endgameClimbPosition"].arr[1].avg, avgs["endgameClimbPosition"].arr[2].avg, avgs["endgameClimbPosition"].arr[3].avg, avgs["endgameClimbPosition"].arr[4].avg], 6);*/
   }
 
   // MAIN PAGE PROCESSORS HERE
@@ -921,10 +685,7 @@ require 'inc/header.php';
     document.getElementById("autonTable").querySelector('tbody').innerHTML = "";
     document.getElementById("autonClimbTable").querySelector('tbody').innerHTML = "";
     document.getElementById("teleopTable").querySelector('tbody').innerHTML = "";
-    /*document.getElementById("endgameTotalPtsTable").querySelector('tbody').innerHTML = "";
-    document.getElementById("endgameClimbTable").querySelector('tbody').innerHTML = "";
-    document.getElementById("endgameStartClimbTable").querySelector('tbody').innerHTML = "";
-    document.getElementById("endgameClimbPosTable").querySelector('tbody').innerHTML = "";*/
+
     document.getElementById("lookupPitDataTable").querySelector('tbody').innerHTML = "";
     document.getElementById("strategicDataTable").querySelector('tbody').innerHTML = "";
     document.getElementById("matchDataTable").querySelector('tbody').innerHTML = "";

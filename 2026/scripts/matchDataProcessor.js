@@ -590,16 +590,6 @@ class matchDataProcessor
       this.updateMatchFuelDItem(pDataTeam1, matchnum, "tbaTeleopFE", teleFinal1);
       this.updateMatchFuelDItem(pDataTeam2, matchnum, "tbaTeleopFE", teleFinal2);
       this.updateMatchFuelDItem(pDataTeam3, matchnum, "tbaTeleopFE", teleFinal3);
-
-      //REMOVE    // Calculate the total fuel estimates.
-      //REMOVE    let totalFinal1 = autoFinal1 + teleFinal1;
-      //REMOVE    let totalFinal2 = autoFinal2 + teleFinal2;
-      //REMOVE    let totalFinal3 = autoFinal3 + teleFinal3;
-
-      //REMOVE    // Update this field in regular team pData, to be used for max and avgs.
-      //REMOVE    this.updateItem(pDataTeam1, "totalFuelEst", totalFinal1);
-      //REMOVE    this.updateItem(pDataTeam2, "totalFuelEst", totalFinal2);
-      //REMOVE    this.updateItem(pDataTeam3, "totalFuelEst", totalFinal3);
     }
     else console.log("  --> Can't access TBA score breakdown data, so no TBA fuel ests!");
   };
@@ -682,8 +672,7 @@ class matchDataProcessor
         this.getMatchItem(teamItem, "autonDepot", match, "autonDepot");
         this.getMatchItem(teamItem, "autonOutpost", match, "autonOutpost");
         this.getMatchItem(teamItem, "autonNeutralZone", match, "autonNeutralZone");
-        this.getMatchItem(teamItem, "autonClimb", match, "Climb"); //NEW
-//REMOVE        this.getMatchArray(teamItem, "autonClimb", 5, match, "autonClimb");
+        this.getMatchItem(teamItem, "autonClimb", match, "autonClimb"); 
 
         // For REBUILT: calc basic auton fuel estimate for this team/match, store in pData:fuelD
         let autonEst = calcAutonTotalFuel(hopperCap, preloadShot, autonHopperShot, preloadAcc, autonHopperAcc);
