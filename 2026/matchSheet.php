@@ -111,11 +111,13 @@ require 'inc/header.php';
                 <td id="redAvgTeleopPoints" class="table-danger"></td>
                 <td id="blueAvgTeleopPoints" class="table-primary"></td>
               </tr>
+              <!-- remmove
               <tr>
                 <td class="text-start table-secondary">Avg Endgame Points</td>
                 <td id="redAvgEndgamePoints" class="table-danger"></td>
                 <td id="blueAvgEndgamePoints" class="table-primary"></td>
               </tr>
+-->
               <tr>
                 <td class="text-start table-secondary">Avg Total Fuel</td>
                 <td id="redTotalFuel" class="table-danger"></td>
@@ -468,7 +470,7 @@ require 'inc/header.php';
     document.getElementById("redAvgAutoPoints").innerText = "";
     document.getElementById("redAvgAutoClimb").innerText = "";
     document.getElementById("redAvgTeleopPoints").innerText = "";
-    document.getElementById("redAvgEndgamePoints").innerText = "";
+    //removedocument.getElementById("redAvgEndgamePoints").innerText = "";
     document.getElementById("redTotalFuel").innerText = "";
     document.getElementById("redPredictedTotalPoints").innerText = "";
     document.getElementById("redActualTotalPoints").innerText = "";
@@ -478,7 +480,7 @@ require 'inc/header.php';
     document.getElementById("blueAvgAutoPoints").innerText = "";
     document.getElementById("blueAvgAutoClimb").innerText = "";
     document.getElementById("blueAvgTeleopPoints").innerText = "";
-    document.getElementById("blueAvgEndgamePoints").innerText = "";
+    //remove document.getElementById("blueAvgEndgamePoints").innerText = "";
     document.getElementById("blueTotalFuel").innerText = "";
     document.getElementById("bluePredictedTotalPoints").innerText = "";
     document.getElementById("blueActualTotalPoints").innerText = "";
@@ -749,7 +751,7 @@ require 'inc/header.php';
     document.getElementById("redAvgAutoPoints").innerText = roundTwoPlaces(avgAutoPoints["red"]);
     document.getElementById("redAvgAutoClimb").innerText = roundTwoPlaces(avgAutoClimbPoints["red"]);
     document.getElementById("redAvgTeleopPoints").innerText = roundTwoPlaces(avgTeleopPoints["red"]);
-    document.getElementById("redAvgEndgamePoints").innerText = roundTwoPlaces(avgEndgamePoints["red"]);
+    //remove document.getElementById("redAvgEndgamePoints").innerText = roundTwoPlaces(avgEndgamePoints["red"]);
     document.getElementById("redTotalFuel").innerText = roundTwoPlaces(avgTotalFuel["red"]);
     document.getElementById("redPredictedTotalPoints").innerText = roundTwoPlaces(predictedPoints["red"]);
     if (matchSpec["redScore"] != "-")
@@ -763,7 +765,7 @@ require 'inc/header.php';
     document.getElementById("blueAvgAutoPoints").innerText = roundTwoPlaces(avgAutoPoints["blue"]);
     document.getElementById("blueAvgAutoClimb").innerText = roundTwoPlaces(avgAutoClimbPoints["blue"]);
     document.getElementById("blueAvgTeleopPoints").innerText = roundTwoPlaces(avgTeleopPoints["blue"]);
-    document.getElementById("blueAvgEndgamePoints").innerText = roundTwoPlaces(avgEndgamePoints["blue"]);
+    //remove document.getElementById("blueAvgEndgamePoints").innerText = roundTwoPlaces(avgEndgamePoints["blue"]);
     document.getElementById("blueTotalFuel").innerText = roundTwoPlaces(avgTotalFuel["blue"]);
     document.getElementById("bluePredictedTotalPoints").innerText = roundTwoPlaces(predictedPoints["blue"]);
     document.getElementById("blueActualTotalPoints").innerText = roundTwoPlaces(matchSpec["blueScore"]);
@@ -933,7 +935,7 @@ require 'inc/header.php';
       console.error("matchSheet: loadMatchSheet: averagesData is null!");
       return alert("matchSheet: loadMatchSheet: averagesData is null!");
     }
-    sendPhotoRequest(matchSpec);
+    //HOLD sendPhotoRequest(matchSpec);
 
     document.getElementById("matchTitle").innerText = matchSpec.title;
     if (matchSpec.title !== "CUSTOM") {
