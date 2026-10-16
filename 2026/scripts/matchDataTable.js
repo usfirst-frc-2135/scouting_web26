@@ -39,7 +39,7 @@ function insertMatchDataHeader(tableId, aliasList)
   else rowString1 += '<th colspan="2" ' + thMatch + ' </th>';
   rowString1 += '<th colspan="1" ' + thGen + ' </th>';    // Died
   rowString1 += '<th colspan="1" ' + thGen + ' </th>';    // No Show
-  rowString1 += '<th colspan="9" ' + thAuto + 'Auton' + '</th>';
+  rowString1 += '<th colspan="5" ' + thAuto + 'Auton' + '</th>';
   rowString1 += '<th colspan="9" ' + thTeleop + 'Teleop' + '</th>';
   rowString1 += '<th colspan="2" ' + thMatch + ' </th>';
   theadRef.insertRow().innerHTML = rowString1;
@@ -59,10 +59,10 @@ function insertMatchDataHeader(tableId, aliasList)
   rowString += thAuto + 'Preload Acc</th>';
   rowString += thAuto + 'Hoppers Used</th>';
   rowString += thAuto + 'Hopper Acc</th>';
-  rowString += thAuto + 'Alliance Zone</th>';
-  rowString += thAuto + 'Depot</th>';
-  rowString += thAuto + 'Outpost</th>';
-  rowString += thAuto + 'Neutral Zone</th>';
+  //REMOVE rowString += thAuto + 'Alliance Zone</th>';
+  //REMOVE rowString += thAuto + 'Depot</th>';
+  //REMOVE rowString += thAuto + 'Outpost</th>';
+  //REMOVE rowString += thAuto + 'Neutral Zone</th>';
   rowString += thAuto + 'Climb</th>';
   rowString += thTeleop + 'Hoppers Used</th>';
   rowString += thTeleop + 'Hopper Acc</th>';
@@ -250,10 +250,10 @@ function insertMatchDataBody(tableId, matchData, aliasList, teamFilter)
     rowString += tdBody + toPreloadAcc(matchItem["autonPreloadAccuracy"]) + "</td>";
     rowString += tdBlue + matchItem["autonHoppersShot"] + "</td>";
     rowString += tdBody + toAccuracyRate(matchItem["autonHopperAccuracy"]) + "</td>";
-    rowString += tdBlue + matchItem["autonAllianceZone"] + "</td>";
-    rowString += tdBody + matchItem["autonDepot"] + "</td>";
-    rowString += tdBlue + matchItem["autonOutpost"] + "</td>";
-    rowString += tdBody + matchItem["autonNeutralZone"] + "</td>";
+    //REMOVE rowString += tdBlue + matchItem["autonAllianceZone"] + "</td>";
+    //REMOVE rowString += tdBody + matchItem["autonDepot"] + "</td>";
+    //REMOVE rowString += tdBlue + matchItem["autonOutpost"] + "</td>";
+    //REMOVE rowString += tdBody + matchItem["autonNeutralZone"] + "</td>";
     rowString += tdBlue + toYes(matchItem["autonClimb"]) + "</td>";
     rowString += tdBody + matchItem["teleopHoppersUsed"] + "</td>";
     rowString += tdBlue + toAccuracyRate(matchItem["teleopHopperAccuracy"]) + "</td>";
