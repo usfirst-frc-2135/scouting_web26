@@ -163,28 +163,31 @@ require 'inc/header.php';
                 </div>
 
                 <div class="mb-3">
-                  <span>Can your robot climb in auton?</span>
+                  <span>How many competitions has your robot competed in (not counting this one)?</span>
                   <div class="col-8">
                     <div class="input-group mb-3">
                       <select id="climbAble" class="form-select">
                         <option selected value="-1">Choose ...</option>
-                        <option value="1">Yes</option>
-                        <option value="0">No</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3+</option>
                       </select>
                     </div>
                   </div>
                 </div>
 
                 <div class="mb-3">
-                  <span>What levels can your robot climb in Endgame?</span>
+                  <span>How many competitions has the driver run the robot in (not counting this one)?</span>
                   <div class="col-8">
                     <div class="input-group mb-3">
                       <select id="climbLevel" class="form-select">
                         <option selected value="-1">Choose ...</option>
-                        <option value="1">L1</option>
-                        <option value="2">L2</option>
-                        <option value="3">L3</option>
-                        <option value="0">Can't climb</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3+</option>
+                  
                       </select>
                     </div>
                   </div>

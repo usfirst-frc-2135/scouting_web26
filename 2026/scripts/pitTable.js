@@ -25,8 +25,8 @@ function insertPitTableHeader(tableId)
   rowString += '<th scope="col" class="bg-body sorttable_numeric">Team</th>';
   rowString += thAuton + 'Hopper Cap</th>';
   rowString += thAuton + 'Trench</th>';
-  rowString += thAuton + 'Auton Climb</th>';
-  rowString += thAuton + 'Climb Level</th>';
+  rowString += thAuton + 'Robot Experience</th>';
+  rowString += thAuton + 'Driver Experience</th>';
   rowString += thTeleop + 'Swerve</th>';
   rowString += thTeleop + 'Drive Motors</th>';
   rowString += thTeleop + 'Spare Mechanism</th>';
