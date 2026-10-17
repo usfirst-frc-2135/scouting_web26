@@ -470,7 +470,7 @@ require 'inc/header.php';
     document.getElementById("redAvgAutoPoints").innerText = "";
     document.getElementById("redAvgAutoClimb").innerText = "";
     document.getElementById("redAvgTeleopPoints").innerText = "";
-    //removedocument.getElementById("redAvgEndgamePoints").innerText = "";
+    //remove document.getElementById("redAvgEndgamePoints").innerText = "";
     document.getElementById("redTotalFuel").innerText = "";
     document.getElementById("redPredictedTotalPoints").innerText = "";
     document.getElementById("redActualTotalPoints").innerText = "";
@@ -583,7 +583,7 @@ require 'inc/header.php';
     let rowString1 = "";
     rowString1 += '<th colspan="2" class="text-center fs-6 table-success">Auton</th>';
     rowString1 += '<th colspan="1" class="text-center fs-6 table-primary">Teleop</th>';
-    rowString1 += '<th colspan="4" class="text-center fs-6 table-warning">Endgame</th>';
+    // REMOVE rowString1 += '<th colspan="4" class="text-center fs-6 table-warning">Endgame</th>';
 
     let rowString2 = "";
     const thAuto = '<th scope="col" class="table-success">';
@@ -593,11 +593,11 @@ require 'inc/header.php';
     const thTeleop = '<th scope="col" class="table-primary">';
     rowString2 += thTeleop + 'Fuel' + '</th >';
 
-    const thEndgame = '<th scope="col" class="table-warning">';
+    /* REMOVE const thEndgame = '<th scope="col" class="table-warning">';
     rowString2 += thEndgame + 'NA' + '</th>';
     rowString2 += thEndgame + 'L1' + '</th>';
     rowString2 += thEndgame + 'L2' + '</th>';
-    rowString2 += thEndgame + 'L3' + '</th>';
+    rowString2 += thEndgame + 'L3' + '</th>'; REMOVE*/
 
     document.getElementById(tableId).querySelector('thead').insertRow().innerHTML = rowString1;
     document.getElementById(tableId).querySelector('thead').insertRow().innerHTML = rowString2;
@@ -639,10 +639,10 @@ require 'inc/header.php';
       row += "<td>" + ad["autonFinalFuelEst"].avg + "</td>";
       row += "<td>" + ad["autonClimbPoints"].avg + "</td>";
       row += "<td>" + ad["teleopTotalPoints"].avg + "</td>";
-      row += "<td>" + ad["endgameClimbLevel"].arr[0].avg + "</td>";
+      /*REMOVE row += "<td>" + ad["endgameClimbLevel"].arr[0].avg + "</td>";
       row += "<td>" + ad["endgameClimbLevel"].arr[1].avg + "</td>";
       row += "<td>" + ad["endgameClimbLevel"].arr[2].avg + "</td>";
-      row += "<td>" + ad["endgameClimbLevel"].arr[3].avg + "</td>";
+      row += "<td>" + ad["endgameClimbLevel"].arr[3].avg + "</td>"; REMOVE */
     }
     tbodyRef.insertRow().innerHTML = row;
   }
@@ -667,10 +667,10 @@ require 'inc/header.php';
       "red": 0,
       "blue": 0
     };
-    let avgEndgamePoints = {
+    /* REMOVE let avgEndgamePoints = {
       "red": 0,
       "blue": 0
-    };
+    }; */
     let avgTotalClimbPts = {
       "red": 0,
       "blue": 0
@@ -686,34 +686,34 @@ require 'inc/header.php';
       let avgDataInfo = averagesData[teamNum];
       if (avgDataInfo != null) {
         let fuelTotal = avgDataInfo["autonFinalFuelEst"].avg + avgDataInfo["teleopTotalPoints"].avg;
-        let climbTotal = avgDataInfo["autonClimbPoints"].avg + avgDataInfo["endgamePoints"].avg;
+        let climbTotal = avgDataInfo["autonClimbPoints"].avg; //REMOVE+ avgDataInfo["endgamePoints"].avg;
         avgTotalFuel["red"] += fuelTotal;
         avgAutoPoints["red"] += avgDataInfo["autonFinalFuelEst"].avg;
         avgAutoClimbPoints["red"] += avgDataInfo["autonClimbPoints"].avg;
         avgTeleopPoints["red"] += avgDataInfo["teleopTotalPoints"].avg;
-        avgEndgamePoints["red"] += avgDataInfo["endgamePoints"].avg;
+        //REMOVE avgEndgamePoints["red"] += avgDataInfo["endgamePoints"].avg;
         avgTotalClimbPts["red"] += climbTotal;
         predictedPoints["red"] += avgDataInfo["totalMatchPoints"].avg;
       }
     }
-    console.log("==> matchSheet: red teams: avgAutoPoints: " + avgAutoPoints["red"] + ", avgAutoClimbPoints: " + avgAutoClimbPoints["red"] + ", avgTeleopPoints: " + avgTeleopPoints["red"] + ", avgEndgamePoints: " + avgEndgamePoints["red"] + ", avgTotalFuel: " + avgTotalFuel["red"] + "totalClimbPts: " + avgTotalClimbPts["red"] + ", predictedPoints: " + predictedPoints["red"]);
+    console.log("==> matchSheet: red teams: avgAutoPoints: " + avgAutoPoints["red"] + ", avgAutoClimbPoints: " + avgAutoClimbPoints["red"] + ", avgTeleopPoints: " + avgTeleopPoints["red"] /* REMOVE+ ", avgEndgamePoints: " + avgEndgamePoints["red"]*/ + ", avgTotalFuel: " + avgTotalFuel["red"] + "totalClimbPts: " + avgTotalClimbPts["red"] + ", predictedPoints: " + predictedPoints["red"]);
 
     for (let i in matchSpec.blue) {
       teamNum = matchSpec.blue[i];
       let avgDataInfo = averagesData[teamNum];
       if (avgDataInfo != null) {
         let fuelTotal = avgDataInfo["autonFinalFuelEst"].avg + avgDataInfo["teleopTotalPoints"].avg;
-        let climbTotal = avgDataInfo["autonClimbPoints"].avg + avgDataInfo["endgamePoints"].avg;
+        let climbTotal = avgDataInfo["autonClimbPoints"].avg; // REMOVE+ avgDataInfo["endgamePoints"].avg;
         avgTotalFuel["blue"] += fuelTotal;
         avgAutoPoints["blue"] += avgDataInfo["autonFinalFuelEst"].avg;
         avgAutoClimbPoints["blue"] += avgDataInfo["autonClimbPoints"].avg;
         avgTeleopPoints["blue"] += avgDataInfo["teleopTotalPoints"].avg;
-        avgEndgamePoints["blue"] += avgDataInfo["endgamePoints"].avg;
+        //REMOVE avgEndgamePoints["blue"] += avgDataInfo["endgamePoints"].avg;
         avgTotalClimbPts["blue"] += climbTotal;
         predictedPoints["blue"] += avgDataInfo["totalMatchPoints"].avg;
       }
     }
-    console.log("==> matchSheet: blue teams: avgAutoPoints: " + avgAutoPoints["blue"] + ", avgAutoClimbPoints: " + avgAutoClimbPoints["blue"] + ", avgTeleopPoints: " + avgTeleopPoints["blue"] + ", avgEndgamePoints: " + avgEndgamePoints["blue"] + ", avgTotalFuel: " + avgTotalFuel["blue"] + "totalClimbPts: " + avgTotalClimbPts["blue"] + ", predictedPoints: " + predictedPoints["blue"]);
+    // REMOVE console.log("==> matchSheet: blue teams: avgAutoPoints: " + avgAutoPoints["blue"] + ", avgAutoClimbPoints: " + avgAutoClimbPoints["blue"] + ", avgTeleopPoints: " + avgTeleopPoints["blue"] + ", Points["blue"] + ", avgTotalFuel: " + avgTotalFuel["blue"] + "totalClimbPts: " + avgTotalClimbPts["blue"] + ", predictedPoints: " + predictedPoints["blue"]);
 
     //
     // Predict ranking points
