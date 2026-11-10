@@ -4,7 +4,7 @@ require 'inc/header.php';
 ?>
 
 <div class="container-fluid row-offcanvas row-offcanvas-left">
-  <div id="content" class="column col-lg-12 col-sm-12 col-xs-12">
+  <div id="content" class="column col-lg-12 col-sm-12 col-12">
 
     <!-- Page Title -->
     <div class="row pt-3 mb-3">
@@ -152,7 +152,7 @@ require 'inc/header.php';
     <div class="row mb-3 gx-3">
 
       <!-- Red0 - Red Team 1 -->
-      <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
+      <div class="col-12 col-sm-4 gx-3">
         <div id="R0TeamBox" class="accordion accordion-flush mb-3">
           <div class="accordion-item bg-danger">
 
@@ -189,7 +189,7 @@ require 'inc/header.php';
       </div>
 
       <!-- Red1 - Red Team 2 -->
-      <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
+      <div class="col-12 col-sm-4 gx-3">
         <div id="R1TeamBox" class="accordion accordion-flush mb-3">
           <div class="accordion-item bg-danger">
 
@@ -226,7 +226,7 @@ require 'inc/header.php';
       </div>
 
       <!-- Red2 - Red Team 3 -->
-      <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
+      <div class="col-12 col-sm-4 gx-3">
         <div id="R2TeamBox" class="accordion accordion-flush mb-3">
           <div class="accordion-item bg-danger">
 
@@ -267,7 +267,7 @@ require 'inc/header.php';
     <div class="row mb-3 gx-3">
 
       <!-- Blue0 - Blue Team 1 -->
-      <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
+      <div class="col-12 col-sm-4 gx-3">
         <div id="B0TeamBox" class="accordion accordion-flush mb-3">
           <div class="accordion-item bg-primary">
 
@@ -304,7 +304,7 @@ require 'inc/header.php';
       </div>
 
       <!-- Blue1 - Blue Team 2 -->
-      <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
+      <div class="col-12 col-sm-4 gx-3">
         <div id="B1TeamBox" class="accordion accordion-flush mb-3">
           <div class="accordion-item bg-primary">
 
@@ -341,7 +341,7 @@ require 'inc/header.php';
       </div>
 
       <!-- Blue2 - Blue Team 3 -->
-      <div class="col-lg-4 col-sm-4 col-xs-4 gx-3">
+      <div class="col-12 col-sm-4 gx-3">
         <div id="B2TeamBox" class="accordion accordion-flush mb-3">
           <div class="accordion-item bg-primary">
 

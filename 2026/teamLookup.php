@@ -4,7 +4,7 @@ require 'inc/header.php';
 ?>
 
 <div class="container-fluid row-offcanvas row-offcanvas-left">
-  <div id="content" class="column col-lg-12 col-sm-12 col-xs-12">
+  <div id="content" class="column col-lg-12 col-sm-12 col-12">
 
     <!-- Page Title -->
     <div class="row pt-3 mb-3">
@@ -24,7 +24,7 @@ require 'inc/header.php';
 
     <!-- First column of data starts here -->
     <div class="row">
-      <div class="col-lg-6 col-sm-6 col-xs-6 gx-3">
+      <div class="col-12 col-sm-6 gx-3">
         <div class="card mb-3">
           <div class="card-body">
             <h5 id="teamTitle" class="card-title">Team # </h5>
@@ -73,7 +73,7 @@ require 'inc/header.php';
       </div>
 
       <!-- Second Column of Data starts here -->
-      <div class="col-lg-6 col-sm-6 col-xs-6 gx-3">
+      <div class="col-12 col-sm-6 gx-3">
         <div class="card mb-3">
           <div class="card-body">
 
