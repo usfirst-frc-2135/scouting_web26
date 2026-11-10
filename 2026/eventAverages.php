@@ -82,22 +82,31 @@ require 'inc/header.php';
   //
   // Scrape table and write CSV file
   //
-  function downloadTableAsCSV(tableId, csvName) {
-    // TODO - update this for REBUILT  
+  function downloadTableAsCSV(tableId, aliasList, csvName) {
     csvName = csvName + ".csv";
     console.log("==> eventAverages: downloadTableAsCSV(): " + csvName);
     const table = document.getElementById(tableId).querySelector('tbody');
     let csv = [];
 
     // This CSV header must match the order in eventAveragesTable.js insertEventAveragesBody()
-    let hdrStr = "Team,COPRs,Matches,Died," +
+    let hdrStr = "Team,";
+    if (aliasList != null && aliasList.length > 0) {
+      hdrStr += "Alias,";
+    }
+
+    hdrStr +=
+      "COPRs,Matches,Died,No Show," +
+
       "Total Pts Avg,Total Pts Max," +
-      "Auto Pts Avg,Auto Pts Max,Tel Pts Avg,Tel Pts Max,End Pts Avg,End Pts Max," +
-      "Auto Est Fuel Pts Avg,Auto Est Fuel Pts Max,Auto Climb Pts Avg,Auto Climb Pts Max," +
-      "Tel Est Fuel Pts Avg, Tel Est Fuel Pts Max, Def Avg," +
-      "Start N/A,Start Before,Start At,Start10,Less10," +
-      "End N/A,End L1,End L2,End L3," +
-      "Note";
+      "Auto Pts Avg,Auto Pts Max," +
+      "Tel Pts Avg,Tel Pts Max," +
+
+      "Auto Est Fuel Pts Avg,Auto Est Fuel Pts Max," +
+      "Auto Climb Pts Avg,Auto Climb Pts Max," +
+
+      "Tel Est Fuel Pts Avg,Tel Est Fuel Pts Max," +
+
+      "Def Avg,";
     csv.push(hdrStr);
 
     const rows = table.querySelectorAll("tr");
@@ -118,6 +127,18 @@ require 'inc/header.php';
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
+  }
+
+  //
+  // Get alias names and COPRs, create table header
+  //
+  function addCSVDownloadButton(tableId, aliasList) {
+
+    // Write out picklist CSV file to client's download dir.
+    document.getElementById("downloadCsvFile").addEventListener('click', function() {
+      const csvFileName = frcEventCode + "_eventAverages";
+      downloadTableAsCSV(tableId, aliasList, csvFileName);
+    });
   }
 
   //
@@ -170,6 +191,7 @@ require 'inc/header.php';
     }).done(function(eventAliasNames) {
       console.log("=> eventAliasNames");
       jAliasNames = JSON.parse(eventAliasNames);
+      addCSVDownloadButton(tableId, jAliasNames);
       buildAveragesHeader(tableId, jAliasNames);
       buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, hopperCapData, null, null);
     });
@@ -247,12 +269,6 @@ require 'inc/header.php';
     });
 
     buildEventAveragesTable(tableId, null, null);
-
-    // Write out picklist CSV file to client's download dir.
-    document.getElementById("downloadCsvFile").addEventListener('click', function() {
-      const csvFileName = frcEventCode + "_eventAverages";
-      downloadTableAsCSV(tableId, csvFileName);
-    });
 
     // Create frozen table panes and keep the panes updated
     document.getElementById(tableId).addEventListener('click', function() {
