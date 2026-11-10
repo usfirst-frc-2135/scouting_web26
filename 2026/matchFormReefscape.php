@@ -26,16 +26,18 @@ require 'inc/header.php';
             <div>
               <h4>Match Info</h4>
             </div>
-            <div class="row col-9 col-md-7 mb-3">
-              <span>Match Number</span>
-              <div class="input-group">
-                <select id="enterCompLevel" class="form-select w-auto flex-grow-0" aria-label="Comp Level Select">
-                  <option id="compLevelP" value="p">P</option>
-                  <option id="compLevelQM" value="qm" selected>QM</option>
-                  <option id="compLevelSF" value="sf">SF</option>
-                  <option id="compLevelF" value="f">F</option>
-                </select>
-                <input id="enterMatchNumber" class="form-control" type="text" placeholder="Match Number" aria-label="Match Number">
+            <div class="row mb-3">
+              <div class="col-9 col-md-7">
+                <span>Match Number</span>
+                <div class="input-group">
+                  <select id="enterCompLevel" class="form-select w-auto flex-grow-0" aria-label="Comp Level Select">
+                    <option id="compLevelP" value="p">P</option>
+                    <option id="compLevelQM" value="qm" selected>QM</option>
+                    <option id="compLevelSF" value="sf">SF</option>
+                    <option id="compLevelF" value="f">F</option>
+                  </select>
+                  <input id="enterMatchNumber" class="form-control" type="text" placeholder="Match Number" aria-label="Match Number">
+                </div>
               </div>
             </div>
 

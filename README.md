@@ -10,7 +10,20 @@ Collected data can be viewed through a match data page and strategic data page. 
 
 ## What web tools does it use?
 
-Web pages are written to use Bootstrap, PHP, and javascript to gather and display the results from the main database. The scouting database is in a MySQL server on our team web site, Web pages access the scouting database over Internet connections and also pull information from the Blue Alliance.
+Web pages use PHP, Bootstrap 5, and JavaScript to gather and display results from the MySQL scouting database hosted on the team web site. The pages also retrieve event information from The Blue Alliance. Bootstrap's CSS and JavaScript bundle, Bootstrap Icons, and jQuery are loaded from CDNs; the QR scanner loads ZXing from unpkg. The Bootstrap and Bootstrap Icons assets are version-pinned and use Subresource Integrity hashes. The app has no frontend build step. Internet access is required for the hosted database and external assets.
+
+## Frontend layout and Bootstrap conventions
+
+The shared layout is in `2026/inc/header.php` and `2026/inc/footer.php`. The header loads Bootstrap 5.3.8 and Bootstrap Icons 1.13.1 with Subresource Integrity hashes. The footer loads the Bootstrap JavaScript bundle, jQuery, and local table utilities. jQuery is used by the freeze-table plugin and by existing database requests.
+
+When updating a page:
+
+- Use Bootstrap 5 classes and markup. For responsive columns, use a base class such as `col-12` and add breakpoint classes such as `col-sm-6` when the layout should change at that viewport width. Bootstrap 5 does not provide `col-xs-*`.
+- Keep `.row` on the row container and put `.col-*` classes on its direct child elements. Do not combine `.row` and `.col-*` on the same element.
+- Inside `.input-group`, place controls directly as children. Bootstrap 5 no longer uses the Bootstrap 4 `.input-group-prepend` and `.input-group-append` wrappers. Use `w-auto flex-grow-0` on a select when it should size to its options instead of expanding to fill the group.
+- Prefer Bootstrap utility classes for one-off layout and spacing; move repeated or page-specific styling into a stylesheet rather than accumulating inline styles.
+
+The app is served as PHP pages directly; no npm install or frontend compilation is required. After editing a PHP page, run `php -l path/to/page.php` to check its syntax and manually verify responsive behavior at phone and desktop widths.
 
 ## How is the database structured?
 
@@ -66,19 +79,16 @@ The scouting web app consists of a hosted web site containing PHP web pages and 
 - scouting_web (this is the github repo root directory)
   - 2026 (this subdirectory level is a mirror of what is placed on the live web site) 
     - api - directory of PHP files for accessing the MySQL database and The Blue Alliance
-    - external - the javascript libraries used by the web site
-      - bootstrap - the framework used to build web pages and widgets
-      - charts - used to create charts withing the data lookup pages
-      - freeze-table - used to freeze the header and first column in larger data tables for easy viewing
-      - jquery - required by freeze-table (we no longer use jquery within our web pages--only javascript)
-      - sorttable - utility to automatically provde sorting functions to data tables
-      - zxing - used for QR code scanning and decoding
+    - external - locally hosted JavaScript libraries and plugins
+      - charts - Chart.js used to create charts on data lookup pages
+      - freeze-table - freezes the header and first column in larger data tables; requires jQuery
+      - sorttable - utility to provide sorting functions to data tables
     - images - graphic images used by the web site such as favicon.ico
-    - inc - header.php and footer.php include files
+    - inc - shared header.php and footer.php include files; the header loads Bootstrap and Bootstrap Icons from CDNs
     - qr-code - screenshots of QR codes used for web site testing
     - robot-pics - location for uploaded photos of robots during pit scouting
     - scripts - javascript utilities for commonly used functions
-    - *.php - the main webpages used by the scouting app web site -- the names should match the web menu interface
+    - *.php - the main webpages used by the scouting app web site -- the names should match the web menu interface; matchQrScanner.php loads ZXing from unpkg
   - phpinfo.php - a simple php file for running phpconfig on our web host
   - LICENSE - the MIT license covering use of this repo
   - README.md - THIS FILE

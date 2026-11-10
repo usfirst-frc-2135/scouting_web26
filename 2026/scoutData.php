@@ -7,46 +7,54 @@ require 'inc/header.php';
   <div id="content" class="column col-lg-12 col-sm-12 col-12">
 
     <!-- Page Title -->
-    <div class="row col-md-6 pt-3 mb-3">
-      <h2 class="col-auto mb-3 me-3"><?php echo $title; ?> </h2>
-      <a class="col-auto btn btn-primary mb-3 me-3" href="javascript:history.back()">Back</a>
+    <div class="row pt-3 mb-3">
+      <div class="col-md-6">
+        <div class="row">
+          <h2 class="col-auto mb-3 me-3"><?php echo $title; ?> </h2>
+          <a class="col-auto btn btn-primary mb-3 me-3" href="javascript:history.back()">Back</a>
+        </div>
+      </div>
     </div>
 
     <!-- Main row to hold the entry card -->
-    <div class="row col-md-6 mb-3">
-      <h5>Add New Scout Name</h5>
-      <div class="input-group mb-3">
-        <input id="enterScoutName" class="form-control me-2" type="text" placeholder="First name, last init."
-          aria-label="Scout Name">
-        <button id="addScoutName" class="btn btn-primary me-2" type="button">Add Scout</button>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <h5>Add New Scout Name</h5>
+        <div class="input-group mb-3">
+          <input id="enterScoutName" class="form-control me-2" type="text" placeholder="First name, last init."
+            aria-label="Scout Name">
+          <button id="addScoutName" class="btn btn-primary me-2" type="button">Add Scout</button>
+        </div>
       </div>
     </div>
 
 
     <!-- Main row to hold the table -->
-    <div class="row col-md-6 m-3">
-      <style type="text/css" media="screen">
-        thead {
-          position: sticky;
-          top: 56px;
-          background: white;
-        }
-      </style>
+    <div class="row m-3">
+      <div class="col-md-6">
+        <style type="text/css" media="screen">
+          thead {
+            position: sticky;
+            top: 56px;
+            background: white;
+          }
+        </style>
 
-      <table id="scoutTable" class="table table-striped table-bordered table-hover text-center sortable">
-        <thead>
-          <tr>
-            <th scope="col" class="text-start">Scout Name</th>
-            <th scope="col">Delete</th>
-          </tr>
-        </thead>
-        <tbody class="table-group-divider">
-        </tbody>
-      </table>
+        <table id="scoutTable" class="table table-striped table-bordered table-hover text-center sortable">
+          <thead>
+            <tr>
+              <th scope="col" class="text-start">Scout Name</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+          </tbody>
+        </table>
 
-      <!-- Write Scout Names to a JSON file -->
-      <div class="row mb-3 mx-auto" style="width: 200px;">
-        <button id="writeScoutNameJSON" class="col-auto btn btn-primary" type="button">Write JSON File</button>
+        <!-- Write Scout Names to a JSON file -->
+        <div class="row mb-3 mx-auto" style="width: 200px;">
+          <button id="writeScoutNameJSON" class="col-auto btn btn-primary" type="button">Write JSON File</button>
+        </div>
       </div>
     </div>
 

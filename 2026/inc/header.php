@@ -15,7 +15,7 @@
   <meta name="author" content="FRC 2135">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" integrity="sha384-CK2SzKma4jA5H/MXDUU7i1TqZlCFaD4T01vtyDFvPlD97JQyS+IsSh1nI2EFbpyk" crossorigin="anonymous">
   <link rel="icon" type="image/png" href="/assets/favicon.png">
 
   <!-- 2135 Customizations -->
@@ -55,7 +55,7 @@
     </button>
 
     <div id="navbarCollapse" class="collapse navbar-collapse">
-      <ul class="navbar-nav mr-auto" data-bs-theme="dark">
+      <ul class="navbar-nav me-auto" data-bs-theme="dark">
         <ul class="nav nav-pills flex-column flex-sm-row">
 
           <li class="nav-item dropdown">

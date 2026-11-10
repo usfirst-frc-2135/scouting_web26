@@ -7,47 +7,55 @@ require 'inc/header.php';
   <div id="content" class="column col-lg-12 col-sm-12 col-12">
 
     <!-- Page Title -->
-    <div class="row col-md-6 pt-3 mb-3">
-      <h2 class="col-auto mb-3 me-3"><?php echo $title; ?> </h2>
-      <a class="col-auto btn btn-primary mb-3 me-3" href="javascript:history.back()">Back</a>
+    <div class="row pt-3 mb-3">
+      <div class="col-md-6">
+        <div class="row">
+          <h2 class="col-auto mb-3 me-3"><?php echo $title; ?> </h2>
+          <a class="col-auto btn btn-primary mb-3 me-3" href="javascript:history.back()">Back</a>
+        </div>
+      </div>
     </div>
 
     <!-- Main row to hold the entry card -->
-    <div class="row col-md-6 mb-3">
-      <h5>Add New Alias</h5>
-      <div class="input-group mb-3">
-        <input id="enterTeamNumber" class="form-control me-2" type="text" placeholder="Team number" aria-label="Team Number">
-        <input id="enterAliasNumber" class="form-control me-2" type="text" placeholder="Alias number" aria-label="Alias Number">
-        <button id="addTeamAlias" class="btn btn-primary me-2" type="button">Add Alias</button>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <h5>Add New Alias</h5>
+        <div class="input-group mb-3">
+          <input id="enterTeamNumber" class="form-control me-2" type="text" placeholder="Team number" aria-label="Team Number">
+          <input id="enterAliasNumber" class="form-control me-2" type="text" placeholder="Alias number" aria-label="Alias Number">
+          <button id="addTeamAlias" class="btn btn-primary me-2" type="button">Add Alias</button>
+        </div>
       </div>
     </div>
 
 
     <!-- Main row to hold the table -->
-    <div class="row col-md-6 m-3">
-      <style type="text/css" media="screen">
-        thead {
-          position: sticky;
-          top: 56px;
-          background: white;
-        }
-      </style>
+    <div class="row m-3">
+      <div class="col-md-6">
+        <style type="text/css" media="screen">
+          thead {
+            position: sticky;
+            top: 56px;
+            background: white;
+          }
+        </style>
 
-      <table id="aliasTable" class="table table-striped table-bordered table-hover text-center sortable">
-        <thead>
-          <tr>
-            <th scope="col" class="text-start sorttable_numeric">Team Number</th>
-            <th scope="col" class="sorttable_numeric">Team Alias</th>
-            <th scope="col">Delete</th>
-          </tr>
-        </thead>
-        <tbody class="table-group-divider">
-        </tbody>
-      </table>
+        <table id="aliasTable" class="table table-striped table-bordered table-hover text-center sortable">
+          <thead>
+            <tr>
+              <th scope="col" class="text-start sorttable_numeric">Team Number</th>
+              <th scope="col" class="sorttable_numeric">Team Alias</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+          </tbody>
+        </table>
 
-      <!-- Write Aliases to a JSON file -->
-      <div class="row mb-3 mx-auto" style="width: 200px;">
-        <button id="writeTeamAliasJSON" class="btn btn-primary" type="button">Write JSON File</button>
+        <!-- Write Aliases to a JSON file -->
+        <div class="row mb-3 mx-auto" style="width: 200px;">
+          <button id="writeTeamAliasJSON" class="btn btn-primary" type="button">Write JSON File</button>
+        </div>
       </div>
     </div>
 

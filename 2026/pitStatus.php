@@ -12,27 +12,28 @@ require 'inc/header.php';
     </div>
 
     <!-- Main row to hold the table -->
-    <div class="row col-12 m-3">
+    <div class="row m-3">
+      <div class="col-12">
+        <style type="text/css" media="screen">
+          thead {
+            position: sticky;
+            top: 56px;
+            background: white;
+          }
+        </style>
 
-      <style type="text/css" media="screen">
-        thead {
-          position: sticky;
-          top: 56px;
-          background: white;
-        }
-      </style>
-
-      <table id="psTable" class="table table-striped table-bordered table-hover text-center sortable">
-        <thead>
-          <tr>
-            <th scope='col' class="text-start sorttable_numeric">Team</th>
-            <th scope='col'>Pit Scouted?</th>
-            <th scope='col'>Photo Uploaded?</th>
-          </tr>
-        </thead>
-        <tbody class="table-group-divider">
-        </tbody>
-      </table>
+        <table id="psTable" class="table table-striped table-bordered table-hover text-center sortable">
+          <thead>
+            <tr>
+              <th scope='col' class="text-start sorttable_numeric">Team</th>
+              <th scope='col'>Pit Scouted?</th>
+              <th scope='col'>Photo Uploaded?</th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider">
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

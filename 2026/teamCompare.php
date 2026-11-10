@@ -12,14 +12,16 @@ require 'inc/header.php';
     </div>
 
     <!-- Main row to hold the team number entry -->
-    <div class="row col-md-6 mb-3">
-      <div class="input-group mb-3">
-        <input id="enterTeamNumber1" class="form-control" type="text" placeholder="FRC team 1" aria-label="Team Number 1">
-        <input id="enterTeamNumber2" class="form-control" type="text" placeholder="FRC team 2" aria-label="Team Number 2">
-        <button id="loadTeamButton" class="btn btn-primary" type="button">Load Teams</button>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="input-group mb-3">
+          <input id="enterTeamNumber1" class="form-control" type="text" placeholder="FRC team 1" aria-label="Team Number 1">
+          <input id="enterTeamNumber2" class="form-control" type="text" placeholder="FRC team 2" aria-label="Team Number 2">
+          <button id="loadTeamButton" class="btn btn-primary" type="button">Load Teams</button>
+        </div>
+        <div id="aliasNumber1" class="ms-3 mb-3 text-success"></div>
+        <div id="aliasNumber2" class="ms-3 mb-3 text-success"></div>
       </div>
-      <div id="aliasNumber1" class="ms-3 mb-3 text-success"></div>
-      <div id="aliasNumber2" class="ms-3 mb-3 text-success"></div>
     </div>
 
     <!-- First column of data starts here -->

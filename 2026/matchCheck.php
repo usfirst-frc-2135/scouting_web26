@@ -7,21 +7,26 @@ require 'inc/header.php';
   <div id="content" class="column col-lg-12 col-sm-12 col-12">
 
     <!-- Page Title -->
-    <div class="row col-md-6 pt-3 mb-3">
-      <h2 class="col-auto mb-3 me-3"><?php echo $title; ?> </h2>
-      <a class="col-auto btn btn-primary mb-3 me-3" href="javascript:history.back()">Back</a>
-      <button id="downloadCsvFile" class="col-auto btn btn-primary mb-3 me-3" type="button">Download CSV</button>
-      <div id="spinner" class="spinner-border ms-3 mb-3 me-3"></div>
+    <div class="row pt-3 mb-3">
+      <div class="col-md-6">
+        <div class="row">
+          <h2 class="col-auto mb-3 me-3"><?php echo $title; ?> </h2>
+          <a class="col-auto btn btn-primary mb-3 me-3" href="javascript:history.back()">Back</a>
+          <button id="downloadCsvFile" class="col-auto btn btn-primary mb-3 me-3" type="button">Download CSV</button>
+          <div id="spinner" class="spinner-border ms-3 mb-3 me-3"></div>
+        </div>
+      </div>
     </div>
 
     <!-- Main row to hold the table -->
-    <div class="row col-12 mb-3">
-
-      <div id="freeze-table" class="freeze-table overflow-auto">
-        <table id="matchCheckTable" class="table table-striped table-bordered table-hover table-sm border-secondary text-center">
-          <thead class="z-3"> </thead>
-          <tbody class="table-group-divider"> </tbody>
-        </table>
+    <div class="row mb-3">
+      <div class="col-12">
+        <div id="freeze-table" class="freeze-table overflow-auto">
+          <table id="matchCheckTable" class="table table-striped table-bordered table-hover table-sm border-secondary text-center">
+            <thead class="z-3"> </thead>
+            <tbody class="table-group-divider"> </tbody>
+          </table>
+        </div>
       </div>
     </div>
 

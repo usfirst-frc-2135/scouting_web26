@@ -13,15 +13,15 @@ require 'inc/header.php';
     </div>
 
     <!-- Main row to hold the table -->
-    <div class="row col-12 mb-3">
-
-      <div id="freeze-table" class="freeze-table overflow-auto">
-        <table id="estimatedFuelTable" class="table table-striped table-bordered table-hover table-sm border-secondary text-center">
-          <thead class="z-3"> </thead>
-          <tbody class="table-group-divider"> </tbody>
-        </table>
+    <div class="row mb-3">
+      <div class="col-12">
+        <div id="freeze-table" class="freeze-table overflow-auto">
+          <table id="estimatedFuelTable" class="table table-striped table-bordered table-hover table-sm border-secondary text-center">
+            <thead class="z-3"> </thead>
+            <tbody class="table-group-divider"> </tbody>
+          </table>
+        </div>
       </div>
-
     </div>
   </div>
 </div>
