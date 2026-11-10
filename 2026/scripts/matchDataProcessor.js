@@ -207,7 +207,8 @@ class matchDataProcessor
   sortMatches(newData)
   {
     console.log("matchDataProcessor: sortMatches:");
-    newData.sort((a, b) => {
+    newData.sort((a, b) =>
+    {
       let compare = this.isMatchLessThanOrEqual(a["matchnumber"], b["matchnumber"]);
       return (compare) ? -1 : 1;
     });
@@ -672,7 +673,7 @@ class matchDataProcessor
         this.getMatchItem(teamItem, "autonDepot", match, "autonDepot");
         this.getMatchItem(teamItem, "autonOutpost", match, "autonOutpost");
         this.getMatchItem(teamItem, "autonNeutralZone", match, "autonNeutralZone");
-        this.getMatchItem(teamItem, "autonClimb", match, "autonClimb"); 
+        this.getMatchItem(teamItem, "autonClimb", match, "autonClimb");
 
         // For REBUILT: calc basic auton fuel estimate for this team/match, store in pData:fuelD
         let autonEst = calcAutonTotalFuel(hopperCap, preloadShot, autonHopperShot, preloadAcc, autonHopperAcc);
@@ -761,7 +762,7 @@ class matchDataProcessor
         let autonClimb = match["autonClimb"];
         switch (String(autonClimb))
         {
-          case "1": autonClimbPoints = 15; break; 
+          case "1": autonClimbPoints = 15; break;
           default: autonClimbPoints = 0; break;   // No climb
         }
         let autonTotalPoints = parseInt(autonFinalFuelEst) + parseInt(autonClimbPoints);

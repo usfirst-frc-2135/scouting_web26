@@ -261,7 +261,7 @@ function calcTeleopTotalFuel(hopperCap, hoppersShot, hopperAcc)
     case 3: hopperAcc = TELEOP_QUARTER_ACC_RATE; break; // 1/4
     case 2: hopperAcc = TELEOP_FEW_ACC_RATE; break;     // Few
     case 1: hopperAcc = TELEOP_NONE_ACC_RATE; break;    // None
-    default: hopperAcc = TELEOP_NONE_ACC_RATE; break;    
+    default: hopperAcc = TELEOP_NONE_ACC_RATE; break;
   }
   //HOLD  console.log("   --> teleop hopperAcc (percentage) = " + hopperAcc);
 

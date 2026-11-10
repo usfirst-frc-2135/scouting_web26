@@ -105,13 +105,13 @@ require 'inc/header.php';
     const thBluePrefixTable = 'class="table-primary"';
     let rowString2 = '';
 
-    rowString2 += '<th colspan="2" ' + thBodyTable + '> </th>';            // empty
-    rowString2 += '<th colspan="2" ' + thRedPrefixTable + '>Auto</th>';    // Red Auto 
-    rowString2 += '<th colspan="1" ' + thRedPrefixTable + '>Teleop</th>' ; // Red Teleop 
+    rowString2 += '<th colspan="2" ' + thBodyTable + '> </th>'; // empty
+    rowString2 += '<th colspan="2" ' + thRedPrefixTable + '>Auto</th>'; // Red Auto 
+    rowString2 += '<th colspan="1" ' + thRedPrefixTable + '>Teleop</th>'; // Red Teleop 
     rowString2 += '<th colspan="1" ' + thRedPrefixTable + '>Endgame</th>'; // Red Endgame 
 
-    rowString2 += '<th colspan="2" ' + thBluePrefixTable + '>Auto</th>';    // Blue Auto
-    rowString2 += '<th colspan="1" ' + thBluePrefixTable + '>Teleop</th>';  // Blue Teleop 
+    rowString2 += '<th colspan="2" ' + thBluePrefixTable + '>Auto</th>'; // Blue Auto
+    rowString2 += '<th colspan="1" ' + thBluePrefixTable + '>Teleop</th>'; // Blue Teleop 
     rowString2 += '<th colspan="1" ' + thBluePrefixTable + '>Endgame</th>'; // Blue Endgame 
 
     theadRef.insertRow().innerHTML = rowString2;
@@ -146,19 +146,19 @@ require 'inc/header.php';
   //
   function resetMatchScore() {
     return {
-//REMOVE      autonLeave: 0,
-//REMOVE      autonCoralL4: 0,
-//REMOVE      autonCoralL3: 0,
-//REMOVE      autonCoralL2: 0,
-//REMOVE      autonCoralL1: 0,
-//REMOVE      teleopCoralL4: 0,
-//REMOVE      teleopCoralL3: 0,
-//REMOVE      teleopCoralL2: 0,
-//REMOVE      teleopCoralL1: 0,
-//REMOVE      allNet: 0,
-//REMOVE      allProc: 0,
-//REMOVE      endgameCageClimb: ["", "", ""],
-//REMOVE      fouls: 0,
+      //REMOVE      autonLeave: 0,
+      //REMOVE      autonCoralL4: 0,
+      //REMOVE      autonCoralL3: 0,
+      //REMOVE      autonCoralL2: 0,
+      //REMOVE      autonCoralL1: 0,
+      //REMOVE      teleopCoralL4: 0,
+      //REMOVE      teleopCoralL3: 0,
+      //REMOVE      teleopCoralL2: 0,
+      //REMOVE      teleopCoralL1: 0,
+      //REMOVE      allNet: 0,
+      //REMOVE      allProc: 0,
+      //REMOVE      endgameCageClimb: ["", "", ""],
+      //REMOVE      fouls: 0,
       autonHubPoints: 0,
       autonClimbPoints: 0,
       teleopPoints: 0,
@@ -195,28 +195,28 @@ require 'inc/header.php';
     tbaScore.teleopPoints = tbaBreakdown[alliance]["hubScore"]["teleopPoints"];
     tbaScore.endgameClimbPoints = tbaBreakdown[alliance]["endGameTowerPoints"];
 
-/*REMOVE->
-    let redLeaveCount = 0;
-    if (tbaBreakdown[alliance]["autoLineRobot1"] === "Yes") redLeaveCount++;
-    if (tbaBreakdown[alliance]["autoLineRobot2"] === "Yes") redLeaveCount++;
-    if (tbaBreakdown[alliance]["autoLineRobot3"] === "Yes") redLeaveCount++;
+    /*REMOVE->
+        let redLeaveCount = 0;
+        if (tbaBreakdown[alliance]["autoLineRobot1"] === "Yes") redLeaveCount++;
+        if (tbaBreakdown[alliance]["autoLineRobot2"] === "Yes") redLeaveCount++;
+        if (tbaBreakdown[alliance]["autoLineRobot3"] === "Yes") redLeaveCount++;
 
-    tbaScore.autonLeave = redLeaveCount;
-    tbaScore.autonCoralL4 = tbaBreakdown[alliance]["autoReef"]["tba_topRowCount"];
-    tbaScore.autonCoralL3 = tbaBreakdown[alliance]["autoReef"]["tba_midRowCount"];
-    tbaScore.autonCoralL2 = tbaBreakdown[alliance]["autoReef"]["tba_botRowCount"];
-    tbaScore.autonCoralL1 = tbaBreakdown[alliance]["autoReef"]["trough"];
-    tbaScore.teleopCoralL4 = tbaBreakdown[alliance]["teleopReef"]["tba_topRowCount"] - tbaBreakdown[alliance]["autoReef"]["tba_topRowCount"];
-    tbaScore.teleopCoralL3 = tbaBreakdown[alliance]["teleopReef"]["tba_midRowCount"] - tbaBreakdown[alliance]["autoReef"]["tba_midRowCount"];
-    tbaScore.teleopCoralL2 = tbaBreakdown[alliance]["teleopReef"]["tba_botRowCount"] - tbaBreakdown[alliance]["autoReef"]["tba_botRowCount"];
-    tbaScore.teleopCoralL1 = tbaBreakdown[alliance]["teleopReef"]["trough"] - tbaBreakdown[alliance]["autoReef"]["trough"];
-    tbaScore.allNet = tbaBreakdown[alliance]["netAlgaeCount"];
-    tbaScore.allProc = tbaBreakdown[alliance]["wallAlgaeCount"];
-    tbaScore.endgameCageClimb[0] = tbaBreakdown[alliance]["endGameRobot1"];
-    tbaScore.endgameCageClimb[1] = tbaBreakdown[alliance]["endGameRobot2"];
-    tbaScore.endgameCageClimb[2] = tbaBreakdown[alliance]["endGameRobot3"];
-    tbaScore.fouls = tbaBreakdown[alliance]["foulCount"];
-<-REMOVE*/
+        tbaScore.autonLeave = redLeaveCount;
+        tbaScore.autonCoralL4 = tbaBreakdown[alliance]["autoReef"]["tba_topRowCount"];
+        tbaScore.autonCoralL3 = tbaBreakdown[alliance]["autoReef"]["tba_midRowCount"];
+        tbaScore.autonCoralL2 = tbaBreakdown[alliance]["autoReef"]["tba_botRowCount"];
+        tbaScore.autonCoralL1 = tbaBreakdown[alliance]["autoReef"]["trough"];
+        tbaScore.teleopCoralL4 = tbaBreakdown[alliance]["teleopReef"]["tba_topRowCount"] - tbaBreakdown[alliance]["autoReef"]["tba_topRowCount"];
+        tbaScore.teleopCoralL3 = tbaBreakdown[alliance]["teleopReef"]["tba_midRowCount"] - tbaBreakdown[alliance]["autoReef"]["tba_midRowCount"];
+        tbaScore.teleopCoralL2 = tbaBreakdown[alliance]["teleopReef"]["tba_botRowCount"] - tbaBreakdown[alliance]["autoReef"]["tba_botRowCount"];
+        tbaScore.teleopCoralL1 = tbaBreakdown[alliance]["teleopReef"]["trough"] - tbaBreakdown[alliance]["autoReef"]["trough"];
+        tbaScore.allNet = tbaBreakdown[alliance]["netAlgaeCount"];
+        tbaScore.allProc = tbaBreakdown[alliance]["wallAlgaeCount"];
+        tbaScore.endgameCageClimb[0] = tbaBreakdown[alliance]["endGameRobot1"];
+        tbaScore.endgameCageClimb[1] = tbaBreakdown[alliance]["endGameRobot2"];
+        tbaScore.endgameCageClimb[2] = tbaBreakdown[alliance]["endGameRobot3"];
+        tbaScore.fouls = tbaBreakdown[alliance]["foulCount"];
+    <-REMOVE*/
 
     return tbaScore;
   }
@@ -228,42 +228,42 @@ require 'inc/header.php';
   //   matchScore - the match score object to accumulate into
   //
   function accumulateMatchScore(matchData, matchScore) {
-/*REMOVE->    matchScore.autonLeave += parseInt(matchData["autonLeave"]);
-    matchScore.autonCoralL4 += parseInt(matchData["autonCoralL4"]);
-    matchScore.autonCoralL3 += parseInt(matchData["autonCoralL3"]);
-    matchScore.autonCoralL2 += parseInt(matchData["autonCoralL2"]);
-    matchScore.autonCoralL1 += parseInt(matchData["autonCoralL1"]);
-    matchScore.teleopCoralL4 += parseInt(matchData["teleopCoralL4"]);
-    matchScore.teleopCoralL3 += parseInt(matchData["teleopCoralL3"]);
-    matchScore.teleopCoralL2 += parseInt(matchData["teleopCoralL2"]);
-    matchScore.teleopCoralL1 += parseInt(matchData["teleopCoralL1"]);
-    matchScore.allNet += parseInt(matchData["autonAlgaeNet"]) + parseInt(matchData["teleopAlgaeNet"]);
-    matchScore.allProc += parseInt(matchData["autonAlgaeProc"]) + parseInt(matchData["teleopAlgaeProc"]);
-    matchScore.endgameCageClimb[leaveCount] = matchData["endgameCageClimb"];
-    // matchScore.fouls += parseInt(matchData["fouls"]); // We don't track fouls
+    /*REMOVE->    matchScore.autonLeave += parseInt(matchData["autonLeave"]);
+        matchScore.autonCoralL4 += parseInt(matchData["autonCoralL4"]);
+        matchScore.autonCoralL3 += parseInt(matchData["autonCoralL3"]);
+        matchScore.autonCoralL2 += parseInt(matchData["autonCoralL2"]);
+        matchScore.autonCoralL1 += parseInt(matchData["autonCoralL1"]);
+        matchScore.teleopCoralL4 += parseInt(matchData["teleopCoralL4"]);
+        matchScore.teleopCoralL3 += parseInt(matchData["teleopCoralL3"]);
+        matchScore.teleopCoralL2 += parseInt(matchData["teleopCoralL2"]);
+        matchScore.teleopCoralL1 += parseInt(matchData["teleopCoralL1"]);
+        matchScore.allNet += parseInt(matchData["autonAlgaeNet"]) + parseInt(matchData["teleopAlgaeNet"]);
+        matchScore.allProc += parseInt(matchData["autonAlgaeProc"]) + parseInt(matchData["teleopAlgaeProc"]);
+        matchScore.endgameCageClimb[leaveCount] = matchData["endgameCageClimb"];
+        // matchScore.fouls += parseInt(matchData["fouls"]); // We don't track fouls
 
-    let autonbPoints =
-      parseInt(matchData["autonLeave"] * 3) +
-      parseInt(matchData["autonCoralL4"] * 7) +
-      parseInt(matchData["autonCoralL3"] * 6) +
-      parseInt(matchData["autonCoralL2"] * 4) +
-      parseInt(matchData["autonCoralL1"] * 3);
-    let teleopPoints =
-      parseInt(matchData["teleopCoralL4"] * 5) +
-      parseInt(matchData["teleopCoralL3"] * 4) +
-      parseInt(matchData["teleopCoralL2"] * 3) +
-      parseInt(matchData["teleopCoralL1"] * 2) +
-      parseInt(matchData["autonAlgaeNet"]) * 4 +
-      parseInt(matchData["teleopAlgaeNet"]) * 4 +
-      parseInt(matchData["autonAlgaeProc"]) * 6 +
-      parseInt(matchData["teleopAlgaeProc"]) * 6 +
-      (parseInt(matchData["endgameCageClimb"]) === 0 ? 0 :
-        parseInt(matchData["endgameCageClimb"]) === 1 ? 2 :
-        parseInt(matchData["endgameCageClimb"]) === 2 ? 2 :
-        parseInt(matchData["endgameCageClimb"]) === 3 ? 6 :
-        parseInt(matchData["endgameCageClimb"]) === 4 ? 12 : 0);
-    let foulPoints = 0 * 2; // We don't track fouls
-<-REMOVE*/
+        let autonbPoints =
+          parseInt(matchData["autonLeave"] * 3) +
+          parseInt(matchData["autonCoralL4"] * 7) +
+          parseInt(matchData["autonCoralL3"] * 6) +
+          parseInt(matchData["autonCoralL2"] * 4) +
+          parseInt(matchData["autonCoralL1"] * 3);
+        let teleopPoints =
+          parseInt(matchData["teleopCoralL4"] * 5) +
+          parseInt(matchData["teleopCoralL3"] * 4) +
+          parseInt(matchData["teleopCoralL2"] * 3) +
+          parseInt(matchData["teleopCoralL1"] * 2) +
+          parseInt(matchData["autonAlgaeNet"]) * 4 +
+          parseInt(matchData["teleopAlgaeNet"]) * 4 +
+          parseInt(matchData["autonAlgaeProc"]) * 6 +
+          parseInt(matchData["teleopAlgaeProc"]) * 6 +
+          (parseInt(matchData["endgameCageClimb"]) === 0 ? 0 :
+            parseInt(matchData["endgameCageClimb"]) === 1 ? 2 :
+            parseInt(matchData["endgameCageClimb"]) === 2 ? 2 :
+            parseInt(matchData["endgameCageClimb"]) === 3 ? 6 :
+            parseInt(matchData["endgameCageClimb"]) === 4 ? 12 : 0);
+        let foulPoints = 0 * 2; // We don't track fouls
+    <-REMOVE*/
 
     let autonHubPts = 0; // FORNOW
     matchScore.autonHubPoints = autonHubPts;
@@ -288,35 +288,35 @@ require 'inc/header.php';
     return matchScore;
   }
 
-/*REMOVE->
-  //
-  // These utilities convert TBA climb values to our match data values for comparison
-  //
-  function stringToClimbValue(climbString) {
-    let value = 0;
-    switch (climbString) {
-      default:
-      case "None":
-        break;
-      case "Parked":
-        value = 1;
-        break;
-      case "ShallowCage":
-        value = 3;
-        break;
-      case "DeepCage":
-        value = 4;
-        break;
+  /*REMOVE->
+    //
+    // These utilities convert TBA climb values to our match data values for comparison
+    //
+    function stringToClimbValue(climbString) {
+      let value = 0;
+      switch (climbString) {
+        default:
+        case "None":
+          break;
+        case "Parked":
+          value = 1;
+          break;
+        case "ShallowCage":
+          value = 3;
+          break;
+        case "DeepCage":
+          value = 4;
+          break;
+      }
+      return value;
     }
-    return value;
-  }
 
-  function matchToClimbValue(matchValue) {
-    if (matchValue === 2) // Fell setting is same as park for scoring
-      matchValue = 1;
-    return matchValue;
-  }
-<-REMOVE*/
+    function matchToClimbValue(matchValue) {
+      if (matchValue === 2) // Fell setting is same as park for scoring
+        matchValue = 1;
+      return matchValue;
+    }
+  <-REMOVE*/
 
   //
   // Build the diff row between TBA and our match data
@@ -330,54 +330,54 @@ require 'inc/header.php';
     let diffRowString = "";
 
     // Red alliance diff
-//REMOVE    diffRowString += "<td class='table-danger'>" + (matchScoreRed.totalPoints - tbaScoreRed.totalPoints) + "</td>";
+    //REMOVE    diffRowString += "<td class='table-danger'>" + (matchScoreRed.totalPoints - tbaScoreRed.totalPoints) + "</td>";
     diffRowString += "<td class='table-success'>" + (matchScoreRed.autonHubPoints - tbaScoreRed.autonHubPoints) + "</td>";
     diffRowString += "<td class='table-success'>" + (matchScoreRed.autonClimbPoints - tbaScoreRed.autonClimbPoints) + "</td>";
     diffRowString += "<td class='table-primary'>" + (matchScoreRed.teleopPoints - tbaScoreRed.teleopPoints) + "</td>";
     diffRowString += "<td class='table-light'>" + (matchScoreRed.endgameClimbPoints - tbaScoreRed.endgameClimbPoints) + "</td>";
 
-/*REMOVE->
-    diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonLeave - tbaScoreRed.autonLeave) + "</td>";
-    diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonCoralL4 - tbaScoreRed.autonCoralL4) + "</td>";
-    diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonCoralL3 - tbaScoreRed.autonCoralL3) + "</td>";
-    diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonCoralL2 - tbaScoreRed.autonCoralL2) + "</td>";
-    diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonCoralL1 - tbaScoreRed.autonCoralL1) + "</td>";
-    diffRowString += "<td class='table-primary'>" + (matchScoreRed.teleopCoralL4 - tbaScoreRed.teleopCoralL4) + "</td>";
-    diffRowString += "<td class='table-primary'>" + (matchScoreRed.teleopCoralL3 - tbaScoreRed.teleopCoralL3) + "</td>";
-    diffRowString += "<td class='table-primary'>" + (matchScoreRed.teleopCoralL2 - tbaScoreRed.teleopCoralL2) + "</td>";
-    diffRowString += "<td class='table-primary'>" + (matchScoreRed.teleopCoralL1 - tbaScoreRed.teleopCoralL1) + "</td>";
-    diffRowString += "<td class='table-primary'>" + (matchScoreRed.allNet - tbaScoreRed.allNet) + "</td>";
-    diffRowString += "<td class='table-primary'>" + (matchScoreRed.allProc - tbaScoreRed.allProc) + "</td>";
-    diffRowString += "<td class='table-warning'>" + (matchToClimbValue(matchScoreRed.endgameCageClimb[0]) - stringToClimbValue(tbaScoreRed.endgameCageClimb[0])) + "</td>";
-    diffRowString += "<td class='table-warning'>" + (matchToClimbValue(matchScoreRed.endgameCageClimb[1]) - stringToClimbValue(tbaScoreRed.endgameCageClimb[1])) + "</td>";
-    diffRowString += "<td class='table-warning'>" + (matchToClimbValue(matchScoreRed.endgameCageClimb[2]) - stringToClimbValue(tbaScoreRed.endgameCageClimb[2])) + "</td>";
-    diffRowString += "<td class='table-light'>" + (matchScoreRed.fouls - tbaScoreRed.fouls) + "</td>";
-<-REMOVE*/
+    /*REMOVE->
+        diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonLeave - tbaScoreRed.autonLeave) + "</td>";
+        diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonCoralL4 - tbaScoreRed.autonCoralL4) + "</td>";
+        diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonCoralL3 - tbaScoreRed.autonCoralL3) + "</td>";
+        diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonCoralL2 - tbaScoreRed.autonCoralL2) + "</td>";
+        diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonCoralL1 - tbaScoreRed.autonCoralL1) + "</td>";
+        diffRowString += "<td class='table-primary'>" + (matchScoreRed.teleopCoralL4 - tbaScoreRed.teleopCoralL4) + "</td>";
+        diffRowString += "<td class='table-primary'>" + (matchScoreRed.teleopCoralL3 - tbaScoreRed.teleopCoralL3) + "</td>";
+        diffRowString += "<td class='table-primary'>" + (matchScoreRed.teleopCoralL2 - tbaScoreRed.teleopCoralL2) + "</td>";
+        diffRowString += "<td class='table-primary'>" + (matchScoreRed.teleopCoralL1 - tbaScoreRed.teleopCoralL1) + "</td>";
+        diffRowString += "<td class='table-primary'>" + (matchScoreRed.allNet - tbaScoreRed.allNet) + "</td>";
+        diffRowString += "<td class='table-primary'>" + (matchScoreRed.allProc - tbaScoreRed.allProc) + "</td>";
+        diffRowString += "<td class='table-warning'>" + (matchToClimbValue(matchScoreRed.endgameCageClimb[0]) - stringToClimbValue(tbaScoreRed.endgameCageClimb[0])) + "</td>";
+        diffRowString += "<td class='table-warning'>" + (matchToClimbValue(matchScoreRed.endgameCageClimb[1]) - stringToClimbValue(tbaScoreRed.endgameCageClimb[1])) + "</td>";
+        diffRowString += "<td class='table-warning'>" + (matchToClimbValue(matchScoreRed.endgameCageClimb[2]) - stringToClimbValue(tbaScoreRed.endgameCageClimb[2])) + "</td>";
+        diffRowString += "<td class='table-light'>" + (matchScoreRed.fouls - tbaScoreRed.fouls) + "</td>";
+    <-REMOVE*/
 
     // Blue alliance diff
-//REMOVE    diffRowString += "<td class='table-danger'>" + (matchScoreBlue.totalPoints - tbaScoreBlue.totalPoints) + "</td>";
+    //REMOVE    diffRowString += "<td class='table-danger'>" + (matchScoreBlue.totalPoints - tbaScoreBlue.totalPoints) + "</td>";
     diffRowString += "<td class='table-success'>" + (matchScoreBlue.autonHubPoints - tbaScoreBlue.autonHubPoints) + "</td>";
     diffRowString += "<td class='table-success'>" + (matchScoreBlue.autonClimbPoints - tbaScoreBlue.autonClimbPoints) + "</td>";
     diffRowString += "<td class='table-primary'>" + (matchScoreBlue.teleopPoints - tbaScoreBlue.teleopPoints) + "</td>";
     diffRowString += "<td class='table-light'>" + (matchScoreBlue.endgameClimbPoints - tbaScoreBlue.endgameClimbPoints) + "</td>";
 
-/*REMOVE->
-    diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonLeave - tbaScoreBlue.autonLeave) + "</td>";
-    diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonCoralL4 - tbaScoreBlue.autonCoralL4) + "</td>";
-    diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonCoralL3 - tbaScoreBlue.autonCoralL3) + "</td>";
-    diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonCoralL2 - tbaScoreBlue.autonCoralL2) + "</td>";
-    diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonCoralL1 - tbaScoreBlue.autonCoralL1) + "</td>";
-    diffRowString += "<td class='table-primary'>" + (matchScoreBlue.teleopCoralL4 - tbaScoreBlue.teleopCoralL4) + "</td>";
-    diffRowString += "<td class='table-primary'>" + (matchScoreBlue.teleopCoralL3 - tbaScoreBlue.teleopCoralL3) + "</td>";
-    diffRowString += "<td class='table-primary'>" + (matchScoreBlue.teleopCoralL2 - tbaScoreBlue.teleopCoralL2) + "</td>";
-    diffRowString += "<td class='table-primary'>" + (matchScoreBlue.teleopCoralL1 - tbaScoreBlue.teleopCoralL1) + "</td>";
-    diffRowString += "<td class='table-primary'>" + (matchScoreBlue.allNet - tbaScoreBlue.allNet) + "</td>";
-    diffRowString += "<td class='table-primary'>" + (matchScoreBlue.allProc - tbaScoreBlue.allProc) + "</td>";
-    diffRowString += "<td class='table-warning'>" + (matchScoreBlue.endgameCageClimb[0] - stringToClimbValue(tbaScoreBlue.endgameCageClimb[0])) + "</td>";
-    diffRowString += "<td class='table-warning'>" + (matchScoreBlue.endgameCageClimb[1] - stringToClimbValue(tbaScoreBlue.endgameCageClimb[1])) + "</td>";
-    diffRowString += "<td class='table-warning'>" + (matchScoreBlue.endgameCageClimb[2] - stringToClimbValue(tbaScoreBlue.endgameCageClimb[2])) + "</td>";
-    diffRowString += "<td class='table-light'>" + (matchScoreBlue.fouls - tbaScoreBlue.fouls) + "</td>";
-<-REMOVE*/
+    /*REMOVE->
+        diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonLeave - tbaScoreBlue.autonLeave) + "</td>";
+        diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonCoralL4 - tbaScoreBlue.autonCoralL4) + "</td>";
+        diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonCoralL3 - tbaScoreBlue.autonCoralL3) + "</td>";
+        diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonCoralL2 - tbaScoreBlue.autonCoralL2) + "</td>";
+        diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonCoralL1 - tbaScoreBlue.autonCoralL1) + "</td>";
+        diffRowString += "<td class='table-primary'>" + (matchScoreBlue.teleopCoralL4 - tbaScoreBlue.teleopCoralL4) + "</td>";
+        diffRowString += "<td class='table-primary'>" + (matchScoreBlue.teleopCoralL3 - tbaScoreBlue.teleopCoralL3) + "</td>";
+        diffRowString += "<td class='table-primary'>" + (matchScoreBlue.teleopCoralL2 - tbaScoreBlue.teleopCoralL2) + "</td>";
+        diffRowString += "<td class='table-primary'>" + (matchScoreBlue.teleopCoralL1 - tbaScoreBlue.teleopCoralL1) + "</td>";
+        diffRowString += "<td class='table-primary'>" + (matchScoreBlue.allNet - tbaScoreBlue.allNet) + "</td>";
+        diffRowString += "<td class='table-primary'>" + (matchScoreBlue.allProc - tbaScoreBlue.allProc) + "</td>";
+        diffRowString += "<td class='table-warning'>" + (matchScoreBlue.endgameCageClimb[0] - stringToClimbValue(tbaScoreBlue.endgameCageClimb[0])) + "</td>";
+        diffRowString += "<td class='table-warning'>" + (matchScoreBlue.endgameCageClimb[1] - stringToClimbValue(tbaScoreBlue.endgameCageClimb[1])) + "</td>";
+        diffRowString += "<td class='table-warning'>" + (matchScoreBlue.endgameCageClimb[2] - stringToClimbValue(tbaScoreBlue.endgameCageClimb[2])) + "</td>";
+        diffRowString += "<td class='table-light'>" + (matchScoreBlue.fouls - tbaScoreBlue.fouls) + "</td>";
+    <-REMOVE*/
 
     return diffRowString;
   }

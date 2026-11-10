@@ -215,6 +215,8 @@ function insertEventAveragesBody(tableId, avgData, coprData, aliasList, pitData,
     let coprEntry = "-"; // default
     if (coprData.length !== 0 && coprData[teamNum] != null)
       coprEntry = (coprData.length !== 0) ? getDataValue(coprData[teamNum], "totalPoints") : "";
+    else
+      console.log("==>>> Averages Table: no COPR data for team: " + teamNum + " length of coprData=" + coprData.length);
 
     rowString += tdPrefix0 + coprEntry + "</td>";
     rowString += tdPrefix0 + getDataValue(avgItem, "totalMatches") + "</td>";
@@ -224,11 +226,12 @@ function insertEventAveragesBody(tableId, avgData, coprData, aliasList, pitData,
     // get the total number of times it died. But skip the 0th ctr, as that is "N/A".
     let diedArray = getDataValue(avgItem, "died", "arr");
     let diedTotal = 0;
-    for (let ctr=1; ctr<diedArray.length; ctr++) {
+    for (let ctr = 1; ctr < diedArray.length; ctr++)
+    {
       diedTotal += getDataValue(diedArray, ctr, "sum");
-//HOLD      console.log("---> for index= "+ctr+", died sum=" + getDataValue(diedArray,ctr,"sum"));
+      //HOLD      console.log("---> for index= "+ctr+", died sum=" + getDataValue(diedArray,ctr,"sum"));
     }
-//HOLD    console.log("   ---> for team "+teamNum+", getting died total =" + diedTotal);
+    //HOLD    console.log("   ---> for team "+teamNum+", getting died total =" + diedTotal);
     rowString += tdPrefix0 + diedTotal + "</td>";
 
     // For NoShow, we just want to show the number of times they were NoShow.

@@ -290,7 +290,7 @@ require 'inc/header.php';
       let matchnum = matchItem["matchnumber"];
       let teamnumber = matchItem["teamnumber"];
       if (teamnumber == teamNum) {
-        console.log("    ==> teamLookup: match "+matchnum+": found team "+teamNum);
+        console.log("    ==> teamLookup: match " + matchnum + ": found team " + teamNum);
 
         // Get the auton fuel estimate for this team / match from the avgsData
         let autonFuelEst = 0; // default
@@ -298,11 +298,11 @@ require 'inc/header.php';
         if (pDataTeamItem !== undefined) {
           if (pDataTeamItem["fuelD"][matchnum]["autonFE"] !== undefined) {
             autonFuelEst = pDataTeamItem["fuelD"][matchnum]["autonFE"];
-            console.log("        ==> basic autonFE = "+autonFuelEst);
+            console.log("        ==> basic autonFE = " + autonFuelEst);
           }
           if (pDataTeamItem["fuelD"][matchnum]["tbaAutonFE"] !== undefined) {
             autonFuelEst = pDataTeamItem["fuelD"][matchnum]["tbaAutonFE"];
-            console.log("        ==> tba autonFE = "+autonFuelEst);
+            console.log("        ==> tba autonFE = " + autonFuelEst);
           }
         }
 
@@ -439,7 +439,7 @@ require 'inc/header.php';
       let matchnum = matchItem["matchnumber"];
       let teamnumber = matchItem["teamnumber"];
       if (teamnumber == teamNum) {
-        console.log("    ==> loadTeleopGraph: match "+matchnum+": found team "+teamNum);
+        console.log("    ==> loadTeleopGraph: match " + matchnum + ": found team " + teamNum);
 
         // Get the teleop fuel estimate for this team / match from the avgsData
         let teleopFuelEst = 0; // default
@@ -447,11 +447,11 @@ require 'inc/header.php';
         if (pDataTeamItem !== undefined) {
           if (pDataTeamItem["fuelD"][matchnum]["teleopFE"] !== undefined) {
             teleopFuelEst = pDataTeamItem["fuelD"][matchnum]["teleopFE"];
-            console.log("        ==> basic teleopFE = "+teleopFuelEst);
+            console.log("        ==> basic teleopFE = " + teleopFuelEst);
           }
           if (pDataTeamItem["fuelD"][matchnum]["tbaTeleopFE"] !== undefined) {
             teleopFuelEst = pDataTeamItem["fuelD"][matchnum]["tbaTeleopFE"];
-            console.log("        ==> tba teleopFE = "+teleopFuelEst);
+            console.log("        ==> tba teleopFE = " + teleopFuelEst);
           }
         }
 
@@ -580,7 +580,7 @@ require 'inc/header.php';
     writeAverageTableRow("autonTable", ["Auton Points", avgs["autonTotalPoints"].avg, avgs["autonTotalPoints"].max], 3);
     writeAverageTableRow("autonTable", ["Fuel Est", avgs["autonFinalFuelEst"].avg, avgs["autonFinalFuelEst"].max], 3);
     console.log("  ==> writing Auton Table() climb table");
-    writeAverageTableRow("autonClimbTable", ["Number of Auton Climbs", avgs["autonClimb"].sum],2);
+    writeAverageTableRow("autonClimbTable", ["Number of Auton Climbs", avgs["autonClimb"].sum], 2);
 
     // Teleop Table
     console.log("  ==> writing Teleop Table()");
