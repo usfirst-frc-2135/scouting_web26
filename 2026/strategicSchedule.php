@@ -49,12 +49,8 @@ require 'inc/header.php';
       <div class="card-body">
         <div class="input-group mb-3">
           <input id="enterTeamNumber" class="form-control me-2" type="text" placeholder="Team number" aria-label="Team Number">
-          <div class="input-group-append">
-            <button id="addTeamWatch" class="btn btn-success me-2" type="button">Watch</button>
-          </div>
-          <div class="input-group-append">
-            <button id="addTeamIgnore" class="btn btn-secondary" type="button">Ignore</button>
-          </div>
+          <button id="addTeamWatch" class="btn btn-success me-2" type="button">Watch</button>
+          <button id="addTeamIgnore" class="btn btn-secondary" type="button">Ignore</button>
         </div>
 
         <!-- Main row to hold the table -->

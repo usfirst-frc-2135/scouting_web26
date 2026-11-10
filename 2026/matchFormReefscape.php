@@ -29,14 +29,12 @@ require 'inc/header.php';
             <div class="row col-9 col-md-7 mb-3">
               <span>Match Number</span>
               <div class="input-group">
-                <div class="input-group-prepend">
-                  <select id="enterCompLevel" class="form-select" aria-label="Comp Level Select">
-                    <option id="compLevelP" value="p">P</option>
-                    <option id="compLevelQM" value="qm" selected>QM</option>
-                    <option id="compLevelSF" value="sf">SF</option>
-                    <option id="compLevelF" value="f">F</option>
-                  </select>
-                </div>
+                <select id="enterCompLevel" class="form-select w-auto flex-grow-0" aria-label="Comp Level Select">
+                  <option id="compLevelP" value="p">P</option>
+                  <option id="compLevelQM" value="qm" selected>QM</option>
+                  <option id="compLevelSF" value="sf">SF</option>
+                  <option id="compLevelF" value="f">F</option>
+                </select>
                 <input id="enterMatchNumber" class="form-control" type="text" placeholder="Match Number" aria-label="Match Number">
               </div>
             </div>
@@ -73,65 +71,41 @@ require 'inc/header.php';
 
                 <!-- Coral -->
                 <div class="input-group mb-3 fw-bold">
-                  <div class="input-group-prepend col-1">
-                    <button id="autonCoralL4Minus" class="btn btn-danger" type="button">-</button>
-                  </div>
+                  <button id="autonCoralL4Minus" class="col-1 btn btn-danger" type="button">-</button>
                   <span id="autonCoralL4" class="input-group-text col-8" style="background-color:#CE649B">Coral Level 4: 0</span>
-                  <div class="input-group-append col-1">
-                    <button id="autonCoralL4Plus" class="btn btn-success" type="button">+</button>
-                  </div>
+                  <button id="autonCoralL4Plus" class="col-1 btn btn-success" type="button">+</button>
                 </div>
 
                 <div class="input-group mb-3 fw-bold">
-                  <div class="input-group-prepend col-1">
-                    <button id="autonCoralL3Minus" class="btn btn-danger" type="button">-</button>
-                  </div>
+                  <button id="autonCoralL3Minus" class="col-1 btn btn-danger" type="button">-</button>
                   <span id="autonCoralL3" class="input-group-text col-8" style="background-color:#CE649B">Coral Level 3: 0</span>
-                  <div class="input-group-append col-1">
-                    <button id="autonCoralL3Plus" class="btn btn-success" type="button">+</button>
-                  </div>
+                  <button id="autonCoralL3Plus" class="col-1 btn btn-success" type="button">+</button>
                 </div>
 
                 <div class="input-group mb-3 fw-bold">
-                  <div class="input-group-prepend col-1">
-                    <button id="autonCoralL2Minus" class="btn btn-danger" type="button">-</button>
-                  </div>
+                  <button id="autonCoralL2Minus" class="col-1 btn btn-danger" type="button">-</button>
                   <span id="autonCoralL2" class="input-group-text col-8" style="background-color:#CE649B">Coral Level 2: 0</span>
-                  <div class="input-group-append col-1">
-                    <button id="autonCoralL2Plus" class="btn btn-success" type="button">+</button>
-                  </div>
+                  <button id="autonCoralL2Plus" class="col-1 btn btn-success" type="button">+</button>
                 </div>
 
                 <div class="input-group mb-3 fw-bold">
-                  <div class="input-group-prepend col-1">
-                    <button id="autonCoralL1Minus" class="btn btn-danger" type="button">-</button>
-                  </div>
+                  <button id="autonCoralL1Minus" class="col-1 btn btn-danger" type="button">-</button>
                   <span id="autonCoralL1" class="input-group-text col-8" style="background-color:#CE649B">Coral Level 1: 0</span>
-                  <div class="input-group-append col-1">
-                    <button id="autonCoralL1Plus" class="btn btn-success" type="button">+</button>
-                  </div>
+                  <button id="autonCoralL1Plus" class="col-1 btn btn-success" type="button">+</button>
                 </div>
 
                 <!-- Algae -->
                 <div class="input-group mb-3 fw-bold">
-                  <div class="input-group-prepend col-1">
-                    <button id="autonAlgaeNetMinus" class="btn btn-danger" type="button">-</button>
-                  </div>
+                  <button id="autonAlgaeNetMinus" class="col-1 btn btn-danger" type="button">-</button>
                   <span id="autonAlgaeNet" class="input-group-text col-8" style="background-color:#76D1AE">Algae Net: 0</span>
-                  <div class="input-group-append col-1">
-                    <button id="autonAlgaeNetPlus" class="btn btn-success" type="button">+</button>
-                  </div>
+                  <button id="autonAlgaeNetPlus" class="col-1 btn btn-success" type="button">+</button>
                 </div>
 
                 <div class="input-group mb-3 fw-bold">
-                  <div class="input-group-prepend col-1">
-                    <button id="autonAlgaeProcMinus" class="btn btn-danger" type="button">-</button>
-                  </div>
+                  <button id="autonAlgaeProcMinus" class="col-1 btn btn-danger" type="button">-</button>
                   <span id="autonAlgaeProc" class="input-group-text col-8" style="background-color:#76D1AE">Algae Processor:
                     0</span>
-                  <div class="input-group-append col-1">
-                    <button id="autonAlgaeProcPlus" class="btn btn-success" type="button">+</button>
-                  </div>
+                  <button id="autonAlgaeProcPlus" class="col-1 btn btn-success" type="button">+</button>
                 </div>
               </div>
             </div>
@@ -146,67 +120,43 @@ require 'inc/header.php';
 
                 <!-- Coral -->
                 <div class="input-group mb-3 fw-bold">
-                  <div class="input-group-prepend col-1">
-                    <button id="teleopCoralL4Minus" class="btn btn-danger" type="button">-</button>
-                  </div>
+                  <button id="teleopCoralL4Minus" class="col-1 btn btn-danger" type="button">-</button>
                   <span id="teleopCoralL4" class="input-group-text col-8" style="background-color:#CE649B">Coral Level 4: 0</span>
-                  <div class="input-group-append col-1">
-                    <button id="teleopCoralL4Plus" class="btn btn-success" type="button">+</button>
-                  </div>
+                  <button id="teleopCoralL4Plus" class="col-1 btn btn-success" type="button">+</button>
                 </div>
 
                 <div class="input-group mb-3 fw-bold">
-                  <div class="input-group-prepend col-1">
-                    <button id="teleopCoralL3Minus" class="btn btn-danger" type="button">-</button>
-                  </div>
+                  <button id="teleopCoralL3Minus" class="col-1 btn btn-danger" type="button">-</button>
                   <span id="teleopCoralL3" class="input-group-text col-8" style="background-color:#CE649B">Coral Level 3:
                     0</span>
-                  <div class="input-group-append col-1">
-                    <button id="teleopCoralL3Plus" class="btn btn-success" type="button">+</button>
-                  </div>
+                  <button id="teleopCoralL3Plus" class="col-1 btn btn-success" type="button">+</button>
                 </div>
 
                 <div class="input-group mb-3 fw-bold">
-                  <div class="input-group-prepend col-1">
-                    <button id="teleopCoralL2Minus" class="btn btn-danger" type="button">-</button>
-                  </div>
+                  <button id="teleopCoralL2Minus" class="col-1 btn btn-danger" type="button">-</button>
                   <span id="teleopCoralL2" class="input-group-text col-8" style="background-color:#CE649B">Coral Level 2:
                     0</span>
-                  <div class="input-group-append col-1">
-                    <button id="teleopCoralL2Plus" class="btn btn-success" type="button">+</button>
-                  </div>
+                  <button id="teleopCoralL2Plus" class="col-1 btn btn-success" type="button">+</button>
                 </div>
 
                 <div class="input-group mb-3 fw-bold">
-                  <div class="input-group-prepend col-1">
-                    <button id="teleopCoralL1Minus" class="btn btn-danger" type="button">-</button>
-                  </div>
+                  <button id="teleopCoralL1Minus" class="col-1 btn btn-danger" type="button">-</button>
                   <span id="teleopCoralL1" class="input-group-text col-8" style="background-color:#CE649B">Coral Level 1: 0</span>
-                  <div class="input-group-append col-1">
-                    <button id="teleopCoralL1Plus" class="btn btn-success" type="button">+</button>
-                  </div>
+                  <button id="teleopCoralL1Plus" class="col-1 btn btn-success" type="button">+</button>
                 </div>
 
                 <!-- Algae -->
                 <div class="input-group mb-3 fw-bold">
-                  <div class="input-group-prepend col-1">
-                    <button id="teleopAlgaeNetMinus" class="btn btn-danger" type="button">-</button>
-                  </div>
+                  <button id="teleopAlgaeNetMinus" class="col-1 btn btn-danger" type="button">-</button>
                   <span id="teleopAlgaeNet" class="input-group-text col-8" style="background-color:#76D1AE">Algae Net: 0</span>
-                  <div class="input-group-append col-1">
-                    <button id="teleopAlgaeNetPlus" class="btn btn-success" type="button">+</button>
-                  </div>
+                  <button id="teleopAlgaeNetPlus" class="col-1 btn btn-success" type="button">+</button>
                 </div>
 
                 <div class="input-group mb-3 fw-bold">
-                  <div class="input-group-prepend col-1">
-                    <button id="teleopAlgaeProcMinus" class="btn btn-danger" type="button">-</button>
-                  </div>
+                  <button id="teleopAlgaeProcMinus" class="col-1 btn btn-danger" type="button">-</button>
                   <span id="teleopAlgaeProc" class="input-group-text col-8" style="background-color:#76D1AE">Algae Processor:
                     0</span>
-                  <div class="input-group-append col-1">
-                    <button id="teleopAlgaeProcPlus" class="btn btn-success" type="button">+</button>
-                  </div>
+                  <button id="teleopAlgaeProcPlus" class="col-1 btn btn-success" type="button">+</button>
                 </div>
 
               </div>

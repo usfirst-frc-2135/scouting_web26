@@ -16,9 +16,7 @@ require 'inc/header.php';
       <div class="input-group mb-3">
         <input id="enterTeamNumber1" class="form-control" type="text" placeholder="FRC team 1" aria-label="Team Number 1">
         <input id="enterTeamNumber2" class="form-control" type="text" placeholder="FRC team 2" aria-label="Team Number 2">
-        <div class="input-group-append">
-          <button id="loadTeamButton" class="btn btn-primary" type="button">Load Teams</button>
-        </div>
+        <button id="loadTeamButton" class="btn btn-primary" type="button">Load Teams</button>
       </div>
       <div id="aliasNumber1" class="ms-3 mb-3 text-success"></div>
       <div id="aliasNumber2" class="ms-3 mb-3 text-success"></div>
@@ -198,27 +196,23 @@ HOLD-->
               <div id="filterEntry" class="accordion-collapse collapse" data-bs-parent="#customMatch">
 
                 <div class="input-group">
-                  <div class="input-group-prepend">
-                    <select id="startCompLevel" class="form-select ms-2 mb-3" aria-label="Comp Level Select">
-                      <option value="p">P</option>
-                      <option value="qm" selected>QM</option>
-                      <option value="sf">SF</option>
-                      <option value="f">F</option>
-                    </select>
-                  </div>
+                  <select id="startCompLevel" class="form-select w-auto flex-grow-0 ms-2 mb-3" aria-label="Comp Level Select">
+                    <option value="p">P</option>
+                    <option value="qm" selected>QM</option>
+                    <option value="sf">SF</option>
+                    <option value="f">F</option>
+                  </select>
                   <input id="startMatchNum" class="form-control col-2 me-2 mb-3" type="text" placeholder="Start"
                     aria-label="Start Match Filter">
                 </div>
 
                 <div class="input-group">
-                  <div class="input-group-prepend">
-                    <select id="endCompLevel" class="form-select ms-2 mb-3" aria-label="Comp Level Select">
-                      <option value="p">P</option>
-                      <option value="qm" selected>QM</option>
-                      <option value="sf">SF</option>
-                      <option value="f">F</option>
-                    </select>
-                  </div>
+                  <select id="endCompLevel" class="form-select w-auto flex-grow-0 ms-2 mb-3" aria-label="Comp Level Select">
+                    <option value="p">P</option>
+                    <option value="qm" selected>QM</option>
+                    <option value="sf">SF</option>
+                    <option value="f">F</option>
+                  </select>
                   <input id="endMatchNum" class="form-control col-2 me-2 mb-3" type="text" placeholder="End"
                     aria-label="End Match Filter">
                 </div>

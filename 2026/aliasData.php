@@ -18,9 +18,7 @@ require 'inc/header.php';
       <div class="input-group mb-3">
         <input id="enterTeamNumber" class="form-control me-2" type="text" placeholder="Team number" aria-label="Team Number">
         <input id="enterAliasNumber" class="form-control me-2" type="text" placeholder="Alias number" aria-label="Alias Number">
-        <div class="input-group-append">
-          <button id="addTeamAlias" class="btn btn-primary me-2" type="button">Add Alias</button>
-        </div>
+        <button id="addTeamAlias" class="btn btn-primary me-2" type="button">Add Alias</button>
       </div>
     </div>
 

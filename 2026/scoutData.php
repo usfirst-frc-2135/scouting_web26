@@ -18,9 +18,7 @@ require 'inc/header.php';
       <div class="input-group mb-3">
         <input id="enterScoutName" class="form-control me-2" type="text" placeholder="First name, last init."
           aria-label="Scout Name">
-        <div class="input-group-append">
-          <button id="addScoutName" class="btn btn-primary me-2" type="button">Add Scout</button>
-        </div>
+        <button id="addScoutName" class="btn btn-primary me-2" type="button">Add Scout</button>
       </div>
     </div>
 

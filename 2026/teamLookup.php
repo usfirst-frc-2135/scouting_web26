@@ -15,9 +15,7 @@ require 'inc/header.php';
     <div class="row col-md-6 mb-3">
       <div class="input-group mb-3">
         <input id="enterTeamNumber" class="form-control" type="text" placeholder="FRC team number" aria-label="Team Number">
-        <div class="input-group-append">
-          <button id="loadTeamButton" class="btn btn-primary" type="button">Load Team</button>
-        </div>
+        <button id="loadTeamButton" class="btn btn-primary" type="button">Load Team</button>
       </div>
     </div>
     <div id="aliasNumber" class="ms-3 mb-3 text-success"></div>

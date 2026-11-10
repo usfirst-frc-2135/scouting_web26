@@ -26,17 +26,13 @@ require 'inc/header.php';
 
           <!-- Load Match buttons -->
           <div class="input-group mb-3">
-            <div class="input-group-prepend">
-              <select id="enterCompLevel" class="form-select" aria-label="Comp Level Select">
-                <option value="qm">QM</option>
-                <option value="sf">SF</option>
-                <option value="f">F</option>
-              </select>
-            </div>
+            <select id="enterCompLevel" class="form-select w-auto flex-grow-0" aria-label="Comp Level Select">
+              <option value="qm">QM</option>
+              <option value="sf">SF</option>
+              <option value="f">F</option>
+            </select>
             <input id="enterMatchNumber" class="form-control" type="text" placeholder="Match Number" aria-label="Match Number">
-            <div class="input-group-append">
-              <button id="loadMatchButton" class="btn btn-primary" type="button">Load Match</button>
-            </div>
+            <button id="loadMatchButton" class="btn btn-primary" type="button">Load Match</button>
           </div>
 
           <!-- Custom match button (collapsible section) -->

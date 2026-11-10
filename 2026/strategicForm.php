@@ -29,14 +29,12 @@ require 'inc/header.php';
             <div class="row  col-9 col-md-7 mb-3">
               <span>Match Number</span>
               <div class="input-group">
-                <div class="input-group-prepend">
-                  <select id="enterCompLevel" class="form-select" aria-label="Comp Level Select">
-                    <option id="compLevelP" value="p">P</option>
-                    <option id="compLevelQM" value="qm" selected>QM</option>
-                    <option id="compLevelSF" value="sf">SF</option>
-                    <option id="compLevelF" value="f">F</option>
-                  </select>
-                </div>
+                <select id="enterCompLevel" class="form-select w-auto flex-grow-0" aria-label="Comp Level Select">
+                  <option id="compLevelP" value="p">P</option>
+                  <option id="compLevelQM" value="qm" selected>QM</option>
+                  <option id="compLevelSF" value="sf">SF</option>
+                  <option id="compLevelF" value="f">F</option>
+                </select>
                 <input id="enterMatchNumber" class="form-control" type="text" placeholder="Match number">
               </div>
             </div>

@@ -24,12 +24,8 @@ require 'inc/header.php';
             <div id="aliasNumber" class="ms-3 mb-3 text-success"></div>
 
             <div class="mb-3">
-              <div class="input-group">
-                <div class="input-group-prepend">
-                  <label for="robotPic" class="form-label">Robot Photo</label>
-                  <input id="robotPic" class="form-control mb-3" type="file">
-                </div>
-              </div>
+              <label for="robotPic" class="form-label">Robot Photo</label>
+              <input id="robotPic" class="form-control mb-3" type="file">
               <div class="row text-center">
                 <output id="photoPreview"></output>
               </div>

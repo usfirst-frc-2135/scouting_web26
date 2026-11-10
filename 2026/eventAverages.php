@@ -26,27 +26,23 @@ require 'inc/header.php';
             <div id="filterEntry" class="accordion-collapse collapse" data-bs-parent="#customMatch">
 
               <div class="input-group">
-                <div class="input-group-prepend">
-                  <select id="startCompLevel" class="form-select ms-2 mb-3" aria-label="Comp Level Select">
-                    <option value="p">P</option>
-                    <option value="qm" selected>QM</option>
-                    <option value="sf">SF</option>
-                    <option value="f">F</option>
-                  </select>
-                </div>
+                <select id="startCompLevel" class="form-select w-auto flex-grow-0 ms-2 mb-3" aria-label="Comp Level Select">
+                  <option value="p">P</option>
+                  <option value="qm" selected>QM</option>
+                  <option value="sf">SF</option>
+                  <option value="f">F</option>
+                </select>
                 <input id="startMatchNum" class="form-control col-2 me-2 mb-3" type="text" placeholder="Start"
                   aria-label="Start Match Filter">
               </div>
 
               <div class="input-group">
-                <div class="input-group-prepend">
-                  <select id="endCompLevel" class="form-select ms-2 mb-3" aria-label="Comp Level Select">
-                    <option value="p">P</option>
-                    <option value="qm" selected>QM</option>
-                    <option value="sf">SF</option>
-                    <option value="f">F</option>
-                  </select>
-                </div>
+                <select id="endCompLevel" class="form-select w-auto flex-grow-0 ms-2 mb-3" aria-label="Comp Level Select">
+                  <option value="p">P</option>
+                  <option value="qm" selected>QM</option>
+                  <option value="sf">SF</option>
+                  <option value="f">F</option>
+                </select>
                 <input id="endMatchNum" class="form-control col-2 me-3 mb-3" type="text" placeholder="End"
                   aria-label="End Match Filter">
               </div>
