@@ -223,3 +223,4 @@ require 'inc/header.php';
 <script src="./scripts/matchDataTable.js"></script>
 <script src="./scripts/matchDataProcessor.js"></script>
 <script src="./scripts/sortFrcTables.js"></script>
+<?php include 'inc/end.php'; ?>

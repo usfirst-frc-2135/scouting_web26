@@ -359,3 +359,4 @@ require 'inc/header.php';
     });
   });
 </script>
+<?php include 'inc/end.php'; ?>

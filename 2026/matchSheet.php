@@ -1112,3 +1112,4 @@ require 'inc/header.php';
 <script src="./scripts/compareMatchNumbers.js"></script>
 <script src="./scripts/matchDataProcessor.js"></script>
 <script src="./scripts/rebuiltFuelEstimates.js"></script>
+<?php include 'inc/end.php'; ?>

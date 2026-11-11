@@ -215,3 +215,4 @@ require 'inc/header.php';
 </script>
 
 <script src="./scripts/tableToJSON.js"></script>
+<?php include 'inc/end.php'; ?>

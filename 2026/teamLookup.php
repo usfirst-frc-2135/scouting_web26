@@ -854,3 +854,4 @@ require 'inc/header.php';
 <script src="./scripts/pitTable.js"></script>
 
 <script src="./external/charts/chart.umd.js"></script>
+<?php include 'inc/end.php'; ?>

@@ -558,3 +558,4 @@ require 'inc/header.php';
 
 <script src="./scripts/aliasFunctions.js"></script>
 <script src="./scripts/validateTeamNumber.js"></script>
+<?php include 'inc/end.php'; ?>

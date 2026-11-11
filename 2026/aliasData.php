@@ -238,3 +238,4 @@ require 'inc/header.php';
 <script src="./scripts/sortFrcTables.js"></script>
 <script src="./scripts/tableToJSON.js"></script>
 <script src="./scripts/validateTeamNumber.js"></script>
+<?php include 'inc/end.php'; ?>

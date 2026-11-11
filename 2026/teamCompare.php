@@ -806,3 +806,4 @@ HOLD-->
 <script src="./scripts/rebuiltFuelEstimates.js"></script>
 
 <script src="./external/charts/chart.umd.js"></script>
+<?php include 'inc/end.php'; ?>

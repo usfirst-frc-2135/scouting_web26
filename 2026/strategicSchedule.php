@@ -273,3 +273,4 @@ require 'inc/header.php';
 <script src="./scripts/compareTeamNumbers.js"></script>
 <script src="./scripts/sortFrcTables.js"></script>
 <script src="./scripts/validateTeamNumber.js"></script>
+<?php include 'inc/end.php'; ?>

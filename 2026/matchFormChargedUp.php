@@ -551,3 +551,4 @@ require 'inc/header.php';
 </script>
 
 <script src="./scripts/validateTeamNumber.js"></script>
+<?php include 'inc/end.php'; ?>
