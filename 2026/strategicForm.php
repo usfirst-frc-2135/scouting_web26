@@ -362,6 +362,9 @@ require 'inc/header.php';
   //
   function submitStrategicFormData(strategicFormData) {
     console.log("==> strategicForm: submitStrategicFormData()");
+    const submitButton = document.getElementById("submitButton");
+    submitButton.disabled = true;
+
     $.post("api/dbWriteAPI.php", {
       writeStrategicData: JSON.stringify(strategicFormData)
     }).done(function(response) {
@@ -372,6 +375,11 @@ require 'inc/header.php';
       } else {
         alert("Failure in submitting Strategic Form!");
       }
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+      console.error("Unable to submit Strategic Form:", textStatus, errorThrown);
+      alert("Unable to submit Strategic Form. Your entries have been kept; check the connection and try again.");
+    }).always(function() {
+      submitButton.disabled = false;
     });
   }
 

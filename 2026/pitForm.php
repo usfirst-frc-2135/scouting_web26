@@ -473,6 +473,9 @@ require 'inc/header.php';
   //
   function submitPitFormData(pitFormData) {
     console.log("==> pitForm: submitPitFormData()");
+    const submitButton = document.getElementById("submitButton");
+    submitButton.disabled = true;
+
     $.post("api/dbWriteAPI.php", {
       writePitTable: JSON.stringify(pitFormData)
     }).done(function(response) {
@@ -485,6 +488,11 @@ require 'inc/header.php';
       } else {
         alert("Failure in submitting Pit Form! Is this a duplicate?");
       }
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+      console.error("Unable to submit Pit Form:", textStatus, errorThrown);
+      alert("Unable to submit Pit Form. Your entries have been kept; check the connection and try again.");
+    }).always(function() {
+      submitButton.disabled = false;
     });
   }
 
