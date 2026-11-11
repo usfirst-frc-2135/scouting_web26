@@ -526,4 +526,5 @@ require 'inc/header.php';
   });
 </script>
 
-<script type="text/javascript" src="https://unpkg.com/@zxing/library@0.23.0/umd/index.min.js"></script>
+<script src="https://unpkg.com/@zxing/library@0.23.0/umd/index.min.js"
+  integrity="sha384-0ASr5PEWAMtTnWsn0PzKmioHVDA4+QqFiJr94io/0DCrGP6E1gRAmbO6O8y5WZW9" crossorigin="anonymous"></script>
