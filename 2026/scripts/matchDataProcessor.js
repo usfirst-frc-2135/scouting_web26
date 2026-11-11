@@ -242,7 +242,7 @@ class matchDataProcessor
   getSiteFilteredAverages(processorFunction)
   {
     let tempThis = this;
-    $.post("api/dbAPI.php", {
+    return $.post("api/dbAPI.php", {
       getDBStatus: true
     }, function (dbStatus)
     {
@@ -831,4 +831,3 @@ class matchDataProcessor
     return this.pData;
   }
 }
-

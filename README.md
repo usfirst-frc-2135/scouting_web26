@@ -6,11 +6,11 @@
 
 This repo is for the scouting web application. This web application is used to capture pit, match, and strategic data during an FRC competition. Input for pit and strategic data are collected on web forms, and the match data is collected by a QR scanner form. Robot photos can also be uploaded via a web form.
 
-Collected data can be viewed through a match data page and strategic data page. The team related data can also be viewed through a team lookup page to show scoring averages, maximums, and trends. Match analyses are provided by a match sheet page that combines information from all 6 robots in a scheduled match with cumulative statistics on how the match might happen. Event related data can be also viewed through an event averages table and the COPR data from the Blue Alliance. 
+Collected data can be viewed through a match data page and strategic data page. The team related data can also be viewed through a team lookup page to show scoring averages, maximums, and trends. Match analyses are provided by a match sheet page that combines information from all 6 robots in a scheduled match with cumulative statistics on how the match might happen. Event related data can be viewed through an event averages table, a drag-and-drop picklist, and COPR data from the Blue Alliance.
 
 ## What web tools does it use?
 
-Web pages use PHP, Bootstrap 5, and JavaScript to gather and display results from the MySQL scouting database hosted on the team web site. The pages also retrieve event information from The Blue Alliance. Bootstrap's CSS and JavaScript bundle, Bootstrap Icons, and jQuery are loaded from CDNs; the QR scanner loads ZXing from unpkg. The Bootstrap and Bootstrap Icons assets are version-pinned and use Subresource Integrity hashes. The app has no frontend build step. Internet access is required for the hosted database and external assets.
+Web pages use PHP, Bootstrap 5, and JavaScript to gather and display results from the MySQL scouting database hosted on the team web site. The pages also retrieve event information from The Blue Alliance. Bootstrap's CSS and JavaScript bundle, Bootstrap Icons, jQuery, and SortableJS 1.15.6 are loaded from CDNs; the QR scanner loads ZXing from unpkg. The Bootstrap, Bootstrap Icons, and SortableJS assets are version-pinned and use Subresource Integrity hashes. The app has no frontend build step. Internet access is required for the hosted database and external assets.
 
 ## Frontend layout and Bootstrap conventions
 
@@ -71,7 +71,7 @@ While the scouting web database is hosted on the team web site at frc2135.org, i
 
 **Strategic Scouting Info** - activities related to capturing strategic scouting data during an event (strategic scouting schedule, strategic scouting form, strategic data table).
 
-**Event Scouting Info** - activities related to reviewing data for an event in order to make strategy decisions (match sheet, event averages, COPR data).
+**Event Scouting Info** - activities related to reviewing data for an event in order to make strategy decisions (match sheet, event averages, picklist, COPR data).
 
 # Scouting App Project Organization
 

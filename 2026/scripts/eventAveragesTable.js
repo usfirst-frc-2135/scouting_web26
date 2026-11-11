@@ -171,8 +171,9 @@ function getDataValue(dict, key, field)
 //      pitData       - the pittable data
 //      aliasList     - list of aliases at the event (length 0 if none)
 //      teamFilter    - list of teams to include in table (length 0 if all)
+//      sortRows      - sort the rows by team number (default true)
 //
-function insertEventAveragesBody(tableId, avgData, coprData, aliasList, pitData, teamFilter)
+function insertEventAveragesBody(tableId, avgData, coprData, aliasList, pitData, teamFilter, sortRows = true)
 {
 
   console.log("==> insertEventAveragesBody: tableId " + tableId + " avgData " + Object.keys(avgData).length + " aliases " + aliasList.length + " teams " + teamFilter.length);
@@ -260,8 +261,11 @@ function insertEventAveragesBody(tableId, avgData, coprData, aliasList, pitData,
     tbodyRef.insertRow().innerHTML = rowString;
   }
 
-  sorttable.makeSortable(document.getElementById(tableId));
+  if (sortRows)
+  {
+    sorttable.makeSortable(document.getElementById(tableId));
 
-  const teamColumn = 0;
-  sortTableByTeam(tableId, teamColumn);
+    const teamColumn = 0;
+    sortTableByTeam(tableId, teamColumn);
+  }
 };
