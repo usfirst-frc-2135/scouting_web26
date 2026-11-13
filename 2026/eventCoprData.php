@@ -115,7 +115,13 @@ require 'inc/header.php';
   //
   function loadCoprTable(tableId, coprResponse) {
     console.log("==> eventCoprData.php: loadCoprTable()");
-    let jCoprData = JSON.parse(coprResponse);
+    let jCoprData = parseAjaxJson(
+      coprResponse,
+      "TBA COPR data",
+      function(payload) {
+        return isJsonRecord(payload) && Array.isArray(payload.keys) && isJsonObjectOrArray(payload.data);
+      }
+    );
     let keys = jCoprData["keys"];
     let coprData = jCoprData["data"];
 

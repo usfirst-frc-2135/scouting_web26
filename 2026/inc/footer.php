@@ -19,16 +19,10 @@
 
 <script>
   $(document).ajaxError(function(event, jqXHR, settings, errorThrown) {
-    console.error("AJAX request failed:", jqXHR.status, jqXHR.statusText, errorThrown);
-    document.getElementById("ajaxFailureAlert").classList.remove("d-none");
-    document.querySelectorAll(".spinner-border").forEach(function(spinner) {
-      spinner.classList.add("d-none");
-    });
-
-    const loadingSpinner = document.getElementById("loadingSpinner");
-    if (loadingSpinner) {
-      loadingSpinner.style.visibility = "hidden";
-    }
+    reportAsyncDataError(
+      "A server request failed. Some information may be missing or unchanged; check the connection and retry.",
+      errorThrown || jqXHR
+    );
   });
 
   document.getElementById("dismissAjaxFailure").addEventListener("click", function() {

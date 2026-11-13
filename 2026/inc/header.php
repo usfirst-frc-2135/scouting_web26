@@ -104,6 +104,78 @@
   </nav>
 
   <script>
+    function reportAsyncDataError(message, error) {
+      console.error(message, error);
+      const alertElement = document.getElementById("ajaxFailureAlert");
+      const messageElement = document.getElementById("ajaxFailureMessage");
+      if (alertElement && messageElement) {
+        messageElement.textContent = message;
+        alertElement.classList.remove("d-none");
+      } else {
+        window.alert(message);
+      }
+
+      document.querySelectorAll(".spinner-border").forEach(function(spinner) {
+        spinner.classList.add("d-none");
+      });
+      const loadingSpinner = document.getElementById("loadingSpinner");
+      if (loadingSpinner) {
+        loadingSpinner.style.visibility = "hidden";
+      }
+    }
+
+    function parseAjaxJson(response, context, isValidPayload) {
+      let payload;
+      try {
+        payload = typeof response === "string" ? JSON.parse(response) : response;
+      } catch (error) {
+        reportAsyncDataError("Could not load " + context + ": the server returned invalid JSON.", error);
+        throw error;
+      }
+
+      if (!isValidPayload(payload)) {
+        const error = new TypeError("Unexpected response format");
+        reportAsyncDataError("Could not load " + context + ": the server returned an unexpected response.", error);
+        throw error;
+      }
+      return payload;
+    }
+
+    function isJsonRecord(value) {
+      return value !== null && typeof value === "object" && !Array.isArray(value);
+    }
+
+    function isDatabaseStatus(value) {
+      const stringFields = ["server", "db", "tbakey", "eventcode", "username"];
+      const requiredFields = [
+        "dbExists",
+        "serverExists",
+        "matchTableExists",
+        "tbaTableExists",
+        "pitTableExists",
+        "strategicTableExists",
+        "scoutTableExists",
+        "aliasTableExists",
+        "watchTableExists",
+        "hopperCapTableExists",
+        "useP",
+        "useQm",
+        "useSf",
+        "useF"
+      ];
+      return isJsonRecord(value) &&
+        stringFields.every(function(field) {
+          return typeof value[field] === "string";
+        }) &&
+        requiredFields.every(function(field) {
+          return Object.prototype.hasOwnProperty.call(value, field);
+        });
+    }
+
+    function isJsonObjectOrArray(value) {
+      return Array.isArray(value) || isJsonRecord(value);
+    }
+
     // Handle navbar button state toggles
     const currentLocation = location.href;
     const items = document.querySelectorAll("a");
@@ -146,7 +218,7 @@
         getDBStatus: true
       }, function(dbStatus) {
         console.log("=> getDBStatus");
-        let jDbStatus = JSON.parse(dbStatus);
+        let jDbStatus = parseAjaxJson(dbStatus, "database status", isDatabaseStatus);
         if (jDbStatus["server"] !== "") {
           $.get("api/dbAPI.php", {
             getEventCode: true

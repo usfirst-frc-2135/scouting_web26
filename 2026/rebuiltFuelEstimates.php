@@ -70,7 +70,7 @@ require 'inc/header.php';
       getEventAliasNames: true
     }).done(function(eventAliasNames) {
       console.log("=> eventAliasNames");
-      jAliasNames = JSON.parse(eventAliasNames);
+      jAliasNames = parseAjaxJson(eventAliasNames, "event aliases", Array.isArray);
       insertFuelEstimatesHeader(tableId, jAliasNames);
     });
 
@@ -78,7 +78,7 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getAllMatchData: true
     }).done(function(matchTableData) {
-      jMatchTableData = JSON.parse(matchTableData);
+      jMatchTableData = parseAjaxJson(matchTableData, "match scouting data", Array.isArray);
       loadFuelEstTable(tableId, jAliasNames, jMatchTableData, jPitData, tbaMatchData, hopperCapData);
     });
 
@@ -86,7 +86,7 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getAllPitData: true
     }).done(function(allPitData) {
-      jPitData = JSON.parse(allPitData);
+      jPitData = parseAjaxJson(allPitData, "pit scouting data", isJsonObjectOrArray);
       loadFuelEstTable(tableId, jAliasNames, jMatchTableData, jPitData, tbaMatchData, hopperCapData);
     });
 
@@ -94,7 +94,7 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getEventHopperCaps: true
     }).done(function(allHopperCaps) {
-      hopperCapData = JSON.parse(allHopperCaps);
+      hopperCapData = parseAjaxJson(allHopperCaps, "hopper capacity data", Array.isArray);
       loadFuelEstTable(tableId, jAliasNames, jMatchTableData, jPitData, tbaMatchData, hopperCapData);
     });
 
@@ -102,7 +102,14 @@ require 'inc/header.php';
     $.get("api/tbaAPI.php", {
       getEventMatches: true
     }).done(function(eventMatches) {
-      tbaMatchData = JSON.parse(eventMatches)["response"];
+      const matchResponse = parseAjaxJson(
+        eventMatches,
+        "TBA event matches",
+        function(payload) {
+          return isJsonRecord(payload) && Array.isArray(payload.response);
+        }
+      );
+      tbaMatchData = matchResponse["response"];
       loadFuelEstTable(tableId, jAliasNames, jMatchTableData, jPitData, tbaMatchData, hopperCapData);
     });
   }

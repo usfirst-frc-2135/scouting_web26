@@ -278,7 +278,7 @@ require 'inc/header.php';
       getDBStatus: true
     }, function(dbStatus) {
       console.log("=> getDBStatus");
-      updateStatusValues(JSON.parse(dbStatus));
+      updateStatusValues(parseAjaxJson(dbStatus, "database status", isDatabaseStatus));
     });
 
     // Create the write db_config file button
@@ -314,7 +314,7 @@ require 'inc/header.php';
       // Update the status badges after writing the config file and reload the page
       $.post("api/dbAPI.php", configData, function(dbStatus) {
         console.log("=> writeConfig");
-        updateStatusValues(JSON.parse(dbStatus));
+        updateStatusValues(parseAjaxJson(dbStatus, "database status", isDatabaseStatus));
         location.reload(); // This updates the event code in the header
       });
     });
@@ -333,7 +333,7 @@ require 'inc/header.php';
       // Make request
       $.post("api/dbAPI.php", configInfo, function(dbStatus) {
         console.log("=> filterConfig");
-        updateStatusValues(JSON.parse(dbStatus));
+        updateStatusValues(parseAjaxJson(dbStatus, "database status", isDatabaseStatus));
       });
     });
 
@@ -343,7 +343,7 @@ require 'inc/header.php';
         createDB: true
       }, function(dbStatus) {
         console.log("=> createDB");
-        updateStatusValues(JSON.parse(dbStatus));
+        updateStatusValues(parseAjaxJson(dbStatus, "database status", isDatabaseStatus));
         alert("While this might create a new database, it cannot add permissions for this username! This must be done using phpMyAdmin.");
       });
     });
@@ -354,7 +354,7 @@ require 'inc/header.php';
         createTables: true
       }, function(createTables) {
         console.log("=> createTables");
-        updateStatusValues(JSON.parse(createTables));
+        updateStatusValues(parseAjaxJson(createTables, "database status after table creation", isDatabaseStatus));
       });
     });
   });

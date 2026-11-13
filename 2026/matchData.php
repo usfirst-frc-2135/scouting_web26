@@ -67,7 +67,7 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getEventAliasNames: true
     }).done(function(eventAliasNames) {
-      jAliasNames = JSON.parse(eventAliasNames);
+      jAliasNames = parseAjaxJson(eventAliasNames, "event aliases", Array.isArray);
       insertMatchDataHeader(tableId, jAliasNames);
       aliasNamesLoaded = true;
       renderTableIfReady(tableId, jAliasNames, jMatchData, aliasNamesLoaded, matchDataLoaded);
@@ -77,7 +77,7 @@ require 'inc/header.php';
       getAllMatchData: true
     }).done(function(matchData) {
       console.log("=> buildMatchDataTable(): getAllMatchData done");
-      jMatchData = JSON.parse(matchData);
+      jMatchData = parseAjaxJson(matchData, "match scouting data", Array.isArray);
       matchDataLoaded = true;
       renderTableIfReady(tableId, jAliasNames, jMatchData, aliasNamesLoaded, matchDataLoaded);
     });

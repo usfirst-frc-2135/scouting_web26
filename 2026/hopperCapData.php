@@ -150,7 +150,7 @@ require 'inc/header.php';
       getEventHopperCaps: true
     }).done(function(eventHopperCaps) {
       console.log("=> buildHopperCapTable(): done");
-      let jHopperCaps = JSON.parse(eventHopperCaps);
+      let jHopperCaps = parseAjaxJson(eventHopperCaps, "hopper capacity data", Array.isArray);
       loadHopperCapTable(tableId, jHopperCaps);
     });
   }

@@ -61,7 +61,7 @@ require 'inc/header.php';
       getAllPitData: true
     }).done(function(pitData) {
       console.log("=> getAllPitData");
-      jPitData = JSON.parse(pitData);
+      jPitData = parseAjaxJson(pitData, "pit scouting data", isJsonObjectOrArray);
       loadPitTableBody(tableId, jPitData);
     });
   }

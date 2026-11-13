@@ -179,7 +179,7 @@ require 'inc/header.php';
       getEventAliasNames: true
     }).done(function(eventAliasNames) {
       console.log("=> eventAliasNames");
-      let jAliasNames = JSON.parse(eventAliasNames);
+      let jAliasNames = parseAjaxJson(eventAliasNames, "event aliases", Array.isArray);
       loadAliasDataTable(tableId, jAliasNames);
     });
   }

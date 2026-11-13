@@ -171,7 +171,7 @@ require 'inc/header.php';
       getEventScoutNames: true
     }).done(function(eventScoutNames) {
       console.log("=> eventScoutNames");
-      let jScoutNames = JSON.parse(eventScoutNames);
+      let jScoutNames = parseAjaxJson(eventScoutNames, "event scout names", Array.isArray);
       loadScoutDataTable(tableId, jScoutNames);
     });
   }

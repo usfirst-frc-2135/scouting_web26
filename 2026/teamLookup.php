@@ -715,7 +715,15 @@ require 'inc/header.php';
         return alert("Can't load teamName from TBA; check if TBA Key was set in db_config");
       }
       // Form the team string with number and name
-      let teamStr = teamNum + " - " + JSON.parse(teamInfo)["response"]["nickname"];
+      const teamResponse = parseAjaxJson(
+        teamInfo,
+        "TBA team information",
+        function(payload) {
+          return isJsonRecord(payload) && isJsonRecord(payload.response) &&
+            (typeof payload.response.nickname === "string" || payload.response.nickname === null);
+        }
+      );
+      let teamStr = teamNum + " - " + teamResponse["response"]["nickname"];
       if (isAliasNumber(evtTeam)) {
         teamStr = teamNum + " - " + evtTeam;
       }
@@ -727,7 +735,7 @@ require 'inc/header.php';
       getImagesForTeam: teamNum
     }).done(function(teamImages) {
       console.log("=> getImagesForTeam:\n" + teamImages);
-      loadTeamPhotos(JSON.parse(teamImages));
+      loadTeamPhotos(parseAjaxJson(teamImages, "team photo list", Array.isArray));
     });
 
     // Add Match Scouting Data and pit data
@@ -735,22 +743,29 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getAllMatchData: true
     }).done(function(allMatches) {
-      let matchData = JSON.parse(allMatches);
+      let matchData = parseAjaxJson(allMatches, "match scouting data", Array.isArray);
       //        console.log("=> got all Match data");
       $.get("api/dbReadAPI.php", {
         getAllPitData: true
       }).done(function(allPitData) {
-        let pitData = JSON.parse(allPitData);
+        let pitData = parseAjaxJson(allPitData, "pit scouting data", isJsonObjectOrArray);
         insertPitTableBody("lookupPitDataTable", pitData, [teamNum]);
         $.get("api/tbaAPI.php", {
           getEventMatches: true
         }).done(function(eventMatches) {
-          tbaMatchData = JSON.parse(eventMatches)["response"];
+          const matchResponse = parseAjaxJson(
+            eventMatches,
+            "TBA event matches",
+            function(payload) {
+              return isJsonRecord(payload) && Array.isArray(payload.response);
+            }
+          );
+          tbaMatchData = matchResponse["response"];
           //            console.log("=> got TBA event matches");
           $.get("api/dbReadAPI.php", {
             getEventHopperCaps: true
           }).done(function(allHopperCaps) {
-            hopperCapData = JSON.parse(allHopperCaps);
+            let hopperCapData = parseAjaxJson(allHopperCaps, "hopper capacity data", Array.isArray);
             //              console.log("=> got Hopper Cap data ");
             loadMatchData(teamNum, matchData, aliasList, pitData, tbaMatchData, hopperCapData);
           });
@@ -763,7 +778,12 @@ require 'inc/header.php';
       getTeamStrategicData: teamNum
     }).done(function(teamStratData) {
       //      console.log("=> getTeamStrategicData");
-      insertStrategicDataBody("strategicDataTable", JSON.parse(teamStratData), aliasList, [teamNum]);
+      insertStrategicDataBody(
+        "strategicDataTable",
+        parseAjaxJson(teamStratData, "team strategic data", Array.isArray),
+        aliasList,
+        [teamNum]
+      );
     });
   }
 
@@ -802,7 +822,7 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getEventAliasNames: true
     }).done(function(eventAliasNames) {
-      jAliasNames = JSON.parse(eventAliasNames);
+      jAliasNames = parseAjaxJson(eventAliasNames, "event aliases", Array.isArray);
       insertStrategicDataHeader("strategicDataTable", jAliasNames);
       insertPitTableHeader("lookupPitDataTable"); // TODO - add alias handling
       insertMatchDataHeader("matchDataTable", jAliasNames);

@@ -186,7 +186,7 @@ require 'inc/header.php';
       getEventAliasNames: true
     }).done(function(eventAliasNames) {
       console.log("=> eventAliasNames");
-      jAliasNames = JSON.parse(eventAliasNames);
+      jAliasNames = parseAjaxJson(eventAliasNames, "event aliases", Array.isArray);
       addCSVDownloadButton(tableId, jAliasNames);
       buildAveragesHeader(tableId, jAliasNames);
       buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, hopperCapData, null, null);
@@ -200,7 +200,14 @@ require 'inc/header.php';
         return alert("Can't load COPRs from TBA; check if TBA Key was set in db_config");
       }
       console.log("=> getCOPRs");
-      jCoprData = JSON.parse(coprs)["data"];
+      const coprResponse = parseAjaxJson(
+        coprs,
+        "TBA COPR data",
+        function(payload) {
+          return isJsonRecord(payload) && isJsonObjectOrArray(payload.data);
+        }
+      );
+      jCoprData = coprResponse["data"];
       buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, hopperCapData, null, null);
     });
 
@@ -209,7 +216,7 @@ require 'inc/header.php';
       getAllMatchData: true
     }).done(function(matchData) {
       console.log("=> getAllMatchData");
-      jMatchData = JSON.parse(matchData);
+      jMatchData = parseAjaxJson(matchData, "match scouting data", Array.isArray);
       buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, hopperCapData, null, null);
     });
 
@@ -217,7 +224,7 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getAllPitData: true
     }).done(function(allPitData) {
-      pitData = JSON.parse(allPitData);
+      pitData = parseAjaxJson(allPitData, "pit scouting data", isJsonObjectOrArray);
       buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, hopperCapData, null, null);
     });
 
@@ -225,7 +232,7 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getEventHopperCaps: true
     }).done(function(allHopperCaps) {
-      hopperCapData = JSON.parse(allHopperCaps);
+      hopperCapData = parseAjaxJson(allHopperCaps, "hopper capacity data", Array.isArray);
       buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, hopperCapData, null, null);
     });
 
@@ -233,7 +240,14 @@ require 'inc/header.php';
     $.get("api/tbaAPI.php", {
       getEventMatches: true
     }).done(function(eventMatches) {
-      tbaMatchData = JSON.parse(eventMatches)["response"];
+      const matchResponse = parseAjaxJson(
+        eventMatches,
+        "TBA event matches",
+        function(payload) {
+          return isJsonRecord(payload) && Array.isArray(payload.response);
+        }
+      );
+      tbaMatchData = matchResponse["response"];
       buildAveragesBody(tableId, jAliasNames, jCoprData, jMatchData, tbaMatchData, pitData, hopperCapData, null, null);
     });
 

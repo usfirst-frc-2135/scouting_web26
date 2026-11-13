@@ -167,7 +167,7 @@ require 'inc/header.php';
       getEventWatchList: true
     }).done(function(eventWatchList) {
       console.log("=> eventWatchList" + eventWatchList);
-      let jWatchList = JSON.parse(eventWatchList);
+      let jWatchList = parseAjaxJson(eventWatchList, "event watch list", Array.isArray);
       loadTeamWatchTable(tableId, watchId, jWatchList);
       buildScheduleTable(tableId, eventWatchList);
     });
@@ -226,7 +226,10 @@ require 'inc/header.php';
       if (strategicMatches === null) {
         return alert("Can't load strategicMatches from TBA; check if TBA Key was set in db_config");
       }
-      loadStrategicSchedule(tableId, JSON.parse(strategicMatches));
+      loadStrategicSchedule(
+        tableId,
+        parseAjaxJson(strategicMatches, "TBA strategic matches", Array.isArray)
+      );
       const matchColumn = 0;
       sortTableByMatch(tableId, matchColumn);
       document.getElementById('spinner').style.display = 'none';

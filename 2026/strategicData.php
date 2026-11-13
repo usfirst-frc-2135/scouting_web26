@@ -59,7 +59,7 @@ require 'inc/header.php';
       getEventAliasNames: true
     }).done(function(eventAliasNames) {
       console.log("=> eventAliasNames");
-      jAliasNames = JSON.parse(eventAliasNames);
+      jAliasNames = parseAjaxJson(eventAliasNames, "event aliases", Array.isArray);
       insertStrategicDataHeader(tableId, jAliasNames);
       loadStrategicTableBody(tableId, jStratData, jAliasNames, []);
     });
@@ -69,7 +69,7 @@ require 'inc/header.php';
       getAllStrategicData: true
     }).done(function(strategicData) {
       console.log("=> getAllStrategicData");
-      jStratData = JSON.parse(strategicData);
+      jStratData = parseAjaxJson(strategicData, "strategic scouting data", Array.isArray);
       loadStrategicTableBody(tableId, jStratData, jAliasNames, []);
     });
   }

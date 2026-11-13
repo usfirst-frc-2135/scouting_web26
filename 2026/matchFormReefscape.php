@@ -545,7 +545,7 @@ require 'inc/header.php';
     }).done(function(eventScoutNames) {
       console.log("=> getEventScoutNames");
       let scoutSelect = document.getElementById("selectScoutName");
-      let jsonNames = JSON.parse(eventScoutNames);
+      let jsonNames = parseAjaxJson(eventScoutNames, "event scout names", Array.isArray);
       for (let name of jsonNames) {
         let option = document.createElement('option');
         option.value = name["scoutname"];

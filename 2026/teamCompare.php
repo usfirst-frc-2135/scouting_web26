@@ -608,7 +608,7 @@ HOLD-->
       if (eventTeamNames === null) {
         return alert("Can't load teams from TBA; check if TBA Key was set in db_config");
       }
-      let jTeamNames = JSON.parse(eventTeamNames);
+      let jTeamNames = parseAjaxJson(eventTeamNames, "TBA event teams", Array.isArray);
       document.getElementById("teamMainTitle1").innerText = getTeamDescription(teamNum1, aliasList, jTeamNames);;
       document.getElementById("teamMainTitle2").innerText = getTeamDescription(teamNum2, aliasList, jTeamNames);
     });
@@ -617,7 +617,7 @@ HOLD-->
     $.get("api/dbReadAPI.php", {
       getAllStrategicData: true
     }).done(function(allStrategicData) {
-      let jStratData = JSON.parse(allStrategicData);
+      let jStratData = parseAjaxJson(allStrategicData, "strategic scouting data", Array.isArray);
       console.log("=> getAllStrategicData");
       insertStrategicDataBody("strategicDataTable1", jStratData, aliasList, [teamNum1, teamNum2]);
     });
@@ -632,7 +632,7 @@ HOLD-->
       getAllPitData: true
     }).done(function(allPitData) {
       console.log("=> getAllPitData");
-      pitData = JSON.parse(allPitData)["caphopper"];
+      pitData = parseAjaxJson(allPitData, "pit scouting data", isJsonObjectOrArray);
       setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList);
     });
 
@@ -641,7 +641,14 @@ HOLD-->
       getEventMatches: true
     }).done(function(eventMatches) {
       console.log("=> getTBAData");
-      tbaMatchData = JSON.parse(eventMatches)["response"];
+      const matchResponse = parseAjaxJson(
+        eventMatches,
+        "TBA event matches",
+        function(payload) {
+          return isJsonRecord(payload) && Array.isArray(payload.response);
+        }
+      );
+      tbaMatchData = matchResponse["response"];
       setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList);
     });
 
@@ -650,7 +657,7 @@ HOLD-->
       getEventHopperCaps: true
     }).done(function(allHopperCaps) {
       console.log("=> getEventHopperCaps");
-      hopperCapData = JSON.parse(allHopperCaps);
+      hopperCapData = parseAjaxJson(allHopperCaps, "hopper capacity data", Array.isArray);
       setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList);
     });
 
@@ -659,7 +666,7 @@ HOLD-->
       getAllMatchData: true
     }).done(function(allMatchData) {
       console.log("=> getAllMatchData");
-      jMatches = JSON.parse(allMatchData);
+      jMatches = parseAjaxJson(allMatchData, "match scouting data", Array.isArray);
       //let compareMatches = jMatches.filter(function(el) {
       setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList);
       //return el["teamnumber"] == teamNum1 || el["teamnumber"] == teamNum2;
@@ -700,7 +707,7 @@ HOLD-->
       getEventAliasNames: true
     }).done(function(eventAliasNames) {
       console.log("=> eventAliasNames");
-      jAliasNames = JSON.parse(eventAliasNames);
+      jAliasNames = parseAjaxJson(eventAliasNames, "event aliases", Array.isArray);
       insertStrategicDataHeader("strategicDataTable1", jAliasNames);
       insertEventAveragesHeader("averagesTable", jAliasNames);
     });

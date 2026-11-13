@@ -617,7 +617,15 @@ require 'inc/header.php';
       if (teamInfo === null) {
         alert("Can't load teamName from TBA; check if TBA Key was set in db_config");
       } else {
-        let jTeamInfo = JSON.parse(teamInfo)["response"];
+        let teamResponse = parseAjaxJson(
+          teamInfo,
+          "TBA team information",
+          function(payload) {
+            return isJsonRecord(payload) && isJsonRecord(payload.response) &&
+              typeof payload.response.nickname === "string";
+          }
+        );
+        let jTeamInfo = teamResponse["response"];
         teamName += " " + jTeamInfo["nickname"];
       }
       console.log("==> matchSheet: buildTeamBoxTableBody: " + teamNum + teamName);
@@ -798,7 +806,13 @@ require 'inc/header.php';
       getAllTeamImages: JSON.stringify(requestList)
     }).done(function(imageData) {
       console.log("=> getAllTeamImages");
-      let jImageData = JSON.parse(imageData);
+      let jImageData = parseAjaxJson(
+        imageData,
+        "team photo list",
+        function(payload) {
+          return isJsonObjectOrArray(payload);
+        }
+      );
       for (let team of Object.keys(jImageData)) {
         buildRobotPhotoLinks(_picDB[team], jImageData[team]);
       }
@@ -1003,7 +1017,7 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getAllPitData: true
     }).done(function(allPitData) {
-      pitData = JSON.parse(allPitData);
+      pitData = parseAjaxJson(allPitData, "pit scouting data", isJsonObjectOrArray);
       pitDataLoaded = true;
       console.log("   => got Pit data ");
       setupStarted = setupMatchSheetWhenReady(
@@ -1017,7 +1031,7 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getEventHopperCaps: true
     }).done(function(allHopperCaps) {
-      hopperCapData = JSON.parse(allHopperCaps);
+      hopperCapData = parseAjaxJson(allHopperCaps, "hopper capacity data", Array.isArray);
       hopperCapDataLoaded = true;
       console.log("   => got hopperCap data ");
       setupStarted = setupMatchSheetWhenReady(
@@ -1032,7 +1046,7 @@ require 'inc/header.php';
       getAllMatchData: true
     }).done(function(allMatchData) {
       console.log("=> getAllMatchData");
-      jMatchData = JSON.parse(allMatchData);
+      jMatchData = parseAjaxJson(allMatchData, "match scouting data", Array.isArray);
       matchDataLoaded = true;
       console.log("   => got raw match data ");
       setupStarted = setupMatchSheetWhenReady(
@@ -1084,7 +1098,14 @@ require 'inc/header.php';
       if (eventMatches === null) {
         return alert("Can't load TBA eventMatches; check if TBA Key was set in db_config");
       } else {
-        tbaMatchData = JSON.parse(eventMatches)["response"];
+        const matchResponse = parseAjaxJson(
+          eventMatches,
+          "TBA event matches",
+          function(payload) {
+            return isJsonRecord(payload) && Array.isArray(payload.response);
+          }
+        );
+        tbaMatchData = matchResponse["response"];
         matchList = buildMatchList(tbaMatchData);
         if (matchId !== null) {
           matchSpec = getEventMatchSpec(matchId, matchList);

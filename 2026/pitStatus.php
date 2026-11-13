@@ -104,7 +104,7 @@ require 'inc/header.php';
       getEventAliasNames: true
     }).done(function(eventAliasNames) {
       console.log("=> eventAliasNames");
-      jAliasNames = JSON.parse(eventAliasNames);
+      jAliasNames = parseAjaxJson(eventAliasNames, "event aliases", Array.isArray);
       if (jAliasNames.length > 0) {
         console.log("pitStatus: aliases used");
       }
@@ -117,7 +117,7 @@ require 'inc/header.php';
         if (eventTeamNames === null) {
           return alert("Can't load eventTeamNames from TBA; check if TBA Key was set in db_config");
         }
-        let jEventTeams = JSON.parse(eventTeamNames);
+        let jEventTeams = parseAjaxJson(eventTeamNames, "TBA event teams", Array.isArray);
         console.log("pitStatus: jEventTeams length = " + jEventTeams.length);
         for (let evtTeam in jEventTeams) {
           let evtTeamNum = jEventTeams[evtTeam]["teamnum"];
@@ -143,7 +143,11 @@ require 'inc/header.php';
           getAllTeamImages: JSON.stringify(teamList)
         }).done(function(teamImages) {
           console.log("=> pitStatus: getAllTeamImages");
-          jTeamImages = JSON.parse(teamImages);
+          jTeamImages = parseAjaxJson(
+            teamImages,
+            "team photo list",
+            isJsonObjectOrArray
+          );
           renderTableIfReady();
         });
       });
@@ -154,7 +158,7 @@ require 'inc/header.php';
       getAllPitData: true
     }).done(function(allPitData) {
       console.log("=> getAllPitData");
-      jPitData = JSON.parse(allPitData);
+      jPitData = parseAjaxJson(allPitData, "pit scouting data", isJsonObjectOrArray);
       renderTableIfReady();
     });
   }
