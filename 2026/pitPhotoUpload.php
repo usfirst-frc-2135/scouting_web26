@@ -115,80 +115,145 @@ require 'inc/header.php';
   //
   // Display success to user
   //
-  function uploadSuccess(msg) {
+  function uploadSuccess(msg, _textStatus, _jqXHR) {
     console.log("==> pitPhotoUpload: uploadSuccess: " + msg);
     document.getElementById("loadingSpinner").style.visibility = 'hidden';
-    let jMsg = JSON.parse(msg);
+    document.getElementById("upload").disabled = false;
+    let jMsg;
+    try {
+      jMsg = typeof msg === "string" ? JSON.parse(msg) : msg;
+    } catch (error) {
+      console.error("Unable to parse photo upload response:", error);
+      showErrorMessage("The server returned an invalid response. Check whether the photo uploaded before retrying.");
+      return;
+    }
+
+    if (jMsg === null || typeof jMsg !== "object") {
+      showErrorMessage("The server returned an invalid response. Check whether the photo uploaded before retrying.");
+      return;
+    }
+
     if (jMsg["success"]) {
       showSuccessMessage("Upload successful, clearing form!");
     } else {
-      showErrorMessage(jMsg["message"]);
+      showErrorMessage(jMsg["message"] || "The photo upload failed.");
     }
+  }
+
+  function logDeletedPhoto(imageFile, _response, _textStatus, _jqXHR) {
+    console.log("==> Deleted existing photo: " + imageFile);
+  }
+
+  function logPhotoDeletionFailure(imageFile, jqXHR, textStatus, errorThrown) {
+    console.error("Could NOT delete existing photo: " + imageFile, textStatus, errorThrown);
+  }
+
+  function deleteTeamPhoto(imageFile, _previousResponse, _previousTextStatus, _previousJqXHR) {
+    return $.ajax({
+      url: "api/deleteFile.php",
+      data: {
+        file: "<?php echo dirname(__FILE__) . '/' ?>" + imageFile
+      }
+    }).done(function(response, textStatus, jqXHR) {
+      logDeletedPhoto(imageFile, response, textStatus, jqXHR);
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+      logPhotoDeletionFailure(imageFile, jqXHR, textStatus, errorThrown);
+    });
+  }
+
+  function deleteExistingPhotos(teamImages, _textStatus, _jqXHR) {
+    const imageFiles = typeof teamImages === "string" ? JSON.parse(teamImages) : teamImages;
+    if (!Array.isArray(imageFiles)) {
+      throw new Error("The existing photo list is invalid.");
+    }
+
+    let deleteRequest = $.Deferred().resolve().promise();
+    for (const imageFile of imageFiles) {
+      deleteRequest = deleteRequest.then(function(previousResponse, previousTextStatus, previousJqXHR) {
+        return deleteTeamPhoto(imageFile, previousResponse, previousTextStatus, previousJqXHR);
+      });
+    }
+    return deleteRequest;
+  }
+
+  function uploadReplacementPhoto(teamNum, _response, _textStatus, _jqXHR) {
+    document.getElementById("replacePic").checked = false;
+    uploadSelectedPhoto(teamNum);
+  }
+
+  function showPhotoUploadFailure(message, jqXHR, textStatus, errorThrown) {
+    console.error(message, textStatus, errorThrown, jqXHR);
+    document.getElementById("loadingSpinner").style.visibility = 'hidden';
+    document.getElementById("upload").disabled = false;
+    showErrorMessage(message);
+  }
+
+  function uploadSelectedPhoto(teamNum) {
+    let uploadPost = new FormData();
+    uploadPost.append("teamPic", document.getElementById("robotPic").files[0]);
+    uploadPost.append("teamNum", teamNum);
+
+    $.ajax({
+      type: "POST",
+      url: "api/dbWriteAPI.php",
+      data: uploadPost,
+      cache: false,
+      contentType: false,
+      processData: false
+    }).done(uploadSuccess).fail(function(jqXHR, textStatus, errorThrown) {
+      showPhotoUploadFailure(
+        "Unable to upload the photo. Check the connection and try again. If replacing photos, review the existing photos before retrying.",
+        jqXHR,
+        textStatus,
+        errorThrown
+      );
+    });
   }
 
   //
   // Upload the selected image file to the server
   //
-  function handlePhotoUpload() {
+  function handlePhotoUpload(aliasList) {
     console.log("=> pitPhotoUpload: handlePhotoUpload");
     let teamNum = document.getElementById("enterTeamNumber").value.toUpperCase().trim();
     if (document.getElementById("robotPic").value != "") {
+      if (isAliasNumber(teamNum)) {
+        if (!Array.isArray(aliasList)) {
+          showErrorMessage("Alias lookup is still loading. Please try again.");
+          return;
+        }
+
+        teamNum = getTeamNumFromAlias(teamNum, aliasList);
+        if (teamNum === "") {
+          showErrorMessage("The alias number is not valid.");
+          return;
+        }
+        document.getElementById("enterTeamNumber").value = teamNum;
+      }
+
       if (validateTeamNumber(teamNum, null) > 0) {
         document.getElementById("loadingSpinner").style.visibility = 'visible';
+        document.getElementById("upload").disabled = true;
 
-        // Replace checkbox is ticked
         if (document.getElementById("replacePic").checked) {
           console.log("==> Going to remove existing photos for team #" + teamNum);
 
-          // First get list of robot-pic files for this team.
           $.get("api/dbReadAPI.php", {
             getImagesForTeam: teamNum
-          }).done(function(teamImages) {
-            console.log("=> getImagesForTeam\n" + teamImages);
-            let jTeamImages = JSON.parse(teamImages);
-
-            // If there are any existing images, delete them.
-            for (let imageFile of jTeamImages) {
-              $.ajax({
-                url: 'api/deleteFile.php',
-                data: {
-                  'file': "<?php echo dirname(__FILE__) . '/' ?>" + imageFile
-                },
-                success: function(response) {
-                  console.log("==> Deleted existing photo: " + imageFile);
-                  document.getElementById("replacePic").checked = false;
-                },
-                error: function() {
-                  console.error("Could NOT delete existing photo: " + imageFile);
-                }
-              });
-            }
-          });
-        }
-
-        // Load/reload the list of team images 
-        setTimeout(function() {
-          $.get("api/dbReadAPI.php", {
-            getImagesForTeam: teamNum
-          }).done(function(teamImages) {
-            console.log("=> getImagesForTeam\n" + teamImages);
-
-            // Now upload the selected image
-            let uploadPost = new FormData();
-            uploadPost.append("teamPic", document.getElementById("robotPic").files[0]);
-            uploadPost.append("teamNum", document.getElementById("enterTeamNumber").value.toUpperCase().trim());
-            $.ajax({
-              type: "POST",
-              url: "api/dbWriteAPI.php",
-              data: uploadPost,
-              cache: false,
-              contentType: false,
-              processData: false,
-              error: showErrorMessage,
-              success: uploadSuccess
+          }).then(deleteExistingPhotos)
+            .done(function(response, textStatus, jqXHR) {
+              uploadReplacementPhoto(teamNum, response, textStatus, jqXHR);
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+              showPhotoUploadFailure(
+                "Could not replace existing photos. No new photo was uploaded; some existing photos may already have been removed. Check the photo list before retrying.",
+                jqXHR,
+                textStatus,
+                errorThrown
+              );
             });
-          });
-        }, 500);
+        } else {
+          uploadSelectedPhoto(teamNum);
+        }
       } else {
         document.getElementById("loadingSpinner").style.visibility = 'hidden';
         alert("Team Number is invalid - must be integer with optional last alpha!");
@@ -237,7 +302,7 @@ require 'inc/header.php';
       getImagesForTeam: teamNum
     }).done(function(teamImages) {
       console.log("=> getImagesForTeam\n" + teamImages);
-      let jTeamImages = JSON.parse(teamImages);
+      let jTeamImages = parseAjaxJson(teamImages, "team photo list", Array.isArray);
 
       for (let imageFile of jTeamImages) {
         document.getElementById('photoPrevious').innerHTML +=
@@ -251,11 +316,11 @@ require 'inc/header.php';
   //
   // Process the generated html
   //    When upload button is pressed
-  //      If replace all images button is checked 
+  //      If replace all images button is checked
   //      Load a list of previous images for that team
   //      Delete all previous images
   //    Post the new image to the database
-  //    Delay 500 msec while flashing a success to the user
+  //    Wait for existing-photo deletion before uploading a replacement
   //
   document.addEventListener("DOMContentLoaded", function() {
 
@@ -268,7 +333,7 @@ require 'inc/header.php';
       getEventAliasNames: true
     }).done(function(eventAliasNames) {
       console.log("=> eventAliasNames");
-      jAliasNames = JSON.parse(eventAliasNames);
+      jAliasNames = parseAjaxJson(eventAliasNames, "event aliases", Array.isArray);
     });
 
     // Check URL for source team to load
@@ -279,18 +344,7 @@ require 'inc/header.php';
 
     // Attach enterTeamNumber listener when losing focus to check for alias numbers
     document.getElementById('enterTeamNumber').addEventListener('focusout', function(evt) {
-      console.log("enterTeamNumber: focus out");
-      let enteredNum = (evt.target.value || '').toUpperCase().trim();
-      if (isAliasNumber(enteredNum)) {
-        let teamNum = getTeamNumFromAlias(enteredNum, jAliasNames);
-        if (teamNum === "")
-          document.getElementById("aliasNumber").innerText = "Alias number " + enteredNum + " is NOT valid!";
-        else
-          document.getElementById("aliasNumber").innerText = "Alias number " + enteredNum + " is Team " + teamNum;
-        document.getElementById("enterTeamNumber").value = teamNum;
-      } else
-        document.getElementById("aliasNumber").innerText = "";
-      loadPreviousTeamPhotos(document.getElementById("enterTeamNumber").value);
+      handleTeamNumberFocusOut(evt, jAliasNames);
     });
 
     // Confirm the file selction selection is supported
@@ -303,8 +357,30 @@ require 'inc/header.php';
     document.getElementById('robotPic').addEventListener('change', handleFileSelect, false);
 
     // Attach image file reader selection from disk
-    document.getElementById("upload").addEventListener('click', handlePhotoUpload);
+    document.getElementById("upload").addEventListener('click', function() {
+      handlePhotoUpload(jAliasNames);
+    });
   });
+
+  function handleTeamNumberFocusOut(evt, aliasList) {
+    console.log("enterTeamNumber: focus out");
+    let enteredNum = (evt.target.value || '').toUpperCase().trim();
+    if (isAliasNumber(enteredNum)) {
+      if (!Array.isArray(aliasList)) {
+        document.getElementById("aliasNumber").innerText = "Alias lookup is still loading. Please try again.";
+        return;
+      }
+
+      let teamNum = getTeamNumFromAlias(enteredNum, aliasList);
+      if (teamNum === "")
+        document.getElementById("aliasNumber").innerText = "Alias number " + enteredNum + " is NOT valid!";
+      else
+        document.getElementById("aliasNumber").innerText = "Alias number " + enteredNum + " is Team " + teamNum;
+      document.getElementById("enterTeamNumber").value = teamNum;
+    } else
+      document.getElementById("aliasNumber").innerText = "";
+    loadPreviousTeamPhotos(document.getElementById("enterTeamNumber").value);
+  }
 </script>
 
 <script src="./scripts/aliasFunctions.js"></script>
