@@ -950,34 +950,67 @@ require 'inc/header.php';
 
 
   // Set up the MDP and its averages data
-  function setupMatchSheet(matchSpec, jMatchData, tbaMatchData, pitData, hopperCapData) {
+  function setupMatchSheet(matchSpec, jMatchData, tbaMatchData, pitData, hopperCapData, requestId, requestState) {
     console.log("==> matchSheet: setupMatchSheet()");
-    let averagesData = null;
-
     if (matchSpec !== null) {
       let mdp = new matchDataProcessor(jMatchData, tbaMatchData, pitData, hopperCapData);
       mdp.getSiteFilteredAverages(function(filteredMatchData, filteredAvgData) {
-        averagesData = filteredAvgData;
-        if (averagesData !== null)
-          loadMatchSheet(matchSpec, averagesData);
+        loadMatchSheetIfCurrent(matchSpec, requestId, requestState, filteredMatchData, filteredAvgData);
       });
     }
   }
 
+  function loadMatchSheetIfCurrent(matchSpec, requestId, requestState, _filteredMatchData, filteredAvgData) {
+    if (requestId === requestState.latestRequestId && filteredAvgData !== null)
+      loadMatchSheet(matchSpec, filteredAvgData);
+  }
+
+  function setupMatchSheetWhenReady(
+    matchSpec,
+    tbaMatchData,
+    requestId,
+    requestState,
+    pitData,
+    pitDataLoaded,
+    hopperCapData,
+    hopperCapDataLoaded,
+    jMatchData,
+    matchDataLoaded,
+    setupStarted
+  ) {
+    if (setupStarted || requestId !== requestState.latestRequestId ||
+        !pitDataLoaded || !hopperCapDataLoaded || !matchDataLoaded) {
+      return setupStarted;
+    }
+
+    setupMatchSheet(matchSpec, jMatchData, tbaMatchData, pitData, hopperCapData, requestId, requestState);
+    return true;
+  }
+
   // Load the necessary data: pit table data, hopperCap data, and scouted match data.
-  function loadRequiredData(matchSpec, tbaMatchData) {
+  function loadRequiredData(matchSpec, tbaMatchData, requestState) {
     console.log("==> matchSheet: loadRequiredData()");
+    const requestId = ++requestState.latestRequestId;
     let pitData = null;
     let hopperCapData = null;
     let jMatchData = null;
+    let pitDataLoaded = false;
+    let hopperCapDataLoaded = false;
+    let matchDataLoaded = false;
+    let setupStarted = false;
 
     // In parallel, load the pitTable data
     $.get("api/dbReadAPI.php", {
       getAllPitData: true
     }).done(function(allPitData) {
       pitData = JSON.parse(allPitData);
+      pitDataLoaded = true;
       console.log("   => got Pit data ");
-      setupMatchSheet(matchSpec, jMatchData, tbaMatchData, pitData, hopperCapData);
+      setupStarted = setupMatchSheetWhenReady(
+        matchSpec, tbaMatchData, requestId, requestState,
+        pitData, pitDataLoaded, hopperCapData, hopperCapDataLoaded,
+        jMatchData, matchDataLoaded, setupStarted
+      );
     });
 
     // In parallel, load the hopperCap data
@@ -985,8 +1018,13 @@ require 'inc/header.php';
       getEventHopperCaps: true
     }).done(function(allHopperCaps) {
       hopperCapData = JSON.parse(allHopperCaps);
+      hopperCapDataLoaded = true;
       console.log("   => got hopperCap data ");
-      setupMatchSheet(matchSpec, jMatchData, tbaMatchData, pitData, hopperCapData);
+      setupStarted = setupMatchSheetWhenReady(
+        matchSpec, tbaMatchData, requestId, requestState,
+        pitData, pitDataLoaded, hopperCapData, hopperCapDataLoaded,
+        jMatchData, matchDataLoaded, setupStarted
+      );
     });
 
     // In parallel, load all match scouting data 
@@ -995,8 +1033,13 @@ require 'inc/header.php';
     }).done(function(allMatchData) {
       console.log("=> getAllMatchData");
       jMatchData = JSON.parse(allMatchData);
+      matchDataLoaded = true;
       console.log("   => got raw match data ");
-      setupMatchSheet(matchSpec, jMatchData, tbaMatchData, pitData, hopperCapData);
+      setupStarted = setupMatchSheetWhenReady(
+        matchSpec, tbaMatchData, requestId, requestState,
+        pitData, pitDataLoaded, hopperCapData, hopperCapDataLoaded,
+        jMatchData, matchDataLoaded, setupStarted
+      );
     });
   }
 
@@ -1010,9 +1053,8 @@ require 'inc/header.php';
   //  When the custom match button (5) is clicked
   //    Create a matchSpec from the teams entered
   //
-  //  Note that all 5 of these events can happen or complete at different times. All five sequences test 
-  //    to see if the minimum data is needed for the match sheet (matchSpec and averagesData) and call the 
-  //    final function to load the match sheet.
+  //  The three database requests can complete in any order. Wait for all three before calculating
+  //    averages, and ignore results for a match selection that has since been superseded.
   //
   //  LoadMatchSheet function:
   //    Request photos for each team
@@ -1025,6 +1067,7 @@ require 'inc/header.php';
     let tbaMatchData = null;
     let matchSpec = null;
     let hasLoadedInitialMatch = false;
+    const matchSheetRequestState = { latestRequestId: 0 };
 
     buildTeamBoxTableHeader("R0DataTable");
     buildTeamBoxTableHeader("R1DataTable");
@@ -1047,7 +1090,7 @@ require 'inc/header.php';
           matchSpec = getEventMatchSpec(matchId, matchList);
         }
         if ((matchSpec !== null) && (tbaMatchData !== null)) {
-          loadRequiredData(matchSpec, tbaMatchData);
+          loadRequiredData(matchSpec, tbaMatchData, matchSheetRequestState);
           hasLoadedInitialMatch = true;
         }
       }
@@ -1059,7 +1102,7 @@ require 'inc/header.php';
     }).done(function(allMatchData) {
       console.log("=> get scouted matchData");
       if (matchSpec !== null && tbaMatchData !== null && !hasLoadedInitialMatch) {
-        loadRequiredData(matchSpec, tbaMatchData);
+        loadRequiredData(matchSpec, tbaMatchData, matchSheetRequestState);
       }
     });
 
@@ -1069,7 +1112,7 @@ require 'inc/header.php';
       console.log("==> matchsheet: building from URL match ID! " + matchId);
       matchSpec = getEventMatchSpec(matchId, matchList);
       if ((matchSpec !== null) && (tbaMatchData !== null)) {
-        loadRequiredData(matchSpec, tbaMatchData);
+        loadRequiredData(matchSpec, tbaMatchData, matchSheetRequestState);
         hasLoadedInitialMatch = true;
       }
     }
@@ -1080,7 +1123,7 @@ require 'inc/header.php';
       matchId = document.getElementById("enterCompLevel").value + document.getElementById("enterMatchNumber").value.trim();
       matchSpec = getEventMatchSpec(matchId, matchList);
       if ((matchSpec !== null) && (tbaMatchData !== null)) {
-        loadRequiredData(matchSpec, tbaMatchData);
+        loadRequiredData(matchSpec, tbaMatchData, matchSheetRequestState);
         hasLoadedInitialMatch = true;
       }
     });
@@ -1101,7 +1144,7 @@ require 'inc/header.php';
       } else {
         matchSpec = newSpec;
         if ((matchSpec !== null) && (tbaMatchData !== null)) {
-          loadRequiredData(matchSpec, tbaMatchData);
+          loadRequiredData(matchSpec, tbaMatchData, matchSheetRequestState);
           hasLoadedInitialMatch = true;
         }
       }

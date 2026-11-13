@@ -34,6 +34,18 @@ require 'inc/header.php';
   //
   // Build the match data table
   //
+  function renderFilteredMatchData(tableId, jAliasNames, filteredMatchData, _filteredAvgData) {
+    if (filteredMatchData !== undefined) {
+      insertMatchDataBody(tableId, filteredMatchData, jAliasNames, []);
+      document.getElementById('spinner').style.display = 'none';
+      // script instructions say this is needed, but it breaks table header sorting
+      // sorttable.makeSortable(document.getElementById(tableId));
+      document.getElementById(tableId).click(); // This magic fixes the floating column bug
+    } else {
+      alert(" buildMatchDataTable(): No match data found!");
+    }
+  }
+
   function buildMatchDataTable(tableId) { // Load the alias table
     console.log("==> matchData: buildMatchDataTable()");
     let jAliasNames;
@@ -41,22 +53,14 @@ require 'inc/header.php';
     let aliasNamesLoaded = false;
     let matchDataLoaded = false;
 
-    function renderTableIfReady() {
+    function renderTableIfReady(tableId, jAliasNames, jMatchData, aliasNamesLoaded, matchDataLoaded) {
       if (!aliasNamesLoaded || !matchDataLoaded) {
         return;
       }
 
       let mdp = new matchDataProcessor(jMatchData, null, null, null);
       mdp.getSiteFilteredAverages(function(filteredMatchData, filteredAvgData) {
-        if (filteredMatchData !== undefined) {
-          insertMatchDataBody(tableId, filteredMatchData, jAliasNames, []);
-          document.getElementById('spinner').style.display = 'none';
-          // script instructions say this is needed, but it breaks table header sorting
-          // sorttable.makeSortable(document.getElementById(tableId));
-          document.getElementById(tableId).click(); // This magic fixes the floating column bug
-        } else {
-          alert(" buildMatchDataTable(): No match data found!");
-        }
+        renderFilteredMatchData(tableId, jAliasNames, filteredMatchData, filteredAvgData);
       });
     }
 
@@ -66,7 +70,7 @@ require 'inc/header.php';
       jAliasNames = JSON.parse(eventAliasNames);
       insertMatchDataHeader(tableId, jAliasNames);
       aliasNamesLoaded = true;
-      renderTableIfReady();
+      renderTableIfReady(tableId, jAliasNames, jMatchData, aliasNamesLoaded, matchDataLoaded);
     });
 
     $.get("api/dbReadAPI.php", {
@@ -75,7 +79,7 @@ require 'inc/header.php';
       console.log("=> buildMatchDataTable(): getAllMatchData done");
       jMatchData = JSON.parse(matchData);
       matchDataLoaded = true;
-      renderTableIfReady();
+      renderTableIfReady(tableId, jAliasNames, jMatchData, aliasNamesLoaded, matchDataLoaded);
     });
   }
 
