@@ -20,6 +20,7 @@ require 'inc/header.php';
           </div>
           <select id="cameraSelector" class="form-select mb-3" aria-label="Camera Select">
           </select>
+          <div id="cameraError" class="alert alert-danger d-none" role="alert"></div>
           <div class="d-grid gap-2 col-6 mx-auto">
             <button id="submitData" class="btn btn-success mb-3" type="button"></button>
           </div>
@@ -411,6 +412,24 @@ require 'inc/header.php';
   //
   // Build the camera selection dropdown and connect the QR code reader passed in
   //
+  function showCameraError(camTagId, message, error) {
+    if (error) {
+      console.error("createCameraSelector: unable to initialize camera", error);
+    }
+
+    const camSelector = document.getElementById(camTagId);
+    camSelector.disabled = true;
+    camSelector.classList.add("d-none");
+
+    const submitButton = document.getElementById("submitData");
+    submitButton.disabled = true;
+    submitButton.innerText = "Camera unavailable";
+
+    const errorMessage = document.getElementById("cameraError");
+    errorMessage.textContent = message;
+    errorMessage.classList.remove("d-none");
+  }
+
   function createCameraSelector(camTagId, tableId, scannedMatches) {
     // Create a new instance of the ZXing QR code reader
     // Original ZXing source:  https://github.com/zxing-js/browser/blob/a254f65c770423a1638253f86c12c19937f32f4c/src/readers/BrowserQRCodeReader.ts
@@ -435,10 +454,10 @@ require 'inc/header.php';
           camSelector.appendChild(option);
         });
       } else {
-        camSelector.style.display = 'none';
-        document.getElementById("submitData").disabled = true;
-        document.getElementById("submitData").innerText = "No camera available";
-        alert("No camera was detected. Please allow camera access or use a device with a webcam.");
+        showCameraError(
+          camTagId,
+          "No camera was detected. Allow camera access or use a device with a webcam."
+        );
         return;
       }
 
@@ -454,6 +473,12 @@ require 'inc/header.php';
         addCameraScanner(newCamId, qrReader, tableId, scannedMatches);
         setDefaultDeviceID(newCamId);
       });
+    }).catch(function(error) {
+      showCameraError(
+        camTagId,
+        "Unable to access camera devices. Check camera permissions or device availability, then reload the page.",
+        error
+      );
     });
   }
 
