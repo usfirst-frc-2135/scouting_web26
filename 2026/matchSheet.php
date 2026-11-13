@@ -552,9 +552,9 @@ require 'inc/header.php';
       slide += "'> <img src='./" + uri + "' class='d-block w-100'></div>";
       slideRef.innerHTML += slide;
     }
-    if (count > 0) {
+    /* commented out for now, so photos are not expanded by default if (count > 0) {
       document.getElementById(prefix + "TeamCollapse").classList.add("show");
-    }
+    }*/
   }
 
   //
@@ -931,7 +931,7 @@ require 'inc/header.php';
       console.error("matchSheet: loadMatchSheet: averagesData is null!");
       return alert("matchSheet: loadMatchSheet: averagesData is null!");
     }
-    //HOLD sendPhotoRequest(matchSpec);
+    sendPhotoRequest(matchSpec);
 
     document.getElementById("matchTitle").innerText = matchSpec.title;
     if (matchSpec.title !== "CUSTOM") {
