@@ -13,6 +13,7 @@ require 'inc/header.php';
           <h2 class="col-auto mb-3 me-3"><?php echo $title; ?> </h2>
           <a class="col-auto btn btn-primary mb-3 me-3" href="javascript:history.back()">Back</a>
           <div id="spinner" class="spinner-border ms-3 mb-3 me-3"></div>
+          <div id="dataLoadError" class="col-12 alert alert-danger d-none" role="alert"></div>
         </div>
       </div>
     </div>
@@ -153,6 +154,13 @@ require 'inc/header.php';
     document.getElementById('spinner').style.display = 'none';
   }
 
+  function showMatchStatusLoadError(message, error) {
+    console.error(message, error);
+    document.getElementById("dataLoadError").textContent = message;
+    document.getElementById("dataLoadError").classList.remove("d-none");
+    document.getElementById("spinner").classList.add("d-none");
+  }
+
   //
   // Load match data and event matches
   //
@@ -160,18 +168,24 @@ require 'inc/header.php';
     console.log("==> matchStatus: buildMatchStatusTable()");
     let jEventMatches = null;
     let jAllMatchData = null;
+    let loadFailed = false;
 
     $.get("api/tbaAPI.php", {
       getEventMatches: true
     }).done(function(eventMatches) {
       console.log("=> getEventMatches");
       try {
-        jEventMatches = JSON.parse(eventMatches)["response"];
-      } catch (e) {
-        console.warn("buildMatchStatusTable: invalid TBA match data", e);
-        jEventMatches = [];
+        const tbaResponse = typeof eventMatches === "string" ? JSON.parse(eventMatches) : eventMatches;
+        if (!tbaResponse || !Array.isArray(tbaResponse.response)) {
+          throw new Error("TBA match response is missing its response array.");
+        }
+        jEventMatches = tbaResponse.response;
+      } catch (error) {
+        loadFailed = true;
+        showMatchStatusLoadError("Unable to read valid match data from The Blue Alliance.", error);
+        return;
       }
-      if (jEventMatches !== null && jAllMatchData !== null) {
+      if (!loadFailed && jAllMatchData !== null) {
         loadMatchStatusTable(tableId, jEventMatches, jAllMatchData);
       }
     });
@@ -181,12 +195,16 @@ require 'inc/header.php';
     }).done(function(matchData) {
       console.log("=> getAllMatchData");
       try {
-        jAllMatchData = JSON.parse(matchData);
-      } catch (e) {
-        console.warn("buildMatchStatusTable: invalid match data", e);
-        jAllMatchData = [];
+        jAllMatchData = typeof matchData === "string" ? JSON.parse(matchData) : matchData;
+        if (!Array.isArray(jAllMatchData)) {
+          throw new Error("Scouting match response is not an array.");
+        }
+      } catch (error) {
+        loadFailed = true;
+        showMatchStatusLoadError("Unable to read valid scouting match data from the database.", error);
+        return;
       }
-      if (jEventMatches !== null && jAllMatchData !== null) {
+      if (!loadFailed && jEventMatches !== null) {
         loadMatchStatusTable(tableId, jEventMatches, jAllMatchData);
       }
     });
