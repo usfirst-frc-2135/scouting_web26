@@ -35,7 +35,8 @@ require 'inc/header.php';
   // Build the REBUILT Fuel Estimates data table
   //
   function loadFuelEstTable(tableId, aliasNames, matchTableData, pitData, tbaMatchData, hopperCapData) {
-    if (aliasNames == [] || pitData == [] || matchTableData === null || tbaMatchData === null || hopperCapData === []) {
+    const requiredData = [aliasNames, matchTableData, pitData, tbaMatchData, hopperCapData];
+    if (requiredData.some(data => data === null || data === undefined)) {
       console.log("loadFuelEstTable: still waiting for get APIs to finish!");
       return;
     }
