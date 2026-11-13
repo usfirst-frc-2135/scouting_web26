@@ -194,7 +194,7 @@ function insertEventAveragesBody(tableId, avgData, coprData, aliasList, pitData,
     const tdPrefix0 = '<td ' + thBody + '>';          // clear cell color
     const tdPrefix1 = '<td ' + thBlueSort + '>';      // blue cell color
     let rowString = "";
-    rowString += tdPrefix0 + "<a href='teamLookup.php?teamNum=" + teamNum + "'>" + teamNum + "</td>";
+    rowString += tdPrefix0 + "<a href='teamLookup.php?teamNum=" + encodeURIComponent(teamNum) + "'>" + teamNum + "</a></td>";
 
     // Insert column if the aliasList is not empty
     if (aliasList.length > 0)

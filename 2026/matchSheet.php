@@ -552,9 +552,10 @@ require 'inc/header.php';
       slide += "'> <img src='./" + uri + "' class='d-block w-100'></div>";
       slideRef.innerHTML += slide;
     }
-    /* commented out for now, so photos are not expanded by default if (count > 0) {
-      document.getElementById(prefix + "TeamCollapse").classList.add("show");
-    }*/
+    // commented out for now, so photos are not expanded by default 
+    // if (count > 0) {
+    //    document.getElementById(prefix + "TeamCollapse").classList.add("show");
+    // }
   }
 
   //
