@@ -16,7 +16,7 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" integrity="sha384-CK2SzKma4jA5H/MXDUU7i1TqZlCFaD4T01vtyDFvPlD97JQyS+IsSh1nI2EFbpyk" crossorigin="anonymous">
-  <link rel="icon" type="image/png" href="/assets/favicon.png">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
 
   <!-- 2135 Customizations -->
 
@@ -42,8 +42,8 @@
 <body>
   <!-- Create collapsible navbar and navigation buttons -->
   <nav class="navbar navbar-expand-sm bg-dark sticky-top" data-bs-theme="dark">
-    <a class="navbar-brand text-white" href="./index.php">
-      <img src="./images/favicon-32x32.png" alt="Logo" width="24" height="24" class="d-inline-block align-text-top">
+    <a class="navbar-brand text-white ms-2" href="./index.php">
+      <img src="assets/favicon.png" alt="Logo" width="24" height="24" class="d-inline-block align-text-top">
       <span id="navbarEventCode"> ????</span>
     </a>
     <div class="nav-item nav-item-dark align-left me-auto">
