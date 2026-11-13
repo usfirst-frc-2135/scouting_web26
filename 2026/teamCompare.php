@@ -738,6 +738,12 @@ HOLD-->
     document.getElementById("loadTeamButton").addEventListener('click', function() {
       let teamNum1 = document.getElementById("enterTeamNumber1").value.toUpperCase().trim();
       let teamNum2 = document.getElementById("enterTeamNumber2").value.toUpperCase().trim();
+      if (!Array.isArray(jAliasNames)) {
+        console.warn("teamCompare: alias data is not ready");
+        alert("Team alias data is still loading. Please try again.");
+        return;
+      }
+
       if (validateTeamNumber(teamNum1, null) > 0 && validateTeamNumber(teamNum2, null) > 0) {
         buildTeamComparePage(teamNum1, teamNum2, jAliasNames);
       }
@@ -755,7 +761,8 @@ HOLD-->
 
   function setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList) {
     console.log("==> teamCompare: setupMDP()");
-    if (jMatches === null || tbaMatchData === null || pitData === null || hopperCapData === null) {
+    if (jMatches === null || tbaMatchData === null || pitData === null ||
+        hopperCapData === null || !Array.isArray(aliasList)) {
       if (jMatches === null) {
         console.log("==> teamCompare: setupMDP: jMatches not loaded");
       }
@@ -768,7 +775,7 @@ HOLD-->
       if (hopperCapData === null) {
         console.log("==> teamCompare: setupMDP: hopperCapData not loaded");
       }
-      if (aliasList === null) {
+      if (!Array.isArray(aliasList)) {
         console.log("==> teamCompare: setupMDP: aliasList not loaded");
       }
       return;
