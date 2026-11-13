@@ -25,6 +25,10 @@
     );
   });
 
+  $(document).ajaxStop(function(_event) {
+    hidePageSpinnerAfterRequests();
+  });
+
   document.getElementById("dismissAjaxFailure").addEventListener("click", function() {
     document.getElementById("ajaxFailureAlert").classList.add("d-none");
   });

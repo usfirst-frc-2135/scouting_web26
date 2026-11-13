@@ -485,9 +485,9 @@ require 'inc/header.php';
 
   function showMatchCheckLoadError(message, error) {
     console.error(message, error);
+    deferPageSpinnerCleanup();
     document.getElementById("dataLoadError").textContent = message;
     document.getElementById("dataLoadError").classList.remove("d-none");
-    document.getElementById("spinner").classList.add("d-none");
   }
 
   //
@@ -517,6 +517,14 @@ require 'inc/header.php';
       if (!loadFailed) {
         loadMatchCheckTable(tableId, jEventMatches, jAllMatchData);
       }
+    }).fail(function(_jqXHR, textStatus, errorThrown) {
+      if (!loadFailed) {
+        loadFailed = true;
+        showMatchCheckLoadError(
+          "Unable to load match data from The Blue Alliance.",
+          errorThrown || textStatus
+        );
+      }
     });
 
     $.get("api/dbReadAPI.php", {
@@ -535,6 +543,14 @@ require 'inc/header.php';
       }
       if (!loadFailed) {
         loadMatchCheckTable(tableId, jEventMatches, jAllMatchData);
+      }
+    }).fail(function(_jqXHR, textStatus, errorThrown) {
+      if (!loadFailed) {
+        loadFailed = true;
+        showMatchCheckLoadError(
+          "Unable to load scouting match data from the database.",
+          errorThrown || textStatus
+        );
       }
     });
 

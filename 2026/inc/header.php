@@ -104,8 +104,16 @@
   </nav>
 
   <script>
+    // Wait until all active requests finish before clearing the page spinner.
+    let pageSpinnerCleanupPending = false;
+
+    function deferPageSpinnerCleanup() {
+      pageSpinnerCleanupPending = true;
+    }
+
     function reportAsyncDataError(message, error) {
       console.error(message, error);
+      deferPageSpinnerCleanup();
       const alertElement = document.getElementById("ajaxFailureAlert");
       const messageElement = document.getElementById("ajaxFailureMessage");
       if (alertElement && messageElement) {
@@ -114,14 +122,21 @@
       } else {
         window.alert(message);
       }
+    }
 
-      document.querySelectorAll(".spinner-border").forEach(function(spinner) {
-        spinner.classList.add("d-none");
-      });
-      const loadingSpinner = document.getElementById("loadingSpinner");
-      if (loadingSpinner) {
-        loadingSpinner.style.visibility = "hidden";
+    function hidePageSpinner(spinnerId) {
+      const spinnerElement = document.getElementById(spinnerId);
+      if (spinnerElement) {
+        spinnerElement.style.display = "none";
       }
+    }
+
+    function hidePageSpinnerAfterRequests() {
+      if (!pageSpinnerCleanupPending) {
+        return;
+      }
+      pageSpinnerCleanupPending = false;
+      hidePageSpinner("spinner");
     }
 
     function parseAjaxJson(response, context, isValidPayload) {
