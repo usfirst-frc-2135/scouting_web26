@@ -36,23 +36,17 @@ require 'inc/header.php';
   //
   function buildMatchDataTable(tableId) { // Load the alias table
     console.log("==> matchData: buildMatchDataTable()");
-    let jAliasNames = null;
+    let jAliasNames;
+    let jMatchData;
+    let aliasNamesLoaded = false;
+    let matchDataLoaded = false;
 
-    // Load alias lookup table
-    $.get("api/dbReadAPI.php", {
-      getEventAliasNames: true
-    }).done(function(eventAliasNames) {
-      jAliasNames = JSON.parse(eventAliasNames);
-      insertMatchDataHeader(tableId, jAliasNames);
-    });
+    function renderTableIfReady() {
+      if (!aliasNamesLoaded || !matchDataLoaded) {
+        return;
+      }
 
-    // Load the match data
-    $.get("api/dbReadAPI.php", {
-      getAllMatchData: true
-    }).done(function(matchData) {
-      console.log("=> buildMatchDataTable(): getAllMatchData done");
-
-      let mdp = new matchDataProcessor(JSON.parse(matchData), null, null, null);
+      let mdp = new matchDataProcessor(jMatchData, null, null, null);
       mdp.getSiteFilteredAverages(function(filteredMatchData, filteredAvgData) {
         if (filteredMatchData !== undefined) {
           insertMatchDataBody(tableId, filteredMatchData, jAliasNames, []);
@@ -64,6 +58,24 @@ require 'inc/header.php';
           alert(" buildMatchDataTable(): No match data found!");
         }
       });
+    }
+
+    $.get("api/dbReadAPI.php", {
+      getEventAliasNames: true
+    }).done(function(eventAliasNames) {
+      jAliasNames = JSON.parse(eventAliasNames);
+      insertMatchDataHeader(tableId, jAliasNames);
+      aliasNamesLoaded = true;
+      renderTableIfReady();
+    });
+
+    $.get("api/dbReadAPI.php", {
+      getAllMatchData: true
+    }).done(function(matchData) {
+      console.log("=> buildMatchDataTable(): getAllMatchData done");
+      jMatchData = JSON.parse(matchData);
+      matchDataLoaded = true;
+      renderTableIfReady();
     });
   }
 
