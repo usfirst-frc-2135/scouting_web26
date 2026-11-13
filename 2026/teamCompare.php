@@ -596,14 +596,18 @@ HOLD-->
   //
   // This is the main function that runs when we want to load teams.
   //
-  function buildTeamComparePage(teamNum1, teamNum2, aliasList) {
+  function buildTeamComparePage(teamNum1, teamNum2, aliasList, requestState) {
     console.log("==> teamCompare: buildTeamComparePage()");
     console.log("Team 1: " + teamNum1 + " Team 2: " + teamNum2);
+    const requestId = ++requestState.latestRequestId;
 
     // Get team1 name from TBA
     $.get("api/tbaAPI.php", {
       getEventTeamNames: true
     }).done(function(eventTeamNames) {
+      if (requestId !== requestState.latestRequestId) {
+        return;
+      }
       console.log("=> getEventTeamNames: ");
       if (eventTeamNames === null) {
         return alert("Can't load teams from TBA; check if TBA Key was set in db_config");
@@ -617,6 +621,9 @@ HOLD-->
     $.get("api/dbReadAPI.php", {
       getAllStrategicData: true
     }).done(function(allStrategicData) {
+      if (requestId !== requestState.latestRequestId) {
+        return;
+      }
       let jStratData = parseAjaxJson(allStrategicData, "strategic scouting data", Array.isArray);
       console.log("=> getAllStrategicData");
       insertStrategicDataBody("strategicDataTable1", jStratData, aliasList, [teamNum1, teamNum2]);
@@ -631,15 +638,23 @@ HOLD-->
     $.get("api/dbReadAPI.php", {
       getAllPitData: true
     }).done(function(allPitData) {
+      if (requestId !== requestState.latestRequestId) {
+        return;
+      }
       console.log("=> getAllPitData");
       pitData = parseAjaxJson(allPitData, "pit scouting data", isJsonObjectOrArray);
-      setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList);
+      setupMDP(
+        teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList, requestId, requestState
+      );
     });
 
     // In parallel, load the TBA matches data
     $.get("api/tbaAPI.php", {
       getEventMatches: true
     }).done(function(eventMatches) {
+      if (requestId !== requestState.latestRequestId) {
+        return;
+      }
       console.log("=> getTBAData");
       const matchResponse = parseAjaxJson(
         eventMatches,
@@ -649,26 +664,38 @@ HOLD-->
         }
       );
       tbaMatchData = matchResponse["response"];
-      setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList);
+      setupMDP(
+        teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList, requestId, requestState
+      );
     });
 
     // In parallel, load the hopperCap data
     $.get("api/dbReadAPI.php", {
       getEventHopperCaps: true
     }).done(function(allHopperCaps) {
+      if (requestId !== requestState.latestRequestId) {
+        return;
+      }
       console.log("=> getEventHopperCaps");
       hopperCapData = parseAjaxJson(allHopperCaps, "hopper capacity data", Array.isArray);
-      setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList);
+      setupMDP(
+        teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList, requestId, requestState
+      );
     });
 
     // Get team2 match data
     $.get("api/dbReadAPI.php", {
       getAllMatchData: true
     }).done(function(allMatchData) {
+      if (requestId !== requestState.latestRequestId) {
+        return;
+      }
       console.log("=> getAllMatchData");
       jMatches = parseAjaxJson(allMatchData, "match scouting data", Array.isArray);
       //let compareMatches = jMatches.filter(function(el) {
-      setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList);
+      setupMDP(
+        teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList, requestId, requestState
+      );
       //return el["teamnumber"] == teamNum1 || el["teamnumber"] == teamNum2;
       //});
     });
@@ -701,6 +728,7 @@ HOLD-->
   document.addEventListener("DOMContentLoaded", function() {
 
     let jAliasNames = null;
+    const teamCompareRequestState = { latestRequestId: 0 };
 
     // Read the alias table
     $.get("api/dbReadAPI.php", {
@@ -752,7 +780,7 @@ HOLD-->
       }
 
       if (validateTeamNumber(teamNum1, null) > 0 && validateTeamNumber(teamNum2, null) > 0) {
-        buildTeamComparePage(teamNum1, teamNum2, jAliasNames);
+        buildTeamComparePage(teamNum1, teamNum2, jAliasNames, teamCompareRequestState);
       }
     });
 
@@ -766,8 +794,22 @@ HOLD-->
 
   });
 
-  function setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList) {
+  function setupMDP(
+    teamNum1,
+    teamNum2,
+    jMatches,
+    tbaMatchData,
+    pitData,
+    hopperCapData,
+    aliasList,
+    requestId,
+    requestState
+  ) {
     console.log("==> teamCompare: setupMDP()");
+    if (requestId !== requestState.latestRequestId) {
+      return;
+    }
+
     if (jMatches === null || tbaMatchData === null || pitData === null ||
         hopperCapData === null || !Array.isArray(aliasList)) {
       if (jMatches === null) {
@@ -793,6 +835,9 @@ HOLD-->
 
     // Get the team1 averages data from matchDataProcessor (mdp)
     mdp.getSiteFilteredAverages(function(filteredMatches, filteredAvgData) {
+      if (requestId !== requestState.latestRequestId) {
+        return;
+      }
       if (filteredAvgData !== undefined) {
         console.log("==> teamCompare: got filtered averages data: ");
 

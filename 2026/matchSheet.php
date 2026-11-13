@@ -605,35 +605,41 @@ require 'inc/header.php';
   //
   function buildTeamBoxTableBody(color, index, teamNum, averagesData) {
     console.log("==> buildTeamBoxTableBody: build team box: " + teamNum);
+    let elementRef = document.getElementById(color + index + "TeamHeader");
+    let aRef = elementRef.querySelector('a');
+    aRef.href = 'teamLookup.php?teamNum=' + teamNum;
+    aRef.text = teamNum;
+
     // Get team name from TBA
-    $.get("api/tbaAPI.php", {
-      getTeamInfo: teamNum
-    }).done(function(teamInfo) {
-      console.log("=> getTeamInfo:");
-      if (teamInfo === null) {
-        return alert("Can't load teamInfo from TBA; check if TBA Key was set in db_config");
-      }
-      let teamName = "";
-      if (teamInfo === null) {
-        alert("Can't load teamName from TBA; check if TBA Key was set in db_config");
-      } else {
-        let teamResponse = parseAjaxJson(
-          teamInfo,
-          "TBA team information",
-          function(payload) {
-            return isJsonRecord(payload) && isJsonRecord(payload.response) &&
-              typeof payload.response.nickname === "string";
-          }
-        );
-        let jTeamInfo = teamResponse["response"];
-        teamName += " " + jTeamInfo["nickname"];
-      }
-      console.log("==> matchSheet: buildTeamBoxTableBody: " + teamNum + teamName);
-      let elementRef = document.getElementById(color + index + "TeamHeader");
-      let aRef = elementRef.querySelector('a');
-      aRef.href = 'teamLookup.php?teamNum=' + teamNum;
-      aRef.text = teamNum + " " + teamName;
-    });
+    if (!isBCDNumber(teamNum)) {
+      $.get("api/tbaAPI.php", {
+        getTeamInfo: teamNum
+      }).done(function(teamInfo) {
+        console.log("=> getTeamInfo:");
+        if (teamInfo === null) {
+          return alert("Can't load teamInfo from TBA; check if TBA Key was set in db_config");
+        }
+        let teamName = "";
+        if (teamInfo === null) {
+          alert("Can't load teamName from TBA; check if TBA Key was set in db_config");
+        } else {
+          let teamResponse = parseAjaxJson(
+            teamInfo,
+            "TBA team information",
+            function(payload) {
+              return isJsonRecord(payload) && isJsonRecord(payload.response) &&
+                typeof payload.response.nickname === "string";
+            }
+          );
+          let jTeamInfo = teamResponse["response"];
+          teamName += " " + jTeamInfo["nickname"];
+        }
+        console.log("==> matchSheet: buildTeamBoxTableBody: " + teamNum + teamName);
+        aRef.text = teamNum + " " + teamName;
+      });
+    } else {
+      console.log("==> matchSheet: skipping TBA team lookup for multi-robot team " + teamNum);
+    }
 
     // Load team scouted information
     let ad = averagesData[teamNum];
@@ -1175,6 +1181,7 @@ require 'inc/header.php';
 </script>
 
 <script src="./scripts/compareMatchNumbers.js"></script>
+<script src="./scripts/aliasFunctions.js"></script>
 <script src="./scripts/matchDataProcessor.js"></script>
 <script src="./scripts/rebuiltFuelEstimates.js"></script>
 <?php include 'inc/end.php'; ?>

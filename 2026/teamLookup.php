@@ -652,10 +652,22 @@ require 'inc/header.php';
   //
   // Load the match data table
   //
-  function loadMatchData(team, matchData, aliasList, pitData, tbaMatchData, hopperCapData) {
+  function loadMatchData(
+    team,
+    matchData,
+    aliasList,
+    pitData,
+    tbaMatchData,
+    hopperCapData,
+    requestId,
+    requestState
+  ) {
     console.log("==> teamLookup: loadMatchData()");
     let mdp = new matchDataProcessor(matchData, tbaMatchData, pitData, hopperCapData);
     mdp.getSiteFilteredAverages(function(filteredMatches, filteredAvgData) {
+      if (requestId !== requestState.latestRequestId) {
+        return;
+      }
       if (filteredMatches != undefined && filteredAvgData != undefined) {
         console.log("   ==> loadMatchData: got MDP");
         loadAutonGraph(team, filteredMatches, filteredAvgData);
@@ -694,8 +706,9 @@ require 'inc/header.php';
   ///////////////////////////////////////////////////////////////////
   // Main function that runs when we want to load a team.
   //    teamName will be set to the alias for BCD teamnums
-  function buildTeamLookupPage(teamNum, aliasList) {
+  function buildTeamLookupPage(teamNum, aliasList, requestState) {
     console.log("==> teamLookup: buildTeamLookupPage() teamNum " + teamNum);
+    const requestId = ++requestState.latestRequestId;
     clearTeamLookupPage();
 
     // Get alias numbers if they exist for this team number
@@ -710,6 +723,9 @@ require 'inc/header.php';
     $.get("api/tbaAPI.php", {
       getTeamInfo: evtTeam
     }).done(function(teamInfo) {
+      if (requestId !== requestState.latestRequestId) {
+        return;
+      }
       //      console.log("=> getTeamInfo:\n" + teamInfo);
       if (teamInfo === null) {
         return alert("Can't load teamName from TBA; check if TBA Key was set in db_config");
@@ -734,6 +750,9 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getImagesForTeam: teamNum
     }).done(function(teamImages) {
+      if (requestId !== requestState.latestRequestId) {
+        return;
+      }
       console.log("=> getImagesForTeam:\n" + teamImages);
       loadTeamPhotos(parseAjaxJson(teamImages, "team photo list", Array.isArray));
     });
@@ -743,16 +762,25 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getAllMatchData: true
     }).done(function(allMatches) {
+      if (requestId !== requestState.latestRequestId) {
+        return;
+      }
       let matchData = parseAjaxJson(allMatches, "match scouting data", Array.isArray);
       //        console.log("=> got all Match data");
       $.get("api/dbReadAPI.php", {
         getAllPitData: true
       }).done(function(allPitData) {
+        if (requestId !== requestState.latestRequestId) {
+          return;
+        }
         let pitData = parseAjaxJson(allPitData, "pit scouting data", isJsonObjectOrArray);
         insertPitTableBody("lookupPitDataTable", pitData, [teamNum]);
         $.get("api/tbaAPI.php", {
           getEventMatches: true
         }).done(function(eventMatches) {
+          if (requestId !== requestState.latestRequestId) {
+            return;
+          }
           const matchResponse = parseAjaxJson(
             eventMatches,
             "TBA event matches",
@@ -765,9 +793,21 @@ require 'inc/header.php';
           $.get("api/dbReadAPI.php", {
             getEventHopperCaps: true
           }).done(function(allHopperCaps) {
+            if (requestId !== requestState.latestRequestId) {
+              return;
+            }
             let hopperCapData = parseAjaxJson(allHopperCaps, "hopper capacity data", Array.isArray);
             //              console.log("=> got Hopper Cap data ");
-            loadMatchData(teamNum, matchData, aliasList, pitData, tbaMatchData, hopperCapData);
+            loadMatchData(
+              teamNum,
+              matchData,
+              aliasList,
+              pitData,
+              tbaMatchData,
+              hopperCapData,
+              requestId,
+              requestState
+            );
           });
         });
       });
@@ -777,6 +817,9 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getTeamStrategicData: teamNum
     }).done(function(teamStratData) {
+      if (requestId !== requestState.latestRequestId) {
+        return;
+      }
       //      console.log("=> getTeamStrategicData");
       insertStrategicDataBody(
         "strategicDataTable",
@@ -817,6 +860,7 @@ require 'inc/header.php';
   //
   document.addEventListener("DOMContentLoaded", function() {
     let jAliasNames = null;
+    const teamLookupRequestState = { latestRequestId: 0 };
 
     // Read the alias table
     $.get("api/dbReadAPI.php", {
@@ -833,7 +877,7 @@ require 'inc/header.php';
       if (validateTeamNumber(urlTeamNum, null) > 0) {
         console.log("urlTeamNum = " + urlTeamNum);
         document.getElementById("enterTeamNumber").value = urlTeamNum;
-        buildTeamLookupPage(urlTeamNum, jAliasNames);
+        buildTeamLookupPage(urlTeamNum, jAliasNames, teamLookupRequestState);
       }
     });
 
@@ -856,7 +900,7 @@ require 'inc/header.php';
     document.getElementById("loadTeamButton").addEventListener('click', function() {
       let teamNum = document.getElementById("enterTeamNumber").value.toUpperCase().trim();
       if (validateTeamNumber(teamNum, null) > 0 && jAliasNames !== null) {
-        buildTeamLookupPage(teamNum, jAliasNames);
+        buildTeamLookupPage(teamNum, jAliasNames, teamLookupRequestState);
       }
     });
   });

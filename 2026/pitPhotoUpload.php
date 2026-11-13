@@ -293,14 +293,16 @@ require 'inc/header.php';
   //
   // Load existing photos for this team
   //
-  function loadPreviousTeamPhotos(teamNum) {
+  function loadPreviousTeamPhotos(teamNum, requestId, requestState) {
     console.log("==> Load existing photos for team #" + teamNum);
-    document.getElementById('photoPrevious').innerHTML = "";
 
     // First get list of robot-pic files for this team.
     $.get("api/dbReadAPI.php", {
       getImagesForTeam: teamNum
     }).done(function(teamImages) {
+      if (requestId !== requestState.latestRequestId) {
+        return;
+      }
       console.log("=> getImagesForTeam\n" + teamImages);
       let jTeamImages = parseAjaxJson(teamImages, "team photo list", Array.isArray);
 
@@ -327,6 +329,7 @@ require 'inc/header.php';
     const loadingSpinner = document.getElementById("loadingSpinner");
     loadingSpinner.style.visibility = 'hidden';
     let jAliasNames = null;
+    const photoRequestState = { latestRequestId: 0 };
 
     // Read the alias table
     $.get("api/dbReadAPI.php", {
@@ -344,7 +347,7 @@ require 'inc/header.php';
 
     // Attach enterTeamNumber listener when losing focus to check for alias numbers
     document.getElementById('enterTeamNumber').addEventListener('focusout', function(evt) {
-      handleTeamNumberFocusOut(evt, jAliasNames);
+      handleTeamNumberFocusOut(evt, jAliasNames, photoRequestState);
     });
 
     // Confirm the file selction selection is supported
@@ -362,8 +365,10 @@ require 'inc/header.php';
     });
   });
 
-  function handleTeamNumberFocusOut(evt, aliasList) {
+  function handleTeamNumberFocusOut(evt, aliasList, requestState) {
     console.log("enterTeamNumber: focus out");
+    const requestId = ++requestState.latestRequestId;
+    document.getElementById('photoPrevious').innerHTML = "";
     let enteredNum = (evt.target.value || '').toUpperCase().trim();
     if (isAliasNumber(enteredNum)) {
       if (!Array.isArray(aliasList)) {
@@ -379,7 +384,7 @@ require 'inc/header.php';
       document.getElementById("enterTeamNumber").value = teamNum;
     } else
       document.getElementById("aliasNumber").innerText = "";
-    loadPreviousTeamPhotos(document.getElementById("enterTeamNumber").value);
+    loadPreviousTeamPhotos(document.getElementById("enterTeamNumber").value, requestId, requestState);
   }
 </script>
 
