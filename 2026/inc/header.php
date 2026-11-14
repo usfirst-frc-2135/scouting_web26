@@ -94,7 +94,7 @@
             <li><a class="dropdown-item text-white-50 text-end text-sm-start" href="./eventAverages.php">Event Averages</a></li>
             <li><a class="dropdown-item text-white-50 text-end text-sm-start" href="./eventCoprData.php">Event COPRs</a></li>
             <li><a class="dropdown-item text-white-50 text-end text-sm-start" href="./teamCompare.php">Team Compare </a></li>
-            <li><a class="dropdown-item text-white-50 text-end text-sm-start" href="./picklist.php">Picklist</a></li>
+            <!-- <li><a class="dropdown-item text-white-50 text-end text-sm-start" href="./picklist.php">Picklist</a></li> -->
           </ul>
         </li>
 
