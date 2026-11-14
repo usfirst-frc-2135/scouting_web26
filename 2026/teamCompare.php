@@ -794,17 +794,7 @@ HOLD-->
 
   });
 
-  function setupMDP(
-    teamNum1,
-    teamNum2,
-    jMatches,
-    tbaMatchData,
-    pitData,
-    hopperCapData,
-    aliasList,
-    requestId,
-    requestState
-  ) {
+  function setupMDP(teamNum1, teamNum2, jMatches, tbaMatchData, pitData, hopperCapData, aliasList, requestId, requestState) {
     console.log("==> teamCompare: setupMDP()");
     if (requestId !== requestState.latestRequestId) {
       return;

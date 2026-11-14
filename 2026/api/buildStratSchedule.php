@@ -30,7 +30,7 @@ class BuildStratSchedule
       $teamNums = self::getTeamsInMatch($evtMatch);
 
       // If a team number is ours, then this match is one of ours. 
-      if (in_array((String) OURTEAM, $teamNums, true))
+      if (in_array((string) OURTEAM, $teamNums, true))
       {
         // error_log("  ---> found one of our matches: $matchnum");
         $myMatch = array();  // store this match's num and teamNums in myMatch
@@ -141,9 +141,9 @@ class BuildStratSchedule
                 }
               }
             }
-            if($inOurMatch == true)
+            if ($inOurMatch)
             {
-              $sTeam["our_matchnums"] = $omatchnums; 
+              $sTeam["our_matchnums"] = $omatchnums;
               array_push($stratTeams, $sTeam); // put this team on the list of teams to scout
             }
           }
@@ -160,14 +160,14 @@ class BuildStratSchedule
 
           // After the teamnum, add our earliest match number in parentheses.
           // SORT the match numbers to find which is the lowest (earliest).
-          $lowestMatchNum = 1000; 
+          $lowestMatchNum = 1000;
           foreach ($sTeam["our_matchnums"] as $oMatchNum)
           {
-            if($oMatchNum < $lowestMatchNum)
-              $lowestMatchNum = $oMatchNum; 
+            if ($oMatchNum < $lowestMatchNum)
+              $lowestMatchNum = $oMatchNum;
           }
-          if($lowestMatchNum != 1000)
-            $teamStr .= " ($lowestMatchNum)";        
+          if ($lowestMatchNum != 1000)
+            $teamStr .= " ($lowestMatchNum)";
         }
         $matchInfo["teams"] = $teamStr;
         //error_log("==>> teamStr = $teamStr");

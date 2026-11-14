@@ -985,19 +985,7 @@ require 'inc/header.php';
       loadMatchSheet(matchSpec, filteredAvgData);
   }
 
-  function setupMatchSheetWhenReady(
-    matchSpec,
-    tbaMatchData,
-    requestId,
-    requestState,
-    pitData,
-    pitDataLoaded,
-    hopperCapData,
-    hopperCapDataLoaded,
-    jMatchData,
-    matchDataLoaded,
-    setupStarted
-  ) {
+  function setupMatchSheetWhenReady(matchSpec, tbaMatchData, requestId, requestState, pitData, pitDataLoaded, hopperCapData, hopperCapDataLoaded, jMatchData, matchDataLoaded, setupStarted) {
     if (setupStarted || requestId !== requestState.latestRequestId ||
         !pitDataLoaded || !hopperCapDataLoaded || !matchDataLoaded) {
       return setupStarted;

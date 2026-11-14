@@ -652,16 +652,7 @@ require 'inc/header.php';
   //
   // Load the match data table
   //
-  function loadMatchData(
-    team,
-    matchData,
-    aliasList,
-    pitData,
-    tbaMatchData,
-    hopperCapData,
-    requestId,
-    requestState
-  ) {
+  function loadMatchData(team, matchData, aliasList, pitData, tbaMatchData, hopperCapData, requestId, requestState) {
     console.log("==> teamLookup: loadMatchData()");
     let mdp = new matchDataProcessor(matchData, tbaMatchData, pitData, hopperCapData);
     mdp.getSiteFilteredAverages(function(filteredMatches, filteredAvgData) {

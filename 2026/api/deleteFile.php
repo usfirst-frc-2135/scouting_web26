@@ -8,3 +8,4 @@ if (!is_string($file) || !is_file($file) || !unlink($file))
 }
 
 echo "success";
+?>
