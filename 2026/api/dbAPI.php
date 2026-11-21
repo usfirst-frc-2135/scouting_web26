@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /*
   Handle database requests for update
 */
@@ -37,13 +39,13 @@ else if (isset($_POST["writeTeamAliasJSON"]))
 }
 else if (isset($_POST["writeConfig"]))
 {
-  $db->writeDbConfig(json_decode($_POST["writeConfig"]));
+  $db->writeDbConfig(json_decode($_POST["writeConfig"], true));
   $stat = $db->getDBStatus();
   echo json_encode($stat);
 }
 else if (isset($_POST["filterConfig"]))
 {
-  $db->writeDbConfig(json_decode($_POST["filterConfig"]));
+  $db->writeDbConfig(json_decode($_POST["filterConfig"], true));
   $stat = $db->getDBStatus();
   echo json_encode($stat);
 }
@@ -61,7 +63,7 @@ else if (isset($_POST["createTables"]))
   }
   catch (Exception $e)
   {
-    error_log($e);
+    error_log($e->getMessage());
   }
 
   try
@@ -70,7 +72,7 @@ else if (isset($_POST["createTables"]))
   }
   catch (Exception $e)
   {
-    error_log($e);
+    error_log($e->getMessage());
   }
 
   try
@@ -79,7 +81,7 @@ else if (isset($_POST["createTables"]))
   }
   catch (Exception $e)
   {
-    error_log($e);
+    error_log($e->getMessage());
   }
 
   try
@@ -88,7 +90,7 @@ else if (isset($_POST["createTables"]))
   }
   catch (Exception $e)
   {
-    error_log($e);
+    error_log($e->getMessage());
   }
 
   try
@@ -97,7 +99,7 @@ else if (isset($_POST["createTables"]))
   }
   catch (Exception $e)
   {
-    error_log($e);
+    error_log($e->getMessage());
   }
 
   try
@@ -106,7 +108,7 @@ else if (isset($_POST["createTables"]))
   }
   catch (Exception $e)
   {
-    error_log($e);
+    error_log($e->getMessage());
   }
 
   try
@@ -115,7 +117,7 @@ else if (isset($_POST["createTables"]))
   }
   catch (Exception $e)
   {
-    error_log($e);
+    error_log($e->getMessage());
   }
 
   try
@@ -124,7 +126,7 @@ else if (isset($_POST["createTables"]))
   }
   catch (Exception $e)
   {
-    error_log($e);
+    error_log($e->getMessage());
   }
 
   $stat = $db->getDBStatus();

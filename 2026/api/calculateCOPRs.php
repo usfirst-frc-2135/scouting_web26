@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
   COPR calculation utilities
 */
@@ -9,7 +10,7 @@ class CalculateCOPRs
   // }
 
   // Remove non-qual matches from match data
-  private static function removeNonQualMatches($matchData)
+  private static function removeNonQualMatches(array $matchData): array
   {
     $out = array();
     foreach ($matchData as $matchRow)
@@ -23,7 +24,7 @@ class CalculateCOPRs
   }
 
   // Remove unplayed matches from match data
-  private static function removeUnplayedMatches($matchData)
+  private static function removeUnplayedMatches(array $matchData): array
   {
     $out = array();
     foreach ($matchData as $matchRow)
@@ -37,7 +38,7 @@ class CalculateCOPRs
   }
 
   // Get numerical breakdown keys from match data
-  private static function getNumericalBreakdownKeys($matchData)
+  private static function getNumericalBreakdownKeys(array $matchData): array
   {
     $sampleBreakdown = $matchData[0]["score_breakdown"]["red"];
     $out = array();
@@ -56,7 +57,7 @@ class CalculateCOPRs
   // NOTE: this will NOT work for events with multiple teams unless that event code is in 
   // the hard-coded list (see getEventTeamsEx()). The result is that there is no OPR data shown.
   //
-  private static function choleskyDecomposition($A)
+  private static function choleskyDecomposition(array $A): array
   {
     //  Args:
     //    $A - Must be square matrix that is symetric and positive definite
@@ -104,7 +105,7 @@ class CalculateCOPRs
   }
 
   // Solve Ly = B then L'p = y
-  private static function forwardSubstitution($A, $B)
+  private static function forwardSubstitution(array $A, array $B): array
   {
     /*
       Args:
@@ -137,7 +138,7 @@ class CalculateCOPRs
   }
 
   // Solve Ly = B then L'p = y
-  private static function backwardSubstitution($A, $B)
+  private static function backwardSubstitution(array $A, array $B): array
   {
     /*
       Args:
@@ -171,7 +172,7 @@ class CalculateCOPRs
   }
 
   // Create A Matrix and B Vectors from match data
-  private static function createABMatricies($teamCount, $teamLookup, $matchData)
+  private static function createABMatricies(int $teamCount, array $teamLookup, array $matchData): array
   {
     $aMatrix = array_fill(0, $teamCount, array_fill(0, $teamCount, 0)); // Just for who plays in what matchData
     $bVectors = array(); // Set of data we want to solve for
@@ -209,7 +210,7 @@ class CalculateCOPRs
   }
 
   // Main COPR Calculation Function
-  public static function calculateCOPRS($eventCode, $teamCount, $teamList, $teamLookup, $tbaMatchData)
+  public static function calculateCOPRS(string $eventCode, int $teamCount, array $teamList, array $teamLookup, array $tbaMatchData): array
   {
     $tbaMatchData = self::removeNonQualMatches($tbaMatchData);
     $tbaMatchData = self::removeUnplayedMatches($tbaMatchData);

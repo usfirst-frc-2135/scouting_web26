@@ -72,8 +72,15 @@ require 'inc/header.php';
   //
   function loadAliasDataTable(tableId, teamAliasList) {
     console.log("==> aliasData: loadAliasDataTable()");
-    if (teamAliasList == null || teamAliasList.length == 0) {
-      // console.warn("loadAliasDataTable: teamAliasList is missing!");
+    if (!Array.isArray(teamAliasList)) {
+      console.warn("loadAliasDataTable: teamAliasList is missing or not an array!");
+      return;
+    }
+
+    if (teamAliasList.length == 0) {
+      console.warn("loadAliasDataTable: teamAliasList is empty!");
+      let tbodyRef = document.getElementById(tableId).querySelector('tbody');
+      tbodyRef.innerHTML = "<br>No team aliases found for this event. Please add team aliases to the table above.";
       return;
     }
 
@@ -178,7 +185,7 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getEventAliasNames: true
     }).done(function(eventAliasNames) {
-      console.log("=> eventAliasNames");
+      console.log("=> eventAliasNames: " + eventAliasNames);
       let jAliasNames = parseAjaxJson(eventAliasNames, "event aliases", Array.isArray);
       loadAliasDataTable(tableId, jAliasNames);
     });

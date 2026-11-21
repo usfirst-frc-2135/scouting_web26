@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /*
   Handle read requests 
 */
@@ -9,7 +11,7 @@ $dbConfig = $db->readDbConfig();
 $db->connectToDB();
 
 // Retrieve robot photos for a team
-function getRobotPhotos($team)
+function getRobotPhotos(string $team): array
 {
   $imageList = array();
   $suffixList = array("png", "jpg", "jpeg");
@@ -101,7 +103,7 @@ else if (isset($_GET["getAllTeamImages"]))
   $imageObj = array();
   foreach ($teamList as $team)
   {
-    $imageObj[$team] = getRobotPhotos($team);
+    $imageObj[$team] = getRobotPhotos((string) $team);
   }
   echo json_encode($imageObj);
 }

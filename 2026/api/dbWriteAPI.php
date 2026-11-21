@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
   Handle read requests 
 */
@@ -79,7 +80,7 @@ if (isset($_POST["writeStrategicData"]))
   echo $msg;
 }
 
-function makeKeyScoutName($ec, $sn)
+function makeKeyScoutName(string $ec, string $sn): string
 {
   $sn = str_replace(' ', '_', $sn);
   $key = $ec . "_" . $sn;
@@ -110,7 +111,7 @@ if (isset($_POST["deleteSingleScoutName"]))
 }
 
 ////---------- Hopper Capacity handling  -----------
-function makeKeyHopperCap($ec, $tn)
+function makeKeyHopperCap(string $ec, string $tn): string
 {
   $key = $ec . "_" . $tn;
   return $key;
@@ -139,7 +140,7 @@ if (isset($_POST["deleteSingleTeamHopperCap"]))
 }
 
 ////---------- Team Alias handling -----------
-function makeKeyTeamAlias($ec, $tn)
+function makeKeyTeamAlias(string $ec, string $tn): string
 {
   $key = $ec . "_" . $tn;
   return $key;
@@ -167,7 +168,7 @@ if (isset($_POST["deleteSingleTeamAlias"]))
   echo "success";
 }
 
-function makeKeyTeamWatch($ec, $tn)
+function makeKeyTeamWatch(string $ec, string $tn): string
 {
   $key = $ec . "_" . $tn;
   return $key;

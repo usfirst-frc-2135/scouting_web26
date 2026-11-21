@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 $file = $_GET['file'] ?? null;
 if (!is_string($file) || !is_file($file) || !unlink($file))
 {

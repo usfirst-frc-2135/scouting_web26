@@ -67,8 +67,15 @@ require 'inc/header.php';
   //
   function loadHopperCapTable(tableId, hopperCapList) {
     console.log("==> hopperCapData: loadHopperCapTable()");
-    if (hopperCapList == null || hopperCapList.length == 0) {
-      // console.warn("loadHopperCapTable: hopperCapList is missing!");
+    if (!Array.isArray(hopperCapList)) {
+      console.warn("loadHopperCapTable: hopperCapList is missing or not an array!");
+      return;
+    }
+
+    if (hopperCapList.length == 0) {
+      console.warn("loadHopperCapTable: hopperCapList is empty!");
+      let tbodyRef = document.getElementById(tableId).querySelector('tbody');
+      tbodyRef.innerHTML = "<br>No hopper capacities found for this event. Please add hopper capacities to the table above.";
       return;
     }
 
@@ -149,7 +156,7 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getEventHopperCaps: true
     }).done(function(eventHopperCaps) {
-      console.log("=> buildHopperCapTable(): done");
+      console.log("=> buildHopperCapTable(): " + eventHopperCaps);
       let jHopperCaps = parseAjaxJson(eventHopperCaps, "hopper capacity data", Array.isArray);
       loadHopperCapTable(tableId, jHopperCaps);
     });

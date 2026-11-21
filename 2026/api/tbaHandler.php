@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 require_once 'calculateCOPRs.php';
 require_once 'buildStratSchedule.php';
 
@@ -19,14 +21,14 @@ define("OURTEAM", "2135");
 */
 class tbaHandler
 {
-  private $charset = "utf8";
-  private $alreadyConnected = false;
-  private $apiURL;
-  private $dbConnection;
-  private $tbaApiKey = null;
-  private $tbaTableName;
+  private string $charset = "utf8";
+  private bool $alreadyConnected = false;
+  private string $apiURL;
+  private ?PDO $dbConnection;
+  private ?string $tbaApiKey = null;
+  private string $tbaTableName;
 
-  public function __construct($tbaApiKey, $tbaTableName, $dbConnection)
+  public function __construct(?string $tbaApiKey, string $tbaTableName, ?PDO $dbConnection)
   {
     $this->apiURL = "https://www.thebluealliance.com/api/v3";
     $this->dbConnection = $dbConnection;
@@ -35,7 +37,7 @@ class tbaHandler
   }
 
   // Read URI from TBA API
-  private function readURIFromTBA($uri)
+  private function readURIFromTBA(string $uri): array
   {
     $out = array();
     if ($this->tbaApiKey === null)
@@ -62,7 +64,7 @@ class tbaHandler
     $response = curl_exec($ch);
     if (curl_errno($ch))
     {
-      error_log("!!! Error READING BlueAlliance data: $ch");
+      error_log("!!! Error READING BlueAlliance data: " . curl_error($ch));
       throw new Exception(curl_error($ch));
     }
     curl_close($ch);
@@ -97,7 +99,7 @@ class tbaHandler
   }
 
   // Read URI from DB cache
-  private function readURIFromDB($uri)
+  private function readURIFromDB(string $uri): array
   {
     // If uri not in db, then return empty
     $sql = "SELECT expiryTime, response from " . $this->tbaTableName . " where requestURI='" . $uri . "'";
@@ -115,7 +117,7 @@ class tbaHandler
   }
 
   // Write URI response to DB cache
-  private function writeResponseToDB($uri, $response)
+  private function writeResponseToDB(string $uri, array $response): void
   {
     $replaceValues = array();
     $replaceValues["requestURI"] = $uri;
@@ -128,7 +130,7 @@ class tbaHandler
   }
 
   // Make a DB cached call to TBA API
-  private function makeDBCachedCall($uri)
+  private function makeDBCachedCall(string $uri): array
   {
     $currTime = time();
     $dbResponse = $this->readURIFromDB($uri);
@@ -144,7 +146,7 @@ class tbaHandler
   }
 
   ///// Get Info for a Team (name) /////
-  public function getTeamInfo($teamnum)
+  public function getTeamInfo(string $teamnum): array
   {
     error_log(">>> getTeamInfo() starting for $teamnum");
     // URI should be "/team/frc<teamnum>", so add "frc" if needed.
@@ -155,7 +157,7 @@ class tbaHandler
   }
 
   ///// Get a list of Teams at an Event /////
-  private function getEventTeams($eventCode)
+  private function getEventTeams(string $eventCode): array
   {
     $requestURI = "/event/" . $eventCode . "/teams";
     return $this->makeDBCachedCall($requestURI);
@@ -165,7 +167,7 @@ class tbaHandler
   //
   // NOTE: for events that have multiple robots, the teamlist only lists the basic team numbers.
   // So we must adjust the list to contain the multiple robot <teamNum><Letter>.
-  public function getEventTeamsEx($eventCode)
+  public function getEventTeamsEx(string $eventCode): array
   {
     error_log("starting getEventTeamsEx for eventCode: $eventCode");
     $out = array();
@@ -199,8 +201,8 @@ class tbaHandler
       // If this is a multi-robot event, go thru  match list to get B/C/D/E robots and add them as separate teams.
       if ($bMultiRobots)
       {
-        $teamnum = $teamRow["team_number"];
-        $numStr = "$teamnum"; // $teamnum needs to be converted to a string, for later
+        $teamnum = (string) $teamRow["team_number"];
+        $numStr = (string) $teamnum; // $teamnum needs to be converted to a string, for later
         $multiBots = array();
         array_push($multiBots, $teamnum);  // always add the plain team number
 
@@ -213,6 +215,8 @@ class tbaHandler
             array_push($teams, substr($match["alliances"]["red"]["team_keys"][$j], 3));
           for ($k = 0; $k < 3; $k++)
             array_push($teams, substr($match["alliances"]["blue"]["team_keys"][$k], 3));
+
+          // Now check if this teamnum has a B/C/D/E/F robot in this match. 
           for ($m = 0; $m < 6; $m++)
           {
             $entryNum = "$teams[$m]";
@@ -261,7 +265,7 @@ class tbaHandler
   }
 
   ///// Get a List of Team Names at an Event /////
-  public function getEventTeamNames($eventCode)
+  public function getEventTeamNames(string $eventCode): array
   {
     error_log("starting getEventTeamNames for eventCode: $eventCode");
     $out = [];
@@ -292,7 +296,7 @@ class tbaHandler
   /*********** Match Data Operations ***********/
 
   ///// Get All Matches at an Event /////
-  public function getEventMatches($eventCode)
+  public function getEventMatches(string $eventCode): array
   {
     $requestURI = "/event/" . $eventCode . "/matches";
     return $this->makeDBCachedCall($requestURI);
@@ -300,7 +304,7 @@ class tbaHandler
 
   /*********** Event Data Operations ***********/
 
-  private function teamListToLookup($teamList)
+  private function teamListToLookup(array $teamList): array
   {
     $out = array();
     $i = 0;
@@ -314,7 +318,7 @@ class tbaHandler
   }
 
   ///// Create a Table of All COPRs for an Event /////
-  public function getComponentOPRS($eventCode)
+  public function getComponentOPRS(string $eventCode): array
   {
     error_log("===> getComponentOPRS: getting getEventTeamsEx");
     $teamList = $this->getEventTeamsEx($eventCode);
@@ -333,7 +337,7 @@ class tbaHandler
   }
 
   ///// Create a Table of Strategic Matches to Scout /////
-  public function getStrategicMatches($eventCode, $watchList)
+  public function getStrategicMatches(string $eventCode, string $watchList): array
   {
     error_log("starting getStrategicMatches for eventCode: $eventCode, watchList: $watchList");
     $out = array();
@@ -350,7 +354,6 @@ class tbaHandler
 
     return BuildStratSchedule::getMatches($ml, $watchList);
   }
-
 }
 
 ?>

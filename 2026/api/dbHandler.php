@@ -1,14 +1,16 @@
 <?php
+
+declare(strict_types=1);
 /*
   MySQL database handler
 */
 class dbHandler
 {
-  private $dbIniFile = "../../../../db_config.ini";
-  private $charset = "utf8";
-  private $conn = null;
-  private $alreadyConnected = false;
-  private $configKeys = array(
+  private string $dbIniFile = "../../../../db_config.ini";
+  private string $charset = "utf8";
+  private ?PDO $conn = null;
+  private bool $alreadyConnected = false;
+  private array $configKeys = array(
     "server",
     "db",
     "username",
@@ -29,14 +31,14 @@ class dbHandler
     "useF"
   );
 
-  private $opt = [
+  private array $opt = [
     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
     PDO::ATTR_EMULATE_PREPARES => false
   ];
 
   // Connect to the database
-  public function connectToDB()
+  public function connectToDB(): ?PDO
   {
     if (!$this->alreadyConnected)
     {
@@ -49,14 +51,14 @@ class dbHandler
       }
       catch (PDOException $e)
       {
-        error_log($e);
+        error_log($e->getMessage());
       }
     }
     return ($this->conn);
   }
 
   // Connect to the server holding the database
-  private function connectToServer()
+  private function connectToServer(): ?PDO
   {
     $dbConfig = $this->readDbConfig();
     $dsn = "mysql:host=" . $dbConfig["server"] . ";charset=" . $this->charset;
@@ -68,7 +70,7 @@ class dbHandler
     }
     catch (PDOException $e)
     {
-      error_log($e);
+      error_log($e->getMessage());
     }
 
     return $this->conn;
@@ -79,7 +81,7 @@ class dbHandler
   ////////////////////////////////////////////////////////
 
   // Write match data row into table
-  public function writeRowToMatchTable($mData)
+  public function writeRowToMatchTable(array $mData): void
   {
     $dbConfig = $this->readDbConfig();
     $sql = "INSERT INTO " . $dbConfig["datatable"] .
@@ -159,31 +161,32 @@ class dbHandler
   }
 
   // Enforce integer data type
-  private function enforceInt($val)
+  private function enforceInt(mixed $val): int
   {
     return intval($val);
   }
 
   // Enforce data typing for match data
-  private function enforceDataTyping($mData)
+  private function enforceDataTyping(array $mData): array
   {
     $out = array();
     foreach ($mData as $row)
     {
       foreach ($row as $key => $value)
       {
-        if ($key === "autonShootPreload" || $key === "autonPreloadAccuracy" ||
-            $key === "autonHoppersShot" || $key === "autonHopperAccuracy" || 
-            $key === "autonAllianceZone" || $key === "autonDepot" ||
-            $key === "autonOutpost" || $key === "autonNeutralZone" ||
-            $key === "autonClimb" || $key === "teleopHoppersUsed" ||
-            $key === "teleopHopperAccuracy" || $key === "teleopIntakeAndShoot" || 
-            $key === "teleopPassingRate" || $key === "teleopDefenseLevel" ||
-            $key === "driverAbility" || 
-            $key === "teleopNeutralToAlliance" || $key === "teleopAllianceToAlliance" ||
-            $key === "endgameStartClimb" || $key === "endgameClimbLevel" || 
-            $key === "endgameClimbPosition" || $key === "died" || $key === "teamalias" || 
-            $key === "appVersion"
+        if (
+          $key === "autonShootPreload" || $key === "autonPreloadAccuracy" ||
+          $key === "autonHoppersShot" || $key === "autonHopperAccuracy" ||
+          $key === "autonAllianceZone" || $key === "autonDepot" ||
+          $key === "autonOutpost" || $key === "autonNeutralZone" ||
+          $key === "autonClimb" || $key === "teleopHoppersUsed" ||
+          $key === "teleopHopperAccuracy" || $key === "teleopIntakeAndShoot" ||
+          $key === "teleopPassingRate" || $key === "teleopDefenseLevel" ||
+          $key === "driverAbility" ||
+          $key === "teleopNeutralToAlliance" || $key === "teleopAllianceToAlliance" ||
+          $key === "endgameStartClimb" || $key === "endgameClimbLevel" ||
+          $key === "endgameClimbPosition" || $key === "died" || $key === "teamalias" ||
+          $key === "appVersion"
         )
         {
           // verifying and enforcing all keys above to be an integer (includes bools)
@@ -201,7 +204,7 @@ class dbHandler
   }
 
   // Read all match data for event
-  public function readAllFromMatchTable($eventCode)
+  public function readAllFromMatchTable(string $eventCode): array
   {
     $dbConfig = $this->readDbConfig();
     $sql = "SELECT 
@@ -247,7 +250,7 @@ class dbHandler
   }
 
   // Read match data for specific team in event
-  public function readTeamFromMatchTable($teamNumber, $eventCode)
+  public function readTeamFromMatchTable(string $teamNumber, string $eventCode): array
   {
     $dbConfig = $this->readDbConfig();
     $sql = "SELECT 
@@ -297,7 +300,7 @@ class dbHandler
   ////////////////////////////////////////////////////////
 
   // Write pit data row into table
-  public function writeRowToPitTable($pData)
+  public function writeRowToPitTable(array $pData): void
   {
     $dbConfig = $this->readDbConfig();
     $sql = "INSERT INTO " . $dbConfig["pittable"] .
@@ -343,7 +346,7 @@ class dbHandler
   }
 
   // Read all pit data for event
-  public function readAllPitTable($eventCode)
+  public function readAllPitTable(string $eventCode): array
   {
     $dbConfig = $this->readDbConfig();
     $sql = "SELECT 
@@ -376,7 +379,7 @@ class dbHandler
   ////////////////////////////////////////////////////////
 
   // Write strategic data row into table
-  public function writeRowToStrategicTable($sData)
+  public function writeRowToStrategicTable(array $sData): void
   {
     $dbConfig = $this->readDbConfig();
 
@@ -449,7 +452,7 @@ class dbHandler
   }
 
   // Read all strategic data for event
-  public function readAllFromStrategicTable($eventCode)
+  public function readAllFromStrategicTable(string $eventCode): array
   {
     $dbConfig = $this->readDbConfig();
     $sql = "SELECT 
@@ -489,7 +492,7 @@ class dbHandler
   }
 
   // Read strategic data for specific team in event
-  public function readTeamFromStrategicTable($teamNumber, $eventCode)
+  public function readTeamFromStrategicTable(string $teamNumber, string $eventCode): array
   {
     $dbConfig = $this->readDbConfig();
     $sql = "SELECT 
@@ -533,7 +536,7 @@ class dbHandler
   ////////////////////////////////////////////////////////
 
   // Write scout name record into table and replace if an entry already exists
-  public function writeScoutNameToTable($sName)
+  public function writeScoutNameToTable(array $sName): void
   {
     $dbConfig = $this->readDbConfig();
     $sql = "INSERT INTO " . $dbConfig["scouttable"] .
@@ -553,7 +556,7 @@ class dbHandler
   }
 
   //
-  public function deleteScoutNameFromTable($sName)
+  public function deleteScoutNameFromTable(array $sName): void
   {
     $dbConfig = $this->readDbConfig();
     $sql = "DELETE FROM " . $dbConfig["scouttable"] . " WHERE entrykey='" . $sName["entrykey"] . "'";
@@ -562,7 +565,7 @@ class dbHandler
   }
 
   //
-  public function readEventScoutTable($eventCode)
+  public function readEventScoutTable(string $eventCode): array
   {
     $dbConfig = $this->readDbConfig();
     $sql = "SELECT 
@@ -582,7 +585,7 @@ class dbHandler
   ////////////////////////////////////////////////////////
 
   // Write Hopper Capacity record into table and replace if an entry already exists
-  public function writeHopperCapToTable($hCap)
+  public function writeHopperCapToTable(array $hCap): void
   {
     $dbConfig = $this->readDbConfig();
     $sql = "REPLACE INTO " . $dbConfig["hoppercaptable"] .
@@ -604,7 +607,7 @@ class dbHandler
   }
 
   // Delete hopper cap record from table
-  public function deleteHopperCapFromTable($hCap)
+  public function deleteHopperCapFromTable(array $hCap): void
   {
     $dbConfig = $this->readDbConfig();
     $sql = "DELETE FROM " . $dbConfig["hoppercaptable"] . " WHERE entrykey='" . $hCap["entrykey"] . "'";
@@ -613,7 +616,7 @@ class dbHandler
   }
 
   // Read all hopper cap records for event
-  public function readEventHopperCapTable($eventCode)
+  public function readEventHopperCapTable(string $eventCode): array
   {
     $dbConfig = $this->readDbConfig();
     $sql = "SELECT 
@@ -634,7 +637,7 @@ class dbHandler
   ////////////////////////////////////////////////////////
 
   // Write team alias record into table and replace if an entry already exists
-  public function writeAliasNumberToTable($aNum)
+  public function writeAliasNumberToTable(array $aNum): void
   {
     $dbConfig = $this->readDbConfig();
     $sql = "REPLACE INTO " . $dbConfig["aliastable"] .
@@ -656,7 +659,7 @@ class dbHandler
   }
 
   // Delete team alias record from table
-  public function deleteTeamAliasFromTable($aNum)
+  public function deleteTeamAliasFromTable(array $aNum): void
   {
     $dbConfig = $this->readDbConfig();
     $sql = "DELETE FROM " . $dbConfig["aliastable"] . " WHERE entrykey='" . $aNum["entrykey"] . "'";
@@ -665,7 +668,7 @@ class dbHandler
   }
 
   // Read all team alias records for event
-  public function readEventAliasTable($eventCode)
+  public function readEventAliasTable(string $eventCode): array
   {
     $dbConfig = $this->readDbConfig();
     $sql = "SELECT 
@@ -686,7 +689,7 @@ class dbHandler
   ////////////////////////////////////////////////////////
 
   // Write team watch status record into table and replace if an entry already exists
-  public function writeWatchStatusToTable($wStat)
+  public function writeWatchStatusToTable(array $wStat): void
   {
     $dbConfig = $this->readDbConfig();
     $sql = "REPLACE INTO " . $dbConfig["watchtable"] .
@@ -708,7 +711,7 @@ class dbHandler
   }
 
   // Delete team watch status record from table
-  public function deleteWatchStatusFromTable($wStat)
+  public function deleteWatchStatusFromTable(array $wStat): void
   {
     $dbConfig = $this->readDbConfig();
     $sql = "DELETE FROM " . $dbConfig["watchtable"] . " WHERE entrykey='" . $wStat["entrykey"] . "'";
@@ -717,7 +720,7 @@ class dbHandler
   }
 
   // Read all team watch status records for event
-  public function readEventWatchList($eventCode)
+  public function readEventWatchList(string $eventCode): array
   {
     $dbConfig = $this->readDbConfig();
     $sql = "SELECT 
@@ -738,7 +741,7 @@ class dbHandler
   ////////////////////////////////////////////////////////
 
   // Create the database
-  public function createDB()
+  public function createDB(): void
   {
     error_log("createDB in dbHandler");
     $dbConfig = $this->readDbConfig();
@@ -755,7 +758,7 @@ class dbHandler
   ////////////////////////////////////////////////////////
 
   // Create Match Data Table 
-  public function createMatchTable()
+  public function createMatchTable(): void
   {
     error_log("Creating Match Table");
     $conn = $this->connectToDB();
@@ -805,7 +808,7 @@ class dbHandler
   }
 
   // Create TBA Response CacheTable
-  public function createTBATable()
+  public function createTBATable(): void
   {
     error_log("Creating TBA Table");
     $conn = $this->connectToDB();
@@ -824,7 +827,7 @@ class dbHandler
   }
 
   // Create Pit Data Table
-  public function createPitTable()
+  public function createPitTable(): void
   {
     error_log("Creating Pit Table");
     $conn = $this->connectToDB();
@@ -858,7 +861,7 @@ class dbHandler
   }
 
   // Create Strategic Data Table
-  public function createStrategicTable()
+  public function createStrategicTable(): void
   {
     error_log("Creating Strategic Table");
     $conn = $this->connectToDB();
@@ -904,7 +907,7 @@ class dbHandler
   }
 
   // Create Scout Name Table
-  public function createScoutTable()
+  public function createScoutTable(): void
   {
     error_log("Creating Scout Table");
     $conn = $this->connectToDB();
@@ -924,7 +927,7 @@ class dbHandler
   }
 
   // Write JSON data to file
-  public function writeJSONToFile($dat, $name)
+  public function writeJSONToFile(string $dat, string $name): void
   {
     // Write ini file string to actual file
     if ($fp = fopen($name, 'w'))
@@ -935,7 +938,7 @@ class dbHandler
         $writeLock = flock($fp, LOCK_EX);
         if (!$writeLock)
         {
-          usleep(round(21350));
+          usleep((int) round(21350));
         }
       } while ((!$writeLock) and ((microtime(True) - $startTime) < 5));
 
@@ -949,7 +952,7 @@ class dbHandler
   }
 
   // Create Hopper Cap Data Table
-  public function createHopperCapTable()
+  public function createHopperCapTable(): void
   {
     error_log("Creating HopperCapTable");
     $conn = $this->connectToDB();
@@ -970,7 +973,7 @@ class dbHandler
   }
 
   // Create Team Alias Data Table
-  public function createAliasTable()
+  public function createAliasTable(): void
   {
     error_log("Creating Alias Table");
     $conn = $this->connectToDB();
@@ -991,7 +994,7 @@ class dbHandler
   }
 
   // Create Team Watch Data Table
-  public function createWatchTable()
+  public function createWatchTable(): void
   {
     error_log("Creating Watch Table");
     $conn = $this->connectToDB();
@@ -1016,8 +1019,10 @@ class dbHandler
   ////////////////////////////////////////////////////////
 
   // Read and return the database configutration file
-  public function readDbConfig()
+  public function readDbConfig(): array
   {
+    $ini_arr = array();
+
     // If File doesn't exist, instantiate array as empty
     if (!file_exists($this->dbIniFile))
     {
@@ -1056,7 +1061,7 @@ class dbHandler
   }
 
   // Write database configuration file
-  public function writeDbConfig($dat)
+  public function writeDbConfig(array $dat): void
   {
     // Get values to write
     // If value is not in input, read from current DB config
@@ -1083,7 +1088,7 @@ class dbHandler
         $writeLock = flock($fp, LOCK_EX);
         if (!$writeLock)
         {
-          usleep(round(21350));
+          usleep((int) round(21350));
         }
       } while ((!$writeLock) and ((microtime(True) - $startTime) < 5));
 

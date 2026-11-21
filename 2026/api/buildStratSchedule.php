@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
   Build the Strategic Scouting match schedule
 */
@@ -9,7 +10,7 @@ class BuildStratSchedule
   // }
 
   // Get all the teams in a match
-  private static function getTeamsInMatch($match)
+  private static function getTeamsInMatch(array $match): array
   {
     $teams = array();
     foreach ($match["alliances"]["red"]["team_keys"] as $redTeam)
@@ -20,7 +21,7 @@ class BuildStratSchedule
   }
 
   // Get our strategic scouting matches from the event matches and our watch list
-  public static function getMatches($evtMatches, $watchList)
+  public static function getMatches(array $evtMatches, string $watchList): array
   {
     // Go thru all the matches and figure out which ones are our matches.
     $ourMatches = array();  // Our matches at the event

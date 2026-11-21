@@ -72,6 +72,14 @@ require 'inc/header.php';
   function loadScoutDataTable(tableId, scoutNameList) {
     console.log("==> scoutData: loadScoutDataTable()");
     if (!Array.isArray(scoutNameList)) {
+      console.warn("loadScoutDataTable: scoutNameList is missing or not an array!");
+      return;
+    }
+
+    if (scoutNameList.length == 0) {
+      console.warn("loadScoutDataTable: scoutNameList is empty!");
+      let tbodyRef = document.getElementById(tableId).querySelector('tbody');
+      tbodyRef.innerHTML = "<br>No scout names found for this event. Please add scout names to the table above.";
       return;
     }
 
@@ -170,7 +178,7 @@ require 'inc/header.php';
     $.get("api/dbReadAPI.php", {
       getEventScoutNames: true
     }).done(function(eventScoutNames) {
-      console.log("=> eventScoutNames");
+      console.log("=> eventScoutNames: " + eventScoutNames);
       let jScoutNames = parseAjaxJson(eventScoutNames, "event scout names", Array.isArray);
       loadScoutDataTable(tableId, jScoutNames);
     });

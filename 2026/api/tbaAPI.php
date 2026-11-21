@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*
   Handle the blue alliance requests for update
 */
