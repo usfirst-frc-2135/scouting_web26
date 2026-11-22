@@ -59,10 +59,6 @@ function insertMatchDataHeader(tableId, aliasList)
   rowString += thAuto + 'Preload Acc</th>';
   rowString += thAuto + 'Hoppers Used</th>';
   rowString += thAuto + 'Hopper Acc</th>';
-  //REMOVE rowString += thAuto + 'Alliance Zone</th>';
-  //REMOVE rowString += thAuto + 'Depot</th>';
-  //REMOVE rowString += thAuto + 'Outpost</th>';
-  //REMOVE rowString += thAuto + 'Neutral Zone</th>';
   rowString += thAuto + 'Climb</th>';
   rowString += thTeleop + 'Hoppers Used</th>';
   rowString += thTeleop + 'Hopper Acc</th>';
@@ -250,10 +246,6 @@ function insertMatchDataBody(tableId, matchData, aliasList, teamFilter)
     rowString += tdBody + toPreloadAcc(matchItem["autonPreloadAccuracy"]) + "</td>";
     rowString += tdBlue + matchItem["autonHoppersShot"] + "</td>";
     rowString += tdBody + toAccuracyRate(matchItem["autonHopperAccuracy"]) + "</td>";
-    //REMOVE rowString += tdBlue + matchItem["autonAllianceZone"] + "</td>";
-    //REMOVE rowString += tdBody + matchItem["autonDepot"] + "</td>";
-    //REMOVE rowString += tdBlue + matchItem["autonOutpost"] + "</td>";
-    //REMOVE rowString += tdBody + matchItem["autonNeutralZone"] + "</td>";
     rowString += tdBlue + toYes(matchItem["autonClimb"]) + "</td>";
     rowString += tdBody + matchItem["teleopHoppersUsed"] + "</td>";
     rowString += tdBlue + toAccuracyRate(matchItem["teleopHopperAccuracy"]) + "</td>";

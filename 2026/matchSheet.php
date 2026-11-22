@@ -591,11 +591,6 @@ require 'inc/header.php';
     rowString2 += thTeleop + 'Fuel' + '</th >';
 
     /* REMOVE const thEndgame = '<th scope="col" class="table-warning">';
-    rowString2 += thEndgame + 'NA' + '</th>';
-    rowString2 += thEndgame + 'L1' + '</th>';
-    rowString2 += thEndgame + 'L2' + '</th>';
-    rowString2 += thEndgame + 'L3' + '</th>'; REMOVE*/
-
     document.getElementById(tableId).querySelector('thead').insertRow().innerHTML = rowString1;
     document.getElementById(tableId).querySelector('thead').insertRow().innerHTML = rowString2;
   }
@@ -651,9 +646,6 @@ require 'inc/header.php';
       row += "<td>" + ad["autonClimbPoints"].avg + "</td>";
       row += "<td>" + ad["teleopTotalPoints"].avg + "</td>";
       /*REMOVE row += "<td>" + ad["endgameClimbLevel"].arr[0].avg + "</td>";
-      row += "<td>" + ad["endgameClimbLevel"].arr[1].avg + "</td>";
-      row += "<td>" + ad["endgameClimbLevel"].arr[2].avg + "</td>";
-      row += "<td>" + ad["endgameClimbLevel"].arr[3].avg + "</td>"; REMOVE */
     }
     tbodyRef.insertRow().innerHTML = row;
   }
@@ -678,10 +670,7 @@ require 'inc/header.php';
       "red": 0,
       "blue": 0
     };
-    /* REMOVE let avgEndgamePoints = {
-      "red": 0,
-      "blue": 0
-    }; */
+
     let avgTotalClimbPts = {
       "red": 0,
       "blue": 0
@@ -987,7 +976,7 @@ require 'inc/header.php';
 
   function setupMatchSheetWhenReady(matchSpec, tbaMatchData, requestId, requestState, pitData, pitDataLoaded, hopperCapData, hopperCapDataLoaded, jMatchData, matchDataLoaded, setupStarted) {
     if (setupStarted || requestId !== requestState.latestRequestId ||
-        !pitDataLoaded || !hopperCapDataLoaded || !matchDataLoaded) {
+      !pitDataLoaded || !hopperCapDataLoaded || !matchDataLoaded) {
       return setupStarted;
     }
 
@@ -1075,7 +1064,9 @@ require 'inc/header.php';
     let tbaMatchData = null;
     let matchSpec = null;
     let hasLoadedInitialMatch = false;
-    const matchSheetRequestState = { latestRequestId: 0 };
+    const matchSheetRequestState = {
+      latestRequestId: 0
+    };
 
     buildTeamBoxTableHeader("R0DataTable");
     buildTeamBoxTableHeader("R1DataTable");

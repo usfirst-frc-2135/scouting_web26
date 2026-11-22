@@ -152,19 +152,6 @@ require 'inc/header.php';
   //
   function resetMatchScore() {
     return {
-      //REMOVE      autonLeave: 0,
-      //REMOVE      autonCoralL4: 0,
-      //REMOVE      autonCoralL3: 0,
-      //REMOVE      autonCoralL2: 0,
-      //REMOVE      autonCoralL1: 0,
-      //REMOVE      teleopCoralL4: 0,
-      //REMOVE      teleopCoralL3: 0,
-      //REMOVE      teleopCoralL2: 0,
-      //REMOVE      teleopCoralL1: 0,
-      //REMOVE      allNet: 0,
-      //REMOVE      allProc: 0,
-      //REMOVE      endgameCageClimb: ["", "", ""],
-      //REMOVE      fouls: 0,
       autonHubPoints: 0,
       autonClimbPoints: 0,
       teleopPoints: 0,
@@ -201,29 +188,6 @@ require 'inc/header.php';
     tbaScore.teleopPoints = tbaBreakdown[alliance]["hubScore"]["teleopPoints"];
     tbaScore.endgameClimbPoints = tbaBreakdown[alliance]["endGameTowerPoints"];
 
-    /*REMOVE->
-        let redLeaveCount = 0;
-        if (tbaBreakdown[alliance]["autoLineRobot1"] === "Yes") redLeaveCount++;
-        if (tbaBreakdown[alliance]["autoLineRobot2"] === "Yes") redLeaveCount++;
-        if (tbaBreakdown[alliance]["autoLineRobot3"] === "Yes") redLeaveCount++;
-
-        tbaScore.autonLeave = redLeaveCount;
-        tbaScore.autonCoralL4 = tbaBreakdown[alliance]["autoReef"]["tba_topRowCount"];
-        tbaScore.autonCoralL3 = tbaBreakdown[alliance]["autoReef"]["tba_midRowCount"];
-        tbaScore.autonCoralL2 = tbaBreakdown[alliance]["autoReef"]["tba_botRowCount"];
-        tbaScore.autonCoralL1 = tbaBreakdown[alliance]["autoReef"]["trough"];
-        tbaScore.teleopCoralL4 = tbaBreakdown[alliance]["teleopReef"]["tba_topRowCount"] - tbaBreakdown[alliance]["autoReef"]["tba_topRowCount"];
-        tbaScore.teleopCoralL3 = tbaBreakdown[alliance]["teleopReef"]["tba_midRowCount"] - tbaBreakdown[alliance]["autoReef"]["tba_midRowCount"];
-        tbaScore.teleopCoralL2 = tbaBreakdown[alliance]["teleopReef"]["tba_botRowCount"] - tbaBreakdown[alliance]["autoReef"]["tba_botRowCount"];
-        tbaScore.teleopCoralL1 = tbaBreakdown[alliance]["teleopReef"]["trough"] - tbaBreakdown[alliance]["autoReef"]["trough"];
-        tbaScore.allNet = tbaBreakdown[alliance]["netAlgaeCount"];
-        tbaScore.allProc = tbaBreakdown[alliance]["wallAlgaeCount"];
-        tbaScore.endgameCageClimb[0] = tbaBreakdown[alliance]["endGameRobot1"];
-        tbaScore.endgameCageClimb[1] = tbaBreakdown[alliance]["endGameRobot2"];
-        tbaScore.endgameCageClimb[2] = tbaBreakdown[alliance]["endGameRobot3"];
-        tbaScore.fouls = tbaBreakdown[alliance]["foulCount"];
-    <-REMOVE*/
-
     return tbaScore;
   }
 
@@ -234,43 +198,6 @@ require 'inc/header.php';
   //   matchScore - the match score object to accumulate into
   //
   function accumulateMatchScore(matchData, matchScore) {
-    /*REMOVE->    matchScore.autonLeave += parseInt(matchData["autonLeave"]);
-        matchScore.autonCoralL4 += parseInt(matchData["autonCoralL4"]);
-        matchScore.autonCoralL3 += parseInt(matchData["autonCoralL3"]);
-        matchScore.autonCoralL2 += parseInt(matchData["autonCoralL2"]);
-        matchScore.autonCoralL1 += parseInt(matchData["autonCoralL1"]);
-        matchScore.teleopCoralL4 += parseInt(matchData["teleopCoralL4"]);
-        matchScore.teleopCoralL3 += parseInt(matchData["teleopCoralL3"]);
-        matchScore.teleopCoralL2 += parseInt(matchData["teleopCoralL2"]);
-        matchScore.teleopCoralL1 += parseInt(matchData["teleopCoralL1"]);
-        matchScore.allNet += parseInt(matchData["autonAlgaeNet"]) + parseInt(matchData["teleopAlgaeNet"]);
-        matchScore.allProc += parseInt(matchData["autonAlgaeProc"]) + parseInt(matchData["teleopAlgaeProc"]);
-        matchScore.endgameCageClimb[leaveCount] = matchData["endgameCageClimb"];
-        // matchScore.fouls += parseInt(matchData["fouls"]); // We don't track fouls
-
-        let autonbPoints =
-          parseInt(matchData["autonLeave"] * 3) +
-          parseInt(matchData["autonCoralL4"] * 7) +
-          parseInt(matchData["autonCoralL3"] * 6) +
-          parseInt(matchData["autonCoralL2"] * 4) +
-          parseInt(matchData["autonCoralL1"] * 3);
-        let teleopPoints =
-          parseInt(matchData["teleopCoralL4"] * 5) +
-          parseInt(matchData["teleopCoralL3"] * 4) +
-          parseInt(matchData["teleopCoralL2"] * 3) +
-          parseInt(matchData["teleopCoralL1"] * 2) +
-          parseInt(matchData["autonAlgaeNet"]) * 4 +
-          parseInt(matchData["teleopAlgaeNet"]) * 4 +
-          parseInt(matchData["autonAlgaeProc"]) * 6 +
-          parseInt(matchData["teleopAlgaeProc"]) * 6 +
-          (parseInt(matchData["endgameCageClimb"]) === 0 ? 0 :
-            parseInt(matchData["endgameCageClimb"]) === 1 ? 2 :
-            parseInt(matchData["endgameCageClimb"]) === 2 ? 2 :
-            parseInt(matchData["endgameCageClimb"]) === 3 ? 6 :
-            parseInt(matchData["endgameCageClimb"]) === 4 ? 12 : 0);
-        let foulPoints = 0 * 2; // We don't track fouls
-    <-REMOVE*/
-
     let autonHubPts = 0; // FORNOW
     matchScore.autonHubPoints = autonHubPts;
 
@@ -293,36 +220,6 @@ require 'inc/header.php';
 
     return matchScore;
   }
-
-  /*REMOVE->
-    //
-    // These utilities convert TBA climb values to our match data values for comparison
-    //
-    function stringToClimbValue(climbString) {
-      let value = 0;
-      switch (climbString) {
-        default:
-        case "None":
-          break;
-        case "Parked":
-          value = 1;
-          break;
-        case "ShallowCage":
-          value = 3;
-          break;
-        case "DeepCage":
-          value = 4;
-          break;
-      }
-      return value;
-    }
-
-    function matchToClimbValue(matchValue) {
-      if (matchValue === 2) // Fell setting is same as park for scoring
-        matchValue = 1;
-      return matchValue;
-    }
-  <-REMOVE*/
 
   //
   // Build the diff row between TBA and our match data

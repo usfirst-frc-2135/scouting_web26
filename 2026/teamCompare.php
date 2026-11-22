@@ -128,34 +128,6 @@ require 'inc/header.php';
               </div>
             </div>
 
-            <!-- Second Pick collapsible graph -->
-            <!-- HOLD FORNOW
-            <div class="card mb-3 bg-success-subtle">
-              <div class="card-header">
-                <h5 class="text-center">
-                  <a href="#collapseSecondPickGraph" data-bs-toggle="collapse" aria-expanded="false">Second Pick</a>
-                </h5>
-              </div>
-              <div id="collapseSecondPickGraph" class="card-body collapse">
-                <canvas id="secondPickChart" width="400" height="360"></canvas>
-              </div>
-            </div>
-HOLD-->
-
-            <!-- Third Pick collapsible graph -->
-            <!-- HOLD FORNOW
-            <div class="card mb-3 bg-success-subtle">
-              <div class="card-header">
-                <h5 class="text-center">
-                  <a href="#collapseThirdPickGraph" data-bs-toggle="collapse" aria-expanded="false">Third Pick</a>
-                </h5>
-              </div>
-              <div id="collapseThirdPickGraph" class="card-body collapse">
-                <canvas id="ThirdPickChart" width="400" height="360"></canvas>
-              </div>
-            </div>
-HOLD-->
-
           </div>
         </div>
       </div>
@@ -728,7 +700,9 @@ HOLD-->
   document.addEventListener("DOMContentLoaded", function() {
 
     let jAliasNames = null;
-    const teamCompareRequestState = { latestRequestId: 0 };
+    const teamCompareRequestState = {
+      latestRequestId: 0
+    };
 
     // Read the alias table
     $.get("api/dbReadAPI.php", {
@@ -801,7 +775,7 @@ HOLD-->
     }
 
     if (jMatches === null || tbaMatchData === null || pitData === null ||
-        hopperCapData === null || !Array.isArray(aliasList)) {
+      hopperCapData === null || !Array.isArray(aliasList)) {
       if (jMatches === null) {
         console.log("==> teamCompare: setupMDP: jMatches not loaded");
       }
@@ -833,8 +807,6 @@ HOLD-->
 
         // Load the graphs
         loadFirstPickGraph(teamNum1, teamNum2, filteredAvgData);
-        //HOLD        loadSecondPickGraph(teamNum1, teamNum2, filteredAvgData);
-        //HOLD        loadThirdPickGraph(teamNum1, teamNum2, filteredAvgData);
         loadDriverTable(teamNum1, teamNum2, filteredAvgData);
         loadPassingTable(teamNum1, teamNum2, filteredAvgData);
         loadPassingFromTable(teamNum1, teamNum2, filteredAvgData);
