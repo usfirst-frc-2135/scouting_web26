@@ -194,7 +194,7 @@ require 'inc/header.php';
     // TODO: Make case names consistent. Database fields are historically all lowercase, but QR code fields are camelCase. This is confusing and should be fixed.
 
     // Perennial fields that always occur
-    matchData["appVersion"] = qrList[0]; // TODO: This is a QR code version number, NOT the app version number. It is used to determine how to parse the QR code data.
+    matchData["appVersion"] = qrList[0]; // IMPORTANT: This is a QR code (match data) version number, NOT the app version number. It is used to determine how to parse the QR code data.
     matchData["eventcode"] = qrList[1];
     matchData["matchnumber"] = qrList[2];
     matchData["teamnumber"] = qrList[3];

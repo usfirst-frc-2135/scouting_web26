@@ -230,9 +230,9 @@ function insertEventAveragesBody(tableId, avgData, coprData, aliasList, pitData,
     for (let ctr = 1; ctr < diedArray.length; ctr++)
     {
       diedTotal += getDataValue(diedArray, ctr, "sum");
-      //HOLD      console.log("---> for index= "+ctr+", died sum=" + getDataValue(diedArray,ctr,"sum"));
+      //HOLD      console.log("---> for index = " + ctr + ", died sum = " + getDataValue(diedArray,ctr,"sum"));
     }
-    //HOLD    console.log("   ---> for team "+teamNum+", getting died total =" + diedTotal);
+    //HOLD    console.log("   ---> for team " + teamNum + ", getting died total = " + diedTotal);
     rowString += tdPrefix0 + diedTotal + "</td>";
 
     // For NoShow, we just want to show the number of times they were NoShow.

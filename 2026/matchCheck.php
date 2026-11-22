@@ -233,54 +233,16 @@ require 'inc/header.php';
     let diffRowString = "";
 
     // Red alliance diff
-    //REMOVE    diffRowString += "<td class='table-danger'>" + (matchScoreRed.totalPoints - tbaScoreRed.totalPoints) + "</td>";
     diffRowString += "<td class='table-success'>" + (matchScoreRed.autonHubPoints - tbaScoreRed.autonHubPoints) + "</td>";
     diffRowString += "<td class='table-success'>" + (matchScoreRed.autonClimbPoints - tbaScoreRed.autonClimbPoints) + "</td>";
     diffRowString += "<td class='table-primary'>" + (matchScoreRed.teleopPoints - tbaScoreRed.teleopPoints) + "</td>";
     diffRowString += "<td class='table-light'>" + (matchScoreRed.endgameClimbPoints - tbaScoreRed.endgameClimbPoints) + "</td>";
 
-    /*REMOVE->
-        diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonLeave - tbaScoreRed.autonLeave) + "</td>";
-        diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonCoralL4 - tbaScoreRed.autonCoralL4) + "</td>";
-        diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonCoralL3 - tbaScoreRed.autonCoralL3) + "</td>";
-        diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonCoralL2 - tbaScoreRed.autonCoralL2) + "</td>";
-        diffRowString += "<td class='table-danger'>" + (matchScoreRed.autonCoralL1 - tbaScoreRed.autonCoralL1) + "</td>";
-        diffRowString += "<td class='table-primary'>" + (matchScoreRed.teleopCoralL4 - tbaScoreRed.teleopCoralL4) + "</td>";
-        diffRowString += "<td class='table-primary'>" + (matchScoreRed.teleopCoralL3 - tbaScoreRed.teleopCoralL3) + "</td>";
-        diffRowString += "<td class='table-primary'>" + (matchScoreRed.teleopCoralL2 - tbaScoreRed.teleopCoralL2) + "</td>";
-        diffRowString += "<td class='table-primary'>" + (matchScoreRed.teleopCoralL1 - tbaScoreRed.teleopCoralL1) + "</td>";
-        diffRowString += "<td class='table-primary'>" + (matchScoreRed.allNet - tbaScoreRed.allNet) + "</td>";
-        diffRowString += "<td class='table-primary'>" + (matchScoreRed.allProc - tbaScoreRed.allProc) + "</td>";
-        diffRowString += "<td class='table-warning'>" + (matchToClimbValue(matchScoreRed.endgameCageClimb[0]) - stringToClimbValue(tbaScoreRed.endgameCageClimb[0])) + "</td>";
-        diffRowString += "<td class='table-warning'>" + (matchToClimbValue(matchScoreRed.endgameCageClimb[1]) - stringToClimbValue(tbaScoreRed.endgameCageClimb[1])) + "</td>";
-        diffRowString += "<td class='table-warning'>" + (matchToClimbValue(matchScoreRed.endgameCageClimb[2]) - stringToClimbValue(tbaScoreRed.endgameCageClimb[2])) + "</td>";
-        diffRowString += "<td class='table-light'>" + (matchScoreRed.fouls - tbaScoreRed.fouls) + "</td>";
-    <-REMOVE*/
-
     // Blue alliance diff
-    //REMOVE    diffRowString += "<td class='table-danger'>" + (matchScoreBlue.totalPoints - tbaScoreBlue.totalPoints) + "</td>";
     diffRowString += "<td class='table-success'>" + (matchScoreBlue.autonHubPoints - tbaScoreBlue.autonHubPoints) + "</td>";
     diffRowString += "<td class='table-success'>" + (matchScoreBlue.autonClimbPoints - tbaScoreBlue.autonClimbPoints) + "</td>";
     diffRowString += "<td class='table-primary'>" + (matchScoreBlue.teleopPoints - tbaScoreBlue.teleopPoints) + "</td>";
     diffRowString += "<td class='table-light'>" + (matchScoreBlue.endgameClimbPoints - tbaScoreBlue.endgameClimbPoints) + "</td>";
-
-    /*REMOVE->
-        diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonLeave - tbaScoreBlue.autonLeave) + "</td>";
-        diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonCoralL4 - tbaScoreBlue.autonCoralL4) + "</td>";
-        diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonCoralL3 - tbaScoreBlue.autonCoralL3) + "</td>";
-        diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonCoralL2 - tbaScoreBlue.autonCoralL2) + "</td>";
-        diffRowString += "<td class='table-danger'>" + (matchScoreBlue.autonCoralL1 - tbaScoreBlue.autonCoralL1) + "</td>";
-        diffRowString += "<td class='table-primary'>" + (matchScoreBlue.teleopCoralL4 - tbaScoreBlue.teleopCoralL4) + "</td>";
-        diffRowString += "<td class='table-primary'>" + (matchScoreBlue.teleopCoralL3 - tbaScoreBlue.teleopCoralL3) + "</td>";
-        diffRowString += "<td class='table-primary'>" + (matchScoreBlue.teleopCoralL2 - tbaScoreBlue.teleopCoralL2) + "</td>";
-        diffRowString += "<td class='table-primary'>" + (matchScoreBlue.teleopCoralL1 - tbaScoreBlue.teleopCoralL1) + "</td>";
-        diffRowString += "<td class='table-primary'>" + (matchScoreBlue.allNet - tbaScoreBlue.allNet) + "</td>";
-        diffRowString += "<td class='table-primary'>" + (matchScoreBlue.allProc - tbaScoreBlue.allProc) + "</td>";
-        diffRowString += "<td class='table-warning'>" + (matchScoreBlue.endgameCageClimb[0] - stringToClimbValue(tbaScoreBlue.endgameCageClimb[0])) + "</td>";
-        diffRowString += "<td class='table-warning'>" + (matchScoreBlue.endgameCageClimb[1] - stringToClimbValue(tbaScoreBlue.endgameCageClimb[1])) + "</td>";
-        diffRowString += "<td class='table-warning'>" + (matchScoreBlue.endgameCageClimb[2] - stringToClimbValue(tbaScoreBlue.endgameCageClimb[2])) + "</td>";
-        diffRowString += "<td class='table-light'>" + (matchScoreBlue.fouls - tbaScoreBlue.fouls) + "</td>";
-    <-REMOVE*/
 
     return diffRowString;
   }

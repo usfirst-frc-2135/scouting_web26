@@ -365,12 +365,12 @@ class matchDataProcessor
   updateItem(item, mdpKeyword, value)
   {
     this.initializeItem(item, mdpKeyword);
-    //HOLD    console.log("   XXXXX - updateItem for "+mdpKeyword+", value = "+value);
+    //HOLD    console.log("   XXXXX - updateItem for " + mdpKeyword + ", value = " + value);
     let currSum = parseInt(item[mdpKeyword].sum);
     //HOLD    console.log("     XXXXX - currSum = "+currSum);
     let newSum = parseInt(currSum + value);
     item[mdpKeyword].sum = newSum;           // Add value to the 'sum' for this mdpKeyword 
-    //HOLD    console.log("       XXXXX - new sum = "+item[mdpKeyword].sum);
+    //HOLD    console.log("       XXXXX - new sum = " + item[mdpKeyword].sum);
     item[mdpKeyword].max = Math.max(item[mdpKeyword].max, value);
   }
 
@@ -397,7 +397,7 @@ class matchDataProcessor
     let teamnum = item["teamNum"]; //TEST
     item["fuelD"][matchnum][key] = value;
     //HOLD    let tvalue = this.pData[teamnum]["fuelD"][matchnum][key];
-    //HOLD    console.log("    !!!!!!!!!->> verifying update fuelD: "+ tvalue);
+    //HOLD    console.log("    !!!!!!!!!->> verifying update fuelD: " + tvalue);
   }
 
   //
@@ -411,9 +411,9 @@ class matchDataProcessor
       return;
     }
     item[mdpKeyword].avg = (item[denominator] != 0) ? this.roundOnePlace(item[mdpKeyword].sum / item[denominator]) : 0;
-    //HOLD    console.log("    !! calcAverage( "+mdpKeyword+" ) denominator = "+item[denominator]);
-    //HOLD    console.log("    !! calcAverage( "+mdpKeyword+" ) sum = "+item[mdpKeyword].sum);
-    //HOLD    console.log("    !! calcAverage( "+mdpKeyword+" ) avg = "+item[mdpKeyword].avg);
+    //HOLD    console.log("    !! calcAverage( " + mdpKeyword + " ) denominator = " + item[denominator]);
+    //HOLD    console.log("    !! calcAverage( " + mdpKeyword + " ) sum = " + item[mdpKeyword].sum);
+    //HOLD    console.log("    !! calcAverage( " + mdpKeyword + " ) avg = " + item[mdpKeyword].avg);
   }
 
   //
